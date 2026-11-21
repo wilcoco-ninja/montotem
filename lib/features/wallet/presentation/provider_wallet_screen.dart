@@ -17,6 +17,7 @@ import 'package:montotem/features/wallet/data/payment_account_service.dart';
 import 'package:montotem/features/wallet/data/wallet_service.dart';
 import 'package:montotem/features/wallet/domain/topup_request_model.dart';
 import 'package:montotem/features/wallet/domain/wallet_model.dart';
+import 'package:montotem/features/wallet/presentation/ledger_history_screen.dart';
 
 /// Opérateurs Mobile Money acceptés pour payer une commission cash.
 /// Codes alignés avec la base (mission_payments.operateur) et avec la
@@ -246,7 +247,18 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Mon wallet')),
+      appBar: AppBar(
+        title: const Text('Mon wallet'),
+        actions: [
+          IconButton(
+            tooltip: 'Grand livre (audit)',
+            icon: const Icon(Icons.receipt_long_outlined),
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) => const LedgerHistoryScreen(),
+            )),
+          ),
+        ],
+      ),
       body: _corps(),
     );
   }
