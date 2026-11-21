@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: montotem_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-montotem_db}
+      POSTGRES_USER: ${POSTGRES_USER:-montotem_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me-in-production}
+    # Ne pas exposer le port PostgreSQL en production
+    # ports:
+    #   - "5432:5432"  # COMMENTER EN PRODUCTION
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - montotem_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-montotem_user} -d ${POSTGRES_DB:-montotem_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: montotem_backend
+    restart: unless-stopped
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-montotem_user}:${POSTGRES_PASSWORD:-change-me-in-production}@postgres:5432/${POSTGRES_DB:-montotem_db}
+      - FIREBASE_CREDENTIALS_PATH=/app/secrets/firebase-service-account.json
+      - SECRET_KEY=${SECRET_KEY:-change-me-in-production-use-a-random-key-generator}
+      - DEBUG=${DEBUG:-False}
+      - ENVIRONMENT=${ENVIRONMENT:-production}
+      - KKIAPAY_PUBLIC_KEY=${KKIAPAY_PUBLIC_KEY:-}
+      - KKIAPAY_PRIVATE_KEY=${KKIAPAY_PRIVATE_KEY:-}
+      - KKIAPAY_SECRET_KEY=${KKIAPAY_SECRET_KEY:-}
+      - KKIAPAY_SANDBOX=${KKIAPAY_SANDBOX:-false}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
+    volumes:
+      - ./secrets:/app/secrets:ro
+      - ./backend/uploads:/app/uploads
+    networks:
+      - montotem_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # Commande de production avec workers
+    command: >
+      uvicorn app.main:app 
+      --host 0.0.0.0 
+      --port 8000 
+      --workers ${UVICORN_WORKERS:-2}
+      --no-access-log
+
+volumes:
+  postgres_data:
+
+networks:
+  montotem_network:
+    driver: bridge

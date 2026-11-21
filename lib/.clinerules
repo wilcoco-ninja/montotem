@@ -1,0 +1,20 @@
+# Contexte du Projet
+- Nom du projet : Montotem (Backend)
+- Objectif : Construire une API backend robuste pour l'écosystème Montotem.
+- Technologies principales : Docker, Dev Containers, PostgreSQL, Firebase.
+
+# Règles de Comportement pour Cline
+- **Rigueur absolue :** Prends ce projet très au sérieux. Ne propose pas de solutions "bricolées" ou de raccourcis. Le code doit être prêt pour la production.
+- **Validation requise :** Avant d'exécuter des commandes terminal destructrices (comme la suppression de dossiers) ou des migrations de base de données majeures, explique ce que tu vas faire et attends ma validation.
+- **Une étape à la fois :** Ne tente pas de coder tout le backend d'un coup. Procède fonctionnalité par fonctionnalité.
+
+# Règles d'Architecture (Feature-First)
+- Organise le code de manière modulaire, orientée par "Feature" (Fonctionnalité). 
+- Chaque fonctionnalité (par exemple : authentification, utilisateurs, interventions) doit avoir son propre dossier indépendant contenant ses propres modèles, contrôleurs et routes.
+
+# Base de données (PostgreSQL) et Docker
+- Le projet tourne dans un Dev Container. Prends en compte cet environnement isolé pour les chemins de fichiers et l'exécution des scripts.
+- Assure-toi que toutes les requêtes ou l'ORM utilisé respectent les meilleures pratiques de sécurité (pas d'injection SQL).
+
+# Authentification (Firebase)
+- Toutes les routes sensibles doivent être protégées par un middleware qui vérifie les tokens d'authentification via le SDK Admin Firebase.

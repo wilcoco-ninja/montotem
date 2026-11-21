@@ -1,0 +1,404 @@
+import 'package:flutter/material.dart';
+
+/// Référentiel officiel du module « SOS Je Suis En Panne ».
+///
+/// Les codes ci-dessous sont la source unique côté client : ils doivent
+/// rester strictement identiques à la migration SQL
+/// `supabase/migrations/sos/01..03` (tables `sos_vehicules`, `sos_pannes`,
+/// `sos_competences`, `sos_services`, `sos_habilitations`,
+/// `sos_niveaux_securite`).
+
+enum SosGroupe {
+  deuxRoues('DEUX_ROUES', 'Deux-roues'),
+  troisRoues('TROIS_ROUES', 'Trois-roues'),
+  quatreRoues('QUATRE_ROUES', 'Voit. / Utilitaire / Minibus / Bus'),
+  poidsLourd('POIDS_LOURD', 'Poids Lourds & Camions');
+
+  const SosGroupe(this.code, this.libelle);
+  final String code;
+  final String libelle;
+
+  static SosGroupe fromCode(String? c) => SosGroupe.values.firstWhere(
+        (g) => g.code == c,
+        orElse: () => SosGroupe.quatreRoues,
+      );
+}
+
+@immutable
+class SosVehicule {
+  const SosVehicule({
+    required this.code,
+    required this.libelle,
+    required this.detail,
+    required this.groupe,
+    required this.thermique,
+    required this.icone,
+  });
+
+  /// Code exact stocké en base (sos_vehicules).
+  final String code;
+  final String libelle;
+  final String detail;
+  final SosGroupe groupe;
+  final bool thermique;
+  final IconData icone;
+}
+
+/// Les 14 véhicules de la spécification, dans l'ordre d'affichage.
+const List<SosVehicule> kSosVehicules = [
+  SosVehicule(
+      code: 'ZEM_MOTO',
+      libelle: 'Moto classique',
+      detail: 'Motos et cyclomoteurs',
+      groupe: SosGroupe.deuxRoues,
+      thermique: true,
+      icone: Icons.two_wheeler_rounded),
+  SosVehicule(
+      code: 'E_MOTO',
+      libelle: 'Moto électrique',
+      detail: 'Recharge / swap batterie',
+      groupe: SosGroupe.deuxRoues,
+      thermique: false,
+      icone: Icons.electric_moped_rounded),
+  SosVehicule(
+      code: 'SCOOTER_THERM',
+      libelle: 'Scooter mécanique',
+      detail: 'Scooters thermiques',
+      groupe: SosGroupe.deuxRoues,
+      thermique: true,
+      icone: Icons.two_wheeler_rounded),
+  SosVehicule(
+      code: 'E_SCOOTER',
+      libelle: 'Scooter électrique',
+      detail: 'Scooters électriques',
+      groupe: SosGroupe.deuxRoues,
+      thermique: false,
+      icone: Icons.electric_scooter),
+  SosVehicule(
+      code: 'CLOBOTO_PAX',
+      libelle: 'Tricycle passager',
+      detail: 'Cloboto transport de personnes',
+      groupe: SosGroupe.troisRoues,
+      thermique: true,
+      icone: Icons.electric_rickshaw_rounded),
+  SosVehicule(
+      code: 'KLOBOTO_FRET',
+      libelle: 'Tricycle fret/bagage',
+      detail: 'Kloboto transport de marchandises',
+      groupe: SosGroupe.troisRoues,
+      thermique: true,
+      icone: Icons.inventory_2_rounded),
+  SosVehicule(
+      code: 'CAR_THERM',
+      libelle: 'Voiture thermique',
+      detail: 'Essence / diesel',
+      groupe: SosGroupe.quatreRoues,
+      thermique: true,
+      icone: Icons.directions_car_rounded),
+  SosVehicule(
+      code: 'E_CAR',
+      libelle: 'Voiture électrique/hybride',
+      detail: 'BMS, contrôleur, charge',
+      groupe: SosGroupe.quatreRoues,
+      thermique: false,
+      icone: Icons.electric_car_rounded),
+  SosVehicule(
+      code: 'UTILITAIRE_VAN',
+      libelle: 'Utilitaire',
+      detail: 'Vans, fourgons, utilitaires',
+      groupe: SosGroupe.quatreRoues,
+      thermique: true,
+      icone: Icons.local_shipping_rounded),
+  SosVehicule(
+      code: 'MINIBUS',
+      libelle: 'Minibus',
+      detail: 'Transport collectif léger',
+      groupe: SosGroupe.quatreRoues,
+      thermique: true,
+      icone: Icons.directions_bus_rounded),
+  SosVehicule(
+      code: 'BUS_TRANSPORT',
+      libelle: 'Bus',
+      detail: 'Transport collectif',
+      groupe: SosGroupe.quatreRoues,
+      thermique: true,
+      icone: Icons.directions_bus_filled_rounded),
+  SosVehicule(
+      code: 'CAMION_6_ROUES',
+      libelle: 'Camion léger / Porteur 6 roues',
+      detail: 'Kia/Hyundai/Canter — tonnage moyen',
+      groupe: SosGroupe.poidsLourd,
+      thermique: true,
+      icone: Icons.local_shipping_rounded),
+  SosVehicule(
+      code: 'CAMION_10_ROUES',
+      libelle: 'Camion lourd 10 roues / Benne',
+      detail: 'Tonnage lourd',
+      groupe: SosGroupe.poidsLourd,
+      thermique: true,
+      icone: Icons.fire_truck_rounded),
+  SosVehicule(
+      code: 'SEMI_REMORQUE',
+      libelle: 'Tracteur routier / Semi-remorque',
+      detail: '12 roues et plus',
+      groupe: SosGroupe.poidsLourd,
+      thermique: true,
+      icone: Icons.local_shipping_outlined),
+];
+
+SosVehicule? sosVehiculeParCode(String? code) {
+  if (code == null) {
+    return null;
+  }
+  final c = code.trim().toUpperCase();
+  for (final v in kSosVehicules) {
+    if (v.code == c) {
+      return v;
+    }
+  }
+  return null;
+}
+
+/// Niveau de sécurité de la chaussée (Étape 1).
+enum SosNiveauSecurite {
+  ok('OK', 'Route normale', Icons.check_circle_outline_rounded),
+  attention(
+      'ATTENTION', 'Trafic proche / voie étroite', Icons.warning_amber_rounded),
+  danger('DANGER', 'Voie rapide / zone dangereuse', Icons.dangerous_rounded);
+
+  const SosNiveauSecurite(this.code, this.libelle, this.icone);
+  final String code;
+  final String libelle;
+  final IconData icone;
+
+  static SosNiveauSecurite fromCode(String? c) => SosNiveauSecurite.values
+      .firstWhere((n) => n.code == c, orElse: () => SosNiveauSecurite.attention);
+
+  String get consigne => switch (this) {
+        SosNiveauSecurite.ok =>
+          'Garez-vous hors de la chaussée, triangle à 25 m.',
+        SosNiveauSecurite.attention =>
+          'Gilet puis triangle à 50 m. Restez derrière une barrière.',
+        SosNiveauSecurite.danger =>
+          'Ne restez pas dans le véhicule. Éloignez-vous.',
+      };
+}
+
+@immutable
+class SosPanne {
+  const SosPanne({
+    required this.code,
+    required this.libelle,
+    required this.description,
+    required this.mainOeuvreFcfa,
+    required this.pieceObligatoire,
+    required this.icone,
+    this.pieceCode,
+    this.pieceLibelle,
+  });
+
+  final String code;
+  final String libelle;
+  final String description;
+
+  /// Main-d'œuvre indicative de référence (le devis réel vient de la RPC).
+  final int mainOeuvreFcfa;
+
+  /// Si true, un prestataire sans la pièce en stock n'est jamais proposé.
+  final bool pieceObligatoire;
+  final String? pieceCode;
+  final String? pieceLibelle;
+  final IconData icone;
+
+  factory SosPanne.fromJson(Map<String, dynamic> j) => SosPanne(
+        code: '${j['code'] ?? ''}',
+        libelle: '${j['libelle'] ?? ''}',
+        description: '${j['description'] ?? ''}',
+        mainOeuvreFcfa: (j['main_oeuvre_fcfa'] as num?)?.toInt() ?? 0,
+        pieceObligatoire: j['piece_obligatoire'] == true,
+        pieceCode: j['piece_code'] as String?,
+        pieceLibelle: j['piece_libelle'] as String?,
+        icone: iconePourPanne('${j['code'] ?? ''}'),
+      );
+}
+
+IconData iconePourPanne(String code) => switch (code) {
+      'CREVAISON_PNEU' => Icons.tire_repair_rounded,
+      'DEMARRAGE_BATTERIE' => Icons.battery_alert_rounded,
+      'TRANSMISSION_CABLE' => Icons.link_off_rounded,
+      'SURCHAUFFE_CALAGE' => Icons.thermostat_rounded,
+      'BATTERIE_VIDE' => Icons.battery_alert_rounded,
+      'BMS_CONTROLEUR' => Icons.developer_board_rounded,
+      'CREVAISON_ROUE_BLOQUEE' => Icons.tire_repair_rounded,
+      'REMORQUAGE_PLATEAU' => Icons.local_shipping_rounded,
+      'BATTERIE_ALTERNATEUR' => Icons.battery_alert_rounded,
+      'CREVAISON_VL' => Icons.tire_repair_rounded,
+      'SURCHAUFFE_FUITE' => Icons.water_drop_rounded,
+      'FREIN_EMBRAYAGE_COURROIE' => Icons.disc_full_rounded,
+      'REMORQUAGE_VL' => Icons.local_shipping_rounded,
+      'PNEU_PL' => Icons.tire_repair_rounded,
+      'FREIN_AIR_PL' => Icons.air_rounded,
+      'ENERGIE_24V' => Icons.battery_charging_full_rounded,
+      'MECA_LOURDE_PL' => Icons.precision_manufacturing_rounded,
+      'REMORQUAGE_PL' => Icons.local_shipping_rounded,
+      _ => Icons.build_circle_rounded,
+    };
+
+/// Matrice de filtrage strict (Étape 3) — codes exacts de la spécification.
+const Map<String, List<String>> kSosPannesParVehicule = {
+  // Moto / Scooter / Tricycle Thermique
+  'ZEM_MOTO': [
+    'CREVAISON_PNEU',
+    'DEMARRAGE_BATTERIE',
+    'TRANSMISSION_CABLE',
+    'SURCHAUFFE_CALAGE',
+  ],
+  'SCOOTER_THERM': [
+    'CREVAISON_PNEU',
+    'DEMARRAGE_BATTERIE',
+    'TRANSMISSION_CABLE',
+    'SURCHAUFFE_CALAGE',
+  ],
+  'CLOBOTO_PAX': [
+    'CREVAISON_PNEU',
+    'DEMARRAGE_BATTERIE',
+    'TRANSMISSION_CABLE',
+    'SURCHAUFFE_CALAGE',
+  ],
+  'KLOBOTO_FRET': [
+    'CREVAISON_PNEU',
+    'DEMARRAGE_BATTERIE',
+    'TRANSMISSION_CABLE',
+    'SURCHAUFFE_CALAGE',
+  ],
+  // Moto / Scooter / Voiture Électrique
+  'E_MOTO': [
+    'BATTERIE_VIDE',
+    'BMS_CONTROLEUR',
+    'CREVAISON_ROUE_BLOQUEE',
+    'REMORQUAGE_PLATEAU',
+  ],
+  'E_SCOOTER': [
+    'BATTERIE_VIDE',
+    'BMS_CONTROLEUR',
+    'CREVAISON_ROUE_BLOQUEE',
+    'REMORQUAGE_PLATEAU',
+  ],
+  'E_CAR': [
+    'BATTERIE_VIDE',
+    'BMS_CONTROLEUR',
+    'CREVAISON_ROUE_BLOQUEE',
+    'REMORQUAGE_PLATEAU',
+  ],
+  // Voiture / Utilitaire / Minibus / Bus
+  'CAR_THERM': [
+    'BATTERIE_ALTERNATEUR',
+    'CREVAISON_VL',
+    'SURCHAUFFE_FUITE',
+    'FREIN_EMBRAYAGE_COURROIE',
+    'REMORQUAGE_VL',
+  ],
+  'UTILITAIRE_VAN': [
+    'BATTERIE_ALTERNATEUR',
+    'CREVAISON_VL',
+    'SURCHAUFFE_FUITE',
+    'FREIN_EMBRAYAGE_COURROIE',
+    'REMORQUAGE_VL',
+  ],
+  'MINIBUS': [
+    'BATTERIE_ALTERNATEUR',
+    'CREVAISON_VL',
+    'SURCHAUFFE_FUITE',
+    'FREIN_EMBRAYAGE_COURROIE',
+    'REMORQUAGE_VL',
+  ],
+  'BUS_TRANSPORT': [
+    'BATTERIE_ALTERNATEUR',
+    'CREVAISON_VL',
+    'SURCHAUFFE_FUITE',
+    'FREIN_EMBRAYAGE_COURROIE',
+    'REMORQUAGE_VL',
+  ],
+  // Poids Lourds & Camions
+  'CAMION_6_ROUES': [
+    'PNEU_PL',
+    'FREIN_AIR_PL',
+    'ENERGIE_24V',
+    'MECA_LOURDE_PL',
+    'REMORQUAGE_PL',
+  ],
+  'CAMION_10_ROUES': [
+    'PNEU_PL',
+    'FREIN_AIR_PL',
+    'ENERGIE_24V',
+    'MECA_LOURDE_PL',
+    'REMORQUAGE_PL',
+  ],
+  'SEMI_REMORQUE': [
+    'PNEU_PL',
+    'FREIN_AIR_PL',
+    'ENERGIE_24V',
+    'MECA_LOURDE_PL',
+    'REMORQUAGE_PL',
+  ],
+};
+
+List<String> sosPanneCodesPour(String codeVehicule) =>
+    kSosPannesParVehicule[codeVehicule.trim().toUpperCase()] ?? const [];
+
+bool sosPanneCompatible({required String vehicule, required String panne}) =>
+    sosPanneCodesPour(vehicule).contains(panne.trim().toUpperCase());
+
+/// Libellés affichés des compétences (codes = sos_competences en base).
+const Map<String, String> kSosCompetences = {
+  'PNEU_MOTO': 'Vulcanisateur moto / deux-trois roues',
+  'PNEU_VL': 'Vulcanisateur véhicules légers',
+  'PNEU_PL': 'Vulcanisateur Poids Lourd (équipement lourd tonnage)',
+  'ELEC_AUTO': 'Électricien auto & moto (12V)',
+  'ELEC_VEHICULE_HAB': 'Technicien véhicules électriques (BMS / contrôleur)',
+  'MECANIQUE_MOTO': 'Mécanicien moto / deux-trois roues',
+  'MECANIQUE_VL': 'Mécanicien véhicules légers',
+  'MECA_LOURDE_PL': 'Mécanicien Poids Lourd (camion-atelier)',
+  'FREIN_AIR_PL': "Circuit d'air & freinage pneumatique PL",
+  'DIAG_24V_PL': 'Diagnostic & démarrage 24V Poids Lourd',
+  'REMORQUAGE_VL': 'Remorquage / dépanneuse VL',
+  'REMORQUAGE_PL': 'Remorquage Poids Lourd (dépanneuse lourd tonnage)',
+  'SWAP_BATTERIE': 'Échange / swap de batterie électrique',
+};
+
+/// Services de prestation express et habilitations requises par code.
+const Map<String, List<String>> kSosServicesHabilitations = {
+  'VULCANISATEUR_EXPRESS': [],
+  'ATELIER_MOBILE_LEGER': [],
+  'TECH_ELECTRIQUE': ['HAB_ELECTRIQUE'],
+  'GARAGE_MECANIQUE': [],
+  'DEPANNEUSE_VL': ['HAB_DEPANNEUSE_VL'],
+  'VULCANISATEUR_PL': [],
+  'CAMION_ATELIER_PL': [],
+  'DEPANNEUSE_PL': ['HAB_DEPANNEUSE_PL'],
+};
+
+const Map<String, String> kSosServicesLibelles = {
+  'VULCANISATEUR_EXPRESS': 'Vulcanisateur express mobile',
+  'ATELIER_MOBILE_LEGER': 'Atelier mobile léger / technicien',
+  'TECH_ELECTRIQUE': 'Prestataire certifié électrique / swap',
+  'GARAGE_MECANIQUE': 'Garage / mécanique générale',
+  'DEPANNEUSE_VL': 'Dépanneuse Véhicule Léger (remorquage)',
+  'VULCANISATEUR_PL': 'Vulcanisateur mobile Poids Lourd',
+  'CAMION_ATELIER_PL': 'Mécanicien PL mobile / camion-atelier sur site',
+  'DEPANNEUSE_PL': 'Dépanneuse Poids Lourd (remorquage lourd tonnage)',
+};
+
+const Map<String, String> kSosHabilitationsLibelles = {
+  'HAB_ELECTRIQUE': 'Habilitation Électrique',
+  'HAB_DEPANNEUSE_VL': 'Dépanneuse Véhicule Léger',
+  'HAB_DEPANNEUSE_PL': 'Dépanneuse Poids Lourd',
+};
+
+String sosServiceLibelle(String code) =>
+    kSosServicesLibelles[code] ?? code;
+
+String sosHabilitationLibelle(String code) =>
+    kSosHabilitationsLibelles[code] ?? code;
+
+String sosCompetenceLibelle(String code) => kSosCompetences[code] ?? code;
