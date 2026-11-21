@@ -35,35 +35,35 @@ class Devise {
   final ArrondiMode arrondi;
   final String symbole;
 
-  static const XOF = Devise(
+  static const xof = Devise(
     code: 'XOF',
     libelle: 'Franc CFA (UEMOA)',
     minorUnits: 0,
     arrondi: ArrondiMode.arrondi,
     symbole: 'FCFA',
   );
-  static const XAF = Devise(
+  static const xaf = Devise(
     code: 'XAF',
     libelle: 'Franc CFA (CEMAC)',
     minorUnits: 0,
     arrondi: ArrondiMode.arrondi,
     symbole: 'FCFA',
   );
-  static const NGN = Devise(
+  static const ngn = Devise(
     code: 'NGN',
     libelle: 'Naira nigérian',
     minorUnits: 2,
     arrondi: ArrondiMode.plancher,
     symbole: '₦',
   );
-  static const KES = Devise(
+  static const kes = Devise(
     code: 'KES',
     libelle: 'Shilling kényan',
     minorUnits: 2,
     arrondi: ArrondiMode.arrondi,
     symbole: 'KSh',
   );
-  static const GHS = Devise(
+  static const ghs = Devise(
     code: 'GHS',
     libelle: 'Cedi ghanéen',
     minorUnits: 2,
@@ -71,7 +71,7 @@ class Devise {
     symbole: 'GH₵',
   );
 
-  static const List<Devise> toutes = [XOF, XAF, NGN, KES, GHS];
+  static const List<Devise> toutes = [xof, xaf, ngn, kes, ghs];
 
   static Devise? _parCode(String? code) {
     final c = code?.toUpperCase().trim() ?? '';
@@ -81,7 +81,7 @@ class Devise {
     return null;
   }
 
-  static Devise get defaut => XOF;
+  static Devise get defaut => xof;
 
   /// Devise par code avec repli sûr sur XOF (le serveur reste la référence) ;
   /// un `minorUnits` / `rounding_mode` venant de la table `devises` a la
@@ -90,9 +90,12 @@ class Devise {
       {int? minorUnits, String? roundingMode}) {
     final base = _parCode(code) ?? defaut;
     if (minorUnits == null && roundingMode == null) return base;
-    final unites = (minorUnits == 0 || minorUnits == 2)
-        ? minorUnits
-        : base.minorUnits;
+    final int unites;
+    if (minorUnits != null && (minorUnits == 0 || minorUnits == 2)) {
+      unites = minorUnits;
+    } else {
+      unites = base.minorUnits;
+    }
     final mode = roundingMode == null
         ? base.arrondi
         : ArrondiMode.depuisCode(roundingMode);
@@ -109,15 +112,15 @@ class Devise {
   /// Ville inconnue ⇒ XOF (défaut du projet, jamais un taux côté client).
   static Devise depuisVille(String? ville) {
     final v = ville?.toLowerCase().trim() ?? '';
-    if (v.isEmpty) return XOF;
+    if (v.isEmpty) return xof;
     const nigerian = ['lagos', 'badagry', 'ilorin'];
     const kenyans = ['nairobi', 'mombasa'];
     const ghaneens = ['accra', 'kumasi', 'ho'];
-    if (nigerian.contains(v)) return NGN;
-    if (kenyans.contains(v)) return KES;
-    if (ghaneens.contains(v)) return GHS;
+    if (nigerian.contains(v)) return ngn;
+    if (kenyans.contains(v)) return kes;
+    if (ghaneens.contains(v)) return ghs;
     // Bénin + toute autre ville non répertoriée : XOF.
-    return XOF;
+    return xof;
   }
 
   Map<String, dynamic> toJson() => {
@@ -153,7 +156,7 @@ class Money implements Comparable<Money> {
   Money fromMinor(int minor) => Money._(minor, devise);
 
   /// Construction sans perte depuis un entier "majeur" + partie mineure.
-  /// Ex. : Money.depuisParties(1, 50, Devise.NGN) = 150 kobo.
+  /// Ex. : Money.depuisParties(1, 50, Devise.ngn) = 150 kobo.
   static Money depuisParties(int majeur, int mineur, Devise devise) {
     final facteur = devise.minorUnits == 0 ? 1 : 100;
     return Money._(majeur.abs() * facteur + mineur * (majeur < 0 ? -1 : 1),
