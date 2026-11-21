@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart'
     show RealtimeChannel, Supabase, PostgrestException;
 
+import 'package:montotem/core/theme/app_colors.dart';
 import 'package:montotem/core/theme/app_theme.dart';
 import 'package:montotem/core/utils/responsive.dart';
 import 'package:montotem/core/widgets/app_button.dart';
@@ -31,18 +32,6 @@ const List<_OperateurPaiement> _operateursPaiement = [
   _OperateurPaiement('moov', 'Moov Money'),
   _OperateurPaiement('celtiis', 'Celtiis Cash'),
 ];
-
-
-/// Texte lisible sur un fond colore : blanc sur couleur foncee,
-/// encre du theme sur couleur claire (calcul par luminance WCAG).
-Color _lisibleSur(BuildContext context, Color fond) =>
-    fond.computeLuminance() > 0.5
-        ? Theme.of(context).colorScheme.onSurface
-        : Colors.white;
-
-/// Libelles secondaires, alignes sur le theme (equivalent textSecondary).
-Color _texteSecondaire(BuildContext context) =>
-    Theme.of(context).colorScheme.onSurfaceVariant;
 
 class ProviderWalletScreen extends StatefulWidget {
   const ProviderWalletScreen({super.key});
@@ -350,7 +339,7 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
   Widget _carteSolde(WalletSnapshot snap) {
     final w = snap.wallet;
     final couleur = _couleurSolde(w, context);
-    final fg = _lisibleSur(context, couleur);
+    final fg = context.readable(couleur);
     final marge = w.balanceFcfa - snap.config.seuilBlocageFcfa;
 
     final String detail;
@@ -374,7 +363,7 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
               Expanded(
                 child: Text('Solde du wallet',
                     style:
-                        TextStyle(fontSize: 16, color: _texteSecondaire(context))),
+                        TextStyle(fontSize: 16, color: context.textSecondary)),
               ),
               StatusPill(
                 label: w.blocked ? 'Bloqué' : 'Actif',
@@ -398,7 +387,7 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
           const SizedBox(height: 6),
           Text(detail,
               style: TextStyle(
-                  fontSize: 15, height: 1.35, color: _texteSecondaire(context))),
+                  fontSize: 15, height: 1.35, color: context.textSecondary)),
         ],
       ),
     );
@@ -460,7 +449,7 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
     final plafond = ((ledger?['credit_limit'] as num?) ?? 0).toInt();
     final dette = _commissionDue(snap);
     final aPayer = dette > plafond ? dette : plafond;
-    final fg = _lisibleSur(context, scheme.error);
+    final fg = context.readable(scheme.error);
 
     return Container(
       padding: const EdgeInsets.all(14),
@@ -489,7 +478,7 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
                   'moins ${formaterFcfaSigne(aPayer)} par Mobile Money pour '
                   'recevoir de nouveau des courses cash.',
                   style: TextStyle(
-                      fontSize: 15, height: 1.4, color: _texteSecondaire(context)),
+                      fontSize: 15, height: 1.4, color: context.textSecondary),
                 ),
                 const SizedBox(height: 10),
                 AppButton(
@@ -511,7 +500,7 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
     final ecart = snap.config.seuilBlocageFcfa - w.balanceFcfa;
     final int pourDebloquer = ecart < 0 ? 0 : ecart;
     final int pourEquilibrer = w.balanceFcfa < 0 ? -w.balanceFcfa : 0;
-    final fg = _lisibleSur(context, scheme.error);
+    final fg = context.readable(scheme.error);
 
     return Container(
       padding: const EdgeInsets.all(14),
@@ -540,7 +529,7 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
                   'être débloqué automatiquement, ou '
                   '${formaterFcfaSigne(pourEquilibrer)} pour repartir à zéro.',
                   style: TextStyle(
-                      fontSize: 15, height: 1.4, color: _texteSecondaire(context)),
+                      fontSize: 15, height: 1.4, color: context.textSecondary),
                 ),
               ],
             ),
@@ -609,7 +598,7 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
             '2. Déclarez votre paiement avec la référence reçue par SMS.\n'
             '3. Un administrateur vérifie puis crédite votre wallet.',
             style: TextStyle(
-                fontSize: 15.5, height: 1.45, color: _texteSecondaire(context)),
+                fontSize: 15.5, height: 1.45, color: context.textSecondary),
           ),
           const SizedBox(height: 12),
           for (final c in _comptes)
@@ -629,7 +618,7 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
                         children: [
                           Text(c.libelleOperateur,
                               style: TextStyle(
-                                  fontSize: 14, color: _texteSecondaire(context))),
+                                  fontSize: 14, color: context.textSecondary)),
                           Text(c.numero,
                               style: const TextStyle(
                                   fontSize: 19, fontWeight: FontWeight.w800)),
@@ -660,7 +649,7 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
               child: Text(
                 'Une recharge est déjà en cours de vérification.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14.5, color: _texteSecondaire(context)),
+                style: TextStyle(fontSize: 14.5, color: context.textSecondary),
               ),
             ),
         ],
@@ -675,7 +664,7 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
     final scheme = Theme.of(context).colorScheme;
     final enAttente = d.statut == StatutRecharge.enAttente;
     final couleur = scheme.error;
-    final fg = _lisibleSur(context, couleur);
+    final fg = context.readable(couleur);
     final motif = (d.motifRefus ?? '').trim();
 
     return Container(
@@ -712,7 +701,7 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
                   '${formaterFcfaSigne(d.amountFcfa)} · ${d.libelleOperateur} · '
                   'réf. ${d.transactionRef}',
                   style: TextStyle(
-                      fontSize: 15, height: 1.35, color: _texteSecondaire(context)),
+                      fontSize: 15, height: 1.35, color: context.textSecondary),
                 ),
                 if (!enAttente && motif.isNotEmpty)
                   Padding(
@@ -770,7 +759,7 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
               t.estCredit
                   ? Icons.add_circle_outline_rounded
                   : Icons.remove_circle_outline_rounded,
-              color: _lisibleSur(context, couleur),
+              color: context.readable(couleur),
               size: 26,
             ),
           ),
@@ -784,13 +773,13 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
                         fontSize: 16, fontWeight: FontWeight.w800)),
                 Text(_format.format(t.createdAt.toLocal()),
                     style:
-                        TextStyle(fontSize: 14, color: _texteSecondaire(context))),
+                        TextStyle(fontSize: 14, color: context.textSecondary)),
                 if (complement.isNotEmpty)
                   Text(complement,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                          fontSize: 13.5, color: _texteSecondaire(context))),
+                          fontSize: 13.5, color: context.textSecondary)),
               ],
             ),
           ),
@@ -803,10 +792,10 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
-                    color: _lisibleSur(context, couleur)),
+                    color: context.readable(couleur)),
               ),
               Text('Solde ${formaterFcfaSigne(t.balanceAfter)}',
-                  style: TextStyle(fontSize: 13, color: _texteSecondaire(context))),
+                  style: TextStyle(fontSize: 13, color: context.textSecondary)),
             ],
           ),
         ],
@@ -871,7 +860,7 @@ class _Pave extends StatelessWidget {
           ),
           Text(sousTitre,
               style:
-                  TextStyle(fontSize: 12.5, color: _texteSecondaire(context))),
+                  TextStyle(fontSize: 12.5, color: context.textSecondary)),
           if (bouton != null) ...[
             const SizedBox(height: 8),
             bouton!,
@@ -989,7 +978,7 @@ class _TopupSheetState extends State<_TopupSheet> {
               'Renseignez le paiement que vous venez d\'envoyer. Votre wallet '
               'est crédité après vérification.',
               style: TextStyle(
-                  fontSize: 16, height: 1.4, color: _texteSecondaire(context)),
+                  fontSize: 16, height: 1.4, color: context.textSecondary),
             ),
             const SizedBox(height: 16),
             const Text('Opérateur utilisé',
@@ -1206,7 +1195,7 @@ class _PaiementCommissionSheetState extends State<_PaiementCommissionSheet> {
               'Mobile Money pour solder votre commission due '
               '(${formaterFcfaSigne(widget.commissionDue)}).',
               style: TextStyle(
-                  fontSize: 16, height: 1.4, color: _texteSecondaire(context)),
+                  fontSize: 16, height: 1.4, color: context.textSecondary),
             ),
             const SizedBox(height: 16),
             const Text('Opérateur utilisé',
