@@ -1,0 +1,35 @@
+venv/
+__pycache__/
+*.pyc
+.env
+*.sqlite3
+staticfiles/
+media/
+.vscode/
+node_modules
+# Flutter/Dart
+.dart_tool/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+
+# IDE
+.vs/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Backups locaux
+*.bak
+
+# Scripts de diagnostic jetables
+fix_*.ps1
+apply_*.ps1
+create_*.ps1

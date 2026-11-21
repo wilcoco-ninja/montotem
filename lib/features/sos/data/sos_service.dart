@@ -200,7 +200,7 @@ class SosService {
                   const [],
         );
       }).toList();
-      // garde-fou : jamais zéro ligne avec un id vide.
+      // garde-fou : jamais de ligne avec un id vide.
       prestataires.removeWhere((p) => p.id.isEmpty);
       return prestataires;
     } on Exception catch (e) {

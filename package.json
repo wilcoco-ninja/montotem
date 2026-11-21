@@ -1,0 +1,21 @@
+{
+  "name": "montotem",
+  "version": "1.0.0",
+  "description": "Ce paquet contient l'arborescence corrigée de `lib/`, prête à être copiée dans votre projet existant à la place des fichiers défectueux.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@supabase/server": "^1.8.0",
+    "firebase": "^12.16.0"
+  }
+}

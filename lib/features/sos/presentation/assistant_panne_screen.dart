@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart' show Position;
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,7 +28,6 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
   final LocationService _location = LocationService();
   final SosService _sos = SosService.instance;
   final ProvidersNearestService _proximite = ProvidersNearestService();
-  final Geocoding _geocodage = Geocoding();
 
   _Etape _etape = _Etape.position;
 
@@ -64,7 +62,7 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
   }
 
   // ---------------------------------------------------------------------------
-  // Étape 1 : GPS + géocodage inverse (repère local proche)
+  // Étape 1 : GPS + repère local proche
   // ---------------------------------------------------------------------------
   Future<void> _capturerPosition() async {
     if (!mounted) return;
@@ -74,24 +72,8 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
     });
     try {
       final Position p = await _location.getCurrentLocation();
-      String repere = '${p.latitude.toStringAsFixed(5)}, '
-          '${p.longitude.toStringAsFixed(5)}';
-      try {
-        final marks =
-            await _geocodage.placemarkFromCoordinates(p.latitude, p.longitude);
-        if (marks.isNotEmpty) {
-          final m = marks.first;
-          final localite =
-              m.locality.isNotEmpty ? m.locality : m.subAdministrativeArea;
-          final morceaux = <String>[
-            if (m.subLocality.isNotEmpty) m.subLocality,
-            if (localite.isNotEmpty) localite,
-          ];
-          if (morceaux.isNotEmpty) repere = morceaux.join(', ');
-        }
-      } catch (_) {
-        // Le libellé lat/lng reste valable si le géocodage est injoignable.
-      }
+      final String repere =
+          '${p.latitude.toStringAsFixed(5)}, ${p.longitude.toStringAsFixed(5)}';
       if (!mounted) return;
       setState(() {
         _lat = p.latitude;

@@ -3,11 +3,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:montotem/features/tracking/domain/prestataire_model.dart';
 
-/// Recherche des prestataires actifs autour d'une position GPS.
-///
-/// `vehicule`, s'il est fourni, permet au serveur de ne retourner que les
-/// prestataires dont le profil couvre explicitement le gabarit du véhicule
-/// (paramètre RPC `p_vehicle`).
 class ProvidersNearestService {
   SupabaseClient get _sb => Supabase.instance.client;
 
@@ -39,7 +34,6 @@ class ProvidersNearestService {
           noteMoyenne: (j['note_moyenne'] as num?)?.toDouble() ?? 0,
           disponible: j['disponible'] == true,
           telephone: j['telephone'] as String?,
-          businessName: j['business_name'] as String?,
         );
       }).toList();
     } catch (_) {

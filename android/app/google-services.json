@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1028370068979",
+    "project_id": "montotem-c9d18",
+    "storage_bucket": "montotem-c9d18.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028370068979:android:f93a697f02b7752dfdce86",
+        "android_client_info": {
+          "package_name": "com.montotem.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5lOkm-lIYudVSP-1y3uGPp0bL8M74pMA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
