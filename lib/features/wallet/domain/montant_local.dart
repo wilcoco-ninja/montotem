@@ -1,5 +1,7 @@
 import 'devise.dart';
 
+export 'devise.dart' show Devise, Money, MoneyFormat, ArrondiMode;
+
 /// Couche d'affichage multi-devise cote client : resolution de la devise de
 /// la zone (miroir de la table PostgreSQL `zones`) et formatage des montants
 /// en unites entieres, jamais en double flottant.
