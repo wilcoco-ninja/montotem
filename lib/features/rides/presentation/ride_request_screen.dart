@@ -349,7 +349,7 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
                       d != null
                           ? 'Position définie'
                           : (_localisation
-                              ? 'Recherche de votre positionâ€¦'
+                              ? 'Recherche de votre position…'
                               : 'Position inconnue'),
                       style: const TextStyle(
                           fontSize: 17, fontWeight: FontWeight.w800),

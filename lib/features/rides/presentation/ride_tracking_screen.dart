@@ -418,7 +418,7 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
               children: [
                 Text(
                   'Recherche d\'un conducteur depuis '
-                  '${minutes < 1 ? 'moins d\'une minute' : '$minutes min'}â€¦',
+                  '${minutes < 1 ? 'moins d\'une minute' : '$minutes min'}…',
                   style: const TextStyle(
                       fontSize: 17, fontWeight: FontWeight.w800),
                 ),
