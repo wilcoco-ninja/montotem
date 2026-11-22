@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:montotem/core/offline/outbox_service.dart';
 import 'package:montotem/features/requests/domain/mission_item_model.dart';
 import 'package:montotem/features/requests/domain/mission_model.dart';
 import 'package:montotem/features/requests/domain/mission_payment_model.dart';
@@ -69,6 +70,46 @@ class MissionService {
     required double lng,
     String? description,
     String? adresse,
+  }) async {
+    if (await OutboxService.reseauIndisponible()) {
+      final reference = OutboxService.nouvelleReference('mission');
+      await OutboxService.instance.enregistrer(
+        kind: 'create_mission',
+        clientRequestId: reference,
+        payload: {
+          'providerId': providerId,
+          'vehicle': vehicle,
+          'prestationIds': prestationIds,
+          'lat': lat,
+          'lng': lng,
+          'description': description,
+          'adresse': adresse,
+          'clientRequestId': reference,
+        },
+      );
+      throw const MissionException(
+          'Hors ligne : votre demande est enregistrée. Elle sera envoyée '
+          'automatiquement dès que le réseau revient.');
+    }
+    return _creerDirecte(
+      providerId: providerId,
+      vehicle: vehicle,
+      prestationIds: prestationIds,
+      lat: lat,
+      lng: lng,
+      description: description,
+      adresse: adresse,
+    );
+  }
+
+  Future<String> _creerDirecte({
+    required String providerId,
+    required String vehicle,
+    required List<String> prestationIds,
+    required double lat,
+    required double lng,
+    String? description,
+    String? adresse,
   }) =>
       _run(() async {
         final id = await _sb.rpc('create_mission', params: {
@@ -82,6 +123,26 @@ class MissionService {
         });
         return '$id';
       });
+
+  /// Rejoue une demande de depannage mise en file hors ligne.
+  /// true : demande creee. false : refus metier definitif (la tache est
+  /// retiree). Exception : echec reseau transitoire (reessai).
+  Future<bool> rejouerCreation(Map<String, dynamic> p) async {
+    try {
+      await _sb.rpc('create_mission', params: {
+        'p_provider': p['providerId'],
+        'p_vehicle': p['vehicle'],
+        'p_items': (p['prestationIds'] as List).cast<String>(),
+        'p_description': p['description'],
+        'p_lat': (p['lat'] as num).toDouble(),
+        'p_lng': (p['lng'] as num).toDouble(),
+        'p_address': p['adresse'],
+      });
+      return true;
+    } on PostgrestException {
+      return false;
+    }
+  }
 
   /// action : accept | refuse | arrived | start_work | end_work
   /// Aucun montant : le prix de la réparation est celui des prestations.

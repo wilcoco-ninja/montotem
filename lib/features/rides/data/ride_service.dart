@@ -1,6 +1,7 @@
 import 'package:latlong2/latlong.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:montotem/core/offline/outbox_service.dart';
 import 'package:montotem/features/rides/domain/ride_model.dart';
 
 class RideException implements Exception {
@@ -36,8 +37,51 @@ class RideService {
     }
   }
 
-  /// Crée une demande de course et retourne son identifiant.
+  /// Cree une demande de course et retourne son identifiant. Hors ligne :
+  /// la demande est rangee dans l'outbox et envoyee au retour du reseau.
   Future<String> creer({
+    required RideKind kind,
+    required LatLng depart,
+    required LatLng arrivee,
+    required int tarifFcfa,
+    required RidePaymentMethod paiement,
+    String? adresseDepart,
+    String? adresseArrivee,
+  }) async {
+    if (await OutboxService.reseauIndisponible()) {
+      final reference = OutboxService.nouvelleReference('ride');
+      await OutboxService.instance.enregistrer(
+        kind: 'create_ride',
+        clientRequestId: reference,
+        payload: {
+          'serviceKind': kind.code,
+          'latDepart': depart.latitude,
+          'lngDepart': depart.longitude,
+          'latArrivee': arrivee.latitude,
+          'lngArrivee': arrivee.longitude,
+          'tarifFcfa': tarifFcfa,
+          'paiement': paiement.code,
+          'adresseDepart': adresseDepart,
+          'adresseArrivee': adresseArrivee,
+          'clientRequestId': reference,
+        },
+      );
+      throw const RideException(
+          'Hors ligne : votre demande est enregistrée. Elle sera envoyée '
+          'automatiquement dès que le réseau revient.');
+    }
+    return _creerDirecte(
+      kind: kind,
+      depart: depart,
+      arrivee: arrivee,
+      tarifFcfa: tarifFcfa,
+      paiement: paiement,
+      adresseDepart: adresseDepart,
+      adresseArrivee: adresseArrivee,
+    );
+  }
+
+  Future<String> _creerDirecte({
     required RideKind kind,
     required LatLng depart,
     required LatLng arrivee,
@@ -60,6 +104,28 @@ class RideService {
         });
         return '$id';
       });
+
+  /// Rejoue une creation de course mise en file hors ligne.
+  /// true : course creee. false : refus metier definitif du serveur (la
+  /// tache est retiree). Exception : echec reseau transitoire (reessai).
+  Future<bool> rejouerCreation(Map<String, dynamic> p) async {
+    try {
+      await _sb.rpc('create_ride', params: {
+        'p_service_kind': p['serviceKind'],
+        'p_pickup_lat': (p['latDepart'] as num).toDouble(),
+        'p_pickup_lng': (p['lngDepart'] as num).toDouble(),
+        'p_dropoff_lat': (p['latArrivee'] as num).toDouble(),
+        'p_dropoff_lng': (p['lngArrivee'] as num).toDouble(),
+        'p_fare_fcfa': (p['tarifFcfa'] as num).toInt(),
+        'p_payment_method': p['paiement'],
+        'p_pickup_address': p['adresseDepart'],
+        'p_dropoff_address': p['adresseArrivee'],
+      });
+      return true;
+    } on PostgrestException {
+      return false;
+    }
+  }
 
   Future<Ride> details(String id) => _run(() async {
         final data = await _sb.rpc('ride_details', params: {'p_id': id});

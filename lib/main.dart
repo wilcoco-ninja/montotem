@@ -12,13 +12,17 @@ import 'core/accessibility/accessibility_controller.dart';
 import 'core/constants/app_constants.dart';
 import 'core/flavor/app_flavor.dart';                    // ✅ ajouté
 import 'core/notifications/push_service.dart';
+import 'core/offline/outbox_service.dart';
 import 'core/power/power_mode_controller.dart';
 import 'core/router/app_router.dart';
+import 'core/storage/local_cache.dart';
 import 'core/theme/app_theme.dart';
 import 'core/widgets/sos_button.dart';
 import 'core/widgets/survival_shell.dart';
 import 'features/emergency/data/emergency_numbers_repository.dart';
 import 'features/emergency/data/emergency_places_repository.dart';
+import 'features/requests/data/mission_service.dart';
+import 'features/rides/data/ride_service.dart';
 
 /// ✅ Nouveau : point d'entrée commun aux 3 apps (client / driver / pro).
 /// Fixe le flavor AVANT tout accès à AppRouter.router.
@@ -128,6 +132,27 @@ Future<void> runMonTotemApp() async {
         } catch (e, stackTrace) {
           developer.log(
             'Erreur initialisation PushService',
+            error: e,
+            stackTrace: stackTrace,
+            name: 'Main',
+          );
+        }
+      }
+
+      if (startupError == null) {
+        try {
+          await LocalCache.instance.init();
+          await OutboxService.instance.init();
+          OutboxService.instance
+            ..enregistrerHandler('create_ride', RideService().rejouerCreation)
+            ..enregistrerHandler(
+              'create_mission',
+              MissionService().rejouerCreation,
+            );
+          OutboxService.instance.demarrer();
+        } catch (e, stackTrace) {
+          developer.log(
+            'Erreur initialisation stockage local / outbox',
             error: e,
             stackTrace: stackTrace,
             name: 'Main',

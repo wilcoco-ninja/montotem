@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide MultipartFile;
 
 import 'package:montotem/core/models/app_user.dart';
 import 'package:montotem/core/notifications/push_service.dart';
+import 'package:montotem/core/offline/outbox_service.dart';
 import 'package:montotem/core/storage/local_cache.dart';
 
 enum UploadKind { avatar, identity }
@@ -352,6 +353,12 @@ class AuthService {
       await LocalCache.instance.effacerDonneesUtilisateur();
     } catch (e) {
       developer.log('Nettoyage du cache échoué',
+          error: e, name: 'AuthService');
+    }
+    try {
+      await OutboxService.instance.effacerDonneesUtilisateur();
+    } catch (e) {
+      developer.log('Vidage de l\'outbox échoué',
           error: e, name: 'AuthService');
     }
     await _sb.auth.signOut();
