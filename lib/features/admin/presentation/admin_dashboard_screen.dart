@@ -1,4 +1,4 @@
-﻿
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show RealtimeChannel;
@@ -31,17 +31,17 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   ];
   static const List<String> listeMois = [
     'janvier',
-    'fÃƒÂ©vrier',
+    'février',
     'mars',
     'avril',
     'mai',
     'juin',
     'juillet',
-    'aoÃƒÂ»t',
+    'août',
     'septembre',
     'octobre',
     'novembre',
-    'dÃƒÂ©cembre',
+    'décembre',
   ];
 
   final AdminService _adminService = AdminService();
@@ -74,7 +74,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         nom: 'admin-dash-missions-prod',
       );
     } catch (e) {
-      debugPrint("Erreur d'initialisation des canaux temps rÃƒÂ©el : $e");
+      debugPrint("Erreur d'initialisation des canaux temps réel : $e");
     }
   }
 
@@ -164,7 +164,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _errorMessage = 'Erreur de synchronisation. RÃƒÂ©essayez.';
+        _errorMessage = 'Erreur de synchronisation. Réessayez.';
         _isLoading = false;
         _isRefreshing = false;
       });
@@ -255,7 +255,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     _ActionCard(
                       icon: Icons.fact_check_outlined,
                       titre: 'Dossiers prestataires',
-                      sousTitre: 'IdentitÃƒÂ© et garage ÃƒÂ  examiner',
+                      sousTitre: 'Identité et garage à examiner',
                       count: s.pendingProviders,
                       color: Theme.of(context).colorScheme.error,
                       onTap: () => context.push('/admin/providers'),
@@ -275,7 +275,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 const SizedBox(height: 20),
                 _heroControle(),
                 const SizedBox(height: 12),
-                const SectionTitle('MÃƒÂ©triques & Indicateurs clÃƒÂ©s'),
+                const SectionTitle('Métriques & Indicateurs clés'),
                 _grille(
                   [
                     KpiHero(
@@ -305,7 +305,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       deltaPositive: false,
                     ),
                     KpiHero(
-                      label: 'Missions terminÃƒÂ©es',
+                      label: 'Missions terminées',
                       value: '${s.completedRequests}',
                       icon: Icons.task_alt_rounded,
                     ),
@@ -322,12 +322,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   grand: 3,
                 ),
                 const SizedBox(height: 16),
-                const SectionTitle("Flux d'activitÃƒÂ© en temps rÃƒÂ©el"),
+                const SectionTitle("Flux d'activité en temps réel"),
                 if (_recentes.isEmpty)
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     child: Text(
-                      'Aucune mission rÃƒÂ©cente en cours.',
+                      'Aucune mission récente en cours.',
                       style: TextStyle(
                         fontSize: 15,
                         color: context.textSecondary,
@@ -389,7 +389,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     ),
                     QuickTile(
                       icon: Icons.settings_outlined,
-                      label: 'ParamÃƒÂ¨tres admin',
+                      label: 'Paramètres admin',
                       color: Colors.blueGrey,
                       onTap: () => context.push('/admin/settings'),
                     ),
@@ -401,7 +401,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     ),
                     QuickTile(
                       icon: Icons.admin_panel_settings_outlined,
-                      label: 'RÃƒÂ´les & postes',
+                      label: 'Rôles & postes',
                       color: Colors.deepPurple,
                       onTap: () => context.push('/admin/roles'),
                     ),
@@ -454,7 +454,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'MON-TOTEM Ã¢â‚¬Â¢ PRODUCTION CONTROL',
+                      'MON-TOTEM • PRODUCTION CONTROL',
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.9),
                         fontSize: 13,
@@ -466,7 +466,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   IconButton(
                     iconSize: 24,
                     color: Colors.white,
-                    tooltip: 'AccessibilitÃƒÂ©',
+                    tooltip: 'Accessibilité',
                     icon: const Icon(Icons.text_increase_rounded),
                     onPressed: () => showAccessibilitySheet(context),
                   ),
@@ -549,7 +549,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Ouvrir la Tour de ContrÃƒÂ´le',
+                      'Ouvrir la Tour de Contrôle',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -558,7 +558,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     ),
                     SizedBox(height: 2),
                     Text(
-                      'Supervision gÃƒÂ©olocalisÃƒÂ©e en direct, gestion financiÃƒÂ¨re et arbitrage',
+                      'Supervision géolocalisée en direct, gestion financière et arbitrage',
                       style: TextStyle(
                         color: Colors.white70,
                         fontSize: 14,
@@ -640,7 +640,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    '$nomClient  Ã¢â€ â€™  $nomProvider',
+                    '$nomClient  →  $nomProvider',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
