@@ -1,4 +1,4 @@
-﻿
+
 import 'dart:async';
 import 'dart:math' as math;
 
@@ -23,7 +23,7 @@ import 'package:montotem/features/rides/domain/ride_model.dart';
 import 'package:montotem/features/wallet/data/wallet_service.dart';
 import 'package:montotem/features/wallet/domain/wallet_model.dart';
 
-/// Course en cours cÃƒÂ´tÃƒÂ© conducteur : itinÃƒÂ©raire, GPS, arrivÃƒÂ©e, dÃƒÂ©marrage,
+/// Course en cours côté conducteur : itinéraire, GPS, arrivée, démarrage,
 /// fin de course avec prix final et commission.
 class ProviderRideScreen extends StatefulWidget {
   const ProviderRideScreen({super.key, required this.rideId});
@@ -131,7 +131,7 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
       _gps = _location.watchPosition().listen(_surPosition, onError: (_) {});
     } catch (_) {
       _gpsDemarre = false;
-      if (mounted) _msg('Activez la localisation pour ÃƒÂªtre guidÃƒÂ© et suivi.');
+      if (mounted) _msg('Activez la localisation pour être guidé et suivi.');
     }
   }
 
@@ -160,7 +160,7 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
           widget.rideId, p.latitude, p.longitude);
       if (statut != _r?.status.value) await _charger(silencieux: true);
     } on RideException {
-      // Erreur passagÃƒÂ¨re : la prochaine position rÃƒÂ©essaiera.
+      // Erreur passagère : la prochaine position réessaiera.
     }
   }
 
@@ -187,7 +187,7 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
     try {
       final me = _me;
       if (action == 'arrived' && me != null) {
-        // Position fraÃƒÂ®che avant la vÃƒÂ©rification de proximitÃƒÂ© cÃƒÂ´tÃƒÂ© serveur.
+        // Position fraîche avant la vérification de proximité côté serveur.
         await _service.envoyerPosition(
             widget.rideId, me.latitude, me.longitude);
       }
@@ -219,7 +219,7 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Annuler la course ?'),
-        content: const Text('Le client sera prÃƒÂ©venu.',
+        content: const Text('Le client sera prévenu.',
             style: TextStyle(fontSize: 16)),
         actions: [
           TextButton(
@@ -239,7 +239,7 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
     setState(() => _busy = true);
     try {
       await _service.action(widget.rideId, 'cancel',
-          motif: 'AnnulÃƒÂ©e par le conducteur');
+          motif: 'Annulée par le conducteur');
       await _charger(silencieux: true);
     } on RideException catch (e) {
       if (mounted) _msg(e.message);
@@ -265,7 +265,7 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
       lng: c.longitude,
       libelle: r.status == RideStatus.inProgress ? 'Destination' : 'Client',
     );
-    if (!ok && mounted) _msg('Aucune application de navigation trouvÃƒÂ©e.');
+    if (!ok && mounted) _msg('Aucune application de navigation trouvée.');
   }
 
   @override
@@ -371,7 +371,7 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
             ),
         ]),
         const RichAttributionWidget(attributions: [
-          TextSourceAttribution('Ã‚Â© OpenStreetMap contributors'),
+          TextSourceAttribution('© OpenStreetMap contributors'),
         ]),
       ],
     );
@@ -439,16 +439,16 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
               ),
               InfoRow(
                 icon: Icons.trip_origin_rounded,
-                label: 'DÃƒÂ©part',
+                label: 'Départ',
                 value: (r.pickupAddress ?? '').isEmpty
-                    ? 'Point affichÃƒÂ© sur la carte'
+                    ? 'Point affiché sur la carte'
                     : r.pickupAddress!,
               ),
               InfoRow(
                 icon: Icons.flag_rounded,
-                label: 'ArrivÃƒÂ©e',
+                label: 'Arrivée',
                 value: (r.dropoffAddress ?? '').isEmpty
-                    ? 'Point affichÃƒÂ© sur la carte'
+                    ? 'Point affiché sur la carte'
                     : r.dropoffAddress!,
               ),
               InfoRow(
@@ -474,11 +474,11 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
     final pct =
         _config.commissionPourCourse(mobileMoney: r.payment.mobileMoney);
     final texte = cash
-        ? 'Le client vous remet ${TravelFee.fcfa(r.prixFcfa)} en espÃƒÂ¨ces. '
-            '$pct % sont dÃƒÂ©duits de votre wallet ÃƒÂ  la fin de la course.'
-        : 'Le client vous paie par ${r.payment.libelle} sur votre numÃƒÂ©ro '
-            'enregistrÃƒÂ©. VÃƒÂ©rifiez la rÃƒÂ©ception avant de terminer. '
-            '$pct % de commission sont dÃƒÂ©duits de votre wallet ÃƒÂ  la fin de '
+        ? 'Le client vous remet ${TravelFee.fcfa(r.prixFcfa)} en espèces. '
+            '$pct % sont déduits de votre wallet à la fin de la course.'
+        : 'Le client vous paie par ${r.payment.libelle} sur votre numéro '
+            'enregistré. Vérifiez la réception avant de terminer. '
+            '$pct % de commission sont déduits de votre wallet à la fin de '
             'la course.';
 
     return SoftCard(
@@ -530,7 +530,7 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
     switch (r.status) {
       case RideStatus.requested:
         return [
-          Text('Cette course n\'est pas encore ÃƒÂ  vous.',
+          Text('Cette course n\'est pas encore à vous.',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, color: muted)),
         ];
@@ -546,7 +546,7 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
           ),
           const SizedBox(height: 8),
           AppButton(
-            label: 'Je suis arrivÃƒÂ©',
+            label: 'Je suis arrivé',
             icon: Icons.place_rounded,
             loading: _busy,
             onPressed: proche ? () => _agir('arrived') : null,
@@ -554,11 +554,11 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
           const SizedBox(height: 8),
           Text(
             dist == null
-                ? 'Recherche de votre positionÃ¢â‚¬Â¦'
+                ? 'Recherche de votre position…'
                 : proche
-                    ? 'Vous ÃƒÂªtes au point de dÃƒÂ©part.'
-                    : 'Vous ÃƒÂªtes ÃƒÂ  ${formaterDistance(dist)}. Le bouton '
-                        's\'active ÃƒÂ  moins de ${_rayonArriveeM.round()} m.',
+                    ? 'Vous êtes au point de départ.'
+                    : 'Vous êtes à ${formaterDistance(dist)}. Le bouton '
+                        's\'active à moins de ${_rayonArriveeM.round()} m.',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 15, color: muted),
           ),
@@ -572,7 +572,7 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
       case RideStatus.arrived:
         return [
           AppButton(
-            label: 'DÃƒÂ©marrer la course',
+            label: 'Démarrer la course',
             icon: Icons.play_arrow_rounded,
             loading: _busy,
             onPressed: () => _agir('start'),
@@ -601,7 +601,7 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
           ),
           if (dist != null) ...[
             const SizedBox(height: 8),
-            Text('Destination ÃƒÂ  ${formaterDistance(dist)}.',
+            Text('Destination à ${formaterDistance(dist)}.',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15, color: muted)),
           ],
@@ -609,7 +609,7 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
 
       case RideStatus.completed:
         return [
-          Text('Course terminÃƒÂ©e. Merci !',
+          Text('Course terminée. Merci !',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, color: muted)),
         ];
@@ -618,7 +618,7 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
         return [
           Text(
             (r.cancelReason ?? '').isEmpty
-                ? 'Cette course a ÃƒÂ©tÃƒÂ© annulÃƒÂ©e.'
+                ? 'Cette course a été annulée.'
                 : r.cancelReason!,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 16, color: muted),
@@ -628,7 +628,7 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
   }
 }
 
-/// Saisie du prix final : baisse libre, hausse limitÃƒÂ©e ÃƒÂ  +50 % du prix convenu.
+/// Saisie du prix final : baisse libre, hausse limitée à +50 % du prix convenu.
 class _PrixFinalDialog extends StatefulWidget {
   const _PrixFinalDialog({
     required this.convenu,
@@ -672,7 +672,7 @@ class _PrixFinalDialogState extends State<_PrixFinalDialog> {
         children: [
           Text(
             'Prix convenu avec le client : ${TravelFee.fcfa(widget.convenu)}.\n'
-            'Vous pouvez le baisser, ou l\'augmenter jusqu\'ÃƒÂ  '
+            'Vous pouvez le baisser, ou l\'augmenter jusqu\'à '
             '${TravelFee.fcfa(widget.plafond)}.',
             style: const TextStyle(fontSize: 16, height: 1.4),
           ),
@@ -708,7 +708,7 @@ class _PrixFinalDialogState extends State<_PrixFinalDialog> {
               child: Text(
                 'Commission ${widget.commissionPct} % '
                 '(${widget.mobileMoney ? 'Mobile Money' : 'cash'}) : '
-                '-${TravelFee.fcfa(_commission)} Ã‚Â· Gain net '
+                '-${TravelFee.fcfa(_commission)} · Gain net '
                 '${TravelFee.fcfa(_saisi - _commission)}',
                 style: TextStyle(fontSize: 15, height: 1.35, color: muted),
               ),
@@ -729,13 +729,13 @@ class _PrixFinalDialogState extends State<_PrixFinalDialog> {
   }
 }
 
-/// En route Ã¢â€ â€™ ArrivÃƒÂ© Ã¢â€ â€™ En course Ã¢â€ â€™ TerminÃƒÂ©e.
+/// En route → Arrivé → En course → Terminée.
 class _EtapesConducteur extends StatelessWidget {
   const _EtapesConducteur({required this.status});
 
   final RideStatus status;
 
-  static const _labels = ['En route', 'ArrivÃƒÂ©', 'En course', 'TerminÃƒÂ©e'];
+  static const _labels = ['En route', 'Arrivé', 'En course', 'Terminée'];
 
   int get _index => switch (status) {
         RideStatus.accepted => 0,
