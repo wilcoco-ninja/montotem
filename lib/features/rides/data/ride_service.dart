@@ -264,6 +264,7 @@ class RideService {
     'OTP_INVALIDE',
     'OTP_EXPIRE',
     'OTP_EPUISE',
+    'OTP_INTROUVABLE',
   ];
 
   String? _code(PostgrestException e) {
@@ -307,6 +308,9 @@ class RideService {
     }
     if (m.contains('PAIEMENT_INVALIDE')) return 'Mode de paiement invalide.';
     if (m.contains('SERVICE_INVALIDE')) return 'Type de service invalide.';
+    if (m.contains('OTP_INTROUVABLE')) {
+      return 'Aucun code actif : générez un nouveau code.';
+    }
     if (m.contains('OTP_INVALIDE')) {
       return 'Code incorrect. Demandez-le à nouveau au client.';
     }

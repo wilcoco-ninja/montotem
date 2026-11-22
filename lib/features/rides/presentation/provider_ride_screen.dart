@@ -634,6 +634,12 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
             loading: _busy,
             onPressed: () => _confirmerFin(r),
           ),
+          AppButton(
+            label: 'Générer un nouveau code',
+            variant: AppButtonVariant.text,
+            loading: _busy,
+            onPressed: () => _agir('complete', tarif: r.prixFcfa),
+          ),
           const SizedBox(height: 8),
           Text(
             'Demandez au client le code à 6 chiffres affiché sur son écran, '
