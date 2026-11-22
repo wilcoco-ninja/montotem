@@ -1,4 +1,4 @@
-﻿
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,9 +13,9 @@ import 'package:montotem/features/tracking/domain/prestataire_model.dart'
     hide iconePourMetier;
 import 'package:montotem/features/requests/data/mission_service.dart';
 
-/// Commande ÃƒÂ  prix fixes : le client coche les prestations du catalogue du
-/// dÃƒÂ©panneur, voit le total (prestations + dÃƒÂ©placement) et envoie.
-/// Aucune nÃƒÂ©gociation : les prix sont ceux du catalogue, figÃƒÂ©s par le serveur.
+/// Commande à prix fixes : le client coche les prestations du catalogue du
+/// dépanneur, voit le total (prestations + déplacement) et envoie.
+/// Aucune négociation : les prix sont ceux du catalogue, figés par le serveur.
 class NouvelleDemandeScreen extends StatefulWidget {
   const NouvelleDemandeScreen({super.key, required this.prestataire});
   final Prestataire prestataire;
@@ -67,7 +67,7 @@ class _NouvelleDemandeScreenState extends State<NouvelleDemandeScreen> {
           : null;
       _chargement = false;
     });
-    // Position facultative : sert seulement ÃƒÂ  estimer le dÃƒÂ©placement.
+    // Position facultative : sert seulement à estimer le déplacement.
     try {
       final pos = await _location.getCurrentLocation();
       final p = widget.prestataire;
@@ -132,7 +132,7 @@ class _NouvelleDemandeScreenState extends State<NouvelleDemandeScreen> {
       return;
     }
     if (_horsRayon) {
-      _msg('Vous ÃƒÂªtes hors du rayon d\'intervention de ce dÃƒÂ©panneur.');
+      _msg('Vous êtes hors du rayon d\'intervention de ce dépanneur.');
       return;
     }
     setState(() => _envoi = true);
@@ -148,7 +148,7 @@ class _NouvelleDemandeScreenState extends State<NouvelleDemandeScreen> {
         lng: pos.longitude,
       );
       if (!mounted) return;
-      // L'ÃƒÂ©cran de suivi affiche aussitÃƒÂ´t Ã‚Â« Payer le dÃƒÂ©placement Ã‚Â».
+      // L'écran de suivi affiche aussitôt « Payer le déplacement ».
       context.pushReplacement('/mes-demandes/$id');
     } on MissionException catch (e) {
       if (mounted) _msg(e.message);
@@ -181,7 +181,7 @@ class _NouvelleDemandeScreenState extends State<NouvelleDemandeScreen> {
                         child: SingleChildScrollView(
                           child: ErrorState(
                             message:
-                                'Impossible de charger les tarifs de ce dÃƒÂ©panneur.',
+                                'Impossible de charger les tarifs de ce dépanneur.',
                             onRetry: _charger,
                           ),
                         ),
@@ -192,24 +192,24 @@ class _NouvelleDemandeScreenState extends State<NouvelleDemandeScreen> {
                           _entete(p, scheme),
                           if (!fiche.accepteMobileMoney)
                             _alerte(
-                              'Ce dÃƒÂ©panneur n\'a pas encore configurÃƒÂ© son '
+                              'Ce dépanneur n\'a pas encore configuré son '
                               'paiement Mobile Money : commande impossible.',
                             ),
                           if (fiche.services.isEmpty)
                             _alerte(
-                              'Ce dÃƒÂ©panneur n\'a publiÃƒÂ© aucune prestation '
+                              'Ce dépanneur n\'a publié aucune prestation '
                               'avec un prix. Choisissez-en un autre.',
                             )
                           else ...[
                             if (fiche.vehicleTypes.length > 1) ...[
-                              const SectionTitle('Quel vÃƒÂ©hicule ?'),
+                              const SectionTitle('Quel véhicule ?'),
                               _choixVehicule(fiche, scheme),
                             ],
                             const SectionTitle('Prestations et prix fixes'),
                             ..._services.map(_ligne),
-                            const SectionTitle('PrÃƒÂ©cisions (facultatif)'),
+                            const SectionTitle('Précisions (facultatif)'),
                             AppTextField(
-                              label: 'PrÃƒÂ©cisions pour le dÃƒÂ©panneur',
+                              label: 'Précisions pour le dépanneur',
                               icon: Icons.notes_outlined,
                               controller: _description,
                               maxLines: 3,
@@ -219,7 +219,7 @@ class _NouvelleDemandeScreenState extends State<NouvelleDemandeScreen> {
                             _recapitulatif(fiche, scheme),
                             const SizedBox(height: 16),
                             AppButton(
-                              label: 'Commander et payer le dÃƒÂ©placement',
+                              label: 'Commander et payer le déplacement',
                               icon: Icons.lock_outline_rounded,
                               loading: _envoi,
                               onPressed: (_choix.isEmpty ||
@@ -230,10 +230,10 @@ class _NouvelleDemandeScreenState extends State<NouvelleDemandeScreen> {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              'Prix fixes, sans nÃƒÂ©gociation. Le dÃƒÂ©placement se '
-                              'rÃƒÂ¨gle en Mobile Money dÃƒÂ¨s l\'envoi ; la rÃƒÂ©paration '
-                              'se rÃƒÂ¨gle ÃƒÂ  la fin du travail. Votre position GPS '
-                              'n\'est partagÃƒÂ©e qu\'avec ce prestataire.',
+                              'Prix fixes, sans négociation. Le déplacement se '
+                              'règle en Mobile Money dès l\'envoi ; la réparation '
+                              'se règle à la fin du travail. Votre position GPS '
+                              'n\'est partagée qu\'avec ce prestataire.',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 14,
@@ -263,7 +263,7 @@ class _NouvelleDemandeScreenState extends State<NouvelleDemandeScreen> {
                       style: const TextStyle(
                           fontSize: 17, fontWeight: FontWeight.w800)),
                   Text(
-                      '${p.metier} Ã¢â‚¬Â¢ ${p.noteMoyenne.toStringAsFixed(1)} Ã¢Ëœâ€¦',
+                      '${p.metier} • ${p.noteMoyenne.toStringAsFixed(1)} ★',
                       style: const TextStyle(fontSize: 15)),
                 ],
               ),
@@ -305,7 +305,7 @@ class _NouvelleDemandeScreenState extends State<NouvelleDemandeScreen> {
                   borderRadius: BorderRadius.circular(16),
                   onTap: () => setState(() {
                     _vehicule = v;
-                    _choix.clear(); // les prestations dÃƒÂ©pendent du vÃƒÂ©hicule
+                    _choix.clear(); // les prestations dépendent du véhicule
                   }),
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 14),
@@ -424,11 +424,11 @@ class _NouvelleDemandeScreenState extends State<NouvelleDemandeScreen> {
           ligne('Prestations (${_selection.length})',
               TravelFee.fcfa(_totalPrestations)),
           ligne(
-            'DÃƒÂ©placement',
-            frais == null ? 'calculÃƒÂ© ÃƒÂ  l\'envoi' : TravelFee.fcfa(frais),
+            'Déplacement',
+            frais == null ? 'calculé à l\'envoi' : TravelFee.fcfa(frais),
           ),
           Text(
-            '${TravelFee.fcfa(f.tarifKmFcfa)}/km Ã‚Â· minimum '
+            '${TravelFee.fcfa(f.tarifKmFcfa)}/km · minimum '
             '${TravelFee.fcfa(f.fraisMinFcfa)}',
             style: TextStyle(
                 fontSize: 12.5,
@@ -438,7 +438,7 @@ class _NouvelleDemandeScreenState extends State<NouvelleDemandeScreen> {
             const Padding(
               padding: EdgeInsets.only(top: 4),
               child: Text(
-                'Vous ÃƒÂªtes hors du rayon d\'intervention de ce dÃƒÂ©panneur.',
+                'Vous êtes hors du rayon d\'intervention de ce dépanneur.',
                 style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
