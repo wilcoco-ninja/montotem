@@ -23,11 +23,6 @@ class AdminFinanceService {
       .map((e) => Map<String, dynamic>.from(e))
       .toList();
 
-  bool _rpcAbsent(PostgrestException e) =>
-      e.code == '42883' ||
-      e.code == 'PGRST202' ||
-      e.message.toLowerCase().contains('function public.admin_');
-
   // -- DEVISES ET ZONES ------------------------------------------------------
 
   /// Referentiel des devises (script finance/11) : code, libelle,
@@ -56,7 +51,7 @@ class AdminFinanceService {
   // -- REGLES DE COMMISSION (script 043) -------------------------------------
 
   /// Toutes les regles de commission (RPC 043). Repli lecture directe si la
-  /// fonction n'est pasdeployee, pour ne jamais vider l'onglet.
+  /// fonction n'est pas deploree, pour ne jamais vider l'onglet.
   Future<List<Map<String, dynamic>>> listerReglesCommission() async {
     try {
       final data = await _sb.rpc('admin_list_commission_rules');
