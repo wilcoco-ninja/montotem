@@ -364,6 +364,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       onTap: () => context.push('/admin/topups'),
                     ),
                     QuickTile(
+                      icon: Icons.currency_exchange_rounded,
+                      label: 'Finance & commissions',
+                      color: Colors.indigo,
+                      onTap: () => context.push('/admin/finance'),
+                    ),
+                    QuickTile(
                       icon: Icons.map_outlined,
                       label: 'Suivi live',
                       color: Colors.teal,

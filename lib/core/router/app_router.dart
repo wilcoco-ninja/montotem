@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 // ── Admin ──────────────────────────────────────────────────────────────
 import 'package:montotem/features/admin/presentation/admin_control_tower_screen.dart';
+import 'package:montotem/features/admin/presentation/admin_finance_screen.dart';
 import 'package:montotem/features/admin/presentation/admin_dashboard_screen.dart';
 import 'package:montotem/features/admin/presentation/admin_leaderboard_screen.dart';
 import 'package:montotem/features/admin/presentation/admin_notifications_screen.dart';
@@ -431,6 +432,10 @@ class AppRouter {
       GoRoute(
         path: '/admin/topups',
         builder: (_, __) => const AdminTopupsScreen(),
+      ),
+      GoRoute(
+        path: '/admin/finance',
+        builder: (_, __) => const AdminFinanceScreen(),
       ),
     ],
   );
