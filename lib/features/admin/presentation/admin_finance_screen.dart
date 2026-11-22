@@ -71,6 +71,7 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
   Map<String, int> _config = {};
 
   String _filtreLedger = 'tous';
+  bool _configChargee = false;
   bool _loading = true;
   bool _isRefreshing = false;
   String? _error;
@@ -129,8 +130,11 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
   void _majControllers() {
     final plafond = _config['cash_credit_limit_fcfa'] ?? 0;
     final seuil = _config['wallet_block_threshold_fcfa'] ?? 0;
-    if (!_plafondCtrl.hasFocus) _plafondCtrl.text = '$plafond';
-    if (!_seuilCtrl.hasFocus) _seuilCtrl.text = '$seuil';
+    if (!_configChargee) {
+      _plafondCtrl.text = '$plafond';
+      _seuilCtrl.text = '$seuil';
+      _configChargee = true;
+    }
   }
 
   void _message(String texte, {bool erreur = false}) {
@@ -728,7 +732,7 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
     }
     try {
       await _service.enregistrerRegle(
-        id: estCreation ? null : (regleExistante!['id'] as String),
+        id: estCreation ? null : (regleExistante['id'] as String?),
         serviceCategory: categorie,
         pct: pct,
         actif: actif,
