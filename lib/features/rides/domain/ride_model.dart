@@ -59,6 +59,7 @@ enum RideStatus {
   accepted,
   arrived,
   inProgress,
+  verifying,
   completed,
   cancelled;
 
@@ -66,6 +67,7 @@ enum RideStatus {
         'accepted' => RideStatus.accepted,
         'arrived' => RideStatus.arrived,
         'in_progress' => RideStatus.inProgress,
+        'verifying' => RideStatus.verifying,
         'completed' => RideStatus.completed,
         'cancelled' => RideStatus.cancelled,
         _ => RideStatus.requested,
@@ -76,6 +78,7 @@ enum RideStatus {
         RideStatus.accepted => 'accepted',
         RideStatus.arrived => 'arrived',
         RideStatus.inProgress => 'in_progress',
+        RideStatus.verifying => 'verifying',
         RideStatus.completed => 'completed',
         RideStatus.cancelled => 'cancelled',
       };
@@ -85,6 +88,7 @@ enum RideStatus {
         RideStatus.accepted => 'Conducteur en route',
         RideStatus.arrived => 'Conducteur arrivé',
         RideStatus.inProgress => 'Course en cours',
+        RideStatus.verifying => 'Vérification de fin',
         RideStatus.completed => 'Terminée',
         RideStatus.cancelled => 'Annulée',
       };
@@ -94,6 +98,7 @@ enum RideStatus {
         RideStatus.accepted => AppColors.navy,
         RideStatus.arrived => AppColors.amber,
         RideStatus.inProgress => AppColors.amber,
+        RideStatus.verifying => AppColors.navy,
         RideStatus.completed => AppColors.success,
         RideStatus.cancelled => AppColors.emergency,
       };
@@ -103,6 +108,7 @@ enum RideStatus {
         RideStatus.accepted => Icons.directions_rounded,
         RideStatus.arrived => Icons.place_rounded,
         RideStatus.inProgress => Icons.navigation_rounded,
+        RideStatus.verifying => Icons.pin_rounded,
         RideStatus.completed => Icons.check_circle_rounded,
         RideStatus.cancelled => Icons.cancel_rounded,
       };
@@ -134,6 +140,8 @@ class Ride {
     this.providerId,
     this.finalFareFcfa,
     this.commissionFcfa,
+    this.otpCode,
+    this.otpExpiresAt,
     this.pickupAddress,
     this.dropoffAddress,
     this.providerPoint,
@@ -163,6 +171,8 @@ class Ride {
       fareFcfa: (j['fare_fcfa'] as num?)?.toInt() ?? 0,
       finalFareFcfa: (j['final_fare_fcfa'] as num?)?.toInt(),
       commissionFcfa: (j['commission_fcfa'] as num?)?.toInt(),
+      otpCode: j['otp_code'] as String?,
+      otpExpiresAt: _date(j['otp_expires_at']),
       distanceM: (j['distance_m'] as num?)?.toInt() ?? 0,
       pickup: LatLng(
         (j['pickup_lat'] as num).toDouble(),
@@ -205,6 +215,10 @@ class Ride {
 
   /// Visible uniquement du conducteur concerné (jamais du client).
   final int? commissionFcfa;
+
+  /// Code de fin de course : visible uniquement du client, statut verifying.
+  final String? otpCode;
+  final DateTime? otpExpiresAt;
   final int distanceM;
   final LatLng pickup;
   final LatLng dropoff;

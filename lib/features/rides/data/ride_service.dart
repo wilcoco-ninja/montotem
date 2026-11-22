@@ -178,6 +178,16 @@ class RideService {
         return '$statut';
       });
 
+  /// Confirme la fin de course avec le code a 6 chiffres transmis par le
+  /// client. Retourne le nouveau statut ('completed').
+  Future<String> confirmerFin(String id, String code) => _run(() async {
+        final statut = await _sb.rpc('ride_confirm_otp', params: {
+          'p_ride': id,
+          'p_code': code,
+        });
+        return '$statut';
+      });
+
   /// Courses ouvertes autour du conducteur (vide s'il est bloqué).
   Future<List<NearbyRide>> proches({
     required double lat,
@@ -251,6 +261,9 @@ class RideService {
     'STATUT_INVALIDE',
     'INTERDIT',
     'INTROUVABLE',
+    'OTP_INVALIDE',
+    'OTP_EXPIRE',
+    'OTP_EPUISE',
   ];
 
   String? _code(PostgrestException e) {
@@ -294,6 +307,15 @@ class RideService {
     }
     if (m.contains('PAIEMENT_INVALIDE')) return 'Mode de paiement invalide.';
     if (m.contains('SERVICE_INVALIDE')) return 'Type de service invalide.';
+    if (m.contains('OTP_INVALIDE')) {
+      return 'Code incorrect. Demandez-le à nouveau au client.';
+    }
+    if (m.contains('OTP_EXPIRE')) {
+      return 'Code expiré : terminez à nouveau la course pour un nouveau code.';
+    }
+    if (m.contains('OTP_EPUISE')) {
+      return 'Trop d\'essais : terminez à nouveau la course pour un nouveau code.';
+    }
     if (m.contains('STATUT_INVALIDE')) {
       return 'Cette action n\'est plus possible : la course a changé.';
     }

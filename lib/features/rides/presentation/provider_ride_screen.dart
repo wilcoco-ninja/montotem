@@ -214,6 +214,25 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
     if (prix != null) await _agir('complete', tarif: prix);
   }
 
+  /// Verifie la fin de course avec le code a 6 chiffres transmis par le
+  /// client. La commission est debitee apres ce code uniquement.
+  Future<void> _confirmerFin(Ride r) async {
+    final code = await showDialog<String>(
+      context: context,
+      builder: (_) => const _CodeVerificationDialog(),
+    );
+    if (code == null) return;
+    setState(() => _busy = true);
+    try {
+      await _service.confirmerFin(r.id, code);
+      await _charger(silencieux: true);
+    } on RideException catch (e) {
+      if (mounted) _msg(e.message);
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
   Future<void> _annuler() async {
     final ok = await showDialog<bool>(
       context: context,
@@ -607,6 +626,23 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
           ],
         ];
 
+      case RideStatus.verifying:
+        return [
+          AppButton(
+            label: 'Saisir le code du client',
+            icon: Icons.pin_rounded,
+            loading: _busy,
+            onPressed: () => _confirmerFin(r),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Demandez au client le code à 6 chiffres affiché sur son écran, '
+            'puis saisissez-le pour valider la fin de la course.',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 15, color: muted),
+          ),
+        ];
+
       case RideStatus.completed:
         return [
           Text('Course terminée. Merci !',
@@ -723,6 +759,70 @@ class _PrixFinalDialogState extends State<_PrixFinalDialog> {
         FilledButton(
           onPressed: _valide ? () => Navigator.pop(context, _saisi) : null,
           child: const Text('Terminer la course'),
+        ),
+      ],
+    );
+  }
+}
+
+/// Saisie du code à 6 chiffres transmis par le client en fin de course.
+class _CodeVerificationDialog extends StatefulWidget {
+  const _CodeVerificationDialog();
+
+  @override
+  State<_CodeVerificationDialog> createState() =>
+      _CodeVerificationDialogState();
+}
+
+class _CodeVerificationDialogState extends State<_CodeVerificationDialog> {
+  late final TextEditingController _c = TextEditingController();
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  String get _saisi => _c.text.trim();
+  bool get _valide => RegExp(r'^[0-9]{6}$').hasMatch(_saisi);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Fin de course'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Demandez au client le code à 6 chiffres affiché sur son écran.',
+            style: TextStyle(fontSize: 16, height: 1.4),
+          ),
+          const SizedBox(height: 14),
+          TextField(
+            controller: _c,
+            autofocus: true,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            maxLength: 6,
+            onChanged: (_) => setState(() {}),
+            style: const TextStyle(
+                fontSize: 24, letterSpacing: 8, fontWeight: FontWeight.w700),
+            decoration: const InputDecoration(
+              labelText: 'Code du client',
+              counterText: '',
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Annuler'),
+        ),
+        FilledButton(
+          onPressed: _valide ? () => Navigator.pop(context, _saisi) : null,
+          child: const Text('Confirmer'),
         ),
       ],
     );

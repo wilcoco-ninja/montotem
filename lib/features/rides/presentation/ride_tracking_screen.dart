@@ -523,6 +523,73 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
           _cartePaiement(r),
         ];
 
+      case RideStatus.verifying:
+        final expireAt = r.otpExpiresAt;
+        final minutesRestantes = expireAt == null
+            ? null
+            : expireAt.difference(DateTime.now()).inMinutes;
+        return [
+          SoftCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Row(
+                  children: [
+                    Icon(Icons.pin_rounded, size: 30),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text('Fin de course',
+                          style: TextStyle(
+                              fontSize: 19, fontWeight: FontWeight.w800)),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Le conducteur a terminé. Montant : '
+                  '${MontantLocal.formater(r.prixFcfa, devise: _devise)}. '
+                  'Transmettez-lui ce code pour valider la fin de la course :',
+                  style: TextStyle(
+                      fontSize: 15.5,
+                      height: 1.4,
+                      color: context.textSecondary),
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: scheme.primary.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+                  ),
+                  child: Text(
+                    (r.otpCode ?? '').isEmpty ? 'Code indisponible' : (r.otpCode!),
+                    style: const TextStyle(
+                        fontSize: 32,
+                        letterSpacing: 10,
+                        fontWeight: FontWeight.w800),
+                  ),
+                ),
+                if (minutesRestantes != null && minutesRestantes > 0)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      'Ce code expire dans ${minutesRestantes < 1 ? 1 : minutesRestantes} min. '
+                      'La commission du conducteur n\'est débitée qu\'après '
+                      'cette validation.',
+                      style: TextStyle(
+                          fontSize: 14.5,
+                          height: 1.4,
+                          color: context.textSecondary),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          _cartePaiement(r),
+        ];
+
       case RideStatus.cancelled:
         return [
           SoftCard(
@@ -645,6 +712,7 @@ class _Etapes extends StatelessWidget {
         RideStatus.accepted => 1,
         RideStatus.arrived => 2,
         RideStatus.inProgress => 3,
+        RideStatus.verifying => 4,
         RideStatus.completed => 4,
         RideStatus.cancelled => -1,
       };
