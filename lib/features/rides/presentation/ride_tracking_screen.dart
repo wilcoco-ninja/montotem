@@ -1,4 +1,4 @@
-﻿
+
 import 'dart:async';
 import 'dart:math' as math;
 
@@ -13,14 +13,14 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:montotem/core/services/routing_service.dart';
 import 'package:montotem/core/theme/app_colors.dart';
 import 'package:montotem/core/theme/app_theme.dart';
-import 'package:montotem/core/utils/travel_fee.dart';
 import 'package:montotem/core/widgets/app_button.dart';
 import 'package:montotem/core/widgets/app_ui.dart';
 import 'package:montotem/features/rides/data/ride_service.dart';
 import 'package:montotem/features/rides/domain/ride_model.dart';
+import 'package:montotem/features/wallet/domain/montant_local.dart';
 
-/// Suivi d'une course cÃƒÂ´tÃƒÂ© client : carte en direct, ÃƒÂ©tat, conducteur,
-/// paiement, annulation. Se met ÃƒÂ  jour par Supabase Realtime.
+/// Suivi d'une course côté client : carte en direct, état, conducteur,
+/// paiement, annulation. Se met à jour par Supabase Realtime.
 class RideTrackingScreen extends StatefulWidget {
   const RideTrackingScreen({super.key, required this.rideId});
 
@@ -32,6 +32,10 @@ class RideTrackingScreen extends StatefulWidget {
 
 class _RideTrackingScreenState extends State<RideTrackingScreen> {
   static const Distance _distance = Distance();
+
+  /// Devise de la zone de la course (XOF au Bénin). La ville de prise en
+  /// charge sera passée ici quand elle sera connue du parcours client.
+  Devise get _devise => MontantLocal.deCourse();
 
   final RideService _service = RideService();
   final RoutingService _routing = RoutingService();
@@ -56,7 +60,7 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
     _canal = _service.ecouterCourse(widget.rideId, () {
       if (mounted) _charger(silencieux: true);
     });
-    // Filet de sÃƒÂ©curitÃƒÂ© si un ÃƒÂ©vÃƒÂ¨nement Realtime est manquÃƒÂ©.
+    // Filet de sécurité si un évènement Realtime est manqué.
     _tick = Timer.periodic(const Duration(seconds: 15), (_) {
       if (!mounted) return;
       final r = _ride;
@@ -121,7 +125,7 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
   Future<void> _appeler(String? phone) async {
     final tel = phone?.replaceAll(RegExp(r'[^\d+]'), '');
     if (tel == null || tel.isEmpty) {
-      _msg('NumÃƒÂ©ro pas encore disponible.');
+      _msg('Numéro pas encore disponible.');
       return;
     }
     try {
@@ -134,7 +138,7 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
   Future<void> _copier(String texte) async {
     await Clipboard.setData(ClipboardData(text: texte));
     if (!mounted) return;
-    _msg('NumÃƒÂ©ro copiÃƒÂ©.');
+    _msg('Numéro copié.');
   }
 
   Future<void> _annuler(Ride r) async {
@@ -145,8 +149,8 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
         title: const Text('Annuler la course ?'),
         content: Text(
           r.providerId == null
-              ? 'Votre demande sera retirÃƒÂ©e.'
-              : 'Le conducteur sera prÃƒÂ©venu.',
+              ? 'Votre demande sera retirée.'
+              : 'Le conducteur sera prévenu.',
           style: const TextStyle(fontSize: 16),
         ),
         actions: [
@@ -166,7 +170,7 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
 
     setState(() => _busy = true);
     try {
-      await _service.action(r.id, 'cancel', motif: 'AnnulÃƒÂ©e par le client');
+      await _service.action(r.id, 'cancel', motif: 'Annulée par le client');
       await _charger(silencieux: true);
     } on RideException catch (e) {
       if (mounted) _msg(e.message);
@@ -285,7 +289,7 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
             ),
         ]),
         const RichAttributionWidget(attributions: [
-          TextSourceAttribution('Ã‚Â© OpenStreetMap contributors'),
+          TextSourceAttribution('© OpenStreetMap contributors'),
         ]),
       ],
     );
@@ -339,20 +343,20 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
               ],
               const SizedBox(height: 12),
               ..._etat(r),
-              const SectionTitle('DÃƒÂ©tails'),
+              const SectionTitle('Détails'),
               SoftCard(
                 child: Column(
                   children: [
                     InfoRow(
                       icon: Icons.trip_origin_rounded,
-                      label: 'DÃƒÂ©part',
+                      label: 'Départ',
                       value: (r.pickupAddress ?? '').isEmpty
                           ? 'Point choisi sur la carte'
                           : r.pickupAddress!,
                     ),
                     InfoRow(
                       icon: Icons.flag_rounded,
-                      label: 'ArrivÃƒÂ©e',
+                      label: 'Arrivée',
                       value: (r.dropoffAddress ?? '').isEmpty
                           ? 'Point choisi sur la carte'
                           : r.dropoffAddress!,
@@ -367,7 +371,7 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                       label: r.status == RideStatus.completed
                           ? 'Prix final'
                           : 'Prix convenu',
-                      value: TravelFee.fcfa(r.prixFcfa),
+                      value: MontantLocal.formater(r.prixFcfa, devise: _devise),
                     ),
                     InfoRow(
                       icon: Icons.account_balance_wallet_outlined,
@@ -401,7 +405,7 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
     );
   }
 
-  /// Bloc principal selon l'ÃƒÂ©tat de la course.
+  /// Bloc principal selon l'état de la course.
   List<Widget> _etat(Ride r) {
     final scheme = Theme.of(context).colorScheme;
     switch (r.status) {
@@ -414,7 +418,7 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
               children: [
                 Text(
                   'Recherche d\'un conducteur depuis '
-                  '${minutes < 1 ? 'moins d\'une minute' : '$minutes min'}Ã¢â‚¬Â¦',
+                  '${minutes < 1 ? 'moins d\'une minute' : '$minutes min'}â€¦',
                   style: const TextStyle(
                       fontSize: 17, fontWeight: FontWeight.w800),
                 ),
@@ -422,9 +426,9 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                 const LinearProgressIndicator(minHeight: 6),
                 const SizedBox(height: 10),
                 Text(
-                  'Les conducteurs proches ont ÃƒÂ©tÃƒÂ© prÃƒÂ©venus. Sans rÃƒÂ©ponse '
-                  'aprÃƒÂ¨s 30 minutes, la demande expire. Vous pouvez aussi '
-                  'proposer un prix plus ÃƒÂ©levÃƒÂ© en annulant puis en '
+                  'Les conducteurs proches ont été prévenus. Sans réponse '
+                  'après 30 minutes, la demande expire. Vous pouvez aussi '
+                  'proposer un prix plus élevé en annulant puis en '
                   'redemandant.',
                   style: TextStyle(
                       fontSize: 15, height: 1.4, color: context.textSecondary),
@@ -443,9 +447,9 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
           final m = _metresEntre(prov, r.pickup).round();
           final minutes = math.max(1, (m / 1000 * 1.25 / 25 * 60).ceil());
           proximite =
-              'Ãƒâ‚¬ ${formaterDistance(m)} de vous Ã‚Â· environ $minutes min';
+              'À ${formaterDistance(m)} de vous · environ $minutes min';
         } else if (r.status == RideStatus.arrived) {
-          proximite = 'Votre conducteur est arrivÃƒÂ© au point de dÃƒÂ©part.';
+          proximite = 'Votre conducteur est arrivé au point de départ.';
         }
         return [
           SoftCard(
@@ -499,7 +503,7 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                         color: scheme.secondary, size: 30),
                     const SizedBox(width: 10),
                     const Expanded(
-                      child: Text('Course terminÃƒÂ©e',
+                      child: Text('Course terminée',
                           style: TextStyle(
                               fontSize: 19, fontWeight: FontWeight.w800)),
                     ),
@@ -507,8 +511,8 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Montant ÃƒÂ  rÃƒÂ©gler : ${TravelFee.fcfa(r.prixFcfa)}'
-                  '${change ? ' (prix convenu : ${TravelFee.fcfa(r.fareFcfa)})' : ''}',
+                  'Montant à régler : ${MontantLocal.formater(r.prixFcfa, devise: _devise)}'
+                  '${change ? ' (prix convenu : ${MontantLocal.formater(r.fareFcfa, devise: _devise)})' : ''}',
                   style: const TextStyle(
                       fontSize: 16.5, fontWeight: FontWeight.w700),
                 ),
@@ -529,7 +533,7 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                 Expanded(
                   child: Text(
                     (r.cancelReason ?? '').isEmpty
-                        ? 'Cette course a ÃƒÂ©tÃƒÂ© annulÃƒÂ©e.'
+                        ? 'Cette course a été annulée.'
                         : r.cancelReason!,
                     style: const TextStyle(
                         fontSize: 16.5, fontWeight: FontWeight.w700),
@@ -545,7 +549,7 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
   Widget _cartePaiement(Ride r) {
     final scheme = Theme.of(context).colorScheme;
     final momo = r.providerMomo;
-    final montant = TravelFee.fcfa(r.prixFcfa);
+    final montant = MontantLocal.formater(r.prixFcfa, devise: _devise);
 
     if (!r.payment.mobileMoney) {
       return SoftCard(
@@ -555,7 +559,7 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                'EspÃƒÂ¨ces : remettez $montant au conducteur ÃƒÂ  l\'arrivÃƒÂ©e.',
+                'Espèces : remettez $montant au conducteur à l\'arrivée.',
                 style: const TextStyle(
                     fontSize: 16, fontWeight: FontWeight.w700, height: 1.35),
               ),
@@ -568,8 +572,8 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
     if (momo == null) {
       return SoftCard(
         child: Text(
-          'Paiement ${r.payment.libelle} : le numÃƒÂ©ro du conducteur s\'affiche '
-          'ici dÃƒÂ¨s qu\'il est disponible.',
+          'Paiement ${r.payment.libelle} : le numéro du conducteur s\'affiche '
+          'ici dès qu\'il est disponible.',
           style: TextStyle(
               fontSize: 15.5, height: 1.4, color: context.textSecondary),
         ),
@@ -609,7 +613,7 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                 ),
                 IconButton(
                   iconSize: 26,
-                  tooltip: 'Copier le numÃƒÂ©ro',
+                  tooltip: 'Copier le numéro',
                   icon: const Icon(Icons.copy_rounded),
                   onPressed: () => _copier(momo.numero),
                 ),
@@ -622,7 +626,7 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
   }
 }
 
-/// Recherche Ã¢â€ â€™ En route Ã¢â€ â€™ ArrivÃƒÂ© Ã¢â€ â€™ En course Ã¢â€ â€™ TerminÃƒÂ©e.
+/// Recherche → En route → Arrivé → En course → Terminée.
 class _Etapes extends StatelessWidget {
   const _Etapes({required this.status});
 
@@ -631,9 +635,9 @@ class _Etapes extends StatelessWidget {
   static const _labels = [
     'Recherche',
     'En route',
-    'ArrivÃƒÂ©',
+    'Arrivé',
     'En course',
-    'TerminÃƒÂ©e'
+    'Terminée'
   ];
 
   int get _index => switch (status) {

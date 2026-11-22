@@ -1,4 +1,4 @@
-﻿
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -6,10 +6,10 @@ import 'package:supabase_flutter/supabase_flutter.dart' show RealtimeChannel;
 
 import 'package:montotem/core/theme/app_colors.dart';
 import 'package:montotem/core/utils/responsive.dart';
-import 'package:montotem/core/utils/travel_fee.dart';
 import 'package:montotem/core/widgets/app_ui.dart';
 import 'package:montotem/features/rides/data/ride_service.dart';
 import 'package:montotem/features/rides/domain/ride_model.dart';
+import 'package:montotem/features/wallet/domain/montant_local.dart';
 
 /// Historique des courses du client.
 class RidesHistoryScreen extends StatefulWidget {
@@ -21,6 +21,9 @@ class RidesHistoryScreen extends StatefulWidget {
 
 class _RidesHistoryScreenState extends State<RidesHistoryScreen> {
   final RideService _service = RideService();
+
+  /// Devise de la zone (XOF au Bénin) pour l'affichage des montants.
+  Devise get _devise => MontantLocal.deCourse();
   final DateFormat _format = DateFormat('dd/MM/yyyy HH:mm');
 
   RealtimeChannel? _canal;
@@ -93,7 +96,7 @@ class _RidesHistoryScreenState extends State<RidesHistoryScreen> {
         child: EmptyState(
           icon: Icons.two_wheeler_rounded,
           title: 'Aucune course pour le moment',
-          message: 'Vos courses ZÃƒÂ©midjan et Tricycle Fret apparaÃƒÂ®tront ici.',
+          message: 'Vos courses Zémidjan et Tricycle Fret apparaîtront ici.',
         ),
       );
     }
@@ -118,7 +121,7 @@ class _RidesHistoryScreenState extends State<RidesHistoryScreen> {
     final couleur = r.status.couleur;
     final repere = (r.pickupAddress ?? '').isNotEmpty
         ? r.pickupAddress!
-        : 'DÃƒÂ©part choisi sur la carte';
+        : 'Départ choisi sur la carte';
 
     return SoftCard(
       onTap: () async {
@@ -143,7 +146,7 @@ class _RidesHistoryScreenState extends State<RidesHistoryScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${r.kind.libelle} Ã‚Â· ${TravelFee.fcfa(r.prixFcfa)}',
+                  '${r.kind.libelle} · ${MontantLocal.formater(r.prixFcfa, devise: _devise)}',
                   style: const TextStyle(
                       fontSize: 16.5, fontWeight: FontWeight.w800),
                 ),

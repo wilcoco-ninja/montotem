@@ -1,4 +1,4 @@
-﻿
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
@@ -7,7 +7,6 @@ import 'package:montotem/core/services/routing_service.dart';
 import 'package:montotem/core/theme/app_colors.dart';
 import 'package:montotem/core/theme/app_theme.dart';
 import 'package:montotem/core/utils/responsive.dart';
-import 'package:montotem/core/utils/travel_fee.dart';
 import 'package:montotem/core/widgets/app_button.dart';
 import 'package:montotem/core/widgets/app_text_field.dart';
 import 'package:montotem/core/widgets/app_ui.dart';
@@ -17,8 +16,9 @@ import 'package:montotem/features/rides/data/ride_tariff_service.dart';
 import 'package:montotem/features/rides/domain/ride_model.dart';
 import 'package:montotem/features/rides/domain/ride_tariff.dart';
 import 'package:montotem/features/rides/presentation/ride_point_picker_screen.dart';
+import 'package:montotem/features/wallet/domain/montant_local.dart';
 
-/// Demande de course : service, dÃƒÂ©part, destination, prix fixe calculÃƒÂ©, paiement.
+/// Demande de course : service, départ, destination, prix fixe calculé, paiement.
 class RideRequestScreen extends StatefulWidget {
   const RideRequestScreen({super.key, this.kind});
 
@@ -30,6 +30,10 @@ class RideRequestScreen extends StatefulWidget {
 
 class _RideRequestScreenState extends State<RideRequestScreen> {
   static const int _tarifMin = 100;
+
+  /// Devise de la zone de prise en charge (XOF au Bénin). La ville sera
+  /// passée ici quand le parcours client la connaîtra (profil, géocodage).
+  Devise get _devise => MontantLocal.deCourse();
 
   final RideService _rides = RideService();
   final RideTariffService _tarifsService = RideTariffService();
@@ -46,9 +50,9 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
   LatLng? _arrivee;
   int? _distanceM;
   int?
-      _durationSeconds; // DurÃƒÂ©e rÃƒÂ©elle rÃƒÂ©cupÃƒÂ©rÃƒÂ©e par le service de routage
-  bool _estimation = false; // true si l'itinÃƒÂ©raire routier est indisponible
-  int _tarif = 0; // Tarif calculÃƒÂ© automatiquement par l'application
+      _durationSeconds; // Durée réelle récupérée par le service de routage
+  bool _estimation = false; // true si l'itinéraire routier est indisponible
+  int _tarif = 0; // Tarif calculé automatiquement par l'application
 
   bool _initialisation = true;
   bool _localisation = false;
@@ -74,7 +78,7 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(m)));
 
   Future<void> _init() async {
-    // Une course dÃƒÂ©jÃƒÂ  en cours : on y retourne au lieu d'en crÃƒÂ©er une autre.
+    // Une course déjà en cours : on y retourne au lieu d'en créer une autre.
     try {
       final active = await _rides.courseActiveClient();
       if (active != null) {
@@ -111,7 +115,7 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
       if (mounted) {
         setState(() => _erreurLocalisation =
             'Impossible de vous localiser. Activez le GPS ou choisissez le '
-                'dÃƒÂ©part sur la carte.');
+                'départ sur la carte.');
       }
     } finally {
       if (mounted) setState(() => _localisation = false);
@@ -124,11 +128,11 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
       context,
       MaterialPageRoute(
         builder: (_) => RidePointPickerScreen(
-          titre: depart ? 'Point de dÃƒÂ©part' : 'Destination',
+          titre: depart ? 'Point de départ' : 'Destination',
           consigne: depart
-              ? 'Touchez la carte ÃƒÂ  l\'endroit oÃƒÂ¹ le conducteur doit venir vous '
+              ? 'Touchez la carte à l\'endroit où le conducteur doit venir vous '
                   'chercher'
-              : 'Touchez la carte ÃƒÂ  l\'endroit oÃƒÂ¹ vous allez',
+              : 'Touchez la carte à l\'endroit où vous allez',
           positionInitiale: depart ? _depart : (_arrivee ?? _depart),
           couleur: depart ? scheme.secondary : scheme.error,
         ),
@@ -156,8 +160,8 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
     final routeRes = await _routing.getRoute(origin: d, destination: a);
     if (!mounted || seq != _calculSeq) return;
 
-    // ItinÃƒÂ©raire indisponible : ligne droite Ãƒâ€” 1,25 (mÃƒÂªme coefficient routier
-    // que les missions de dÃƒÂ©pannage).
+    // Itinéraire indisponible : ligne droite × 1,25 (même coefficient routier
+    // que les missions de dépannage).
     final coef = routeRes.isFallback ? 1.25 : 1.0;
     final metres = (routeRes.distanceMeters * coef).round();
     final secondes = (routeRes.durationSeconds * coef).round();
@@ -180,7 +184,7 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
     final m = _distanceM;
     final s = _durationSeconds ?? 0;
 
-    // Recalcule automatiquement le tarif selon le nouveau type de service choisi (ZÃƒÂ©midjan ou Tricycle)
+    // Recalcule automatiquement le tarif selon le nouveau type de service choisi (Zémidjan ou Tricycle)
     final nouveauTarif =
         m != null ? _tarifs.pour(k).estimer(m, durationSeconds: s) : _tarif;
 
@@ -201,7 +205,7 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
     final a = _arrivee;
     final m = _distanceM;
     if (d == null) {
-      _msg('Indiquez le point de dÃƒÂ©part.');
+      _msg('Indiquez le point de départ.');
       return;
     }
     if (a == null) {
@@ -209,7 +213,7 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
       return;
     }
     if (m != null && m < 100) {
-      _msg('Le dÃƒÂ©part et la destination sont trop proches.');
+      _msg('Le départ et la destination sont trop proches.');
       return;
     }
     if (_tarif < _tarifMin) {
@@ -233,7 +237,7 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
     } on RideException catch (e) {
       if (!mounted) return;
       if (e.code == 'COURSE_EN_COURS') {
-        // RÃƒÂ©seau lent : la premiÃƒÂ¨re demande est peut-ÃƒÂªtre dÃƒÂ©jÃƒÂ  passÃƒÂ©e.
+        // Réseau lent : la première demande est peut-être déjà passée.
         // On ouvre la course existante au lieu d'afficher une erreur.
         try {
           final active = await _rides.courseActiveClient();
@@ -298,7 +302,7 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
           ],
         ],
       ),
-      const SectionTitle('DÃƒÂ©part'),
+      const SectionTitle('Départ'),
       _carteDepart(),
       const SectionTitle('Destination'),
       _carteArrivee(),
@@ -317,8 +321,8 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
       ),
       const SizedBox(height: 10),
       Text(
-        'Le conducteur voit votre numÃƒÂ©ro et votre point de dÃƒÂ©part exact '
-        'seulement aprÃƒÂ¨s avoir acceptÃƒÂ©.',
+        'Le conducteur voit votre numéro et votre point de départ exact '
+        'seulement après avoir accepté.',
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: 14, color: context.textSecondary),
       ),
@@ -343,9 +347,9 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
                   children: [
                     Text(
                       d != null
-                          ? 'Position dÃƒÂ©finie'
+                          ? 'Position définie'
                           : (_localisation
-                              ? 'Recherche de votre positionÃ¢â‚¬Â¦'
+                              ? 'Recherche de votre positionâ€¦'
                               : 'Position inconnue'),
                       style: const TextStyle(
                           fontSize: 17, fontWeight: FontWeight.w800),
@@ -400,8 +404,8 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
           ),
           const SizedBox(height: 12),
           AppTextField(
-            label: 'RepÃƒÂ¨re de dÃƒÂ©part (facultatif)',
-            hint: 'Ex. : devant le marchÃƒÂ©, prÃƒÂ¨s de la pharmacie',
+            label: 'Repère de départ (facultatif)',
+            hint: 'Ex. : devant le marché, près de la pharmacie',
             icon: Icons.signpost_outlined,
             controller: _repereDepart,
             maxLength: 120,
@@ -429,8 +433,8 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
                   children: [
                     Text(
                       a != null
-                          ? 'Destination dÃƒÂ©finie'
-                          : 'Destination ÃƒÂ  choisir',
+                          ? 'Destination définie'
+                          : 'Destination à choisir',
                       style: const TextStyle(
                           fontSize: 17, fontWeight: FontWeight.w800),
                     ),
@@ -461,7 +465,7 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
           ),
           const SizedBox(height: 12),
           AppTextField(
-            label: 'RepÃƒÂ¨re d\'arrivÃƒÂ©e (facultatif)',
+            label: 'Repère d\'arrivée (facultatif)',
             hint: 'Ex. : carrefour, nom du quartier',
             icon: Icons.signpost_outlined,
             controller: _repereArrivee,
@@ -488,7 +492,7 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
               Expanded(
                 child: Text(
                   _calcul || distance == null
-                      ? 'Calcul de l\'itinÃƒÂ©raireÃ¢â‚¬Â¦'
+                      ? 'Calcul de l\'itinéraire…'
                       : 'Distance : ${formaterDistance(distance)}',
                   style: const TextStyle(
                       fontSize: 16.5, fontWeight: FontWeight.w700),
@@ -509,7 +513,8 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
-                    _calcul ? '...' : TravelFee.fcfa(_tarif),
+                    _calcul ? '...' :
+                        MontantLocal.formater(_tarif, devise: _devise),
                     style: TextStyle(
                       fontSize: 34,
                       fontWeight: FontWeight.w800,
@@ -520,9 +525,16 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
                 const SizedBox(height: 4),
                 Text(
                   _estimation
-                      ? 'Tarif estimÃƒÂ© (itinÃƒÂ©raire indisponible)'
-                      : 'Tarif officiel calculÃƒÂ© (fixe)',
+                      ? 'Tarif estimé (itinéraire indisponible)'
+                      : 'Tarif officiel calculé (fixe)',
                   style: TextStyle(fontSize: 14, color: context.textSecondary),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'Montant en ${_devise.libelle} · code ${_devise.code}',
+                  style: TextStyle(
+                      fontSize: 12.5,
+                      color: context.textSecondary.withValues(alpha: 0.85)),
                 ),
               ],
             ),
@@ -553,12 +565,13 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
           const SizedBox(height: 10),
           Text(
             _paiement.mobileMoney
-                ? 'Vous paierez directement le conducteur au numÃƒÂ©ro '
+                ? 'Vous paierez directement le conducteur au numéro '
                     '${_paiement.libelle} qui s\'affichera quand il aura '
-                    'acceptÃƒÂ©. Seuls les conducteurs qui reÃƒÂ§oivent par '
+                    'accepté. Seuls les conducteurs qui reçoivent par '
                     '${_paiement.libelle} peuvent prendre cette course.'
-                : 'Vous remettrez le prix de la course en espÃƒÂ¨ces au '
-                    'conducteur, ÃƒÂ  l\'arrivÃƒÂ©e.',
+                : 'Vous remettrez '
+                    '${_tarif > 0 ? MontantLocal.formater(_tarif, devise: _devise) : 'le prix de la course'} en espèces au '
+                    'conducteur, à l\'arrivée.',
             style: TextStyle(
                 fontSize: 15, height: 1.4, color: context.textSecondary),
           ),
