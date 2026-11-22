@@ -282,8 +282,8 @@ class _LedgerHistoryScreenState extends State<LedgerHistoryScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Après : MoMo ${e.devise.soldeFormatter(e.payableAfter)} · '
-                  'dette ${e.devise.soldeFormatter(e.debtAfter)}',
+                  'Après : MoMo ${e.soldeFormatter(e.payableAfter)} · '
+                  'dette ${e.soldeFormatter(e.debtAfter)}',
                   style:
                       TextStyle(fontSize: 12.5, color: context.textSecondary),
                 ),
