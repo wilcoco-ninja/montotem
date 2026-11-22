@@ -524,10 +524,8 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
         ];
 
       case RideStatus.verifying:
-        final expireAt = r.otpExpiresAt;
-        final minutesRestantes = expireAt == null
-            ? null
-            : expireAt.difference(DateTime.now()).inMinutes;
+        final minutesRestantes =
+            r.otpExpiresAt?.difference(DateTime.now()).inMinutes;
         return [
           SoftCard(
             child: Column(
