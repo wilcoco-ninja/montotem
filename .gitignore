@@ -33,3 +33,8 @@ Thumbs.db
 fix_*.ps1
 apply_*.ps1
 create_*.ps1
+# Environnement et clés de signature Android
+env/*.json
+!env/*.example.json
+*.jks
+key.properties
