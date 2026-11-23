@@ -16,6 +16,7 @@ import 'core/offline/outbox_service.dart';
 import 'core/power/power_mode_controller.dart';
 import 'core/router/app_router.dart';
 import 'core/storage/local_cache.dart';
+import 'core/storage/session_securisee.dart';
 import 'core/theme/app_theme.dart';
 import 'core/widgets/sos_button.dart';
 import 'core/widgets/survival_shell.dart';
@@ -96,6 +97,7 @@ Future<void> runMonTotemApp() async {
               url: url,
               publishableKey: key,
               authOptions: const FlutterAuthClientOptions(
+                localStorage: SessionSecuriseeLecture(),
                 authFlowType: AuthFlowType.pkce,
               ),
             );
