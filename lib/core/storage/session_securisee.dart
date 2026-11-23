@@ -7,7 +7,7 @@
 // Branche : Supabase.initialize > authOptions > FlutterAuthClientOptions
 //           > localStorage: SessionSecuriseeLecture()
 
-import 'dart:developer';
+import 'dart:developer' as developer;
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
