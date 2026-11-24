@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
@@ -192,8 +191,10 @@ class ClientSearchPill extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 7,
+                    ),
                     decoration: BoxDecoration(
                       color: scheme.surface,
                       borderRadius: BorderRadius.circular(99),
@@ -201,8 +202,11 @@ class ClientSearchPill extends StatelessWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.schedule_rounded,
-                            size: 16, color: scheme.onSurface),
+                        Icon(
+                          Icons.schedule_rounded,
+                          size: 16,
+                          color: scheme.onSurface,
+                        ),
                         const SizedBox(width: 5),
                         const Text(
                           'Maintenant',
@@ -472,26 +476,25 @@ class ClientAvatar extends StatelessWidget {
       child: aPhoto
           ? null
           : (n.isEmpty
-              ? Icon(Icons.person_rounded,
-                  size: radius * 1.05, color: scheme.primary)
-              : Text(
-                  n.characters.first.toUpperCase(),
-                  style: TextStyle(
-                    fontSize: radius * 0.85,
-                    fontWeight: FontWeight.w800,
+                ? Icon(
+                    Icons.person_rounded,
+                    size: radius * 1.05,
                     color: scheme.primary,
-                  ),
-                )),
+                  )
+                : Text(
+                    n.characters.first.toUpperCase(),
+                    style: TextStyle(
+                      fontSize: radius * 0.85,
+                      fontWeight: FontWeight.w800,
+                      color: scheme.primary,
+                    ),
+                  )),
     );
     if (onTap == null) return avatar;
     return Semantics(
       button: true,
       label: 'Mon compte',
-      child: InkResponse(
-        onTap: onTap,
-        radius: radius + 8,
-        child: avatar,
-      ),
+      child: InkResponse(onTap: onTap, radius: radius + 8, child: avatar),
     );
   }
 }
@@ -556,8 +559,10 @@ class ClientListRow extends StatelessWidget {
                 ),
               ),
               trailing ??
-                  Icon(Icons.chevron_right_rounded,
-                      color: context.textTertiary),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    color: context.textTertiary,
+                  ),
             ],
           ),
         ),
@@ -581,11 +586,7 @@ class ClientGroup extends StatelessWidget {
         children: [
           for (var i = 0; i < children.length; i++) ...[
             if (i > 0)
-              Divider(
-                height: 1,
-                indent: 58,
-                color: scheme.outlineVariant,
-              ),
+              Divider(height: 1, indent: 58, color: scheme.outlineVariant),
             children[i],
           ],
         ],
@@ -646,8 +647,9 @@ class ClientShell extends StatelessWidget {
                 backgroundColor: scheme.surface,
                 indicatorColor: scheme.primary.withValues(alpha: 0.14),
                 selectedIconTheme: IconThemeData(color: scheme.primary),
-                unselectedIconTheme:
-                    IconThemeData(color: scheme.onSurfaceVariant),
+                unselectedIconTheme: IconThemeData(
+                  color: scheme.onSurfaceVariant,
+                ),
                 selectedLabelTextStyle: TextStyle(
                   color: scheme.primary,
                   fontWeight: FontWeight.w800,

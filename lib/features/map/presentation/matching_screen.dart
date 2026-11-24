@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -111,8 +110,9 @@ class _MatchingScreenState extends State<MatchingScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content:
-              Text('Aucune application tÃƒÂ©lÃƒÂ©phonique n\'a ÃƒÂ©tÃƒÂ© trouvÃƒÂ©e'),
+          content: Text(
+            'Aucune application tÃƒÂ©lÃƒÂ©phonique n\'a ÃƒÂ©tÃƒÂ© trouvÃƒÂ©e',
+          ),
         ),
       );
     }
@@ -202,10 +202,12 @@ class _MatchingScreenState extends State<MatchingScreen> {
             children: [
               CircleAvatar(
                 radius: 26,
-                backgroundColor:
-                    theme.colorScheme.secondary.withValues(alpha: 0.15),
-                backgroundImage:
-                    p.photoUrl != null ? NetworkImage(p.photoUrl!) : null,
+                backgroundColor: theme.colorScheme.secondary.withValues(
+                  alpha: 0.15,
+                ),
+                backgroundImage: p.photoUrl != null
+                    ? NetworkImage(p.photoUrl!)
+                    : null,
                 child: p.photoUrl == null
                     ? Icon(
                         iconePourMetier(p.metier),

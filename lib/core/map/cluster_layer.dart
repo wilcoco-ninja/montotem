@@ -1,4 +1,3 @@
-﻿
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -42,9 +41,9 @@ class ClusterLayer<T> extends StatefulWidget {
 
 class _Cluster<T> {
   _Cluster(T first, LatLng p)
-      : members = [first],
-        _sumLat = p.latitude,
-        _sumLng = p.longitude;
+    : members = [first],
+      _sumLat = p.latitude,
+      _sumLng = p.longitude;
 
   final List<T> members;
   double _sumLat;
@@ -136,10 +135,11 @@ class _ClusterLayerState<T> extends State<ClusterLayer<T>> {
     final size = count < 10
         ? 44.0
         : count < 100
-            ? 52.0
-            : 60.0;
-    final label =
-        count >= 1000 ? '${(count / 1000).toStringAsFixed(1)}k' : '$count';
+        ? 52.0
+        : 60.0;
+    final label = count >= 1000
+        ? '${(count / 1000).toStringAsFixed(1)}k'
+        : '$count';
 
     return Marker(
       key: ValueKey('cl_${c.center.latitude}_${c.center.longitude}_$count'),

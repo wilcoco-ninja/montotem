@@ -100,8 +100,8 @@ class _PhoneEntryScreenState extends State<PhoneEntryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final muted =
-        Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7);
+    final muted = Theme.of(context).colorScheme.onSurface
+        .withValues(alpha: 0.7);
 
     return AuthShell(
       title: 'Vérifiez votre numéro',

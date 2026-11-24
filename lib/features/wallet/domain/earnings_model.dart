@@ -14,10 +14,10 @@ class EarningsDay {
   });
 
   factory EarningsDay.fromJson(Map<String, dynamic> j) => EarningsDay(
-        day: _jour(j['day']),
-        grossFcfa: _int(j['gross']),
-        commissionFcfa: _int(j['commission']),
-      );
+    day: _jour(j['day']),
+    grossFcfa: _int(j['gross']),
+    commissionFcfa: _int(j['commission']),
+  );
 
   final DateTime day;
   final int grossFcfa;
@@ -46,26 +46,27 @@ class EarningsSummary {
   });
 
   factory EarningsSummary.fromJson(Map<String, dynamic> j) => EarningsSummary(
-        days: _int(j['days']),
-        ridesCashCount: _int(j['rides_cash_count']),
-        ridesCashFcfa: _int(j['rides_cash_fcfa']),
-        ridesMomoCount: _int(j['rides_momo_count']),
-        ridesMomoFcfa: _int(j['rides_momo_fcfa']),
-        ridesCommissionFcfa: _int(j['rides_commission_fcfa']),
-        travelGrossFcfa: _int(j['travel_gross_fcfa']),
-        travelCommissionFcfa: _int(j['travel_commission_fcfa']),
-        repairGrossFcfa: _int(j['repair_gross_fcfa']),
-        grossFcfa: _int(j['gross_fcfa']),
-        commissionFcfa: _int(j['commission_fcfa']),
-        netFcfa: _int(j['net_fcfa']),
-        walletBalanceFcfa: _int(j['wallet_balance_fcfa']),
-        walletBlocked: j['wallet_blocked'] == true,
-        series: (j['series'] as List?)
-                ?.whereType<Map>()
-                .map((e) => EarningsDay.fromJson(Map<String, dynamic>.from(e)))
-                .toList() ??
-            const [],
-      );
+    days: _int(j['days']),
+    ridesCashCount: _int(j['rides_cash_count']),
+    ridesCashFcfa: _int(j['rides_cash_fcfa']),
+    ridesMomoCount: _int(j['rides_momo_count']),
+    ridesMomoFcfa: _int(j['rides_momo_fcfa']),
+    ridesCommissionFcfa: _int(j['rides_commission_fcfa']),
+    travelGrossFcfa: _int(j['travel_gross_fcfa']),
+    travelCommissionFcfa: _int(j['travel_commission_fcfa']),
+    repairGrossFcfa: _int(j['repair_gross_fcfa']),
+    grossFcfa: _int(j['gross_fcfa']),
+    commissionFcfa: _int(j['commission_fcfa']),
+    netFcfa: _int(j['net_fcfa']),
+    walletBalanceFcfa: _int(j['wallet_balance_fcfa']),
+    walletBlocked: j['wallet_blocked'] == true,
+    series:
+        (j['series'] as List?)
+            ?.whereType<Map>()
+            .map((e) => EarningsDay.fromJson(Map<String, dynamic>.from(e)))
+            .toList() ??
+        const [],
+  );
 
   final int days;
   final int ridesCashCount;
@@ -95,11 +96,11 @@ class RevenueDay {
   });
 
   factory RevenueDay.fromJson(Map<String, dynamic> j) => RevenueDay(
-        day: _jour(j['day']),
-        cashFcfa: _int(j['cash']),
-        momoFcfa: _int(j['momo']),
-        travelFcfa: _int(j['travel']),
-      );
+    day: _jour(j['day']),
+    cashFcfa: _int(j['cash']),
+    momoFcfa: _int(j['momo']),
+    travelFcfa: _int(j['travel']),
+  );
 
   final DateTime day;
   final int cashFcfa;
@@ -127,22 +128,23 @@ class RevenueSummary {
   });
 
   factory RevenueSummary.fromJson(Map<String, dynamic> j) => RevenueSummary(
-        days: _int(j['days']),
-        commissionCashFcfa: _int(j['commission_cash_fcfa']),
-        commissionMomoFcfa: _int(j['commission_momo_fcfa']),
-        commissionTravelFcfa: _int(j['commission_travel_fcfa']),
-        commissionTotalFcfa: _int(j['commission_total_fcfa']),
-        topupsFcfa: _int(j['topups_fcfa']),
-        ridesCompleted: _int(j['rides_completed']),
-        ridesVolumeFcfa: _int(j['rides_volume_fcfa']),
-        walletDebtFcfa: _int(j['wallet_debt_fcfa']),
-        providersBlocked: _int(j['providers_blocked']),
-        series: (j['series'] as List?)
-                ?.whereType<Map>()
-                .map((e) => RevenueDay.fromJson(Map<String, dynamic>.from(e)))
-                .toList() ??
-            const [],
-      );
+    days: _int(j['days']),
+    commissionCashFcfa: _int(j['commission_cash_fcfa']),
+    commissionMomoFcfa: _int(j['commission_momo_fcfa']),
+    commissionTravelFcfa: _int(j['commission_travel_fcfa']),
+    commissionTotalFcfa: _int(j['commission_total_fcfa']),
+    topupsFcfa: _int(j['topups_fcfa']),
+    ridesCompleted: _int(j['rides_completed']),
+    ridesVolumeFcfa: _int(j['rides_volume_fcfa']),
+    walletDebtFcfa: _int(j['wallet_debt_fcfa']),
+    providersBlocked: _int(j['providers_blocked']),
+    series:
+        (j['series'] as List?)
+            ?.whereType<Map>()
+            .map((e) => RevenueDay.fromJson(Map<String, dynamic>.from(e)))
+            .toList() ??
+        const [],
+  );
 
   final int days;
   final int commissionCashFcfa;

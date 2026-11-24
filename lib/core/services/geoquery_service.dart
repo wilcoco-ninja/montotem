@@ -21,7 +21,8 @@ class GeoqueryService {
     final deltaLat = (point2.latitude - point1.latitude) * (math.pi / 180);
     final deltaLon = (point2.longitude - point1.longitude) * (math.pi / 180);
 
-    final a = math.sin(deltaLat / 2) * math.sin(deltaLat / 2) +
+    final a =
+        math.sin(deltaLat / 2) * math.sin(deltaLat / 2) +
         math.cos(lat1) *
             math.cos(lat2) *
             math.sin(deltaLon / 2) *

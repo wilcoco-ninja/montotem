@@ -20,8 +20,8 @@ class ProviderCatalogScreen extends StatefulWidget {
 
 class _Ligne {
   _Ligne(this.nom, this.categorie, int? prix)
-      : nomCtl = TextEditingController(text: nom),
-        prixCtl = TextEditingController(text: prix?.toString() ?? '');
+    : nomCtl = TextEditingController(text: nom),
+      prixCtl = TextEditingController(text: prix?.toString() ?? '');
   String nom;
   String categorie;
   final TextEditingController nomCtl;
@@ -67,7 +67,8 @@ class _ProviderCatalogScreenState extends State<ProviderCatalogScreen> {
     _lignes
       ..clear()
       ..addAll(
-          services.map((s) => _Ligne(s.nom, s.categorieVehicule, s.prixFcfa)));
+        services.map((s) => _Ligne(s.nom, s.categorieVehicule, s.prixFcfa)),
+      );
     setState(() {
       _fiche = fiche;
       _loading = false;
@@ -89,8 +90,9 @@ class _ProviderCatalogScreenState extends State<ProviderCatalogScreen> {
         _msg('« $nom » : indiquez un prix fixe supérieur à 0.');
         return;
       }
-      services.add(ServiceTarif(
-          nom: nom, categorieVehicule: l.categorie, prixFcfa: prix));
+      services.add(
+        ServiceTarif(nom: nom, categorieVehicule: l.categorie, prixFcfa: prix),
+      );
     }
     if (services.isEmpty) {
       _msg('Gardez au moins une prestation.');
@@ -123,55 +125,63 @@ class _ProviderCatalogScreenState extends State<ProviderCatalogScreen> {
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : f == null
-              ? Center(
-                  child: ErrorState(
-                      message: 'Catalogue indisponible.', onRetry: _charger))
-              : ContentWidth(
-                  maxWidth: 640,
-                  child: ListView(
-                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 36),
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .surfaceContainerHighest
-                              .withValues(alpha: 0.4),
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: Text(
-                          'Un prix fixe par prestation. Les clients commandent '
-                          'exactement ce que vous affichez, sans négociation.\n\n'
-                          'Déplacement : ${TravelFee.fcfa(f.tarifKmFcfa)}/km, '
-                          'minimum ${TravelFee.fcfa(f.fraisMinFcfa)}.',
-                          style: const TextStyle(fontSize: 14.5, height: 1.45),
-                        ),
-                      ),
-                      const SizedBox(height: 18),
-                      for (var i = 0; i < _lignes.length; i++) _carte(i, f),
-                      const SizedBox(height: 10),
-                      AppButton(
-                        label: 'Ajouter une prestation',
-                        icon: Icons.add_rounded,
-                        variant: AppButtonVariant.secondary,
-                        onPressed: () => setState(() => _lignes.add(_Ligne(
-                            '',
-                            f.vehicleTypes.isNotEmpty
-                                ? f.vehicleTypes.first
-                                : 'voiture',
-                            null))),
-                      ),
-                      const SizedBox(height: 20),
-                      AppButton(
-                        label: 'Enregistrer les modifications',
-                        icon: Icons.save_rounded,
-                        loading: _saving,
-                        onPressed: _enregistrer,
-                      ),
-                    ],
+          ? Center(
+              child: ErrorState(
+                message: 'Catalogue indisponible.',
+                onRetry: _charger,
+              ),
+            )
+          : ContentWidth(
+              maxWidth: 640,
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 36),
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .surfaceContainerHighest
+                          .withValues(alpha: 0.4),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Text(
+                      'Un prix fixe par prestation. Les clients commandent '
+                      'exactement ce que vous affichez, sans négociation.\n\n'
+                      'Déplacement : ${TravelFee.fcfa(f.tarifKmFcfa)}/km, '
+                      'minimum ${TravelFee.fcfa(f.fraisMinFcfa)}.',
+                      style: const TextStyle(fontSize: 14.5, height: 1.45),
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 18),
+                  for (var i = 0; i < _lignes.length; i++) _carte(i, f),
+                  const SizedBox(height: 10),
+                  AppButton(
+                    label: 'Ajouter une prestation',
+                    icon: Icons.add_rounded,
+                    variant: AppButtonVariant.secondary,
+                    onPressed: () => setState(
+                      () => _lignes.add(
+                        _Ligne(
+                          '',
+                          f.vehicleTypes.isNotEmpty
+                              ? f.vehicleTypes.first
+                              : 'voiture',
+                          null,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  AppButton(
+                    label: 'Enregistrer les modifications',
+                    icon: Icons.save_rounded,
+                    loading: _saving,
+                    onPressed: _enregistrer,
+                  ),
+                ],
+              ),
+            ),
     );
   }
 
@@ -190,7 +200,9 @@ class _ProviderCatalogScreenState extends State<ProviderCatalogScreen> {
                     controller: l.nomCtl,
                     maxLength: 80,
                     decoration: const InputDecoration(
-                        labelText: 'Nom de la prestation', counterText: ''),
+                      labelText: 'Nom de la prestation',
+                      counterText: '',
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -209,11 +221,13 @@ class _ProviderCatalogScreenState extends State<ProviderCatalogScreen> {
               spacing: 8,
               runSpacing: 6,
               children: f.vehicleTypes
-                  .map((v) => ChoiceChip(
-                        label: Text(kVehicules[v]?.label ?? v),
-                        selected: l.categorie == v,
-                        onSelected: (_) => setState(() => l.categorie = v),
-                      ))
+                  .map(
+                    (v) => ChoiceChip(
+                      label: Text(kVehicules[v]?.label ?? v),
+                      selected: l.categorie == v,
+                      onSelected: (_) => setState(() => l.categorie = v),
+                    ),
+                  )
                   .toList(),
             ),
             const SizedBox(height: 12),
@@ -223,7 +237,10 @@ class _ProviderCatalogScreenState extends State<ProviderCatalogScreen> {
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               maxLength: 7,
               decoration: const InputDecoration(
-                  labelText: 'Prix fixe', suffixText: 'FCFA', counterText: ''),
+                labelText: 'Prix fixe',
+                suffixText: 'FCFA',
+                counterText: '',
+              ),
             ),
           ],
         ),

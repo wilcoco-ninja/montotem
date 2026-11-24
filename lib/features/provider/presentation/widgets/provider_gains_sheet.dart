@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_theme.dart';
@@ -60,26 +59,32 @@ class ProviderGainsSheet extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text('Mes gains',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900)),
+          const Text(
+            'Mes gains',
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+          ),
           const SizedBox(height: 14),
-          Text('Aujourd\'hui',
-              style: TextStyle(fontSize: 15, color: context.textSecondary)),
+          Text(
+            'Aujourd\'hui',
+            style: TextStyle(fontSize: 15, color: context.textSecondary),
+          ),
           FittedBox(
             fit: BoxFit.scaleDown,
             alignment: Alignment.centerLeft,
-            child: Text(TravelFee.fcfa(jour),
-                style:
-                    const TextStyle(fontSize: 40, fontWeight: FontWeight.w900)),
+            child: Text(
+              TravelFee.fcfa(jour),
+              style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w900),
+            ),
           ),
           const SizedBox(height: 18),
           SoftCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('7 derniers jours',
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
+                const Text(
+                  '7 derniers jours',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+                ),
                 const SizedBox(height: 14),
                 SizedBox(
                   height: 150,
@@ -91,20 +96,25 @@ class ProviderGainsSheet extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Text(_court(e.montant),
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w700,
-                                      color: context.textSecondary)),
+                              Text(
+                                _court(e.montant),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  color: context.textSecondary,
+                                ),
+                              ),
                               const SizedBox(height: 4),
                               Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 4),
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 4,
+                                ),
                                 height: (e.montant / maxVal * 90)
                                     .clamp(4.0, 90.0)
                                     .toDouble(),
                                 decoration: BoxDecoration(
-                                  color: e.date.day == aujourdhui.day &&
+                                  color:
+                                      e.date.day == aujourdhui.day &&
                                           e.date.month == aujourdhui.month
                                       ? AppTheme.successColor
                                       : scheme.primary.withValues(alpha: 0.35),
@@ -112,10 +122,13 @@ class ProviderGainsSheet extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 6),
-                              Text(_lettres[e.date.weekday - 1],
-                                  style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w800)),
+                              Text(
+                                _lettres[e.date.weekday - 1],
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -127,40 +140,49 @@ class ProviderGainsSheet extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           InfoRow(
-              icon: Icons.date_range_rounded,
-              label: 'EncaissÃƒÂ© cette semaine',
-              value: TravelFee.fcfa(semaine)),
+            icon: Icons.date_range_rounded,
+            label: 'EncaissÃƒÂ© cette semaine',
+            value: TravelFee.fcfa(semaine),
+          ),
           InfoRow(
-              icon: Icons.calendar_month_rounded,
-              label: 'EncaissÃƒÂ© ce mois-ci',
-              value: TravelFee.fcfa(mois)),
+            icon: Icons.calendar_month_rounded,
+            label: 'EncaissÃƒÂ© ce mois-ci',
+            value: TravelFee.fcfa(mois),
+          ),
           InfoRow(
-              icon: Icons.task_alt_rounded,
-              label: 'Interventions terminÃƒÂ©es',
-              value: '$termineesMois'),
+            icon: Icons.task_alt_rounded,
+            label: 'Interventions terminÃƒÂ©es',
+            value: '$termineesMois',
+          ),
           const SectionTitle('Commission MonTotem'),
           SoftCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 InfoRow(
-                    icon: Icons.percent_rounded,
-                    label: 'Commission aujourd\'hui',
-                    value: TravelFee.fcfa(commissionJour)),
+                  icon: Icons.percent_rounded,
+                  label: 'Commission aujourd\'hui',
+                  value: TravelFee.fcfa(commissionJour),
+                ),
                 InfoRow(
-                    icon: Icons.percent_rounded,
-                    label: 'Commission sur 7 jours',
-                    value: TravelFee.fcfa(commissionSemaine)),
+                  icon: Icons.percent_rounded,
+                  label: 'Commission sur 7 jours',
+                  value: TravelFee.fcfa(commissionSemaine),
+                ),
                 InfoRow(
-                    icon: Icons.savings_rounded,
-                    label: 'Net estimÃƒÂ© sur 7 jours',
-                    value: TravelFee.fcfa(net)),
+                  icon: Icons.savings_rounded,
+                  label: 'Net estimÃƒÂ© sur 7 jours',
+                  value: TravelFee.fcfa(net),
+                ),
                 const SizedBox(height: 6),
                 Text(
                   'Estimation d\'aprÃƒÂ¨s vos derniers mouvements de portefeuille.'
                   '${c == null ? '' : ' ${_taux(c)}'}',
                   style: TextStyle(
-                      fontSize: 14, height: 1.4, color: context.textSecondary),
+                    fontSize: 14,
+                    height: 1.4,
+                    color: context.textSecondary,
+                  ),
                 ),
               ],
             ),

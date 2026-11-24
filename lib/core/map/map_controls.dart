@@ -1,4 +1,3 @@
-﻿
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -83,8 +82,9 @@ class _MapControlsState extends State<MapControls>
     final controller = MapController.of(context);
     final cam = controller.camera;
     final from = cam.zoom;
-    final to =
-        (from + delta).clamp(MapConfig.minZoom, MapConfig.maxZoom).toDouble();
+    final to = (from + delta)
+        .clamp(MapConfig.minZoom, MapConfig.maxZoom)
+        .toDouble();
     if (to == from) return;
     final center = cam.center;
     _animate((t) => controller.move(center, from + (to - from) * t));
@@ -150,7 +150,7 @@ class _MapControlsState extends State<MapControls>
               tooltip: _follow
                   ? 'ArrÃƒÂªter de suivre ma direction'
                   : 'Boussole : touchez pour suivre votre direction '
-                      '(ou remettre le nord en haut)',
+                        '(ou remettre le nord en haut)',
               highlighted: _follow,
               onTap: () => _onCompassTap(rotation),
               child: Transform.rotate(
@@ -218,8 +218,8 @@ class _RoundButton extends StatelessWidget {
                 color: highlighted
                     ? scheme.onPrimary
                     : onTap == null
-                        ? scheme.onSurface.withValues(alpha: 0.3)
-                        : scheme.onSurface,
+                    ? scheme.onSurface.withValues(alpha: 0.3)
+                    : scheme.onSurface,
                 size: 24,
               ),
               child: Center(child: child),
@@ -245,7 +245,9 @@ class _HeadingLabel extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-              color: AppColors.navy.withValues(alpha: 0.26), blurRadius: 4)
+            color: AppColors.navy.withValues(alpha: 0.26),
+            blurRadius: 4,
+          ),
         ],
       ),
       child: Text(

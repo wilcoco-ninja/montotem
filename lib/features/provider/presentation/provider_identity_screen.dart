@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -65,19 +64,20 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
   }
 
   void _msg(String m) => ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(m), duration: const Duration(seconds: 6)));
+    SnackBar(content: Text(m), duration: const Duration(seconds: 6)),
+  );
 
   bool get _numeroOk =>
       RegExp(r'^[A-Za-z0-9\- ]{4,30}$').hasMatch(_numero.text.trim());
 
   List<bool> get _etapes => [
-        _type != null,
-        _numeroOk,
-        _recto?.check.ok ?? false,
-        if (_type?.avecVerso ?? false) _verso?.check.ok ?? false,
-        _selfie?.check.ok ?? false,
-        _garage?.check.ok ?? false,
-      ];
+    _type != null,
+    _numeroOk,
+    _recto?.check.ok ?? false,
+    if (_type?.avecVerso ?? false) _verso?.check.ok ?? false,
+    _selfie?.check.ok ?? false,
+    _garage?.check.ok ?? false,
+  ];
 
   bool get _pret => _etapes.every((e) => e);
 
@@ -114,7 +114,8 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
     final scheme = Theme.of(context).colorScheme;
     final etapes = _etapes;
     final faites = etapes.where((e) => e).length;
-    final refuse = _statut?.statutValidation == 'rejected' &&
+    final refuse =
+        _statut?.statutValidation == 'rejected' &&
         (_statut?.motifRefus ?? '').isNotEmpty;
 
     return Scaffold(
@@ -142,21 +143,26 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
                       if (refuse) ...[
                         const SizedBox(height: 12),
                         AuthErrorBanner(
-                            message:
-                                'Dossier refusÃƒÂ© : ${_statut!.motifRefus}'),
+                          message: 'Dossier refusÃƒÂ© : ${_statut!.motifRefus}',
+                        ),
                       ],
                       const SizedBox(height: 16),
-                      Text('$faites sur ${etapes.length} ÃƒÂ©tapes terminÃƒÂ©es',
-                          style: const TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.w800)),
+                      Text(
+                        '$faites sur ${etapes.length} ÃƒÂ©tapes terminÃƒÂ©es',
+                        style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
                       const SizedBox(height: 8),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(6),
                         child: LinearProgressIndicator(
                           value: faites / etapes.length,
                           minHeight: 10,
-                          backgroundColor:
-                              scheme.onSurface.withValues(alpha: 0.1),
+                          backgroundColor: scheme.onSurface.withValues(
+                            alpha: 0.1,
+                          ),
                         ),
                       ),
                       const SectionTitle('1. Votre piÃƒÂ¨ce d\'identitÃƒÂ©'),
@@ -208,7 +214,8 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
                           if (_type?.avecVerso ?? false)
                             VerifiedPhotoField(
                               label: 'Document : verso (face arriÃƒÂ¨re)',
-                              consigne: 'Retournez le document et prenez-le en '
+                              consigne:
+                                  'Retournez le document et prenez-le en '
                                   'photo de la mÃƒÂªme faÃƒÂ§on.',
                               icon: Icons.flip_rounded,
                               photo: _verso,
@@ -232,19 +239,19 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
                         analyser: _quality.analyserSelfie,
                         onChanged: (p) => setState(() => _selfie = p),
                       ),
-                      SectionTitle(_transport
-                          ? '4. Votre vÃƒÂ©hicule'
-                          : '4. Votre garage'),
+                      SectionTitle(
+                        _transport ? '4. Votre vÃƒÂ©hicule' : '4. Votre garage',
+                      ),
                       VerifiedPhotoField(
                         label: _transport
                             ? 'Photo de votre moto ou tricycle'
                             : 'Photo de votre garage ou atelier',
                         consigne: _transport
                             ? 'Photographiez votre vÃƒÂ©hicule en entier, de cÃƒÂ´tÃƒÂ©, '
-                                'en pleine lumiÃƒÂ¨re. La plaque doit ÃƒÂªtre visible si '
-                                'possible.'
+                                  'en pleine lumiÃƒÂ¨re. La plaque doit ÃƒÂªtre visible si '
+                                  'possible.'
                             : 'Prenez la faÃƒÂ§ade ou l\'intÃƒÂ©rieur de votre '
-                                'atelier, avec l\'enseigne si possible.',
+                                  'atelier, avec l\'enseigne si possible.',
                         icon: _transport
                             ? Icons.two_wheeler_rounded
                             : Icons.store_mall_directory_outlined,
@@ -330,9 +337,13 @@ class _TypeTile extends StatelessWidget {
             Icon(Icons.badge_outlined, color: scheme.primary, size: 28),
             const SizedBox(width: 14),
             Expanded(
-              child: Text(type.libelle,
-                  style: const TextStyle(
-                      fontSize: 17, fontWeight: FontWeight.w700)),
+              child: Text(
+                type.libelle,
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ),
             Icon(
               selected

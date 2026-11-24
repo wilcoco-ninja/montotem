@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -23,8 +22,9 @@ Future<bool?> showMissionPaymentSheet(
     isScrollControlled: true,
     useSafeArea: true,
     builder: (_) => Padding(
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
       child: _PaymentSheet(mission: mission, kind: kind, montant: montant),
     ),
   );
@@ -60,10 +60,7 @@ class _PaymentSheetState extends State<_PaymentSheet> {
   @override
   void initState() {
     super.initState();
-    _methodes = [
-      if (_momo != null) _momo!.methode,
-      PayMethod.especes,
-    ];
+    _methodes = [if (_momo != null) _momo!.methode, PayMethod.especes];
     _methode = _methodes.first;
     _phone = TextEditingController(text: widget.mission.clientPhone ?? '');
   }
@@ -112,10 +109,14 @@ class _PaymentSheetState extends State<_PaymentSheet> {
       );
       if (!mounted) return;
       Navigator.pop(context, true);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Paiement dÃƒÂ©clarÃƒÂ©. Le dÃƒÂ©panneur va le confirmer.'),
-        duration: Duration(seconds: 6),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Paiement dÃƒÂ©clarÃƒÂ©. Le dÃƒÂ©panneur va le confirmer.',
+          ),
+          duration: Duration(seconds: 6),
+        ),
+      );
     } on MissionException catch (e) {
       if (!mounted) return;
       setState(() => _envoi = false);
@@ -144,11 +145,14 @@ class _PaymentSheetState extends State<_PaymentSheet> {
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
             ),
             const SizedBox(height: 4),
-            Text(somme,
-                style: const TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w800,
-                    color: AppTheme.primaryColor)),
+            Text(
+              somme,
+              style: const TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.w800,
+                color: AppTheme.primaryColor,
+              ),
+            ),
             const SizedBox(height: 14),
             if (_momo == null)
               Container(
@@ -164,29 +168,39 @@ class _PaymentSheetState extends State<_PaymentSheet> {
                 ),
               ),
             if (_methodes.length > 1) ...[
-              const Text('Comment payez-vous ?',
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
+              const Text(
+                'Comment payez-vous ?',
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+              ),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 10,
                 runSpacing: 10,
                 children: _methodes
-                    .map((m) => ChoiceChip(
-                          label: Text(m.libelle,
-                              style: const TextStyle(fontSize: 16)),
-                          selected: _methode == m,
-                          onSelected: _envoi
-                              ? null
-                              : (_) => setState(() => _methode = m),
-                        ))
+                    .map(
+                      (m) => ChoiceChip(
+                        label: Text(
+                          m.libelle,
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                        selected: _methode == m,
+                        onSelected: _envoi
+                            ? null
+                            : (_) => setState(() => _methode = m),
+                      ),
+                    )
                     .toList(),
               ),
               const SizedBox(height: 16),
             ],
             if (_methode.mobileMoney && _momo != null) ...[
-              Text('1. Envoyez exactement $somme par ${_methode.libelle} au :',
-                  style: const TextStyle(
-                      fontSize: 17, fontWeight: FontWeight.w800)),
+              Text(
+                '1. Envoyez exactement $somme par ${_methode.libelle} au :',
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
               const SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.all(14),
@@ -200,12 +214,18 @@ class _PaymentSheetState extends State<_PaymentSheet> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(_momo!.numero,
-                              style: const TextStyle(
-                                  fontSize: 22, fontWeight: FontWeight.w800)),
+                          Text(
+                            _momo!.numero,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
                           if ((_momo!.titulaire ?? '').isNotEmpty)
-                            Text('Au nom de ${_momo!.titulaire}',
-                                style: const TextStyle(fontSize: 15)),
+                            Text(
+                              'Au nom de ${_momo!.titulaire}',
+                              style: const TextStyle(fontSize: 15),
+                            ),
                         ],
                       ),
                     ),
@@ -219,8 +239,10 @@ class _PaymentSheetState extends State<_PaymentSheet> {
                 ),
               ),
               const SizedBox(height: 16),
-              const Text('2. Renseignez votre paiement',
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
+              const Text(
+                '2. Renseignez votre paiement',
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+              ),
               const SizedBox(height: 10),
               AppTextField(
                 label: 'NumÃƒÂ©ro avec lequel vous avez payÃƒÂ©',

@@ -1,4 +1,3 @@
-﻿
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -35,11 +34,15 @@ class _LiveWeatherChipState extends State<LiveWeatherChip> {
   @override
   void initState() {
     super.initState();
-    _data =
-        _service.cached(widget.position.latitude, widget.position.longitude);
+    _data = _service.cached(
+      widget.position.latitude,
+      widget.position.longitude,
+    );
     _load();
-    _timer =
-        Timer.periodic(const Duration(minutes: 10), (_) => _load(force: true));
+    _timer = Timer.periodic(
+      const Duration(minutes: 10),
+      (_) => _load(force: true),
+    );
   }
 
   @override
@@ -144,7 +147,10 @@ class _LiveWeatherChipState extends State<LiveWeatherChip> {
             Text(
               w.temperatureString,
               style: const TextStyle(
-                  fontSize: 15, fontWeight: FontWeight.w800, height: 1.1),
+                fontSize: 15,
+                fontWeight: FontWeight.w800,
+                height: 1.1,
+              ),
             ),
             Text(w.description, style: TextStyle(fontSize: 11, color: muted)),
           ],
@@ -174,27 +180,37 @@ class _LiveWeatherChipState extends State<LiveWeatherChip> {
       children: [
         head,
         const SizedBox(height: 8),
-        _line(Icons.thermostat_rounded, 'Ressenti ${w.feelsLike.round()}Ã‚Â°C',
-            AppColors.amber),
-        _line(Icons.water_drop_outlined, 'HumiditÃƒÂ© ${w.humidity} %',
-            AppColors.navy),
+        _line(
+          Icons.thermostat_rounded,
+          'Ressenti ${w.feelsLike.round()}Ã‚Â°C',
+          AppColors.amber,
+        ),
+        _line(
+          Icons.water_drop_outlined,
+          'HumiditÃƒÂ© ${w.humidity} %',
+          AppColors.navy,
+        ),
         _line(
           Icons.air_rounded,
           'Vent ${w.windSpeedString}${wind == null ? '' : ' (du $wind)'}',
           AppColors.success,
         ),
         if (w.precipitation > 0)
-          _line(Icons.umbrella_rounded,
-              'Pluie ${w.precipitation.toStringAsFixed(1)} mm', AppColors.navy),
+          _line(
+            Icons.umbrella_rounded,
+            'Pluie ${w.precipitation.toStringAsFixed(1)} mm',
+            AppColors.navy,
+          ),
         if (w.isRaining || w.condition == WeatherCondition.stormy)
           Padding(
             padding: const EdgeInsets.only(top: 6),
             child: Text(
               'ChaussÃƒÂ©e glissante : prudence.',
               style: TextStyle(
-                  fontSize: 11.5,
-                  fontWeight: FontWeight.w700,
-                  color: theme.colorScheme.error),
+                fontSize: 11.5,
+                fontWeight: FontWeight.w700,
+                color: theme.colorScheme.error,
+              ),
             ),
           ),
       ],
@@ -202,14 +218,14 @@ class _LiveWeatherChipState extends State<LiveWeatherChip> {
   }
 
   Widget _line(IconData icon, String text, Color color) => Padding(
-        padding: const EdgeInsets.only(top: 3),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 15, color: color),
-            const SizedBox(width: 6),
-            Text(text, style: const TextStyle(fontSize: 12)),
-          ],
-        ),
-      );
+    padding: const EdgeInsets.only(top: 3),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 15, color: color),
+        const SizedBox(width: 6),
+        Text(text, style: const TextStyle(fontSize: 12)),
+      ],
+    ),
+  );
 }

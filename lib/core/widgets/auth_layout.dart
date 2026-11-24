@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -70,7 +69,8 @@ class AuthShell extends StatelessWidget {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: LayoutBuilder(
         builder: (context, constraints) {
-          final wide = constraints.maxWidth >= _wideBreakpoint &&
+          final wide =
+              constraints.maxWidth >= _wideBreakpoint &&
               constraints.maxHeight >= 560;
           return switch (space) {
             AppSpace.client => _ClientLayout(shell: this, wide: wide),
@@ -108,9 +108,7 @@ Widget _scrollColumn(
     padding: EdgeInsets.fromLTRB(pad, 12, pad, 32),
     child: Center(child: column),
   );
-  return SafeArea(
-    child: center ? Center(child: body) : body,
-  );
+  return SafeArea(child: center ? Center(child: body) : body);
 }
 
 class _Back extends StatelessWidget {
@@ -331,14 +329,20 @@ class _ClientHero extends StatelessWidget {
                       color: fg,
                     ),
                     _Point(
-                      leading:
-                          Icon(Icons.verified_outlined, color: fg, size: 26),
+                      leading: Icon(
+                        Icons.verified_outlined,
+                        color: fg,
+                        size: 26,
+                      ),
                       text: 'Prestataires vÃƒÂ©rifiÃƒÂ©s prÃƒÂ¨s de vous',
                       color: fg,
                     ),
                     _Point(
-                      leading: Icon(Icons.phone_android_outlined,
-                          color: fg, size: 26),
+                      leading: Icon(
+                        Icons.phone_android_outlined,
+                        color: fg,
+                        size: 26,
+                      ),
                       text: 'Paiement Mobile Money sÃƒÂ©curisÃƒÂ©',
                       color: fg,
                     ),
@@ -407,10 +411,7 @@ class _ProviderLayout extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(height: 4, color: primary),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: shell.child,
-            ),
+            Padding(padding: const EdgeInsets.all(20), child: shell.child),
           ],
         ),
       ),
@@ -485,10 +486,11 @@ class _ProviderLayout extends StatelessWidget {
                 children: [
                   Positioned.fill(
                     child: CustomPaint(
-                        painter: GridPainter(
-                      color: scheme.outline.withValues(alpha: 0.35),
-                      step: 40,
-                    )),
+                      painter: GridPainter(
+                        color: scheme.outline.withValues(alpha: 0.35),
+                        step: 40,
+                      ),
+                    ),
                   ),
                   SafeArea(
                     child: Padding(
@@ -519,15 +521,15 @@ class _ProviderLayout extends StatelessWidget {
                           for (final e in const [
                             (
                               '01',
-                              'Vos prestations, vos prix : affichÃƒÂ©s au client'
+                              'Vos prestations, vos prix : affichÃƒÂ©s au client',
                             ),
                             (
                               '02',
-                              'Des missions prÃƒÂ¨s de vous, sans nÃƒÂ©gociation'
+                              'Des missions prÃƒÂ¨s de vous, sans nÃƒÂ©gociation',
                             ),
                             (
                               '03',
-                              'Frais de dÃƒÂ©placement payÃƒÂ©s avant votre dÃƒÂ©part'
+                              'Frais de dÃƒÂ©placement payÃƒÂ©s avant votre dÃƒÂ©part',
                             ),
                           ])
                             _Point(
@@ -644,15 +646,20 @@ class _AdminLayout extends StatelessWidget {
                     color: AppColors.navy,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Icon(Icons.shield_outlined,
-                      size: 20, color: AppColors.navyOnDark),
+                  child: const Icon(
+                    Icons.shield_outlined,
+                    size: 20,
+                    color: AppColors.navyOnDark,
+                  ),
                 ),
                 const SizedBox(width: 10),
                 Wordmark(color: ink, accent: primary, size: 20),
                 const SizedBox(width: 10),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: primary.withValues(alpha: 0.10),
                     borderRadius: BorderRadius.circular(4),
@@ -720,8 +727,11 @@ class _AdminLayout extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.shield_outlined,
-                            color: AppColors.navyOnDark, size: 26),
+                        Icon(
+                          Icons.shield_outlined,
+                          color: AppColors.navyOnDark,
+                          size: 26,
+                        ),
                         const SizedBox(width: 12),
                         Wordmark(color: AppColors.navyOnDark, size: 24),
                       ],
@@ -749,8 +759,11 @@ class _AdminLayout extends StatelessWidget {
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Row(
                               children: [
-                                const Icon(Icons.check_rounded,
-                                    color: Color(0xFF7FD6C2), size: 18),
+                                const Icon(
+                                  Icons.check_rounded,
+                                  color: Color(0xFF7FD6C2),
+                                  size: 18,
+                                ),
                                 const SizedBox(width: 10),
                                 Text(
                                   t,
@@ -766,8 +779,10 @@ class _AdminLayout extends StatelessWidget {
                     ),
                     const Text(
                       'Espace non rÃƒÂ©fÃƒÂ©rencÃƒÂ© Ã‚Â· web uniquement',
-                      style:
-                          TextStyle(color: Color(0xFF8FB0B8), fontSize: 12.5),
+                      style: TextStyle(
+                        color: Color(0xFF8FB0B8),
+                        fontSize: 12.5,
+                      ),
                     ),
                   ],
                 ),

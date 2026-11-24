@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:math' as math;
 
@@ -102,8 +101,10 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
   }
 
   Future<void> _chargerRoute(Ride r) async {
-    final res =
-        await _routing.getRoute(origin: r.pickup, destination: r.dropoff);
+    final res = await _routing.getRoute(
+      origin: r.pickup,
+      destination: r.dropoff,
+    );
     if (mounted) setState(() => _route = res.geometry);
   }
 
@@ -111,15 +112,17 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
     final r = _ride;
     if (!_mapPrete || _cadre || r == null) return;
     _cadre = true;
-    _map.fitCamera(CameraFit.coordinates(
-      coordinates: [
-        r.pickup,
-        r.dropoff,
-        if (r.providerPoint != null) r.providerPoint!
-      ],
-      padding: const EdgeInsets.all(70),
-      maxZoom: 16,
-    ));
+    _map.fitCamera(
+      CameraFit.coordinates(
+        coordinates: [
+          r.pickup,
+          r.dropoff,
+          if (r.providerPoint != null) r.providerPoint!,
+        ],
+        padding: const EdgeInsets.all(70),
+        maxZoom: 16,
+      ),
+    );
   }
 
   Future<void> _appeler(String? phone) async {
@@ -190,36 +193,35 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
       body: _loading && r == null
           ? const Center(child: CircularProgressIndicator())
           : _error != null && r == null
-              ? Center(
-                  child: SingleChildScrollView(
-                    child: ErrorState(message: _error!, onRetry: _charger),
-                  ),
-                )
-              : r == null
-                  ? const SizedBox.shrink()
-                  : LayoutBuilder(
-                      builder: (context, c) {
-                        final lateral =
-                            c.maxWidth >= 720 || c.maxWidth > c.maxHeight;
-                        if (lateral) {
-                          return Row(
-                            children: [
-                              Expanded(child: _carte(r)),
-                              SizedBox(
-                                width: math.min(c.maxWidth * 0.42, 460.0),
-                                child: _panneau(r, lateral: true),
-                              ),
-                            ],
-                          );
-                        }
-                        return Column(
-                          children: [
-                            Expanded(flex: 4, child: _carte(r)),
-                            Expanded(flex: 5, child: _panneau(r)),
-                          ],
-                        );
-                      },
-                    ),
+          ? Center(
+              child: SingleChildScrollView(
+                child: ErrorState(message: _error!, onRetry: _charger),
+              ),
+            )
+          : r == null
+          ? const SizedBox.shrink()
+          : LayoutBuilder(
+              builder: (context, c) {
+                final lateral = c.maxWidth >= 720 || c.maxWidth > c.maxHeight;
+                if (lateral) {
+                  return Row(
+                    children: [
+                      Expanded(child: _carte(r)),
+                      SizedBox(
+                        width: math.min(c.maxWidth * 0.42, 460.0),
+                        child: _panneau(r, lateral: true),
+                      ),
+                    ],
+                  );
+                }
+                return Column(
+                  children: [
+                    Expanded(flex: 4, child: _carte(r)),
+                    Expanded(flex: 5, child: _panneau(r)),
+                  ],
+                );
+              },
+            ),
     );
   }
 
@@ -243,54 +245,58 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
           userAgentPackageName: 'bj.totem.app',
         ),
-        PolylineLayer(polylines: [
-          Polyline(
-            points: _route.length >= 2 ? _route : [r.pickup, r.dropoff],
-            color: scheme.primary.withValues(alpha: 0.75),
-            strokeWidth: 5,
-            borderColor: Colors.white,
-            borderStrokeWidth: 2,
-          ),
-          if (versDepart)
+        PolylineLayer(
+          polylines: [
             Polyline(
-              points: [prov, r.pickup],
-              color: scheme.tertiary,
-              strokeWidth: 4,
+              points: _route.length >= 2 ? _route : [r.pickup, r.dropoff],
+              color: scheme.primary.withValues(alpha: 0.75),
+              strokeWidth: 5,
+              borderColor: Colors.white,
+              borderStrokeWidth: 2,
             ),
-        ]),
-        MarkerLayer(markers: [
-          Marker(
-            point: r.pickup,
-            width: 48,
-            height: 48,
-            alignment: Alignment.topCenter,
-            child: Icon(Icons.location_on, size: 44, color: scheme.secondary),
-          ),
-          Marker(
-            point: r.dropoff,
-            width: 48,
-            height: 48,
-            alignment: Alignment.topCenter,
-            child: Icon(Icons.location_on, size: 44, color: scheme.error),
-          ),
-          if (prov != null && r.status.actif)
-            Marker(
-              point: prov,
-              width: 46,
-              height: 46,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: scheme.primary,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 3),
-                ),
-                child: Icon(r.kind.icone, color: Colors.white, size: 22),
+            if (versDepart)
+              Polyline(
+                points: [prov, r.pickup],
+                color: scheme.tertiary,
+                strokeWidth: 4,
               ),
+          ],
+        ),
+        MarkerLayer(
+          markers: [
+            Marker(
+              point: r.pickup,
+              width: 48,
+              height: 48,
+              alignment: Alignment.topCenter,
+              child: Icon(Icons.location_on, size: 44, color: scheme.secondary),
             ),
-        ]),
-        const RichAttributionWidget(attributions: [
-          TextSourceAttribution('© OpenStreetMap contributors'),
-        ]),
+            Marker(
+              point: r.dropoff,
+              width: 48,
+              height: 48,
+              alignment: Alignment.topCenter,
+              child: Icon(Icons.location_on, size: 44, color: scheme.error),
+            ),
+            if (prov != null && r.status.actif)
+              Marker(
+                point: prov,
+                width: 46,
+                height: 46,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: scheme.primary,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 3),
+                  ),
+                  child: Icon(r.kind.icone, color: Colors.white, size: 22),
+                ),
+              ),
+          ],
+        ),
+        const RichAttributionWidget(
+          attributions: [TextSourceAttribution('© OpenStreetMap contributors')],
+        ),
       ],
     );
   }
@@ -322,13 +328,20 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
             children: [
               Row(
                 children: [
-                  Icon(r.kind.icone,
-                      size: 30, color: theme.colorScheme.primary),
+                  Icon(
+                    r.kind.icone,
+                    size: 30,
+                    color: theme.colorScheme.primary,
+                  ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: Text(r.kind.libelle,
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w800)),
+                    child: Text(
+                      r.kind.libelle,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
                   ),
                   StatusPill(
                     label: r.status.libelle,
@@ -420,7 +433,9 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                   'Recherche d\'un conducteur depuis '
                   '${minutes < 1 ? 'moins d\'une minute' : '$minutes min'}…',
                   style: const TextStyle(
-                      fontSize: 17, fontWeight: FontWeight.w800),
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
                 const SizedBox(height: 10),
                 const LinearProgressIndicator(minHeight: 6),
@@ -431,7 +446,10 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                   'proposer un prix plus élevé en annulant puis en '
                   'redemandant.',
                   style: TextStyle(
-                      fontSize: 15, height: 1.4, color: context.textSecondary),
+                    fontSize: 15,
+                    height: 1.4,
+                    color: context.textSecondary,
+                  ),
                 ),
               ],
             ),
@@ -446,8 +464,7 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
         if (r.status == RideStatus.accepted && prov != null) {
           final m = _metresEntre(prov, r.pickup).round();
           final minutes = math.max(1, (m / 1000 * 1.25 / 25 * 60).ceil());
-          proximite =
-              'À ${formaterDistance(m)} de vous · environ $minutes min';
+          proximite = 'À ${formaterDistance(m)} de vous · environ $minutes min';
         } else if (r.status == RideStatus.arrived) {
           proximite = 'Votre conducteur est arrivé au point de départ.';
         }
@@ -465,13 +482,21 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(r.providerName ?? 'Conducteur',
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w800)),
+                      Text(
+                        r.providerName ?? 'Conducteur',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
                       if (proximite != null)
-                        Text(proximite,
-                            style: TextStyle(
-                                fontSize: 14.5, color: context.textSecondary)),
+                        Text(
+                          proximite,
+                          style: TextStyle(
+                            fontSize: 14.5,
+                            color: context.textSecondary,
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -499,13 +524,20 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.check_circle_rounded,
-                        color: scheme.secondary, size: 30),
+                    Icon(
+                      Icons.check_circle_rounded,
+                      color: scheme.secondary,
+                      size: 30,
+                    ),
                     const SizedBox(width: 10),
                     const Expanded(
-                      child: Text('Course terminée',
-                          style: TextStyle(
-                              fontSize: 19, fontWeight: FontWeight.w800)),
+                      child: Text(
+                        'Course terminée',
+                        style: TextStyle(
+                          fontSize: 19,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -514,7 +546,9 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                   'Montant à régler : ${MontantLocal.formater(r.prixFcfa, devise: _devise)}'
                   '${change ? ' (prix convenu : ${MontantLocal.formater(r.fareFcfa, devise: _devise)})' : ''}',
                   style: const TextStyle(
-                      fontSize: 16.5, fontWeight: FontWeight.w700),
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ],
             ),
@@ -524,8 +558,9 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
         ];
 
       case RideStatus.verifying:
-        final minutesRestantes =
-            r.otpExpiresAt?.difference(DateTime.now()).inMinutes;
+        final minutesRestantes = r.otpExpiresAt
+            ?.difference(DateTime.now())
+            .inMinutes;
         return [
           SoftCard(
             child: Column(
@@ -536,9 +571,13 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                     Icon(Icons.pin_rounded, size: 30),
                     SizedBox(width: 10),
                     Expanded(
-                      child: Text('Fin de course',
-                          style: TextStyle(
-                              fontSize: 19, fontWeight: FontWeight.w800)),
+                      child: Text(
+                        'Fin de course',
+                        style: TextStyle(
+                          fontSize: 19,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -548,9 +587,10 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                   '${MontantLocal.formater(r.prixFcfa, devise: _devise)}. '
                   'Transmettez-lui ce code pour valider la fin de la course :',
                   style: TextStyle(
-                      fontSize: 15.5,
-                      height: 1.4,
-                      color: context.textSecondary),
+                    fontSize: 15.5,
+                    height: 1.4,
+                    color: context.textSecondary,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Container(
@@ -561,11 +601,14 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                     borderRadius: BorderRadius.circular(AppTheme.radiusMd),
                   ),
                   child: Text(
-                    (r.otpCode ?? '').isEmpty ? 'Code indisponible' : (r.otpCode!),
+                    (r.otpCode ?? '').isEmpty
+                        ? 'Code indisponible'
+                        : (r.otpCode!),
                     style: const TextStyle(
-                        fontSize: 32,
-                        letterSpacing: 10,
-                        fontWeight: FontWeight.w800),
+                      fontSize: 32,
+                      letterSpacing: 10,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
                 if (minutesRestantes != null && minutesRestantes > 0)
@@ -576,9 +619,10 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                       'La commission du conducteur n\'est débitée qu\'après '
                       'cette validation.',
                       style: TextStyle(
-                          fontSize: 14.5,
-                          height: 1.4,
-                          color: context.textSecondary),
+                        fontSize: 14.5,
+                        height: 1.4,
+                        color: context.textSecondary,
+                      ),
                     ),
                   ),
               ],
@@ -601,7 +645,9 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                         ? 'Cette course a été annulée.'
                         : r.cancelReason!,
                     style: const TextStyle(
-                        fontSize: 16.5, fontWeight: FontWeight.w700),
+                      fontSize: 16.5,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ],
@@ -626,7 +672,10 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
               child: Text(
                 'Espèces : remettez $montant au conducteur à l\'arrivée.',
                 style: const TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.w700, height: 1.35),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  height: 1.35,
+                ),
               ),
             ),
           ],
@@ -640,7 +689,10 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
           'Paiement ${r.payment.libelle} : le numéro du conducteur s\'affiche '
           'ici dès qu\'il est disponible.',
           style: TextStyle(
-              fontSize: 15.5, height: 1.4, color: context.textSecondary),
+            fontSize: 15.5,
+            height: 1.4,
+            color: context.textSecondary,
+          ),
         ),
       );
     }
@@ -652,7 +704,10 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
           Text(
             'Payez $montant par ${momo.methode.libelle} au conducteur :',
             style: const TextStyle(
-                fontSize: 16.5, fontWeight: FontWeight.w800, height: 1.35),
+              fontSize: 16.5,
+              fontWeight: FontWeight.w800,
+              height: 1.35,
+            ),
           ),
           const SizedBox(height: 10),
           Container(
@@ -667,12 +722,18 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(momo.numero,
-                          style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w800)),
+                      Text(
+                        momo.numero,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
                       if ((momo.titulaire ?? '').isNotEmpty)
-                        Text('Au nom de ${momo.titulaire}',
-                            style: const TextStyle(fontSize: 14.5)),
+                        Text(
+                          'Au nom de ${momo.titulaire}',
+                          style: const TextStyle(fontSize: 14.5),
+                        ),
                     ],
                   ),
                 ),
@@ -702,18 +763,18 @@ class _Etapes extends StatelessWidget {
     'En route',
     'Arrivé',
     'En course',
-    'Terminée'
+    'Terminée',
   ];
 
   int get _index => switch (status) {
-        RideStatus.requested => 0,
-        RideStatus.accepted => 1,
-        RideStatus.arrived => 2,
-        RideStatus.inProgress => 3,
-        RideStatus.verifying => 4,
-        RideStatus.completed => 4,
-        RideStatus.cancelled => -1,
-      };
+    RideStatus.requested => 0,
+    RideStatus.accepted => 1,
+    RideStatus.arrived => 2,
+    RideStatus.inProgress => 3,
+    RideStatus.verifying => 4,
+    RideStatus.completed => 4,
+    RideStatus.cancelled => -1,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -745,8 +806,11 @@ class _Etapes extends StatelessWidget {
                     ),
                   ),
                   child: i < courant || (i == courant && fini)
-                      ? const Icon(Icons.check_rounded,
-                          color: Colors.white, size: 20)
+                      ? const Icon(
+                          Icons.check_rounded,
+                          color: Colors.white,
+                          size: 20,
+                        )
                       : Text(
                           '${i + 1}',
                           style: TextStyle(
@@ -765,8 +829,9 @@ class _Etapes extends StatelessWidget {
                     _labels[i],
                     style: TextStyle(
                       fontSize: 13,
-                      fontWeight:
-                          i == courant ? FontWeight.w800 : FontWeight.w600,
+                      fontWeight: i == courant
+                          ? FontWeight.w800
+                          : FontWeight.w600,
                     ),
                   ),
                 ),

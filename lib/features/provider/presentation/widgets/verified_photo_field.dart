@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -46,8 +45,9 @@ class _VerifiedPhotoFieldState extends State<VerifiedPhotoField> {
     try {
       final x = await ImagePicker().pickImage(
         source: source,
-        preferredCameraDevice:
-            widget.frontCamera ? CameraDevice.front : CameraDevice.rear,
+        preferredCameraDevice: widget.frontCamera
+            ? CameraDevice.front
+            : CameraDevice.rear,
         imageQuality: 90,
         maxWidth: 2000,
       );
@@ -58,9 +58,11 @@ class _VerifiedPhotoFieldState extends State<VerifiedPhotoField> {
       widget.onChanged(VerifiedPhoto(bytes: bytes, check: check));
     } catch (_) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Impossible de charger la photo. RÃƒÂ©essayez.'),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Impossible de charger la photo. RÃƒÂ©essayez.'),
+          ),
+        );
       }
     } finally {
       if (mounted) setState(() => _analyse = false);
@@ -80,15 +82,19 @@ class _VerifiedPhotoFieldState extends State<VerifiedPhotoField> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(widget.label,
-              style:
-                  const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+          Text(
+            widget.label,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+          ),
           const SizedBox(height: 6),
-          Text(widget.consigne,
-              style: TextStyle(
-                  fontSize: 16,
-                  height: 1.45,
-                  color: scheme.onSurface.withValues(alpha: 0.85))),
+          Text(
+            widget.consigne,
+            style: TextStyle(
+              fontSize: 16,
+              height: 1.45,
+              color: scheme.onSurface.withValues(alpha: 0.85),
+            ),
+          ),
           const SizedBox(height: 14),
           Container(
             height: 240,
@@ -105,19 +111,26 @@ class _VerifiedPhotoFieldState extends State<VerifiedPhotoField> {
                       children: [
                         CircularProgressIndicator(),
                         SizedBox(height: 12),
-                        Text('Analyse de la photoÃ¢â‚¬Â¦',
-                            style: TextStyle(fontSize: 16)),
+                        Text(
+                          'Analyse de la photoÃ¢â‚¬Â¦',
+                          style: TextStyle(fontSize: 16),
+                        ),
                       ],
                     ),
                   )
                 : photo == null
-                    ? Center(
-                        child: Icon(widget.icon,
-                            size: 72,
-                            color: scheme.onSurface.withValues(alpha: 0.35)),
-                      )
-                    : Image.memory(photo.bytes,
-                        fit: BoxFit.contain, gaplessPlayback: true),
+                ? Center(
+                    child: Icon(
+                      widget.icon,
+                      size: 72,
+                      color: scheme.onSurface.withValues(alpha: 0.35),
+                    ),
+                  )
+                : Image.memory(
+                    photo.bytes,
+                    fit: BoxFit.contain,
+                    gaplessPlayback: true,
+                  ),
           ),
           const SizedBox(height: 12),
           if (photo != null && !_analyse) _resultat(photo.check),
@@ -135,8 +148,9 @@ class _VerifiedPhotoFieldState extends State<VerifiedPhotoField> {
                   child: AppButton(
                     label: photo == null ? 'Appareil photo' : 'Reprendre',
                     icon: Icons.photo_camera_rounded,
-                    onPressed:
-                        _analyse ? null : () => _prendre(ImageSource.camera),
+                    onPressed: _analyse
+                        ? null
+                        : () => _prendre(ImageSource.camera),
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -145,8 +159,9 @@ class _VerifiedPhotoFieldState extends State<VerifiedPhotoField> {
                     label: 'Galerie',
                     icon: Icons.photo_library_outlined,
                     variant: AppButtonVariant.secondary,
-                    onPressed:
-                        _analyse ? null : () => _prendre(ImageSource.gallery),
+                    onPressed: _analyse
+                        ? null
+                        : () => _prendre(ImageSource.gallery),
                   ),
                 ),
               ],
@@ -164,15 +179,21 @@ class _VerifiedPhotoFieldState extends State<VerifiedPhotoField> {
         children: [
           Row(
             children: [
-              Icon(Icons.check_circle_rounded,
-                  color: scheme.secondary, size: 28),
+              Icon(
+                Icons.check_circle_rounded,
+                color: scheme.secondary,
+                size: 28,
+              ),
               const SizedBox(width: 10),
               Expanded(
-                child: Text('Photo de bonne qualitÃƒÂ©',
-                    style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w800,
-                        color: context.readable(scheme.secondary))),
+                child: Text(
+                  'Photo de bonne qualitÃƒÂ©',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800,
+                    color: context.readable(scheme.secondary),
+                  ),
+                ),
               ),
             ],
           ),
@@ -197,11 +218,14 @@ class _VerifiedPhotoFieldState extends State<VerifiedPhotoField> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Photo ÃƒÂ  refaire',
-              style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w800,
-                  color: scheme.error)),
+          Text(
+            'Photo ÃƒÂ  refaire',
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.w800,
+              color: scheme.error,
+            ),
+          ),
           const SizedBox(height: 8),
           for (final p in c.problemes)
             Padding(
@@ -209,12 +233,17 @@ class _VerifiedPhotoFieldState extends State<VerifiedPhotoField> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.error_outline_rounded,
-                      size: 22, color: scheme.error),
+                  Icon(
+                    Icons.error_outline_rounded,
+                    size: 22,
+                    color: scheme.error,
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: Text(p,
-                        style: const TextStyle(fontSize: 16, height: 1.35)),
+                    child: Text(
+                      p,
+                      style: const TextStyle(fontSize: 16, height: 1.35),
+                    ),
                   ),
                 ],
               ),

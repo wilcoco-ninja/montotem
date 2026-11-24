@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -212,9 +212,8 @@ class AppRouter {
     initialLocation: '/',
     refreshListenable: _refresh,
     redirect: _redirectGuard,
-    errorBuilder: (context, state) => _PageIntrouvable(
-      chemin: state.uri.toString(),
-    ),
+    errorBuilder: (context, state) =>
+        _PageIntrouvable(chemin: state.uri.toString()),
     routes: [
       GoRoute(path: '/', builder: (_, __) => const MapHomeScreen()),
       GoRoute(path: '/explore', redirect: (_, __) => '/'),
@@ -235,7 +234,9 @@ class AppRouter {
       if (!kReleaseMode)
         GoRoute(path: '/debug', builder: (_, __) => const DebugLoginScreen()),
       GoRoute(
-          path: '/admin/login', builder: (_, __) => const AdminLoginScreen()),
+        path: '/admin/login',
+        builder: (_, __) => const AdminLoginScreen(),
+      ),
 
       GoRoute(path: '/join', builder: (_, __) => const RoleSelectionScreen()),
       GoRoute(
@@ -289,8 +290,9 @@ class AppRouter {
         path: '/sos',
         builder: (_, s) {
           final t = s.uri.queryParameters['type'];
-          final type =
-              EmergencyType.values.where((e) => e.name == t).firstOrNull;
+          final type = EmergencyType.values
+              .where((e) => e.name == t)
+              .firstOrNull;
           return SosScreen(initialType: type);
         },
       ),
@@ -310,7 +312,9 @@ class AppRouter {
       // Après connexion, le client revient sur la carte.
       GoRoute(path: '/home', redirect: (_, __) => '/'),
       GoRoute(
-          path: '/account', builder: (_, __) => const ClientProfileScreen()),
+        path: '/account',
+        builder: (_, __) => const ClientProfileScreen(),
+      ),
       GoRoute(path: '/matching', builder: (_, __) => const MatchingScreen()),
       GoRoute(
         path: '/ride/new',

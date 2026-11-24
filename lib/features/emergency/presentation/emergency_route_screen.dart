@@ -1,4 +1,3 @@
-﻿
 import 'dart:async';
 import 'dart:math' as math;
 
@@ -134,14 +133,16 @@ class _EmergencyRouteScreenState extends State<EmergencyRouteScreen> {
         _route = r.geometry;
         _routeReelle = true;
       });
-      unawaited(_lieux.memoriserRoute(
-        _lieu.id,
-        CachedRoute(
-          origine: origine,
-          points: EmergencyPlacesRepository.alleger(r.geometry),
-          distanceKm: r.distanceKm,
+      unawaited(
+        _lieux.memoriserRoute(
+          _lieu.id,
+          CachedRoute(
+            origine: origine,
+            points: EmergencyPlacesRepository.alleger(r.geometry),
+            distanceKm: r.distanceKm,
+          ),
         ),
-      ));
+      );
     } catch (_) {}
   }
 
@@ -149,11 +150,13 @@ class _EmergencyRouteScreenState extends State<EmergencyRouteScreen> {
     final moi = _moi;
     if (!_mapPrete || _cadre || moi == null) return;
     _cadre = true;
-    _map.fitCamera(CameraFit.coordinates(
-      coordinates: [moi, _lieu.position],
-      padding: const EdgeInsets.all(60),
-      maxZoom: 17,
-    ));
+    _map.fitCamera(
+      CameraFit.coordinates(
+        coordinates: [moi, _lieu.position],
+        padding: const EdgeInsets.all(60),
+        maxZoom: 17,
+      ),
+    );
   }
 
   String _formatDistance(double m) =>
@@ -166,14 +169,18 @@ class _EmergencyRouteScreenState extends State<EmergencyRouteScreen> {
     final lignes = <LatLng>[
       if (_route.length >= 2)
         ..._route
-      else if (moi != null) ...[moi, _lieu.position],
+      else if (moi != null) ...[
+        moi,
+        _lieu.position,
+      ],
     ];
 
     return Scaffold(
       appBar: AppBar(title: const Text('Aller vers les secours')),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          final lateral = constraints.maxWidth >= 720 ||
+          final lateral =
+              constraints.maxWidth >= 720 ||
               constraints.maxWidth > constraints.maxHeight;
           final carte = _carte(moi, lignes);
           final panneau = _panneau(moi, pays, lateral: lateral);
@@ -215,45 +222,53 @@ class _EmergencyRouteScreenState extends State<EmergencyRouteScreen> {
           tileProvider: _tuiles,
         ),
         if (lignes.length >= 2)
-          PolylineLayer(polylines: [
-            Polyline(
-              points: lignes,
-              color:
-                  _routeReelle ? AppTheme.primaryColor : AppTheme.warningColor,
-              strokeWidth: 6,
-              borderColor: Colors.white,
-              borderStrokeWidth: 2,
-            ),
-          ]),
-        MarkerLayer(markers: [
-          Marker(
-            point: _lieu.position,
-            width: 52,
-            height: 52,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                border: Border.all(color: _lieu.kind.couleur, width: 3.5),
+          PolylineLayer(
+            polylines: [
+              Polyline(
+                points: lignes,
+                color: _routeReelle
+                    ? AppTheme.primaryColor
+                    : AppTheme.warningColor,
+                strokeWidth: 6,
+                borderColor: Colors.white,
+                borderStrokeWidth: 2,
               ),
-              child:
-                  Icon(_lieu.kind.icone, color: _lieu.kind.couleur, size: 28),
-            ),
+            ],
           ),
-          if (moi != null)
+        MarkerLayer(
+          markers: [
             Marker(
-              point: moi,
-              width: 32,
-              height: 32,
+              point: _lieu.position,
+              width: 52,
+              height: 52,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Colors.white,
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 3),
+                  border: Border.all(color: _lieu.kind.couleur, width: 3.5),
+                ),
+                child: Icon(
+                  _lieu.kind.icone,
+                  color: _lieu.kind.couleur,
+                  size: 28,
                 ),
               ),
             ),
-        ]),
+            if (moi != null)
+              Marker(
+                point: moi,
+                width: 32,
+                height: 32,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 3),
+                  ),
+                ),
+              ),
+          ],
+        ),
         const RichAttributionWidget(
           attributions: [
             TextSourceAttribution('Ã‚Â© OpenStreetMap contributors'),
@@ -299,51 +314,70 @@ class _EmergencyRouteScreenState extends State<EmergencyRouteScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(_lieu.nom,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.w800)),
+              Text(
+                _lieu.nom,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
               const SizedBox(height: 6),
               Align(
                 alignment: Alignment.centerLeft,
                 child: StatusPill(
-                    label: _lieu.kind.libelleLieu,
-                    color: _lieu.kind.couleur,
-                    icon: _lieu.kind.icone),
+                  label: _lieu.kind.libelleLieu,
+                  color: _lieu.kind.couleur,
+                  icon: _lieu.kind.icone,
+                ),
               ),
               const SizedBox(height: 12),
               if (distM == null)
-                Text('Recherche de votre position GPSÃ¢â‚¬Â¦',
-                    style:
-                        TextStyle(fontSize: 16.5, color: context.textSecondary))
+                Text(
+                  'Recherche de votre position GPSÃ¢â‚¬Â¦',
+                  style: TextStyle(
+                    fontSize: 16.5,
+                    color: context.textSecondary,
+                  ),
+                )
               else
                 Row(
                   children: [
                     Transform.rotate(
                       angle: angle,
-                      child: Icon(Icons.navigation_rounded,
-                          size: 64, color: scheme.primary),
+                      child: Icon(
+                        Icons.navigation_rounded,
+                        size: 64,
+                        color: scheme.primary,
+                      ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(_formatDistance(distM),
-                              style: const TextStyle(
-                                  fontSize: 32, fontWeight: FontWeight.w800)),
+                          Text(
+                            _formatDistance(distM),
+                            style: const TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
                           Text(
                             'Direction : ${_points[(((cap! + 22.5) % 360) ~/ 45)]} (${cap.round()}Ã‚Â°)',
                             style: const TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.w700),
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                           Text(
                             enMouvement
                                 ? 'La flÃƒÂ¨che indique oÃƒÂ¹ tourner par rapport ÃƒÂ  votre dÃƒÂ©placement.'
                                 : 'La flÃƒÂ¨che pointe vers le lieu, le nord ÃƒÂ©tant en haut.',
                             style: TextStyle(
-                                fontSize: 14,
-                                height: 1.3,
-                                color: context.textSecondary),
+                              fontSize: 14,
+                              height: 1.3,
+                              color: context.textSecondary,
+                            ),
                           ),
                         ],
                       ),
@@ -355,11 +389,14 @@ class _EmergencyRouteScreenState extends State<EmergencyRouteScreen> {
                 _routeReelle
                     ? 'ItinÃƒÂ©raire routier affichÃƒÂ© (${_horsLigne ? 'enregistrÃƒÂ© sur ce tÃƒÂ©lÃƒÂ©phone' : 'en ligne'}).'
                     : (_horsLigne
-                        ? 'Hors ligne : distance et direction ÃƒÂ  vol d\'oiseau. '
-                            'La route exacte n\'est pas disponible ici.'
-                        : 'Recherche de l\'itinÃƒÂ©raire routierÃ¢â‚¬Â¦'),
+                          ? 'Hors ligne : distance et direction ÃƒÂ  vol d\'oiseau. '
+                                'La route exacte n\'est pas disponible ici.'
+                          : 'Recherche de l\'itinÃƒÂ©raire routierÃ¢â‚¬Â¦'),
                 style: TextStyle(
-                    fontSize: 15, height: 1.35, color: context.textSecondary),
+                  fontSize: 15,
+                  height: 1.35,
+                  color: context.textSecondary,
+                ),
               ),
               const SizedBox(height: 14),
               AppButton(
@@ -372,9 +409,13 @@ class _EmergencyRouteScreenState extends State<EmergencyRouteScreen> {
                     libelle: _lieu.nom,
                   );
                   if (!ok && mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
                         content: Text(
-                            'Aucune application de navigation trouvÃƒÂ©e.')));
+                          'Aucune application de navigation trouvÃƒÂ©e.',
+                        ),
+                      ),
+                    );
                   }
                 },
               ),

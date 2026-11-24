@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 
 /// Cercles concentriques (ondes de signal) : motif de l'espace client.
@@ -66,12 +65,7 @@ class GridPainter extends CustomPainter {
 
 /// Logotype Ã‚Â« montotem Ã‚Â» : Ã‚Â« mon Ã‚Â» lÃƒÂ©ger, Ã‚Â« totem Ã‚Â» en gras.
 class Wordmark extends StatelessWidget {
-  const Wordmark({
-    super.key,
-    required this.color,
-    this.accent,
-    this.size = 22,
-  });
+  const Wordmark({super.key, required this.color, this.accent, this.size = 22});
 
   final Color color;
   final Color? accent;

@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -64,8 +63,7 @@ class SosBanner extends StatelessWidget {
     final radius = BorderRadius.circular(20);
     return Semantics(
       button: true,
-      label:
-          'Urgence vitale. Accident, pompiers, police, ambulance. Ouvrir le SOS',
+      label: 'Urgence vitale. Accident, pompiers, police, ambulance. Ouvrir le SOS',
       excludeSemantics: true,
       onTap: () => context.push('/sos'),
       child: Material(
@@ -86,24 +84,32 @@ class SosBanner extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Urgence vitale ?',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w900)),
+                      Text(
+                        'Urgence vitale ?',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
                       SizedBox(height: 2),
                       Text(
-                          'Accident, pompiers, police, ambulance : appuyez ici',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              height: 1.3)),
+                        'Accident, pompiers, police, ambulance : appuyez ici',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          height: 1.3,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                Icon(Icons.chevron_right_rounded,
-                    color: Colors.white, size: 32),
+                Icon(
+                  Icons.chevron_right_rounded,
+                  color: Colors.white,
+                  size: 32,
+                ),
               ],
             ),
           ),
@@ -126,8 +132,9 @@ class SosLink extends StatelessWidget {
       icon: const Icon(Icons.emergency_rounded, size: 24),
       label: const Text('Urgence ? SOS'),
       style: TextButton.styleFrom(
-        foregroundColor:
-            dark ? AppColors.emergencyTextDark : AppColors.emergencyStrong,
+        foregroundColor: dark
+            ? AppColors.emergencyTextDark
+            : AppColors.emergencyStrong,
         minimumSize: const Size(64, _sosMinTap),
         textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w900),
       ),
@@ -204,8 +211,9 @@ class _SosOverlayState extends State<SosOverlay> {
                   final maxTop = (c.maxHeight - safe.bottom - 168)
                       .clamp(minTop, double.infinity)
                       .toDouble();
-                  final top =
-                      (c.maxHeight * _pos).clamp(minTop, maxTop).toDouble();
+                  final top = (c.maxHeight * _pos)
+                      .clamp(minTop, maxTop)
+                      .toDouble();
 
                   return Stack(
                     children: [

@@ -69,10 +69,7 @@ class RouteResult {
   }
 
   /// Copie avec de nouveaux paramètres potentiels
-  RouteResult copyWith({
-    int? index,
-    bool? isFallback,
-  }) {
+  RouteResult copyWith({int? index, bool? isFallback}) {
     return RouteResult(
       index: index ?? this.index,
       distanceMeters: distanceMeters,
@@ -110,7 +107,9 @@ class RoutingService {
         '$_baseUrl/$profile/${origin.longitude},${origin.latitude};${destination.longitude},${destination.latitude}?overview=full&geometries=geojson&alternatives=${alternatives > 0 ? 'true' : 'false'}',
       );
 
-      final response = await http.get(url).timeout(
+      final response = await http
+          .get(url)
+          .timeout(
             const Duration(seconds: 15),
             onTimeout: () => throw Exception('Timeout du service de routing'),
           );
@@ -141,14 +140,16 @@ class RoutingService {
         }).toList();
 
         final distance = route['distance'] as double;
-        results.add(RouteResult(
-          index: i,
-          distanceMeters: distance,
-          durationSeconds: route['duration'] as double,
-          geometry: points,
-          summary: '${(distance / 1000).toStringAsFixed(1)} km',
-          isFallback: false, // Par défaut, ce n'est pas un fallback
-        ));
+        results.add(
+          RouteResult(
+            index: i,
+            distanceMeters: distance,
+            durationSeconds: route['duration'] as double,
+            geometry: points,
+            summary: '${(distance / 1000).toStringAsFixed(1)} km',
+            isFallback: false, // Par défaut, ce n'est pas un fallback
+          ),
+        );
       }
 
       // Trier par durée (le plus rapide en premier)
@@ -210,7 +211,8 @@ class RoutingService {
     final deltaLat = (point2.latitude - point1.latitude) * (math.pi / 180);
     final deltaLon = (point2.longitude - point1.longitude) * (math.pi / 180);
 
-    final a = math.sin(deltaLat / 2) * math.sin(deltaLat / 2) +
+    final a =
+        math.sin(deltaLat / 2) * math.sin(deltaLat / 2) +
         math.cos(lat1) *
             math.cos(lat2) *
             math.sin(deltaLon / 2) *

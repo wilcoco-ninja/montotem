@@ -29,10 +29,12 @@ class AdminService {
     try {
       final rows = await _sb
           .from('profiles')
-          .select('id, phone, role, inscription_complete, first_name, '
-              'last_name, photo_profil_url, '
-              'providers!providers_id_fkey(business_name, metier, ville, '
-              'statut_validation, latitude, longitude, fin_abonnement)')
+          .select(
+            'id, phone, role, inscription_complete, first_name, '
+            'last_name, photo_profil_url, '
+            'providers!providers_id_fkey(business_name, metier, ville, '
+            'statut_validation, latitude, longitude, fin_abonnement)',
+          )
           .order('created_at', ascending: false)
           .range(page * taille, (page + 1) * taille - 1);
       return rows.map<AppUser>((row) {
@@ -59,7 +61,9 @@ class AdminService {
     bool pendingOnly = false,
   }) async {
     try {
-      var query = _sb.from('providers').select(
+      var query = _sb
+          .from('providers')
+          .select(
             '*, profiles!providers_id_fkey(first_name, last_name, phone, email, photo_profil_url)',
           );
       if (pendingOnly) {
@@ -105,8 +109,9 @@ class AdminService {
     }
   }
 
-  Future<List<Prestataire>> obtenirPrestataires(
-      {bool pendingOnly = false}) async {
+  Future<List<Prestataire>> obtenirPrestataires({
+    bool pendingOnly = false,
+  }) async {
     final rows = await obtenirPrestatairesBrut(pendingOnly: pendingOnly);
     return rows.map((map) {
       final user =
@@ -135,7 +140,6 @@ class AdminService {
             (map['clients_insatisfaits'] as num?)?.toInt() ?? 0,
         missionsCompletees: (map['missions_completees'] as num?)?.toInt() ?? 0,
         statutMission: map['statut_mission'] as String?,
-
       );
     }).toList();
   }
@@ -144,20 +148,19 @@ class AdminService {
       _definirStatut(id, 'approved');
 
   Future<void> rejeterPrestataire(String id, {String? motif}) => _definirStatut(
-        id,
-        'rejected',
-        motif: (motif == null || motif.trim().isEmpty)
-            ? 'Dossier non conforme'
-            : motif.trim(),
-      );
+    id,
+    'rejected',
+    motif: (motif == null || motif.trim().isEmpty)
+        ? 'Dossier non conforme'
+        : motif.trim(),
+  );
 
   Future<void> _definirStatut(String id, String statut, {String? motif}) async {
     try {
-      await _sb.rpc('admin_set_provider_status', params: {
-        'p_provider_id': id,
-        'p_status': statut,
-        'p_reason': motif,
-      });
+      await _sb.rpc(
+        'admin_set_provider_status',
+        params: {'p_provider_id': id, 'p_status': statut, 'p_reason': motif},
+      );
     } on PostgrestException catch (e) {
       developer.log('Statut prestataire', error: e, name: 'AdminService');
       throw Exception(_msg(e));
@@ -168,7 +171,9 @@ class AdminService {
     String? statut,
   }) async {
     try {
-      var query = _sb.from('subscription_requests').select(
+      var query = _sb
+          .from('subscription_requests')
+          .select(
             '*, providers(business_name, metier, ville, statut_validation, '
             'profiles!providers_id_fkey(first_name, last_name, phone, email))',
           );
@@ -197,11 +202,14 @@ class AdminService {
     String? motif,
   }) async {
     try {
-      await _sb.rpc('admin_review_subscription', params: {
-        'p_request_id': requestId,
-        'p_approve': approuver,
-        'p_reason': motif,
-      });
+      await _sb.rpc(
+        'admin_review_subscription',
+        params: {
+          'p_request_id': requestId,
+          'p_approve': approuver,
+          'p_reason': motif,
+        },
+      );
     } on PostgrestException catch (e) {
       developer.log('Revue abonnement', error: e, name: 'AdminService');
       throw Exception(_msg(e));

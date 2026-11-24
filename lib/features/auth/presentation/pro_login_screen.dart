@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -103,7 +102,8 @@ class _ProLoginScreenState extends State<ProLoginScreen> {
 
     return AuthShell(
       title: 'Espace prestataire',
-      subtitle: 'Connectez-vous pour recevoir vos missions et gÃƒÂ©rer '
+      subtitle:
+          'Connectez-vous pour recevoir vos missions et gÃƒÂ©rer '
           'vos prestations et vos prix.',
       icon: Icons.handyman_outlined,
       onBack: _loading ? null : () => context.go('/explore'),

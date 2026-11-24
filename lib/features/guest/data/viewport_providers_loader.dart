@@ -17,7 +17,7 @@ import 'package:montotem/features/tracking/domain/prestataire_model.dart';
 ///   migration 005 n'est pas appliquée.
 class ViewportProvidersLoader extends ChangeNotifier {
   ViewportProvidersLoader({SupabaseClient? client})
-      : _client = client ?? Supabase.instance.client;
+    : _client = client ?? Supabase.instance.client;
 
   final SupabaseClient _client;
 
@@ -83,13 +83,16 @@ class ViewportProvidersLoader extends ChangeNotifier {
       try {
         // Plus de 360° visibles (zoom très éloigné) : le monde entier.
         final worldWide = (z.east - z.west) >= 360;
-        final data = await _client.rpc('providers_in_bounds', params: {
-          'p_min_lat': z.south.clamp(-90.0, 90.0),
-          'p_min_lng': worldWide ? -180.0 : _wrapLng(z.west),
-          'p_max_lat': z.north.clamp(-90.0, 90.0),
-          'p_max_lng': worldWide ? 180.0 : _wrapLng(z.east),
-          'p_limit': 400,
-        }) as List;
+        final data = await _client.rpc(
+          'providers_in_bounds',
+          params: {
+            'p_min_lat': z.south.clamp(-90.0, 90.0),
+            'p_min_lng': worldWide ? -180.0 : _wrapLng(z.west),
+            'p_max_lat': z.north.clamp(-90.0, 90.0),
+            'p_max_lng': worldWide ? 180.0 : _wrapLng(z.east),
+            'p_limit': 400,
+          },
+        ) as List;
         return data.whereType<Map>().map(Map<String, dynamic>.from).toList();
       } on PostgrestException catch (e) {
         // 42883 / PGRST202 : fonction absente => migration 005 pas encore faite.
@@ -143,8 +146,12 @@ class ViewportProvidersLoader extends ChangeNotifier {
     if (_byId.length <= _maxStored) return;
     const dist = Distance();
     final sorted = _byId.values.toList()
-      ..sort((a, b) => dist(center, LatLng(a.latitude, a.longitude))
-          .compareTo(dist(center, LatLng(b.latitude, b.longitude))));
+      ..sort(
+        (a, b) => dist(
+          center,
+          LatLng(a.latitude, a.longitude),
+        ).compareTo(dist(center, LatLng(b.latitude, b.longitude))),
+      );
     for (final p in sorted.skip(_maxStored)) {
       _byId.remove(p.id);
       _vehicules.remove(p.id);

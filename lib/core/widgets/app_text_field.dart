@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -73,8 +72,8 @@ class _AppTextFieldState extends State<AppTextField> {
             onPressed: () => setState(() => _hidden = !_hidden),
           )
         : (widget.readOnly
-            ? const Icon(Icons.lock_outline, size: 18)
-            : widget.suffix);
+              ? const Icon(Icons.lock_outline, size: 18)
+              : widget.suffix);
 
     return TextFormField(
       controller: widget.controller,
@@ -102,10 +101,8 @@ class _AppTextFieldState extends State<AppTextField> {
         prefixIcon: widget.icon != null ? Icon(widget.icon, size: 22) : null,
         suffixIcon: suffix,
         fillColor: widget.readOnly
-            ? Theme.of(context)
-                .colorScheme
-                .surfaceContainerHighest
-                .withValues(alpha: 0.5)
+            ? Theme.of(context).colorScheme.surfaceContainerHighest
+                  .withValues(alpha: 0.5)
             : null,
       ),
     );

@@ -142,11 +142,14 @@ class QuickAuthService {
     required String lastName,
   }) async {
     try {
-      await _sb.rpc('register_profile', params: {
-        'p_role': 'client',
-        'p_first_name': firstName.trim(),
-        'p_last_name': lastName.trim(),
-      });
+      await _sb.rpc(
+        'register_profile',
+        params: {
+          'p_role': 'client',
+          'p_first_name': firstName.trim(),
+          'p_last_name': lastName.trim(),
+        },
+      );
     } on PostgrestException catch (e) {
       developer.log('registerClient', error: e, name: 'QuickAuthService');
       throw QuickAuthException(_rpcMessage(e));
@@ -168,19 +171,22 @@ class QuickAuthService {
     required double longitude,
   }) async {
     try {
-      await _sb.rpc('register_profile', params: {
-        'p_role': 'provider',
-        'p_first_name': firstName.trim(),
-        'p_last_name': lastName.trim(),
-        'p_photo_profil_url': photoProfilUrl,
-        'p_business_name': businessName.trim(),
-        'p_metier': metier,
-        'p_ville': ville.trim(),
-        'p_ifu': ifu.trim(),
-        'p_photo_cni_url': photoCniUrl,
-        'p_latitude': latitude,
-        'p_longitude': longitude,
-      });
+      await _sb.rpc(
+        'register_profile',
+        params: {
+          'p_role': 'provider',
+          'p_first_name': firstName.trim(),
+          'p_last_name': lastName.trim(),
+          'p_photo_profil_url': photoProfilUrl,
+          'p_business_name': businessName.trim(),
+          'p_metier': metier,
+          'p_ville': ville.trim(),
+          'p_ifu': ifu.trim(),
+          'p_photo_cni_url': photoCniUrl,
+          'p_latitude': latitude,
+          'p_longitude': longitude,
+        },
+      );
     } on PostgrestException catch (e) {
       developer.log('registerProvider', error: e, name: 'QuickAuthService');
       throw QuickAuthException(_rpcMessage(e));

@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -41,7 +40,8 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
       final response = await _sb
           .from('profiles')
           .select(
-              'id, first_name, last_name, phone, email, admin_role, is_super_admin, created_at')
+            'id, first_name, last_name, phone, email, admin_role, is_super_admin, created_at',
+          )
           .eq('is_admin', true)
           .order('created_at', ascending: false);
 
@@ -57,7 +57,8 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _errorMessage = 'Erreur lors du chargement de lÃ¢â‚¬â„¢ÃƒÂ©quipe admin : $e';
+        _errorMessage =
+            'Erreur lors du chargement de lÃ¢â‚¬â„¢ÃƒÂ©quipe admin : $e';
         _isLoading = false;
         _isRefreshing = false;
       });
@@ -70,8 +71,10 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          content:
-              Text(texte, style: const TextStyle(fontWeight: FontWeight.w700)),
+          content: Text(
+            texte,
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
           backgroundColor: erreur
               ? Theme.of(context).colorScheme.error
               : Theme.of(context).colorScheme.secondary,
@@ -80,18 +83,23 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
       );
   }
 
-  Future<void> _creerOuModifierAdmin(
-      {Map<String, dynamic>? adminExistant}) async {
+  Future<void> _creerOuModifierAdmin({
+    Map<String, dynamic>? adminExistant,
+  }) async {
     final isNew = adminExistant == null;
     final idAdmin = adminExistant?['id'] as String?;
-    final emailController =
-        TextEditingController(text: adminExistant?['email'] as String? ?? '');
+    final emailController = TextEditingController(
+      text: adminExistant?['email'] as String? ?? '',
+    );
     final prenomController = TextEditingController(
-        text: adminExistant?['first_name'] as String? ?? '');
+      text: adminExistant?['first_name'] as String? ?? '',
+    );
     final nomController = TextEditingController(
-        text: adminExistant?['last_name'] as String? ?? '');
-    final telController =
-        TextEditingController(text: adminExistant?['phone'] as String? ?? '');
+      text: adminExistant?['last_name'] as String? ?? '',
+    );
+    final telController = TextEditingController(
+      text: adminExistant?['phone'] as String? ?? '',
+    );
     final passwordController = TextEditingController();
 
     String roleSelectionne =
@@ -109,10 +117,13 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Text(
-            isNew ? 'CrÃƒÂ©er un nouveau poste admin' : 'Modifier le rÃƒÂ´le admin',
+            isNew
+                ? 'CrÃƒÂ©er un nouveau poste admin'
+                : 'Modifier le rÃƒÂ´le admin',
             style: const TextStyle(fontWeight: FontWeight.w800),
           ),
           content: SingleChildScrollView(
@@ -168,23 +179,29 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
                     textInputAction: TextInputAction.done,
                   ),
                   const SizedBox(height: 16),
-                  const Text('RÃƒÂ´le et permissions de lÃ¢â‚¬â„¢ÃƒÂ©quipe :',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 14)),
+                  const Text(
+                    'RÃƒÂ´le et permissions de lÃ¢â‚¬â„¢ÃƒÂ©quipe :',
+                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
+                  ),
                   const SizedBox(height: 8),
                   DropdownButtonFormField<String>(
                     initialValue: roleSelectionne,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14)),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 14, vertical: 12),
+                        horizontal: 14,
+                        vertical: 12,
+                      ),
                     ),
                     items: rolesDisponibles.entries.map((e) {
                       return DropdownMenuItem(
                         value: e.key,
-                        child: Text(e.value,
-                            style: const TextStyle(fontSize: 13.5)),
+                        child: Text(
+                          e.value,
+                          style: const TextStyle(fontSize: 13.5),
+                        ),
                       );
                     }).toList(),
                     onChanged: (val) {
@@ -200,8 +217,10 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child:
-                  const Text('Annuler', style: TextStyle(color: Colors.grey)),
+              child: const Text(
+                'Annuler',
+                style: TextStyle(color: Colors.grey),
+              ),
             ),
             FilledButton(
               onPressed: () async {
@@ -212,8 +231,9 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
                 if (isNew &&
                     (email.isEmpty || passwordController.text.length < 8)) {
                   _afficherMessage(
-                      'Email et mot de passe (8+ car.) obligatoires.',
-                      erreur: true);
+                    'Email et mot de passe (8+ car.) obligatoires.',
+                    erreur: true,
+                  );
                   return;
                 }
 
@@ -226,28 +246,35 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
                         'first_name': prenom,
                         'last_name': nom,
                         'is_admin': true,
-                        'admin_role': roleSelectionne
+                        'admin_role': roleSelectionne,
                       },
                     );
                     if (authRes.user == null) {
-                      throw Exception('Ãƒâ€°chec de crÃƒÂ©ation du compte auth.');
+                      throw Exception(
+                        'Ãƒâ€°chec de crÃƒÂ©ation du compte auth.',
+                      );
                     }
                   } else if (idAdmin != null) {
-                    await _sb.from('profiles').update({
-                      'first_name': prenom,
-                      'last_name': nom,
-                      'phone': telController.text.trim(),
-                      'admin_role': roleSelectionne,
-                      'is_super_admin': roleSelectionne == 'super_admin',
-                    }).eq('id', idAdmin);
+                    await _sb
+                        .from('profiles')
+                        .update({
+                          'first_name': prenom,
+                          'last_name': nom,
+                          'phone': telController.text.trim(),
+                          'admin_role': roleSelectionne,
+                          'is_super_admin': roleSelectionne == 'super_admin',
+                        })
+                        .eq('id', idAdmin);
                   }
 
                   if (!ctx.mounted) return;
                   Navigator.pop(ctx, true);
                   await _chargerAdmins(silencieux: true);
-                  _afficherMessage(isNew
-                      ? 'Compte admin crÃƒÂ©ÃƒÂ© avec succÃƒÂ¨s.'
-                      : 'RÃƒÂ´le mis ÃƒÂ  jour.');
+                  _afficherMessage(
+                    isNew
+                        ? 'Compte admin crÃƒÂ©ÃƒÂ© avec succÃƒÂ¨s.'
+                        : 'RÃƒÂ´le mis ÃƒÂ  jour.',
+                  );
                 } catch (e) {
                   _afficherMessage('Erreur : $e', erreur: true);
                 }
@@ -276,20 +303,24 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('RÃƒÂ©voquer les accÃƒÂ¨s de $nomComplet ?',
-            style: const TextStyle(fontWeight: FontWeight.w800)),
+        title: Text(
+          'RÃƒÂ©voquer les accÃƒÂ¨s de $nomComplet ?',
+          style: const TextStyle(fontWeight: FontWeight.w800),
+        ),
         content: const Text(
           'Cet utilisateur ne pourra plus se connecter au tableau de bord administrateur de MonTotem.',
           style: TextStyle(fontSize: 14.5, height: 1.4),
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Annuler')),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Annuler'),
+          ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: FilledButton.styleFrom(
-                backgroundColor: Theme.of(ctx).colorScheme.error),
+              backgroundColor: Theme.of(ctx).colorScheme.error,
+            ),
             child: const Text('RÃƒÂ©voquer lÃ¢â‚¬â„¢accÃƒÂ¨s'),
           ),
         ],
@@ -299,11 +330,14 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
     if (confirme != true) return;
 
     try {
-      await _sb.from('profiles').update({
-        'is_admin': false,
-        'admin_role': null,
-        'is_super_admin': false,
-      }).eq('id', admin['id'] as Object);
+      await _sb
+          .from('profiles')
+          .update({
+            'is_admin': false,
+            'admin_role': null,
+            'is_super_admin': false,
+          })
+          .eq('id', admin['id'] as Object);
 
       _afficherMessage('AccÃƒÂ¨s admin rÃƒÂ©voquÃƒÂ© pour $nomComplet.');
       await _chargerAdmins(silencieux: true);
@@ -356,7 +390,9 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
       return Center(
         child: SingleChildScrollView(
           child: ErrorState(
-              message: _errorMessage!, onRetry: () => _chargerAdmins()),
+            message: _errorMessage!,
+            onRetry: () => _chargerAdmins(),
+          ),
         ),
       );
     }
@@ -371,8 +407,7 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
             EmptyState(
               icon: Icons.admin_panel_settings_outlined,
               title: 'Aucun administrateur secondaire',
-              message:
-                  'CrÃƒÂ©ez des postes administratifs pour dÃƒÂ©lÃƒÂ©guer la gestion de MonTotem.',
+              message: 'CrÃƒÂ©ez des postes administratifs pour dÃƒÂ©lÃƒÂ©guer la gestion de MonTotem.',
             ),
           ],
         ),
@@ -444,7 +479,9 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
                       ? ((admin['email'] as String?) ?? 'Admin')
                       : nomComplet,
                   style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w800),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
                 const SizedBox(height: 2),
                 Text(
@@ -470,12 +507,16 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
             },
             itemBuilder: (context) => [
               const PopupMenuItem(
-                  value: 'edit', child: Text('Modifier le poste')),
+                value: 'edit',
+                child: Text('Modifier le poste'),
+              ),
               if (!estSuperAdmin)
                 PopupMenuItem(
                   value: 'revoke',
-                  child: Text('RÃƒÂ©voquer lÃ¢â‚¬â„¢accÃƒÂ¨s',
-                      style: TextStyle(color: scheme.error)),
+                  child: Text(
+                    'RÃƒÂ©voquer lÃ¢â‚¬â„¢accÃƒÂ¨s',
+                    style: TextStyle(color: scheme.error),
+                  ),
                 ),
             ],
           ),

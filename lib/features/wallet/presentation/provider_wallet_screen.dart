@@ -133,8 +133,9 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
       );
       if (!mounted) return;
       if (res is Map) {
-        setState(() => _cashEncaisse =
-            ((res['rides_cash_fcfa'] as num?) ?? 0).toInt());
+        setState(
+          () => _cashEncaisse = ((res['rides_cash_fcfa'] as num?) ?? 0).toInt(),
+        );
       }
     } catch (_) {
       if (mounted) setState(() => _cashEncaisse = null);
@@ -176,11 +177,14 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
       ),
     );
     if (ok == true && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'Recharge déclarée. L\'administrateur la vérifie puis crédite votre wallet.'),
-        duration: Duration(seconds: 6),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Recharge déclarée. L\'administrateur la vérifie puis crédite votre wallet.',
+          ),
+          duration: Duration(seconds: 6),
+        ),
+      );
       _charger(silencieux: true);
     }
   }
@@ -253,9 +257,9 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
           IconButton(
             tooltip: 'Grand livre (audit)',
             icon: const Icon(Icons.receipt_long_outlined),
-            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => const LedgerHistoryScreen(),
-            )),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const LedgerHistoryScreen()),
+            ),
           ),
         ],
       ),
@@ -309,10 +313,7 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
                 const SectionTitle('Recharger mon wallet'),
                 _carteRecharge(snap),
               ],
-              if (demande != null) ...[
-                const SizedBox(height: 12),
-                demande,
-              ],
+              if (demande != null) ...[const SizedBox(height: 12), demande],
               const SectionTitle('Historique'),
               ..._historique(snap),
             ],
@@ -339,8 +340,10 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
             child: Text(
               'Hors ligne : dernier solde connu le '
               '${_format.format(snap.fetchedAt)}.',
-              style:
-                  const TextStyle(fontSize: 15.5, fontWeight: FontWeight.w700),
+              style: const TextStyle(
+                fontSize: 15.5,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ],
@@ -358,11 +361,13 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
     if (w.blocked) {
       detail = 'Les nouvelles demandes sont suspendues.';
     } else if (balanceEffectifNegatif(w)) {
-      detail = 'Marge avant blocage : ${formaterFcfaSigne(marge)} '
+      detail =
+          'Marge avant blocage : ${formaterFcfaSigne(marge)} '
           '(seuil ${formaterFcfaSigne(snap.config.seuilBlocageFcfa)}).';
     } else {
-      detail = 'Paiements Mobile Money encaissés par MonTotem pour vous : '
-              '${formaterFcfaSigne(_soldeMomo(snap))} (retirables).';
+      detail =
+          'Paiements Mobile Money encaissés par MonTotem pour vous : '
+          '${formaterFcfaSigne(_soldeMomo(snap))} (retirables).';
     }
 
     return SoftCard(
@@ -373,9 +378,10 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
           Row(
             children: [
               Expanded(
-                child: Text('Solde du wallet',
-                    style:
-                        TextStyle(fontSize: 16, color: context.textSecondary)),
+                child: Text(
+                  'Solde du wallet',
+                  style: TextStyle(fontSize: 16, color: context.textSecondary),
+                ),
               ),
               StatusPill(
                 label: w.blocked ? 'Bloqué' : 'Actif',
@@ -393,13 +399,21 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
             child: Text(
               formaterFcfaSigne(w.balanceFcfa),
               style: TextStyle(
-                  fontSize: 38, fontWeight: FontWeight.w800, color: fg),
+                fontSize: 38,
+                fontWeight: FontWeight.w800,
+                color: fg,
+              ),
             ),
           ),
           const SizedBox(height: 6),
-          Text(detail,
-              style: TextStyle(
-                  fontSize: 15, height: 1.35, color: context.textSecondary)),
+          Text(
+            detail,
+            style: TextStyle(
+              fontSize: 15,
+              height: 1.35,
+              color: context.textSecondary,
+            ),
+          ),
         ],
       ),
     );
@@ -479,9 +493,14 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Plafond de dette cash atteint',
-                    style: TextStyle(
-                        fontSize: 16.5, fontWeight: FontWeight.w800, color: fg)),
+                Text(
+                  'Plafond de dette cash atteint',
+                  style: TextStyle(
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w800,
+                    color: fg,
+                  ),
+                ),
                 const SizedBox(height: 4),
                 Text(
                   'Vos nouvelles courses payées en cash sont refusées tant que '
@@ -490,7 +509,10 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
                   'moins ${formaterFcfaSigne(aPayer)} par Mobile Money pour '
                   'recevoir de nouveau des courses cash.',
                   style: TextStyle(
-                      fontSize: 15, height: 1.4, color: context.textSecondary),
+                    fontSize: 15,
+                    height: 1.4,
+                    color: context.textSecondary,
+                  ),
                 ),
                 const SizedBox(height: 10),
                 AppButton(
@@ -530,9 +552,14 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Compte bloqué',
-                    style: TextStyle(
-                        fontSize: 17, fontWeight: FontWeight.w800, color: fg)),
+                Text(
+                  'Compte bloqué',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800,
+                    color: fg,
+                  ),
+                ),
                 const SizedBox(height: 4),
                 Text(
                   'Votre solde est passé sous '
@@ -541,7 +568,10 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
                   'être débloqué automatiquement, ou '
                   '${formaterFcfaSigne(pourEquilibrer)} pour repartir à zéro.',
                   style: TextStyle(
-                      fontSize: 15, height: 1.4, color: context.textSecondary),
+                    fontSize: 15,
+                    height: 1.4,
+                    color: context.textSecondary,
+                  ),
                 ),
               ],
             ),
@@ -562,8 +592,10 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
             child: Icon(Icons.chevron_right_rounded, size: 22),
           ),
           Expanded(
-            child:
-                Text(texte, style: const TextStyle(fontSize: 16, height: 1.4)),
+            child: Text(
+              texte,
+              style: const TextStyle(fontSize: 16, height: 1.4),
+            ),
           ),
         ],
       ),
@@ -576,22 +608,31 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _puce(
-              'Course payée en cash : ${c.commissionCashPct} % du prix '
-              'augmentent votre commission due. Vous gardez 100 % du cash '
-              'remis par le client, mais votre dette grandit.'),
-          _puce('Course payée en Mobile Money : ${c.commissionMomoPct} % '
-              'sont retenus automatiquement sur votre solde MoMo. Le client '
-              'vous paie directement, MonTotem prélève sa commission sur '
-              'votre solde encaissable.'),
-          _puce('Frais de déplacement d\'une intervention : '
-              '${c.commissionTravelPct} % sont déduits de votre wallet '
-              'quand vous confirmez la réception du paiement.'),
-          _puce('Si votre dette cash atteint votre plafond, les nouvelles '
-              'courses payées en cash sont refusées jusqu\'au paiement de '
-              'votre commission par Mobile Money.'),
-          _puce('Si votre solde passe sous '
-              '${formaterFcfaSigne(c.seuilBlocageFcfa)}, vous ne recevez plus '
-              'de demandes jusqu\'à la recharge.'),
+            'Course payée en cash : ${c.commissionCashPct} % du prix '
+            'augmentent votre commission due. Vous gardez 100 % du cash '
+            'remis par le client, mais votre dette grandit.',
+          ),
+          _puce(
+            'Course payée en Mobile Money : ${c.commissionMomoPct} % '
+            'sont retenus automatiquement sur votre solde MoMo. Le client '
+            'vous paie directement, MonTotem prélève sa commission sur '
+            'votre solde encaissable.',
+          ),
+          _puce(
+            'Frais de déplacement d\'une intervention : '
+            '${c.commissionTravelPct} % sont déduits de votre wallet '
+            'quand vous confirmez la réception du paiement.',
+          ),
+          _puce(
+            'Si votre dette cash atteint votre plafond, les nouvelles '
+            'courses payées en cash sont refusées jusqu\'au paiement de '
+            'votre commission par Mobile Money.',
+          ),
+          _puce(
+            'Si votre solde passe sous '
+            '${formaterFcfaSigne(c.seuilBlocageFcfa)}, vous ne recevez plus '
+            'de demandes jusqu\'à la recharge.',
+          ),
         ],
       ),
     );
@@ -610,7 +651,10 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
             '2. Déclarez votre paiement avec la référence reçue par SMS.\n'
             '3. Un administrateur vérifie puis crédite votre wallet.',
             style: TextStyle(
-                fontSize: 15.5, height: 1.45, color: context.textSecondary),
+              fontSize: 15.5,
+              height: 1.45,
+              color: context.textSecondary,
+            ),
           ),
           const SizedBox(height: 12),
           for (final c in _comptes)
@@ -628,15 +672,25 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(c.libelleOperateur,
-                              style: TextStyle(
-                                  fontSize: 14, color: context.textSecondary)),
-                          Text(c.numero,
-                              style: const TextStyle(
-                                  fontSize: 19, fontWeight: FontWeight.w800)),
+                          Text(
+                            c.libelleOperateur,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: context.textSecondary,
+                            ),
+                          ),
+                          Text(
+                            c.numero,
+                            style: const TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
                           if (c.titulaire.isNotEmpty)
-                            Text('Au nom de ${c.titulaire}',
-                                style: const TextStyle(fontSize: 14)),
+                            Text(
+                              'Au nom de ${c.titulaire}',
+                              style: const TextStyle(fontSize: 14),
+                            ),
                         ],
                       ),
                     ),
@@ -706,21 +760,31 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
                       ? 'Recharge en cours de vérification'
                       : 'Dernière recharge refusée',
                   style: TextStyle(
-                      fontSize: 16.5, fontWeight: FontWeight.w800, color: fg),
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w800,
+                    color: fg,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   '${formaterFcfaSigne(d.amountFcfa)} · ${d.libelleOperateur} · '
                   'réf. ${d.transactionRef}',
                   style: TextStyle(
-                      fontSize: 15, height: 1.35, color: context.textSecondary),
+                    fontSize: 15,
+                    height: 1.35,
+                    color: context.textSecondary,
+                  ),
                 ),
                 if (!enAttente && motif.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
-                    child: Text('Motif : $motif',
-                        style: const TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w700)),
+                    child: Text(
+                      'Motif : $motif',
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
               ],
             ),
@@ -780,18 +844,27 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(t.libelle,
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w800)),
-                Text(_format.format(t.createdAt.toLocal()),
-                    style:
-                        TextStyle(fontSize: 14, color: context.textSecondary)),
+                Text(
+                  t.libelle,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                Text(
+                  _format.format(t.createdAt.toLocal()),
+                  style: TextStyle(fontSize: 14, color: context.textSecondary),
+                ),
                 if (complement.isNotEmpty)
-                  Text(complement,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 13.5, color: context.textSecondary)),
+                  Text(
+                    complement,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 13.5,
+                      color: context.textSecondary,
+                    ),
+                  ),
               ],
             ),
           ),
@@ -802,12 +875,15 @@ class _ProviderWalletScreenState extends State<ProviderWalletScreen> {
               Text(
                 '${t.estCredit ? '+' : ''}${formaterFcfaSigne(t.amountFcfa)}',
                 style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                    color: context.readable(couleur)),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                  color: context.readable(couleur),
+                ),
               ),
-              Text('Solde ${formaterFcfaSigne(t.balanceAfter)}',
-                  style: TextStyle(fontSize: 13, color: context.textSecondary)),
+              Text(
+                'Solde ${formaterFcfaSigne(t.balanceAfter)}',
+                style: TextStyle(fontSize: 13, color: context.textSecondary),
+              ),
             ],
           ),
         ],
@@ -852,7 +928,9 @@ class _Pave extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                      fontSize: 13.5, fontWeight: FontWeight.w700),
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ],
@@ -870,13 +948,11 @@ class _Pave extends StatelessWidget {
               ),
             ),
           ),
-          Text(sousTitre,
-              style:
-                  TextStyle(fontSize: 12.5, color: context.textSecondary)),
-          if (bouton != null) ...[
-            const SizedBox(height: 8),
-            bouton!,
-          ],
+          Text(
+            sousTitre,
+            style: TextStyle(fontSize: 12.5, color: context.textSecondary),
+          ),
+          if (bouton != null) ...[const SizedBox(height: 8), bouton!],
         ],
       ),
     );
@@ -983,18 +1059,25 @@ class _TopupSheetState extends State<_TopupSheet> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text('Déclarer ma recharge',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800)),
+            const Text(
+              'Déclarer ma recharge',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+            ),
             const SizedBox(height: 6),
             Text(
               'Renseignez le paiement que vous venez d\'envoyer. Votre wallet '
               'est crédité après vérification.',
               style: TextStyle(
-                  fontSize: 16, height: 1.4, color: context.textSecondary),
+                fontSize: 16,
+                height: 1.4,
+                color: context.textSecondary,
+              ),
             ),
             const SizedBox(height: 16),
-            const Text('Opérateur utilisé',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
+            const Text(
+              'Opérateur utilisé',
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 10,
@@ -1002,8 +1085,10 @@ class _TopupSheetState extends State<_TopupSheet> {
               children: [
                 for (final c in widget.comptes)
                   ChoiceChip(
-                    label: Text(c.libelleOperateur,
-                        style: const TextStyle(fontSize: 16)),
+                    label: Text(
+                      c.libelleOperateur,
+                      style: const TextStyle(fontSize: 16),
+                    ),
                     selected: _operateur == c.operateur,
                     onSelected: _envoi
                         ? null
@@ -1094,8 +1179,7 @@ class _PaiementCommissionSheetState extends State<_PaiementCommissionSheet> {
   void initState() {
     super.initState();
     _montant = TextEditingController(text: '${widget.commissionDue}');
-    _clientRequestId =
-        'cashpay-${DateTime.now().microsecondsSinceEpoch}';
+    _clientRequestId = 'cashpay-${DateTime.now().microsecondsSinceEpoch}';
     _montant.addListener(() {
       if (mounted) setState(() {});
     });
@@ -1168,12 +1252,16 @@ class _PaiementCommissionSheetState extends State<_PaiementCommissionSheet> {
       if (!mounted) return;
       final dejaTraite = res is Map && res['deja_traite'] == true;
       Navigator.pop(context, true);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(dejaTraite
-            ? 'Ce paiement a déjà été enregistré.'
-            : 'Commission payée. Votre dette est mise à jour.'),
-        duration: const Duration(seconds: 5),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            dejaTraite
+                ? 'Ce paiement a déjà été enregistré.'
+                : 'Commission payée. Votre dette est mise à jour.',
+          ),
+          duration: const Duration(seconds: 5),
+        ),
+      );
     } on PostgrestException catch (e) {
       if (!mounted) return;
       setState(() => _envoi = false);
@@ -1182,15 +1270,16 @@ class _PaiementCommissionSheetState extends State<_PaiementCommissionSheet> {
       if (!mounted) return;
       setState(() => _envoi = false);
       _msg(
-          'Paiement envoyé mais réponse perdue : rouvrez la feuille pour '
-          'vérifier votre dette avant de payer à nouveau.');
+        'Paiement envoyé mais réponse perdue : rouvrez la feuille pour '
+        'vérifier votre dette avant de payer à nouveau.',
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final payeTotal = int.tryParse(_montant.text.trim()) ==
-        widget.commissionDue;
+    final payeTotal =
+        int.tryParse(_montant.text.trim()) == widget.commissionDue;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
@@ -1199,19 +1288,26 @@ class _PaiementCommissionSheetState extends State<_PaiementCommissionSheet> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text('Payer ma commission',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800)),
+            const Text(
+              'Payer ma commission',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+            ),
             const SizedBox(height: 6),
             Text(
               'Vous avez gardé le cash des courses : envoyez le montant par '
               'Mobile Money pour solder votre commission due '
               '(${formaterFcfaSigne(widget.commissionDue)}).',
               style: TextStyle(
-                  fontSize: 16, height: 1.4, color: context.textSecondary),
+                fontSize: 16,
+                height: 1.4,
+                color: context.textSecondary,
+              ),
             ),
             const SizedBox(height: 16),
-            const Text('Opérateur utilisé',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
+            const Text(
+              'Opérateur utilisé',
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 10,
@@ -1219,8 +1315,10 @@ class _PaiementCommissionSheetState extends State<_PaiementCommissionSheet> {
               children: [
                 for (final o in _operateursPaiement)
                   ChoiceChip(
-                    label: Text(o.libelle,
-                        style: const TextStyle(fontSize: 16)),
+                    label: Text(
+                      o.libelle,
+                      style: const TextStyle(fontSize: 16),
+                    ),
                     selected: _operateur == o.code,
                     onSelected: _envoi
                         ? null
@@ -1260,9 +1358,7 @@ class _PaiementCommissionSheetState extends State<_PaiementCommissionSheet> {
             ),
             const SizedBox(height: 20),
             AppButton(
-              label: payeTotal
-                  ? 'Payer la totalité'
-                  : 'Payer ce montant',
+              label: payeTotal ? 'Payer la totalité' : 'Payer ce montant',
               icon: Icons.send_rounded,
               loading: _envoi,
               onPressed: _envoyer,

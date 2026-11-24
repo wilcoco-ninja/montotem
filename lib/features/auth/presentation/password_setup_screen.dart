@@ -178,8 +178,10 @@ class _PasswordSetupScreenState extends State<PasswordSetupScreen> {
       if (!mounted) return;
 
       if (!ok) {
-        setState(() => _errorMessage =
-            'Code invalide ou expiré. Réessayez ou demandez un nouveau code.');
+        setState(
+          () => _errorMessage =
+              'Code invalide ou expiré. Réessayez ou demandez un nouveau code.',
+        );
         return;
       }
 
@@ -210,8 +212,9 @@ class _PasswordSetupScreenState extends State<PasswordSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final title =
-        widget.isReset ? 'Mot de passe oublié' : 'Sécuriser mon compte';
+    final title = widget.isReset
+        ? 'Mot de passe oublié'
+        : 'Sécuriser mon compte';
     final subtitle = widget.isReset
         ? 'Recevez un code par SMS, puis choisissez un nouveau mot de passe'
         : 'Choisissez un email et un mot de passe pour vous reconnecter sans SMS';
@@ -321,8 +324,9 @@ class _PasswordSetupScreenState extends State<PasswordSetupScreen> {
               ? Icons.check_circle_outline
               : Icons.arrow_forward_rounded,
           loading: _isLoading,
-          onPressed:
-              widget.isReset ? _reinitialiserMotDePasse : _definirMotDePasse,
+          onPressed: widget.isReset
+              ? _reinitialiserMotDePasse
+              : _definirMotDePasse,
         ),
       ],
     ];

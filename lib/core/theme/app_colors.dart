@@ -23,8 +23,9 @@ class AppColors {
   // ── Encre (texte) ────────────────────────────────────────────────────────
   static const Color inkLight = Color(0xFF14202E); // 15,2:1 sur bgLight
   static const Color textSecondaryLight = Color(0xFF3E4C5E); // 8,1:1
-  static const Color textTertiaryLight =
-      Color(0xFF46566B); // 6,9:1 sur bgLight, 7,5:1 sur blanc
+  static const Color textTertiaryLight = Color(
+    0xFF46566B,
+  ); // 6,9:1 sur bgLight, 7,5:1 sur blanc
   static const Color inkDark = Color(0xFFEAF0F7); // 15,1:1 sur bgDark
   static const Color textSecondaryDark = Color(0xFFBDC9D8); // 10,3:1
   static const Color textTertiaryDark = Color(0xFFAEBBCB); // 8,9:1

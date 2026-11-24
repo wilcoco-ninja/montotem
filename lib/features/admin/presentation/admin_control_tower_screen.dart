@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
@@ -133,9 +132,11 @@ class _AdminControlTowerScreenState extends State<AdminControlTowerScreen> {
             onRefresh: _loading ? null : () => _chargerDonnees(),
             missionCount: _missions.length,
             activeCount: _missions
-                .where((m) =>
-                    _statutMission(m).actif ||
-                    _statutMission(m) == MissionStatus.pending)
+                .where(
+                  (m) =>
+                      _statutMission(m).actif ||
+                      _statutMission(m) == MissionStatus.pending,
+                )
                 .length,
           ),
           body: _buildBody(),
@@ -235,10 +236,7 @@ class _McAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: SizedBox(
               width: 16,
               height: 16,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: _MC.info,
-              ),
+              child: CircularProgressIndicator(strokeWidth: 2, color: _MC.info),
             ),
           ),
         IconButton(
@@ -596,9 +594,11 @@ class _MapTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final actives = missions
-        .where((m) =>
-            _statutMission(m).actif ||
-            _statutMission(m) == MissionStatus.pending)
+        .where(
+          (m) =>
+              _statutMission(m).actif ||
+              _statutMission(m) == MissionStatus.pending,
+        )
         .toList();
     final markers = <Marker>[];
     final lines = <Polyline>[];
@@ -611,69 +611,75 @@ class _MapTab extends StatelessWidget {
       if (lat == null || lng == null) continue;
       final client = LatLng(lat, lng);
 
-      markers.add(Marker(
-        point: client,
-        width: 32,
-        height: 32,
-        alignment: Alignment.topCenter,
-        child: GestureDetector(
-          onTap: () => onTap(m),
-          child: Container(
-            decoration: BoxDecoration(
-              color: _MC.danger,
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 2),
-              boxShadow: [
-                BoxShadow(
-                  color: _MC.danger.withValues(alpha: 0.6),
-                  blurRadius: 12,
-                ),
-              ],
-            ),
-            child: const Icon(
-              Icons.location_on_rounded,
-              size: 18,
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ));
-
-      final plat = (m['provider_lat'] as num?)?.toDouble();
-      final plng = (m['provider_lng'] as num?)?.toDouble();
-      if (plat != null && plng != null) {
-        final p = LatLng(plat, plng);
-        lines.add(Polyline(
-          points: [p, client],
-          color: couleur.withValues(alpha: 0.8),
-          strokeWidth: 2,
-        ));
-        markers.add(Marker(
-          point: p,
+      markers.add(
+        Marker(
+          point: client,
           width: 32,
           height: 32,
+          alignment: Alignment.topCenter,
           child: GestureDetector(
             onTap: () => onTap(m),
             child: Container(
               decoration: BoxDecoration(
-                color: couleur,
+                color: _MC.danger,
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.white, width: 2),
                 boxShadow: [
                   BoxShadow(
-                    color: couleur.withValues(alpha: 0.65),
+                    color: _MC.danger.withValues(alpha: 0.6),
                     blurRadius: 12,
                   ),
                 ],
               ),
               child: const Icon(
-                Icons.build_rounded,
-                size: 16,
+                Icons.location_on_rounded,
+                size: 18,
                 color: Colors.white,
               ),
             ),
           ),
-        ));
+        ),
+      );
+
+      final plat = (m['provider_lat'] as num?)?.toDouble();
+      final plng = (m['provider_lng'] as num?)?.toDouble();
+      if (plat != null && plng != null) {
+        final p = LatLng(plat, plng);
+        lines.add(
+          Polyline(
+            points: [p, client],
+            color: couleur.withValues(alpha: 0.8),
+            strokeWidth: 2,
+          ),
+        );
+        markers.add(
+          Marker(
+            point: p,
+            width: 32,
+            height: 32,
+            child: GestureDetector(
+              onTap: () => onTap(m),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: couleur,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 2),
+                  boxShadow: [
+                    BoxShadow(
+                      color: couleur.withValues(alpha: 0.65),
+                      blurRadius: 12,
+                    ),
+                  ],
+                ),
+                child: const Icon(
+                  Icons.build_rounded,
+                  size: 16,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        );
       }
     }
 
@@ -690,8 +696,7 @@ class _MapTab extends StatelessWidget {
           ),
           children: [
             TileLayer(
-              urlTemplate:
-                  'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+              urlTemplate: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
               subdomains: const ['a', 'b', 'c', 'd'],
               userAgentPackageName: 'bj.totem.app',
             ),
@@ -787,17 +792,19 @@ class _FinanceTabState extends State<_FinanceTab>
           padding: const EdgeInsets.fromLTRB(16, 14, 16, 10),
           child: Row(
             children: [7, 30, 90]
-                .map((j) => Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: _McChoiceChip(
-                        label: '${j}D',
-                        selected: _jours == j,
-                        onTap: () {
-                          setState(() => _jours = j);
-                          _charger();
-                        },
-                      ),
-                    ))
+                .map(
+                  (j) => Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: _McChoiceChip(
+                      label: '${j}D',
+                      selected: _jours == j,
+                      onTap: () {
+                        setState(() => _jours = j);
+                        _charger();
+                      },
+                    ),
+                  ),
+                )
                 .toList(),
           ),
         ),
@@ -805,14 +812,14 @@ class _FinanceTabState extends State<_FinanceTab>
           child: _loading
               ? const McLoader()
               : _error != null || _d == null
-                  ? Center(
-                      child: McErrorPanel(
-                        title: 'FINANCE OFFLINE',
-                        message: _error ?? 'DonnÃƒÂ©es indisponibles',
-                        onRetry: _charger,
-                      ),
-                    )
-                  : _contenu(_d!),
+              ? Center(
+                  child: McErrorPanel(
+                    title: 'FINANCE OFFLINE',
+                    message: _error ?? 'DonnÃƒÂ©es indisponibles',
+                    onRetry: _charger,
+                  ),
+                )
+              : _contenu(_d!),
         ),
       ],
     );
@@ -832,26 +839,55 @@ class _FinanceTabState extends State<_FinanceTab>
     final reste = (billed - paidOnCompleted).clamp(0, 1 << 40).toInt();
 
     final kpis = <_KpiData>[
-      _KpiData('REVENUE', TravelFee.fcfa(revenus), _MC.live,
-          Icons.trending_up_rounded),
-      _KpiData('SUBS', TravelFee.fcfa(_int(d['subscriptions_fcfa'])),
-          _MC.accent, Icons.workspace_premium_outlined),
-      _KpiData('BILLED', TravelFee.fcfa(billed), _MC.info,
-          Icons.receipt_long_outlined),
-      _KpiData('PENDING', TravelFee.fcfa(reste), _MC.warn,
-          Icons.hourglass_top_rounded),
-      _KpiData('LOST', TravelFee.fcfa(_int(d['lost_fcfa'])), _MC.danger,
-          Icons.trending_down_rounded),
       _KpiData(
-          'COMPLETED',
-          '${_int(d['missions_completed'])}/${_int(d['missions_total'])}',
-          _MC.live,
-          Icons.task_alt_rounded),
-      _KpiData('AVG TIME', '${_int(d['avg_work_minutes'])}min', _MC.purple,
-          Icons.timer_outlined),
+        'REVENUE',
+        TravelFee.fcfa(revenus),
+        _MC.live,
+        Icons.trending_up_rounded,
+      ),
+      _KpiData(
+        'SUBS',
+        TravelFee.fcfa(_int(d['subscriptions_fcfa'])),
+        _MC.accent,
+        Icons.workspace_premium_outlined,
+      ),
+      _KpiData(
+        'BILLED',
+        TravelFee.fcfa(billed),
+        _MC.info,
+        Icons.receipt_long_outlined,
+      ),
+      _KpiData(
+        'PENDING',
+        TravelFee.fcfa(reste),
+        _MC.warn,
+        Icons.hourglass_top_rounded,
+      ),
+      _KpiData(
+        'LOST',
+        TravelFee.fcfa(_int(d['lost_fcfa'])),
+        _MC.danger,
+        Icons.trending_down_rounded,
+      ),
+      _KpiData(
+        'COMPLETED',
+        '${_int(d['missions_completed'])}/${_int(d['missions_total'])}',
+        _MC.live,
+        Icons.task_alt_rounded,
+      ),
+      _KpiData(
+        'AVG TIME',
+        '${_int(d['avg_work_minutes'])}min',
+        _MC.purple,
+        Icons.timer_outlined,
+      ),
       _KpiData('RATING', '${d['avg_rating']}/5', _MC.warn, Icons.star_rounded),
-      _KpiData('INCIDENTS', '${_int(d['open_reports'])}', _MC.danger,
-          Icons.flag_rounded),
+      _KpiData(
+        'INCIDENTS',
+        '${_int(d['open_reports'])}',
+        _MC.danger,
+        Icons.flag_rounded,
+      ),
     ];
 
     return ListView(
@@ -1030,8 +1066,11 @@ class _ReportsTabState extends State<_ReportsTab>
     }
   }
 
-  Future<void> _traiter(Map<String, dynamic> r, String statut,
-      {bool suspendre = false}) async {
+  Future<void> _traiter(
+    Map<String, dynamic> r,
+    String statut, {
+    bool suspendre = false,
+  }) async {
     final controller = TextEditingController();
     final note = await showDialog<String>(
       context: context,
@@ -1082,8 +1121,12 @@ class _ReportsTabState extends State<_ReportsTab>
     final id = '${r['id']}';
     setState(() => _busyId = id);
     try {
-      await widget.service
-          .traiterSignalement(id, statut, note: note, suspendre: suspendre);
+      await widget.service.traiterSignalement(
+        id,
+        statut,
+        note: note,
+        suspendre: suspendre,
+      );
       await _charger(silencieux: true);
     } catch (e) {
       if (mounted) {
@@ -1149,8 +1192,10 @@ class _ReportsTabState extends State<_ReportsTab>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     color: couleur.withValues(alpha: 0.12),
                     border: Border(
@@ -1260,8 +1305,11 @@ class _ReportsTabState extends State<_ReportsTab>
                                   McAction(
                                     label: 'SUSPEND',
                                     color: _MC.danger,
-                                    onTap: () => _traiter(r, 'resolved',
-                                        suspendre: true),
+                                    onTap: () => _traiter(
+                                      r,
+                                      'resolved',
+                                      suspendre: true,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -1473,7 +1521,8 @@ class _MissionDetailSheet extends StatelessWidget {
                                     style: _MC.mono.copyWith(
                                       fontSize: 11,
                                       fontWeight: FontWeight.w800,
-                                      color: msg['sender_id'] ==
+                                      color:
+                                          msg['sender_id'] ==
                                               mission['client_id']
                                           ? _MC.info
                                           : _MC.warn,
@@ -1519,11 +1568,7 @@ class _McStat extends StatelessWidget {
       children: [
         Text(
           label,
-          style: AdminStyle.label(
-            9.5,
-            color: _MC.inkFaint,
-            letterSpacing: 1.4,
-          ),
+          style: AdminStyle.label(9.5, color: _MC.inkFaint, letterSpacing: 1.4),
         ),
         const SizedBox(width: 5),
         Text(
@@ -1551,11 +1596,7 @@ class _McTelemetry extends StatelessWidget {
       children: [
         Text(
           '$label ',
-          style: AdminStyle.label(
-            9.5,
-            color: _MC.inkFaint,
-            letterSpacing: 1.2,
-          ),
+          style: AdminStyle.label(9.5, color: _MC.inkFaint, letterSpacing: 1.2),
         ),
         Text(
           value,
@@ -1577,17 +1618,14 @@ class _McProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final couleur =
-        ratio >= 1 ? _MC.live : (ratio > 0 ? _MC.warn : _MC.inkFaint);
+    final couleur = ratio >= 1
+        ? _MC.live
+        : (ratio > 0 ? _MC.warn : _MC.inkFaint);
     return Row(
       children: [
         Text(
           '$label ',
-          style: AdminStyle.label(
-            9.5,
-            color: _MC.inkFaint,
-            letterSpacing: 1.2,
-          ),
+          style: AdminStyle.label(9.5, color: _MC.inkFaint, letterSpacing: 1.2),
         ),
         Expanded(
           child: ClipRRect(

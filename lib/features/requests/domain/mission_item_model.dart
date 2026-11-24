@@ -14,8 +14,8 @@ class MissionItem {
   final int prixFcfa;
 
   factory MissionItem.fromJson(Map<String, dynamic> j) => MissionItem(
-        id: '${j['id']}',
-        nom: '${j['nom'] ?? ''}',
-        prixFcfa: (j['prix_fcfa'] as num?)?.toInt() ?? 0,
-      );
+    id: '${j['id']}',
+    nom: '${j['nom'] ?? ''}',
+    prixFcfa: (j['prix_fcfa'] as num?)?.toInt() ?? 0,
+  );
 }

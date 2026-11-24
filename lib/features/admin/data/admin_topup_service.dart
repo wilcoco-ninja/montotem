@@ -9,15 +9,18 @@ class AdminTopupService {
 
   Future<List<Map<String, dynamic>>> lister({String? statut}) async {
     try {
-      var requete = _sb.from('wallet_topup_requests').select(
+      var requete = _sb
+          .from('wallet_topup_requests')
+          .select(
             '*, providers(business_name, metier, ville, '
             'profiles!providers_id_fkey(first_name, last_name, phone))',
           );
       if (statut != null) {
         requete = requete.eq('statut', statut);
       }
-      final rows =
-          await requete.order('created_at', ascending: false).limit(200);
+      final rows = await requete
+          .order('created_at', ascending: false)
+          .limit(200);
       return rows
           .map<Map<String, dynamic>>((e) => Map<String, dynamic>.from(e))
           .toList();
@@ -38,11 +41,10 @@ class AdminTopupService {
     String? motif,
   }) async {
     try {
-      await _sb.rpc('admin_review_wallet_topup', params: {
-        'p_request_id': id,
-        'p_approve': approuver,
-        'p_reason': motif,
-      });
+      await _sb.rpc(
+        'admin_review_wallet_topup',
+        params: {'p_request_id': id, 'p_approve': approuver, 'p_reason': motif},
+      );
     } on PostgrestException catch (e) {
       developer.log('Revue recharge', error: e, name: 'AdminTopupService');
       throw Exception(_msg(e));

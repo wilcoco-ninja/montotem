@@ -65,7 +65,8 @@ class DoorService {
     } catch (e) {
       developer.log('signInClientWithEmail', error: e, name: 'DoorService');
       throw const DoorException(
-          'Connexion impossible. Vérifiez votre réseau et réessayez.');
+        'Connexion impossible. Vérifiez votre réseau et réessayez.',
+      );
     }
     return routeAfterClientSignIn();
   }
@@ -83,7 +84,8 @@ class DoorService {
     if (p.role == 'provider') {
       await AuthService().signOut();
       throw const DoorMismatch(
-        message: 'Ce compte est un compte prestataire. '
+        message:
+            'Ce compte est un compte prestataire. '
             'Les prestataires se connectent depuis l\'espace Pro.',
         actionLabel: 'Aller à l\'espace Pro',
         actionRoute: '/pro/login',
@@ -92,7 +94,8 @@ class DoorService {
     if (p.role == 'admin') {
       await AuthService().signOut();
       throw const DoorMismatch(
-        message: 'Ce compte est un compte d\'administration. '
+        message:
+            'Ce compte est un compte d\'administration. '
             'La console se trouve à une autre adresse.',
         actionLabel: 'Ouvrir la console',
         actionRoute: '/admin/login',
@@ -132,7 +135,8 @@ class DoorService {
     } catch (e) {
       developer.log('signInProvider', error: e, name: 'DoorService');
       throw const DoorException(
-          'Connexion impossible. Vérifiez votre réseau et réessayez.');
+        'Connexion impossible. Vérifiez votre réseau et réessayez.',
+      );
     }
 
     final ProfileState p;
@@ -148,7 +152,8 @@ class DoorService {
       case 'admin':
         await AuthService().signOut();
         throw const DoorMismatch(
-          message: 'Ce compte est un compte d\'administration. '
+          message:
+              'Ce compte est un compte d\'administration. '
               'Il ne peut pas se connecter à l\'espace Pro.',
           actionLabel: 'Ouvrir la console',
           actionRoute: '/admin/login',
@@ -159,7 +164,8 @@ class DoorService {
         if (!p.complete) return '/register/provider';
         await AuthService().signOut();
         throw const DoorMismatch(
-          message: 'Ce compte est un compte client. '
+          message:
+              'Ce compte est un compte client. '
               'Les clients se connectent depuis l\'espace client.',
           actionLabel: 'Aller à l\'espace client',
           actionRoute: '/login',

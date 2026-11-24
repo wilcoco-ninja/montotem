@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -137,8 +136,11 @@ class _RidesHistoryScreenState extends State<RidesHistoryScreen> {
               color: couleur.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(16),
             ),
-            child:
-                Icon(r.kind.icone, color: context.readable(couleur), size: 28),
+            child: Icon(
+              r.kind.icone,
+              color: context.readable(couleur),
+              size: 28,
+            ),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -148,19 +150,25 @@ class _RidesHistoryScreenState extends State<RidesHistoryScreen> {
                 Text(
                   '${r.kind.libelle} · ${MontantLocal.formater(r.prixFcfa, devise: _devise)}',
                   style: const TextStyle(
-                      fontSize: 16.5, fontWeight: FontWeight.w800),
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
                 Text(
                   repere,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style:
-                      TextStyle(fontSize: 14.5, color: context.textSecondary),
+                  style: TextStyle(
+                    fontSize: 14.5,
+                    color: context.textSecondary,
+                  ),
                 ),
                 Text(
                   _format.format(r.createdAt),
-                  style:
-                      TextStyle(fontSize: 13.5, color: context.textSecondary),
+                  style: TextStyle(
+                    fontSize: 13.5,
+                    color: context.textSecondary,
+                  ),
                 ),
                 const SizedBox(height: 6),
                 StatusPill(

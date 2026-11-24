@@ -1,4 +1,3 @@
-﻿
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -56,9 +55,11 @@ class _SurvivalKitScreenState extends State<SurvivalKitScreen> {
     setState(() => _contactEnregistre = _contact.text.trim().isNotEmpty);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(_contactEnregistre
-            ? 'Contact de confiance enregistrÃƒÂ© sur ce tÃƒÂ©lÃƒÂ©phone.'
-            : 'Contact supprimÃƒÂ©.'),
+        content: Text(
+          _contactEnregistre
+              ? 'Contact de confiance enregistrÃƒÂ© sur ce tÃƒÂ©lÃƒÂ©phone.'
+              : 'Contact supprimÃƒÂ©.',
+        ),
       ),
     );
   }
@@ -69,283 +70,292 @@ class _SurvivalKitScreenState extends State<SurvivalKitScreen> {
 
     return Theme(
       data: AppTheme.darkTheme,
-      child: Builder(builder: (context) {
-        final scheme = Theme.of(context).colorScheme;
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Kit de survie en panne'),
-            leading: IconButton(
-              tooltip: 'Retour',
-              icon: const Icon(Icons.arrow_back_rounded),
-              onPressed: () =>
-                  context.canPop() ? context.pop() : context.go('/explore'),
+      child: Builder(
+        builder: (context) {
+          final scheme = Theme.of(context).colorScheme;
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Kit de survie en panne'),
+              leading: IconButton(
+                tooltip: 'Retour',
+                icon: const Icon(Icons.arrow_back_rounded),
+                onPressed: () =>
+                    context.canPop() ? context.pop() : context.go('/explore'),
+              ),
             ),
-          ),
-          body: SafeArea(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
-              children: [
-                // Ã¢â€â‚¬Ã¢â€â‚¬ Bandeau d'ÃƒÂ©tat Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
-                _EtatTelephone(power: power),
-                const SizedBox(height: 16),
+            body: SafeArea(
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
+                children: [
+                  // Ã¢â€â‚¬Ã¢â€â‚¬ Bandeau d'ÃƒÂ©tat Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  _EtatTelephone(power: power),
+                  const SizedBox(height: 16),
 
-                // Ã¢â€â‚¬Ã¢â€â‚¬ Action nÃ‚Â°1 : la plus importante Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
-                _GrosBoutonSos(
-                  onTap: () => DistressService.envoyerDetresse(context, power),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'Le SMS part par le rÃƒÂ©seau tÃƒÂ©lÃƒÂ©phonique : il marche mÃƒÂªme sans '
-                  'internet. Le GPS du tÃƒÂ©lÃƒÂ©phone marche aussi sans internet.',
-                  style: TextStyle(
-                    color: scheme.onSurfaceVariant,
-                    fontSize: 14.5,
-                    height: 1.4,
+                  // Ã¢â€â‚¬Ã¢â€â‚¬ Action nÃ‚Â°1 : la plus importante Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  _GrosBoutonSos(
+                    onTap: () =>
+                        DistressService.envoyerDetresse(context, power),
                   ),
-                ),
-                const SizedBox(height: 16),
-
-                // Ã¢â€â‚¬Ã¢â€â‚¬ Contact de confiance Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
-                _Bloc(
-                  titre: 'Contact de confiance',
-                  icone: Icons.favorite_rounded,
-                  enfant: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        'Le SMS de dÃƒÂ©tresse s\'adressera directement ÃƒÂ  cette '
-                        'personne. EnregistrÃƒÂ© sur ce tÃƒÂ©lÃƒÂ©phone uniquement.',
-                        style: TextStyle(
-                          color: scheme.onSurfaceVariant,
-                          fontSize: 14,
-                          height: 1.35,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      TextField(
-                        controller: _contact,
-                        keyboardType: TextInputType.phone,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9+ ]')),
-                        ],
-                        maxLength: 20,
-                        decoration: InputDecoration(
-                          labelText: 'NumÃƒÂ©ro (ex. +229 01 97 00 00 00)',
-                          counterText: '',
-                          prefixIcon: const Icon(Icons.phone_outlined),
-                          suffixIcon: _contactEnregistre
-                              ? Icon(Icons.check_circle_rounded,
-                                  color: scheme.secondary)
-                              : null,
-                        ),
-                        onSubmitted: (_) => _enregistrerContact(),
-                      ),
-                      const SizedBox(height: 10),
-                      OutlinedButton.icon(
-                        onPressed: _enregistrerContact,
-                        icon: const Icon(Icons.save_rounded),
-                        label: const Text('ENREGISTRER'),
-                      ),
-                    ],
+                  const SizedBox(height: 10),
+                  Text(
+                    'Le SMS part par le rÃƒÂ©seau tÃƒÂ©lÃƒÂ©phonique : il marche mÃƒÂªme sans '
+                    'internet. Le GPS du tÃƒÂ©lÃƒÂ©phone marche aussi sans internet.',
+                    style: TextStyle(
+                      color: scheme.onSurfaceVariant,
+                      fontSize: 14.5,
+                      height: 1.4,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 12),
+                  const SizedBox(height: 16),
 
-                // Ã¢â€â‚¬Ã¢â€â‚¬ Balise lumineuse (nuit) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
-                _Bloc(
-                  titre: 'Balise lumineuse',
-                  icone: Icons.flashlight_on_rounded,
-                  enfant: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        'L\'ÃƒÂ©cran clignote en plein ÃƒÂ©cran pour ÃƒÂªtre vu de loin '
-                        'la nuit. Consomme de la batterie : ÃƒÂ  utiliser '
-                        'seulement quand des vÃƒÂ©hicules approchent.',
-                        style: TextStyle(
-                          color: scheme.onSurfaceVariant,
-                          fontSize: 14,
-                          height: 1.35,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      OutlinedButton.icon(
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            fullscreenDialog: true,
-                            builder: (_) => const _BaliseScreen(),
+                  // Ã¢â€â‚¬Ã¢â€â‚¬ Contact de confiance Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  _Bloc(
+                    titre: 'Contact de confiance',
+                    icone: Icons.favorite_rounded,
+                    enfant: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          'Le SMS de dÃƒÂ©tresse s\'adressera directement ÃƒÂ  cette '
+                          'personne. EnregistrÃƒÂ© sur ce tÃƒÂ©lÃƒÂ©phone uniquement.',
+                          style: TextStyle(
+                            color: scheme.onSurfaceVariant,
+                            fontSize: 14,
+                            height: 1.35,
                           ),
                         ),
-                        icon: const Icon(Icons.flash_on_rounded),
-                        label: const Text('ALLUMER LA BALISE'),
+                        const SizedBox(height: 12),
+                        TextField(
+                          controller: _contact,
+                          keyboardType: TextInputType.phone,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                              RegExp(r'[0-9+ ]'),
+                            ),
+                          ],
+                          maxLength: 20,
+                          decoration: InputDecoration(
+                            labelText: 'NumÃƒÂ©ro (ex. +229 01 97 00 00 00)',
+                            counterText: '',
+                            prefixIcon: const Icon(Icons.phone_outlined),
+                            suffixIcon: _contactEnregistre
+                                ? Icon(
+                                    Icons.check_circle_rounded,
+                                    color: scheme.secondary,
+                                  )
+                                : null,
+                          ),
+                          onSubmitted: (_) => _enregistrerContact(),
+                        ),
+                        const SizedBox(height: 10),
+                        OutlinedButton.icon(
+                          onPressed: _enregistrerContact,
+                          icon: const Icon(Icons.save_rounded),
+                          label: const Text('ENREGISTRER'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Ã¢â€â‚¬Ã¢â€â‚¬ Balise lumineuse (nuit) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  _Bloc(
+                    titre: 'Balise lumineuse',
+                    icone: Icons.flashlight_on_rounded,
+                    enfant: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          'L\'ÃƒÂ©cran clignote en plein ÃƒÂ©cran pour ÃƒÂªtre vu de loin '
+                          'la nuit. Consomme de la batterie : ÃƒÂ  utiliser '
+                          'seulement quand des vÃƒÂ©hicules approchent.',
+                          style: TextStyle(
+                            color: scheme.onSurfaceVariant,
+                            fontSize: 14,
+                            height: 1.35,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        OutlinedButton.icon(
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              fullscreenDialog: true,
+                              builder: (_) => const _BaliseScreen(),
+                            ),
+                          ),
+                          icon: const Icon(Icons.flash_on_rounded),
+                          label: const Text('ALLUMER LA BALISE'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Ã¢â€â‚¬Ã¢â€â‚¬ Ãƒâ€°conomie d'ÃƒÂ©nergie Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  _Bloc(
+                    titre: 'Ãƒâ€°conomie d\'ÃƒÂ©nergie',
+                    icone: Icons.battery_saver_rounded,
+                    enfant: SwitchListTile(
+                      contentPadding: EdgeInsets.zero,
+                      value: power.ecoManuel,
+                      onChanged: (v) => power.definirEcoManuel(v),
+                      title: const Text(
+                        'Mode ÃƒÂ©co MonTotem',
+                        style: TextStyle(fontWeight: FontWeight.w800),
                       ),
+                      subtitle: Text(
+                        'Fond noir pur, animations coupÃƒÂ©es. S\'active seul ÃƒÂ  20 % '
+                        'de batterie.',
+                        style: TextStyle(color: scheme.onSurfaceVariant),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Ã¢â€â‚¬Ã¢â€â‚¬ TÃƒÂ©lÃƒÂ©phone qui va s'ÃƒÂ©teindre Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  const _TitreSection(
+                    'Votre tÃƒÂ©lÃƒÂ©phone va s\'ÃƒÂ©teindre ?',
+                  ),
+                  const _Fiche(
+                    icone: Icons.battery_alert_rounded,
+                    titre: 'Les 6 gestes qui sauvent la batterie',
+                    ouverte: true,
+                    etapes: [
+                      'Envoyez votre position par SMS MAINTENANT (bouton jaune '
+                          'en haut), pendant qu\'il reste de la batterie.',
+                      'Activez le mode ÃƒÂ©co MonTotem et l\'ÃƒÂ©conomiseur de batterie '
+                          'du tÃƒÂ©lÃƒÂ©phone.',
+                      'Baissez la luminositÃƒÂ© au minimum. Fermez les applications '
+                          'ouvertes. Ãƒâ€°vitez vidÃƒÂ©o et GPS en continu.',
+                      'Sans rÃƒÂ©seau, le tÃƒÂ©lÃƒÂ©phone s\'ÃƒÂ©puise ÃƒÂ  chercher du signal : '
+                          'passez en mode avion et ne le quittez que pour envoyer '
+                          'un message ou passer un appel.',
+                      'Notez sur papier (ou dites ÃƒÂ  quelqu\'un) le numÃƒÂ©ro de votre '
+                          'contact et celui du dÃƒÂ©panneur.',
+                      'Gardez le tÃƒÂ©lÃƒÂ©phone ÃƒÂ  l\'ombre, pas en plein soleil sur le '
+                          'tableau de bord.',
                     ],
                   ),
-                ),
-                const SizedBox(height: 12),
+                  const SizedBox(height: 24),
 
-                // Ã¢â€â‚¬Ã¢â€â‚¬ Ãƒâ€°conomie d'ÃƒÂ©nergie Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
-                _Bloc(
-                  titre: 'Ãƒâ€°conomie d\'ÃƒÂ©nergie',
-                  icone: Icons.battery_saver_rounded,
-                  enfant: SwitchListTile(
-                    contentPadding: EdgeInsets.zero,
-                    value: power.ecoManuel,
-                    onChanged: (v) => power.definirEcoManuel(v),
-                    title: const Text(
-                      'Mode ÃƒÂ©co MonTotem',
-                      style: TextStyle(fontWeight: FontWeight.w800),
+                  // Ã¢â€â‚¬Ã¢â€â‚¬ Situations Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  const _TitreSection('Selon votre situation'),
+                  const _Fiche(
+                    icone: Icons.nightlight_round,
+                    titre: 'En panne la nuit',
+                    etapes: [
+                      'Allumez les feux de dÃƒÂ©tresse et garez-vous le plus loin '
+                          'possible de la circulation.',
+                      'Sortez du cÃƒÂ´tÃƒÂ© opposÃƒÂ© ÃƒÂ  la route et attendez derriÃƒÂ¨re le '
+                          'vÃƒÂ©hicule ou le talus, jamais devant les phares.',
+                      'Rendez-vous visible : vÃƒÂªtement clair ou rÃƒÂ©flÃƒÂ©chissant, '
+                          'lampe du tÃƒÂ©lÃƒÂ©phone par intermittence seulement.',
+                      'Ne montez pas dans un vÃƒÂ©hicule inconnu. Restez prÃƒÂ¨s d\'un '
+                          'endroit ÃƒÂ©clairÃƒÂ© ou habitÃƒÂ© si vous en voyez un.',
+                      'PrÃƒÂ©venez une personne de confiance avec votre position.',
+                    ],
+                  ),
+                  const _Fiche(
+                    icone: Icons.thunderstorm_rounded,
+                    titre: 'Pluie forte, orage, inondation',
+                    etapes: [
+                      'Ne traversez jamais une route inondÃƒÂ©e, ÃƒÂ  pied ou en '
+                          'vÃƒÂ©hicule : environ 15 cm d\'eau qui court peuvent faire '
+                          'tomber un adulte, et 30 cm suffisent ÃƒÂ  emporter une '
+                          'voiture.',
+                      'Pendant l\'orage, ÃƒÂ©loignez-vous des arbres isolÃƒÂ©s, des '
+                          'poteaux et des fils ÃƒÂ©lectriques tombÃƒÂ©s.',
+                      'En moto ou en zÃƒÂ©midjan : abritez-vous sous un auvent solide '
+                          '(station-service, bÃƒÂ¢timent), pas sous un arbre.',
+                      'ProtÃƒÂ©gez le tÃƒÂ©lÃƒÂ©phone de l\'eau (sac plastique) et coupez '
+                          'les applications inutiles.',
+                    ],
+                  ),
+                  const _Fiche(
+                    icone: Icons.add_road_rounded,
+                    titre: 'Route rapide ou forte circulation',
+                    etapes: [
+                      'Feux de dÃƒÂ©tresse, rangez-vous le plus ÃƒÂ  droite possible.',
+                      'Tous les passagers sortent cÃƒÂ´tÃƒÂ© opposÃƒÂ© ÃƒÂ  la circulation et '
+                          'attendent ÃƒÂ  l\'ÃƒÂ©cart de la chaussÃƒÂ©e.',
+                      'Si vous avez un triangle, placez-le bien en arriÃƒÂ¨re du '
+                          'vÃƒÂ©hicule (environ 30 m, davantage sur voie rapide).',
+                      'Ne rÃƒÂ©parez jamais sur la voie. Appelez un dÃƒÂ©panneur.',
+                    ],
+                  ),
+                  const _Fiche(
+                    icone: Icons.tire_repair_rounded,
+                    titre: 'Pneu crevÃƒÂ©',
+                    etapes: [
+                      'Roulez le moins possible sur la jante : cherchez un sol '
+                          'plat et dur, frein ÃƒÂ  main serrÃƒÂ©.',
+                      'Ne vous placez pas cÃƒÂ´tÃƒÂ© circulation pour changer la roue.',
+                      'Pas de roue de secours ? Appelez un vulcanisateur proche : '
+                          'bouton Ã‚Â« Trouver un dÃƒÂ©panneur Ã‚Â» ci-dessous.',
+                    ],
+                  ),
+                  const _Fiche(
+                    icone: Icons.car_repair_rounded,
+                    titre: 'Moteur qui ne dÃƒÂ©marre plus, batterie',
+                    etapes: [
+                      'N\'insistez pas sur le dÃƒÂ©marreur : de courts essais de '
+                          'quelques secondes, avec des pauses.',
+                      'FumÃƒÂ©e, odeur de brÃƒÂ»lÃƒÂ© ou d\'essence : ÃƒÂ©loignez-vous du '
+                          'vÃƒÂ©hicule, n\'ouvrez pas le capot, pas de flamme ni de '
+                          'cigarette. Appelez les secours depuis l\'ÃƒÂ©cran SOS.',
+                      'Coupez radio, climatisation et feux inutiles pour garder '
+                          'la batterie du vÃƒÂ©hicule.',
+                    ],
+                  ),
+                  const _Fiche(
+                    icone: Icons.wb_sunny_rounded,
+                    titre: 'Forte chaleur',
+                    etapes: [
+                      'Cherchez l\'ombre, buvez rÃƒÂ©guliÃƒÂ¨rement de petites quantitÃƒÂ©s '
+                          'd\'eau.',
+                      'Ne laissez jamais un enfant ou un animal dans un vÃƒÂ©hicule '
+                          'fermÃƒÂ©, mÃƒÂªme quelques minutes.',
+                      'Malaise, vertiges, confusion : appelez les secours tout de '
+                          'suite depuis l\'ÃƒÂ©cran SOS.',
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Ã¢â€â‚¬Ã¢â€â‚¬ Script pour le dÃƒÂ©panneur Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  const _TitreSection('Quoi dire au dÃƒÂ©panneur'),
+                  const _Script(),
+                  const SizedBox(height: 24),
+
+                  // Ã¢â€â‚¬Ã¢â€â‚¬ Sorties Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  FilledButton.icon(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: AppColors.emergencyStrong,
+                      foregroundColor: AppColors.navyOnDark,
                     ),
-                    subtitle: Text(
-                      'Fond noir pur, animations coupÃƒÂ©es. S\'active seul ÃƒÂ  20 % '
-                      'de batterie.',
-                      style: TextStyle(color: scheme.onSurfaceVariant),
+                    onPressed: () => context.push('/sos'),
+                    icon: TotemIcon(
+                      TotemGlyph.sos,
+                      size: 30,
+                      accent: AppColors.navyOnDark,
                     ),
+                    label: const Text('NUMÃƒâ€°ROS D\'URGENCE Ã‚Â· SOS'),
                   ),
-                ),
-                const SizedBox(height: 24),
-
-                // Ã¢â€â‚¬Ã¢â€â‚¬ TÃƒÂ©lÃƒÂ©phone qui va s'ÃƒÂ©teindre Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
-                const _TitreSection('Votre tÃƒÂ©lÃƒÂ©phone va s\'ÃƒÂ©teindre ?'),
-                const _Fiche(
-                  icone: Icons.battery_alert_rounded,
-                  titre: 'Les 6 gestes qui sauvent la batterie',
-                  ouverte: true,
-                  etapes: [
-                    'Envoyez votre position par SMS MAINTENANT (bouton jaune '
-                        'en haut), pendant qu\'il reste de la batterie.',
-                    'Activez le mode ÃƒÂ©co MonTotem et l\'ÃƒÂ©conomiseur de batterie '
-                        'du tÃƒÂ©lÃƒÂ©phone.',
-                    'Baissez la luminositÃƒÂ© au minimum. Fermez les applications '
-                        'ouvertes. Ãƒâ€°vitez vidÃƒÂ©o et GPS en continu.',
-                    'Sans rÃƒÂ©seau, le tÃƒÂ©lÃƒÂ©phone s\'ÃƒÂ©puise ÃƒÂ  chercher du signal : '
-                        'passez en mode avion et ne le quittez que pour envoyer '
-                        'un message ou passer un appel.',
-                    'Notez sur papier (ou dites ÃƒÂ  quelqu\'un) le numÃƒÂ©ro de votre '
-                        'contact et celui du dÃƒÂ©panneur.',
-                    'Gardez le tÃƒÂ©lÃƒÂ©phone ÃƒÂ  l\'ombre, pas en plein soleil sur le '
-                        'tableau de bord.',
-                  ],
-                ),
-                const SizedBox(height: 24),
-
-                // Ã¢â€â‚¬Ã¢â€â‚¬ Situations Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
-                const _TitreSection('Selon votre situation'),
-                const _Fiche(
-                  icone: Icons.nightlight_round,
-                  titre: 'En panne la nuit',
-                  etapes: [
-                    'Allumez les feux de dÃƒÂ©tresse et garez-vous le plus loin '
-                        'possible de la circulation.',
-                    'Sortez du cÃƒÂ´tÃƒÂ© opposÃƒÂ© ÃƒÂ  la route et attendez derriÃƒÂ¨re le '
-                        'vÃƒÂ©hicule ou le talus, jamais devant les phares.',
-                    'Rendez-vous visible : vÃƒÂªtement clair ou rÃƒÂ©flÃƒÂ©chissant, '
-                        'lampe du tÃƒÂ©lÃƒÂ©phone par intermittence seulement.',
-                    'Ne montez pas dans un vÃƒÂ©hicule inconnu. Restez prÃƒÂ¨s d\'un '
-                        'endroit ÃƒÂ©clairÃƒÂ© ou habitÃƒÂ© si vous en voyez un.',
-                    'PrÃƒÂ©venez une personne de confiance avec votre position.',
-                  ],
-                ),
-                const _Fiche(
-                  icone: Icons.thunderstorm_rounded,
-                  titre: 'Pluie forte, orage, inondation',
-                  etapes: [
-                    'Ne traversez jamais une route inondÃƒÂ©e, ÃƒÂ  pied ou en '
-                        'vÃƒÂ©hicule : environ 15 cm d\'eau qui court peuvent faire '
-                        'tomber un adulte, et 30 cm suffisent ÃƒÂ  emporter une '
-                        'voiture.',
-                    'Pendant l\'orage, ÃƒÂ©loignez-vous des arbres isolÃƒÂ©s, des '
-                        'poteaux et des fils ÃƒÂ©lectriques tombÃƒÂ©s.',
-                    'En moto ou en zÃƒÂ©midjan : abritez-vous sous un auvent solide '
-                        '(station-service, bÃƒÂ¢timent), pas sous un arbre.',
-                    'ProtÃƒÂ©gez le tÃƒÂ©lÃƒÂ©phone de l\'eau (sac plastique) et coupez '
-                        'les applications inutiles.',
-                  ],
-                ),
-                const _Fiche(
-                  icone: Icons.add_road_rounded,
-                  titre: 'Route rapide ou forte circulation',
-                  etapes: [
-                    'Feux de dÃƒÂ©tresse, rangez-vous le plus ÃƒÂ  droite possible.',
-                    'Tous les passagers sortent cÃƒÂ´tÃƒÂ© opposÃƒÂ© ÃƒÂ  la circulation et '
-                        'attendent ÃƒÂ  l\'ÃƒÂ©cart de la chaussÃƒÂ©e.',
-                    'Si vous avez un triangle, placez-le bien en arriÃƒÂ¨re du '
-                        'vÃƒÂ©hicule (environ 30 m, davantage sur voie rapide).',
-                    'Ne rÃƒÂ©parez jamais sur la voie. Appelez un dÃƒÂ©panneur.',
-                  ],
-                ),
-                const _Fiche(
-                  icone: Icons.tire_repair_rounded,
-                  titre: 'Pneu crevÃƒÂ©',
-                  etapes: [
-                    'Roulez le moins possible sur la jante : cherchez un sol '
-                        'plat et dur, frein ÃƒÂ  main serrÃƒÂ©.',
-                    'Ne vous placez pas cÃƒÂ´tÃƒÂ© circulation pour changer la roue.',
-                    'Pas de roue de secours ? Appelez un vulcanisateur proche : '
-                        'bouton Ã‚Â« Trouver un dÃƒÂ©panneur Ã‚Â» ci-dessous.',
-                  ],
-                ),
-                const _Fiche(
-                  icone: Icons.car_repair_rounded,
-                  titre: 'Moteur qui ne dÃƒÂ©marre plus, batterie',
-                  etapes: [
-                    'N\'insistez pas sur le dÃƒÂ©marreur : de courts essais de '
-                        'quelques secondes, avec des pauses.',
-                    'FumÃƒÂ©e, odeur de brÃƒÂ»lÃƒÂ© ou d\'essence : ÃƒÂ©loignez-vous du '
-                        'vÃƒÂ©hicule, n\'ouvrez pas le capot, pas de flamme ni de '
-                        'cigarette. Appelez les secours depuis l\'ÃƒÂ©cran SOS.',
-                    'Coupez radio, climatisation et feux inutiles pour garder '
-                        'la batterie du vÃƒÂ©hicule.',
-                  ],
-                ),
-                const _Fiche(
-                  icone: Icons.wb_sunny_rounded,
-                  titre: 'Forte chaleur',
-                  etapes: [
-                    'Cherchez l\'ombre, buvez rÃƒÂ©guliÃƒÂ¨rement de petites quantitÃƒÂ©s '
-                        'd\'eau.',
-                    'Ne laissez jamais un enfant ou un animal dans un vÃƒÂ©hicule '
-                        'fermÃƒÂ©, mÃƒÂªme quelques minutes.',
-                    'Malaise, vertiges, confusion : appelez les secours tout de '
-                        'suite depuis l\'ÃƒÂ©cran SOS.',
-                  ],
-                ),
-                const SizedBox(height: 24),
-
-                // Ã¢â€â‚¬Ã¢â€â‚¬ Script pour le dÃƒÂ©panneur Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
-                const _TitreSection('Quoi dire au dÃƒÂ©panneur'),
-                const _Script(),
-                const SizedBox(height: 24),
-
-                // Ã¢â€â‚¬Ã¢â€â‚¬ Sorties Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
-                FilledButton.icon(
-                  style: FilledButton.styleFrom(
-                    backgroundColor: AppColors.emergencyStrong,
-                    foregroundColor: AppColors.navyOnDark,
+                  const SizedBox(height: 12),
+                  OutlinedButton.icon(
+                    onPressed: () => context.go('/explore'),
+                    icon: TotemIcon(
+                      TotemGlyph.depannage,
+                      size: 28,
+                      color: AppColors.brandYellow,
+                    ),
+                    label: const Text('TROUVER UN DÃƒâ€°PANNEUR'),
                   ),
-                  onPressed: () => context.push('/sos'),
-                  icon: TotemIcon(
-                    TotemGlyph.sos,
-                    size: 30,
-                    accent: AppColors.navyOnDark,
-                  ),
-                  label: const Text('NUMÃƒâ€°ROS D\'URGENCE Ã‚Â· SOS'),
-                ),
-                const SizedBox(height: 12),
-                OutlinedButton.icon(
-                  onPressed: () => context.go('/explore'),
-                  icon: TotemIcon(
-                    TotemGlyph.depannage,
-                    size: 28,
-                    color: AppColors.brandYellow,
-                  ),
-                  label: const Text('TROUVER UN DÃƒâ€°PANNEUR'),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 }
@@ -384,9 +394,13 @@ class _EtatTelephone extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(titre,
-                        style: TextStyle(
-                            color: scheme.onSurfaceVariant, fontSize: 13)),
+                    Text(
+                      titre,
+                      style: TextStyle(
+                        color: scheme.onSurfaceVariant,
+                        fontSize: 13,
+                      ),
+                    ),
                     Text(
                       valeur,
                       style: TextStyle(
@@ -421,10 +435,12 @@ class _EtatTelephone extends StatelessWidget {
         const SizedBox(width: 10),
         puce(
           icone: power.horsLigne
-              ? TotemIcon(TotemGlyph.horsLigne,
+              ? TotemIcon(
+                  TotemGlyph.horsLigne,
                   size: 30,
                   color: scheme.onSurface,
-                  accent: AppColors.emergencyTextDark)
+                  accent: AppColors.emergencyTextDark,
+                )
               : Icon(Icons.network_check_rounded, color: scheme.secondary),
           titre: 'Internet',
           valeur: power.horsLigne ? 'Absent' : 'Disponible',
@@ -450,8 +466,9 @@ class _GrosBoutonSos extends StatelessWidget {
         color: AppColors.brandYellow,
         shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(18)),
         child: InkWell(
-          customBorder:
-              BeveledRectangleBorder(borderRadius: BorderRadius.circular(18)),
+          customBorder: BeveledRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
           onTap: () {
             HapticFeedback.heavyImpact();
             onTap();
@@ -494,8 +511,11 @@ class _GrosBoutonSos extends StatelessWidget {
                     ],
                   ),
                 ),
-                Icon(Icons.chevron_right_rounded,
-                    color: AppColors.navy, size: 32),
+                Icon(
+                  Icons.chevron_right_rounded,
+                  color: AppColors.navy,
+                  size: 32,
+                ),
               ],
             ),
           ),
@@ -551,7 +571,9 @@ class _Bloc extends StatelessWidget {
                 Text(
                   titre,
                   style: const TextStyle(
-                      fontSize: 17, fontWeight: FontWeight.w900),
+                    fontSize: 17,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
               ],
             ),
@@ -635,7 +657,8 @@ class _Fiche extends StatelessWidget {
 class _Script extends StatelessWidget {
   const _Script();
 
-  static const String _texte = 'Bonjour, je suis en panne.\n'
+  static const String _texte =
+      'Bonjour, je suis en panne.\n'
       'OÃƒÂ¹ : [route, quartier, repÃƒÂ¨re connu]. Ma position GPS arrive par SMS.\n'
       'VÃƒÂ©hicule : [moto / voiture / tricycle].\n'
       'ProblÃƒÂ¨me : [pneu / batterie / ne dÃƒÂ©marre plus / autre].\n'
@@ -651,10 +674,7 @@ class _Script extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              _texte,
-              style: TextStyle(fontSize: 16, height: 1.5),
-            ),
+            const Text(_texte, style: TextStyle(fontSize: 16, height: 1.5)),
             const SizedBox(height: 12),
             OutlinedButton.icon(
               onPressed: () async {

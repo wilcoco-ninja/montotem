@@ -164,26 +164,28 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
         if (!mounted) return;
         setState(() {
           _contactsSecteur = proches
-              .map((x) => SosPrestataire(
-                    id: x.id,
-                    nom: x.nom,
-                    metier: x.metier,
-                    telephone: x.telephone,
-                    distanceKm: 0,
-                    devis: const SosDevis(
-                      mainOeuvreFcfa: 0,
-                      pieceCode: null,
-                      pieceLibelle: null,
-                      piecePrixFcfa: 0,
-                      pieceStock: 0,
-                      deplacementFcfa: 0,
-                      totalFcfa: 0,
-                      tarifKmGaranti: 0,
-                    ),
-                    services: const [],
-                    competences: const [],
-                    habilitations: const [],
-                  ))
+              .map(
+                (x) => SosPrestataire(
+                  id: x.id,
+                  nom: x.nom,
+                  metier: x.metier,
+                  telephone: x.telephone,
+                  distanceKm: 0,
+                  devis: const SosDevis(
+                    mainOeuvreFcfa: 0,
+                    pieceCode: null,
+                    pieceLibelle: null,
+                    piecePrixFcfa: 0,
+                    pieceStock: 0,
+                    deplacementFcfa: 0,
+                    totalFcfa: 0,
+                    tarifKmGaranti: 0,
+                  ),
+                  services: const [],
+                  competences: const [],
+                  habilitations: const [],
+                ),
+              )
               .toList();
           if (proches.isNotEmpty) {
             _resultatsErreur =
@@ -235,13 +237,17 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
       await showDialog<void>(
         context: context,
         builder: (dialogContext) => AlertDialog(
-          icon: const Icon(Icons.check_circle_rounded,
-              color: AppTheme.successColor, size: 48),
+          icon: const Icon(
+            Icons.check_circle_rounded,
+            color: AppTheme.successColor,
+            size: 48,
+          ),
           title: const Text('Demande envoyée'),
           content: Text(
-              'Votre demande SOS #$reference a été transmise à '
-              '${pr.nomAffiche}. Le devis affiché est garanti : toute '
-              'modification devra être acceptée par vous.'),
+            'Votre demande SOS #$reference a été transmise à '
+            '${pr.nomAffiche}. Le devis affiché est garanti : toute '
+            'modification devra être acceptée par vous.',
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
@@ -254,7 +260,10 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
       if (!mounted) return;
       setState(() => _commandeEnCours = null);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message), backgroundColor: AppTheme.errorColor),
+        SnackBar(
+          content: Text(e.message),
+          backgroundColor: AppTheme.errorColor,
+        ),
       );
     } catch (_) {
       if (!mounted) return;
@@ -405,9 +414,7 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
             padding: const EdgeInsets.only(top: 4, bottom: 8),
             child: Text(
               g.libelle,
-              style: Theme.of(context)
-                  .textTheme
-                  .labelLarge
+              style: Theme.of(context).textTheme.labelLarge
                   ?.copyWith(color: Theme.of(context).colorScheme.primary),
             ),
           ),
@@ -442,16 +449,16 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        Text('Quel est le type de panne ?',
-            style: Theme.of(context).textTheme.titleMedium),
+        Text(
+          'Quel est le type de panne ?',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         const SizedBox(height: 4),
         if (_vehicule != null && !_pannesEnCours)
           Text(
             'Véhicule : ${_vehicule!.libelle} — '
             '${_pannes.length} panne(s) prise(s) en charge',
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
+            style: Theme.of(context).textTheme.bodySmall
                 ?.copyWith(color: Theme.of(context).colorScheme.outline),
           ),
         const SizedBox(height: 12),
@@ -509,7 +516,9 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
           if (_resultats.isEmpty) ...[
             if (_resultatsErreur != null)
               _BlocErreur(
-                  message: _resultatsErreur!, onRetraiter: _chargerResultats)
+                message: _resultatsErreur!,
+                onRetraiter: _chargerResultats,
+              )
             else
               const Padding(
                 padding: EdgeInsets.all(24),
@@ -561,16 +570,16 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
 // ---------------------------------------------------------------------------
 
 IconData _iconeNiveau(SosNiveauSecurite n) => switch (n) {
-      SosNiveauSecurite.ok => Icons.check_circle_outline_rounded,
-      SosNiveauSecurite.attention => Icons.warning_amber_rounded,
-      SosNiveauSecurite.danger => Icons.dangerous_rounded,
-    };
+  SosNiveauSecurite.ok => Icons.check_circle_outline_rounded,
+  SosNiveauSecurite.attention => Icons.warning_amber_rounded,
+  SosNiveauSecurite.danger => Icons.dangerous_rounded,
+};
 
 Color _couleurNiveau(SosNiveauSecurite n) => switch (n) {
-      SosNiveauSecurite.ok => AppTheme.successColor,
-      SosNiveauSecurite.attention => AppTheme.warningColor,
-      SosNiveauSecurite.danger => AppTheme.errorColor,
-    };
+  SosNiveauSecurite.ok => AppTheme.successColor,
+  SosNiveauSecurite.attention => AppTheme.warningColor,
+  SosNiveauSecurite.danger => AppTheme.errorColor,
+};
 
 String _fcfa(int montant) {
   final s = montant.toString();
@@ -660,11 +669,7 @@ class _CarteChoix extends StatelessWidget {
         onTap: onTap,
         leading: Icon(icon, color: selected ? scheme.primary : scheme.outline),
         title: Text(titre),
-        subtitle: Text(
-          sousTitre,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
+        subtitle: Text(sousTitre, maxLines: 2, overflow: TextOverflow.ellipsis),
         trailing: Icon(
           selected
               ? Icons.check_circle_rounded
@@ -731,8 +736,10 @@ class _CarteResume extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Récapitulatif',
-                style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              'Récapitulatif',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const SizedBox(height: 8),
             Row(
               children: [
@@ -763,8 +770,11 @@ class _CarteResume extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(_iconeNiveau(niveau),
-                    size: 20, color: _couleurNiveau(niveau)),
+                Icon(
+                  _iconeNiveau(niveau),
+                  size: 20,
+                  color: _couleurNiveau(niveau),
+                ),
                 const SizedBox(width: 8),
                 Expanded(child: Text(niveau.libelle)),
               ],
@@ -817,9 +827,7 @@ class _CartePrestataire extends StatelessWidget {
                 ),
                 Text(
                   '${prestataire.distanceKm.toStringAsFixed(1)} km',
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelLarge
+                  style: Theme.of(context).textTheme.labelLarge
                       ?.copyWith(color: scheme.primary),
                 ),
               ],
@@ -832,9 +840,7 @@ class _CartePrestataire extends StatelessWidget {
                   '${prestataire.noteMoyenne.toStringAsFixed(1)} ★',
                 'Tarif au km : ${_fcfa(d.tarifKmGaranti)}',
               ].join(' · '),
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
+              style: Theme.of(context).textTheme.bodySmall
                   ?.copyWith(color: scheme.outline),
             ),
             if (prestataire.services.isNotEmpty) ...[
@@ -855,8 +861,10 @@ class _CartePrestataire extends StatelessWidget {
               ),
             ],
             const SizedBox(height: 12),
-            Text('Devis transparent (garanti)',
-                style: Theme.of(context).textTheme.labelLarge),
+            Text(
+              'Devis transparent (garanti)',
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
             const SizedBox(height: 6),
             for (final (libelle, montant) in lignes)
               Padding(
@@ -865,11 +873,15 @@ class _CartePrestataire extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Text(libelle,
-                          style: Theme.of(context).textTheme.bodySmall),
+                      child: Text(
+                        libelle,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                     ),
-                    Text(_fcfa(montant),
-                        style: Theme.of(context).textTheme.bodySmall),
+                    Text(
+                      _fcfa(montant),
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                   ],
                 ),
               ),
@@ -877,19 +889,17 @@ class _CartePrestataire extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Total garanti',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(fontWeight: FontWeight.bold)),
+                Text(
+                  'Total garanti',
+                  style: Theme.of(context).textTheme.titleMedium
+                      ?.copyWith(fontWeight: FontWeight.bold),
+                ),
                 Text(
                   _fcfa(d.totalFcfa),
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.successColor),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.successColor,
+                  ),
                 ),
               ],
             ),
@@ -942,9 +952,7 @@ class _LigneContact extends StatelessWidget {
         title: Text(nom),
         subtitle: Text(
           metier,
-          style: Theme.of(context)
-              .textTheme
-              .bodySmall
+          style: Theme.of(context).textTheme.bodySmall
               ?.copyWith(color: scheme.outline),
         ),
         trailing: IconButton.filledTonal(

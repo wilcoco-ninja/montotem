@@ -60,8 +60,10 @@ class ProviderIdentityService {
     try {
       final row = await _sb
           .from('providers')
-          .select('id_document_type, identity_submitted_at, '
-              'statut_validation, rejection_reason, provider_kind')
+          .select(
+            'id_document_type, identity_submitted_at, '
+            'statut_validation, rejection_reason, provider_kind',
+          )
           .eq('id', uid)
           .maybeSingle();
       if (row == null) return null;
@@ -73,8 +75,11 @@ class ProviderIdentityService {
         providerKind: row['provider_kind'] as String?,
       );
     } catch (e) {
-      developer.log('statut identité',
-          error: e, name: 'ProviderIdentityService');
+      developer.log(
+        'statut identité',
+        error: e,
+        name: 'ProviderIdentityService',
+      );
       return null;
     }
   }
@@ -93,38 +98,59 @@ class ProviderIdentityService {
   }) async {
     final auth = AuthService();
 
-    final selfieUrl = await auth.uploaderDocument(selfie.bytes, 'selfie.jpg',
-        kind: UploadKind.avatar, folder: 'providers');
+    final selfieUrl = await auth.uploaderDocument(
+      selfie.bytes,
+      'selfie.jpg',
+      kind: UploadKind.avatar,
+      folder: 'providers',
+    );
     final rectoUrl = await auth.uploaderDocument(
-        recto.bytes, 'document_recto.jpg',
-        kind: UploadKind.identity, folder: 'providers');
+      recto.bytes,
+      'document_recto.jpg',
+      kind: UploadKind.identity,
+      folder: 'providers',
+    );
     final versoUrl = verso == null
         ? null
-        : await auth.uploaderDocument(verso.bytes, 'document_verso.jpg',
-            kind: UploadKind.identity, folder: 'providers');
-    final garageUrl = await auth.uploaderDocument(garage.bytes, 'garage.jpg',
-        kind: UploadKind.avatar, folder: 'providers');
+        : await auth.uploaderDocument(
+            verso.bytes,
+            'document_verso.jpg',
+            kind: UploadKind.identity,
+            folder: 'providers',
+          );
+    final garageUrl = await auth.uploaderDocument(
+      garage.bytes,
+      'garage.jpg',
+      kind: UploadKind.avatar,
+      folder: 'providers',
+    );
 
     final texte = description?.trim() ?? '';
     try {
-      await _sb.rpc('submit_provider_identity', params: {
-        'p_doc_type': type.code,
-        'p_doc_number': numero.trim(),
-        'p_selfie_url': selfieUrl,
-        'p_doc_front_url': rectoUrl,
-        'p_doc_back_url': versoUrl,
-        'p_garage_photo_url': garageUrl,
-        'p_garage_description': texte.isEmpty ? null : texte,
-        'p_checks': {
-          'selfie': selfie.check.metrics,
-          'recto': recto.check.metrics,
-          if (verso != null) 'verso': verso.check.metrics,
-          'garage': garage.check.metrics,
+      await _sb.rpc(
+        'submit_provider_identity',
+        params: {
+          'p_doc_type': type.code,
+          'p_doc_number': numero.trim(),
+          'p_selfie_url': selfieUrl,
+          'p_doc_front_url': rectoUrl,
+          'p_doc_back_url': versoUrl,
+          'p_garage_photo_url': garageUrl,
+          'p_garage_description': texte.isEmpty ? null : texte,
+          'p_checks': {
+            'selfie': selfie.check.metrics,
+            'recto': recto.check.metrics,
+            if (verso != null) 'verso': verso.check.metrics,
+            'garage': garage.check.metrics,
+          },
         },
-      });
+      );
     } on PostgrestException catch (e) {
-      developer.log('soumettre identité',
-          error: e, name: 'ProviderIdentityService');
+      developer.log(
+        'soumettre identité',
+        error: e,
+        name: 'ProviderIdentityService',
+      );
       throw IdentityException(_message(e));
     }
   }

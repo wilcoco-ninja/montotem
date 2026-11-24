@@ -14,10 +14,18 @@ DateTime? _date(dynamic v) =>
 
 /// Type de service de transport (valeur stockée dans rides.service_kind).
 enum RideKind {
-  zemidjan('zemidjan', 'Zémidjan', 'Moto-taxi, 1 passager',
-      Icons.two_wheeler_rounded),
-  tricycleFret('tricycle_fret', 'Tricycle Fret', 'Transport de marchandises',
-      Icons.local_shipping_rounded);
+  zemidjan(
+    'zemidjan',
+    'Zémidjan',
+    'Moto-taxi, 1 passager',
+    Icons.two_wheeler_rounded,
+  ),
+  tricycleFret(
+    'tricycle_fret',
+    'Tricycle Fret',
+    'Transport de marchandises',
+    Icons.local_shipping_rounded,
+  );
 
   const RideKind(this.code, this.libelle, this.description, this.icone);
 
@@ -27,9 +35,9 @@ enum RideKind {
   final IconData icone;
 
   static RideKind fromCode(String? c) => RideKind.values.firstWhere(
-        (k) => k.code == c,
-        orElse: () => RideKind.zemidjan,
-      );
+    (k) => k.code == c,
+    orElse: () => RideKind.zemidjan,
+  );
 }
 
 /// Mode de paiement d'une course. Le cash donne lieu à la commission de la
@@ -47,11 +55,8 @@ enum RidePaymentMethod {
 
   bool get mobileMoney => this != RidePaymentMethod.cash;
 
-  static RidePaymentMethod fromCode(String? c) =>
-      RidePaymentMethod.values.firstWhere(
-        (m) => m.code == c,
-        orElse: () => RidePaymentMethod.cash,
-      );
+  static RidePaymentMethod fromCode(String? c) => RidePaymentMethod.values
+      .firstWhere((m) => m.code == c, orElse: () => RidePaymentMethod.cash);
 }
 
 enum RideStatus {
@@ -64,54 +69,54 @@ enum RideStatus {
   cancelled;
 
   static RideStatus fromValue(String? v) => switch (v) {
-        'accepted' => RideStatus.accepted,
-        'arrived' => RideStatus.arrived,
-        'in_progress' => RideStatus.inProgress,
-        'verifying' => RideStatus.verifying,
-        'completed' => RideStatus.completed,
-        'cancelled' => RideStatus.cancelled,
-        _ => RideStatus.requested,
-      };
+    'accepted' => RideStatus.accepted,
+    'arrived' => RideStatus.arrived,
+    'in_progress' => RideStatus.inProgress,
+    'verifying' => RideStatus.verifying,
+    'completed' => RideStatus.completed,
+    'cancelled' => RideStatus.cancelled,
+    _ => RideStatus.requested,
+  };
 
   String get value => switch (this) {
-        RideStatus.requested => 'requested',
-        RideStatus.accepted => 'accepted',
-        RideStatus.arrived => 'arrived',
-        RideStatus.inProgress => 'in_progress',
-        RideStatus.verifying => 'verifying',
-        RideStatus.completed => 'completed',
-        RideStatus.cancelled => 'cancelled',
-      };
+    RideStatus.requested => 'requested',
+    RideStatus.accepted => 'accepted',
+    RideStatus.arrived => 'arrived',
+    RideStatus.inProgress => 'in_progress',
+    RideStatus.verifying => 'verifying',
+    RideStatus.completed => 'completed',
+    RideStatus.cancelled => 'cancelled',
+  };
 
   String get libelle => switch (this) {
-        RideStatus.requested => 'En attente d\'un conducteur',
-        RideStatus.accepted => 'Conducteur en route',
-        RideStatus.arrived => 'Conducteur arrivé',
-        RideStatus.inProgress => 'Course en cours',
-        RideStatus.verifying => 'Vérification de fin',
-        RideStatus.completed => 'Terminée',
-        RideStatus.cancelled => 'Annulée',
-      };
+    RideStatus.requested => 'En attente d\'un conducteur',
+    RideStatus.accepted => 'Conducteur en route',
+    RideStatus.arrived => 'Conducteur arrivé',
+    RideStatus.inProgress => 'Course en cours',
+    RideStatus.verifying => 'Vérification de fin',
+    RideStatus.completed => 'Terminée',
+    RideStatus.cancelled => 'Annulée',
+  };
 
   Color get couleur => switch (this) {
-        RideStatus.requested => Colors.blueGrey,
-        RideStatus.accepted => AppColors.navy,
-        RideStatus.arrived => AppColors.amber,
-        RideStatus.inProgress => AppColors.amber,
-        RideStatus.verifying => AppColors.navy,
-        RideStatus.completed => AppColors.success,
-        RideStatus.cancelled => AppColors.emergency,
-      };
+    RideStatus.requested => Colors.blueGrey,
+    RideStatus.accepted => AppColors.navy,
+    RideStatus.arrived => AppColors.amber,
+    RideStatus.inProgress => AppColors.amber,
+    RideStatus.verifying => AppColors.navy,
+    RideStatus.completed => AppColors.success,
+    RideStatus.cancelled => AppColors.emergency,
+  };
 
   IconData get icone => switch (this) {
-        RideStatus.requested => Icons.hourglass_top_rounded,
-        RideStatus.accepted => Icons.directions_rounded,
-        RideStatus.arrived => Icons.place_rounded,
-        RideStatus.inProgress => Icons.navigation_rounded,
-        RideStatus.verifying => Icons.pin_rounded,
-        RideStatus.completed => Icons.check_circle_rounded,
-        RideStatus.cancelled => Icons.cancel_rounded,
-      };
+    RideStatus.requested => Icons.hourglass_top_rounded,
+    RideStatus.accepted => Icons.directions_rounded,
+    RideStatus.arrived => Icons.place_rounded,
+    RideStatus.inProgress => Icons.navigation_rounded,
+    RideStatus.verifying => Icons.pin_rounded,
+    RideStatus.completed => Icons.check_circle_rounded,
+    RideStatus.cancelled => Icons.cancel_rounded,
+  };
 
   /// Conducteur attribué et course non terminée.
   bool get actif =>
@@ -199,7 +204,8 @@ class Ride {
       providerPhone: j['provider_phone'] as String?,
       providerMomo: j['provider_momo'] is Map
           ? MomoAccount.fromJson(
-              Map<String, dynamic>.from(j['provider_momo'] as Map))
+              Map<String, dynamic>.from(j['provider_momo'] as Map),
+            )
           : null,
     );
   }
@@ -266,16 +272,16 @@ class NearbyRide {
   });
 
   factory NearbyRide.fromJson(Map<String, dynamic> j) => NearbyRide(
-        id: '${j['id']}',
-        kind: RideKind.fromCode(j['service_kind'] as String?),
-        fareFcfa: (j['fare_fcfa'] as num?)?.toInt() ?? 0,
-        payment: RidePaymentMethod.fromCode(j['payment_method'] as String?),
-        distanceToPickupM: (j['distance_to_pickup_m'] as num?)?.toInt() ?? 0,
-        tripDistanceM: (j['trip_distance_m'] as num?)?.toInt() ?? 0,
-        createdAt: _date(j['created_at']) ?? DateTime.now(),
-        pickupAddress: j['pickup_address'] as String?,
-        dropoffAddress: j['dropoff_address'] as String?,
-      );
+    id: '${j['id']}',
+    kind: RideKind.fromCode(j['service_kind'] as String?),
+    fareFcfa: (j['fare_fcfa'] as num?)?.toInt() ?? 0,
+    payment: RidePaymentMethod.fromCode(j['payment_method'] as String?),
+    distanceToPickupM: (j['distance_to_pickup_m'] as num?)?.toInt() ?? 0,
+    tripDistanceM: (j['trip_distance_m'] as num?)?.toInt() ?? 0,
+    createdAt: _date(j['created_at']) ?? DateTime.now(),
+    pickupAddress: j['pickup_address'] as String?,
+    dropoffAddress: j['dropoff_address'] as String?,
+  );
 
   final String id;
   final RideKind kind;

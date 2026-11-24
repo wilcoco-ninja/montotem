@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -89,15 +88,15 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
         child: _loading
             ? const Center(child: CircularProgressIndicator())
             : _profil == null
-                ? Center(
-                    child: SingleChildScrollView(
-                      child: ErrorState(
-                        message: 'Impossible de charger votre profil.',
-                        onRetry: _charger,
-                      ),
-                    ),
-                  )
-                : _contenu(_profil!),
+            ? Center(
+                child: SingleChildScrollView(
+                  child: ErrorState(
+                    message: 'Impossible de charger votre profil.',
+                    onRetry: _charger,
+                  ),
+                ),
+              )
+            : _contenu(_profil!),
       ),
     );
   }
@@ -177,8 +176,11 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                       children: [
                         Row(
                           children: [
-                            const Icon(Icons.stars_rounded,
-                                size: 32, color: AppColors.gold),
+                            const Icon(
+                              Icons.stars_rounded,
+                              size: 32,
+                              color: AppColors.gold,
+                            ),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Text(
@@ -236,8 +238,9 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                                     style: TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.w800,
-                                      color:
-                                          context.readable(AppColors.success),
+                                      color: context.readable(
+                                        AppColors.success,
+                                      ),
                                     ),
                                   ),
                                 ],

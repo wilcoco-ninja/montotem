@@ -23,10 +23,10 @@ class DriverInfo {
   final String? momoNumero;
 
   RideKind? get rideKind => switch (kind) {
-        'zemidjan' => RideKind.zemidjan,
-        'tricycle_fret' => RideKind.tricycleFret,
-        _ => null,
-      };
+    'zemidjan' => RideKind.zemidjan,
+    'tricycle_fret' => RideKind.tricycleFret,
+    _ => null,
+  };
 
   /// Zémidjan ou Tricycle Fret.
   bool get conducteur => rideKind != null;
@@ -52,8 +52,10 @@ class RideDriverService {
     try {
       final row = await _sb
           .from('providers')
-          .select('provider_kind, disponible, statut_validation, '
-              'fin_abonnement, momo_operateur, momo_numero')
+          .select(
+            'provider_kind, disponible, statut_validation, '
+            'fin_abonnement, momo_operateur, momo_numero',
+          )
           .eq('id', uid)
           .maybeSingle();
       if (row == null) return null;
@@ -62,8 +64,8 @@ class RideDriverService {
         disponible: row['disponible'] == true,
         // Évite la chaîne "null" quand le statut est absent.
         statutValidation: (row['statut_validation'] as String?) ?? 'pending',
-        finAbonnement:
-            DateTime.tryParse('${row['fin_abonnement'] ?? ''}')?.toLocal(),
+        finAbonnement: DateTime.tryParse('${row['fin_abonnement'] ?? ''}')
+            ?.toLocal(),
         momoOperateur: row['momo_operateur'] as String?,
         momoNumero: row['momo_numero'] as String?,
       );
@@ -92,8 +94,10 @@ class RideDriverService {
   /// jour toutes les 15 s). Échec silencieux : la prochaine tentative suivra.
   Future<void> mettreAJourPosition(double lat, double lng) async {
     try {
-      await _sb
-          .rpc('update_driver_location', params: {'p_lat': lat, 'p_lng': lng});
+      await _sb.rpc(
+        'update_driver_location',
+        params: {'p_lat': lat, 'p_lng': lng},
+      );
     } catch (e) {
       developer.log('Position conducteur', error: e, name: 'RideDriverService');
     }

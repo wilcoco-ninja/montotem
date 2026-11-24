@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -102,7 +101,9 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
                       _p.nomAffiche,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w800),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                   ),
                   Icon(
@@ -114,8 +115,10 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
                 ],
               ),
               const SizedBox(height: 4),
-              Text(_p.metier,
-                  style: TextStyle(color: onSurface.withValues(alpha: 0.7))),
+              Text(
+                _p.metier,
+                style: TextStyle(color: onSurface.withValues(alpha: 0.7)),
+              ),
               const SizedBox(height: 12),
               Wrap(
                 spacing: 8,
@@ -162,8 +165,9 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
                               ),
                             ),
                             TextButton(
-                                onPressed: _recharger,
-                                child: const Text('RÃƒÂ©essayer')),
+                              onPressed: _recharger,
+                              child: const Text('RÃƒÂ©essayer'),
+                            ),
                           ],
                         ),
                       ),
@@ -242,10 +246,12 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
             spacing: 8,
             runSpacing: 8,
             children: f.vehicleTypes
-                .map((v) => Chip(
-                      label: Text(_libellesVehicules[v] ?? v),
-                      visualDensity: VisualDensity.compact,
-                    ))
+                .map(
+                  (v) => Chip(
+                    label: Text(_libellesVehicules[v] ?? v),
+                    visualDensity: VisualDensity.compact,
+                  ),
+                )
                 .toList(),
           ),
         ],
@@ -263,7 +269,9 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
                       Text(
                         'Environ ${TravelFee.fcfa(frais)}',
                         style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w800),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                       const SizedBox(height: 2),
                       Text(
@@ -271,8 +279,9 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
                         '${TravelFee.fcfa(f.fraisMinFcfa)} Ã‚Â· estimation pour '
                         '${kmRoute.toStringAsFixed(1)} km',
                         style: TextStyle(
-                            fontSize: 12.5,
-                            color: onSurface.withValues(alpha: 0.65)),
+                          fontSize: 12.5,
+                          color: onSurface.withValues(alpha: 0.65),
+                        ),
                       ),
                       if (horsRayon)
                         Padding(
@@ -280,9 +289,10 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
                           child: Text(
                             'Au-delÃƒÂ  de son rayon habituel (${f.rayonMaxKm} km).',
                             style: TextStyle(
-                                fontSize: 12.5,
-                                color: scheme.tertiary,
-                                fontWeight: FontWeight.w600),
+                              fontSize: 12.5,
+                              color: scheme.tertiary,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                     ],
@@ -294,8 +304,10 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
         ],
         const SectionTitle('Prestations et tarifs'),
         if (f.services.isEmpty)
-          Text('Ce prestataire n\'a pas encore publiÃƒÂ© ses tarifs.',
-              style: TextStyle(color: onSurface.withValues(alpha: 0.65)))
+          Text(
+            'Ce prestataire n\'a pas encore publiÃƒÂ© ses tarifs.',
+            style: TextStyle(color: onSurface.withValues(alpha: 0.65)),
+          )
         else
           SoftCard(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -322,15 +334,21 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(s.nom,
-                    style: const TextStyle(
-                        fontSize: 14.5, fontWeight: FontWeight.w700)),
                 Text(
-                    _libellesVehicules[s.categorieVehicule] ??
-                        s.categorieVehicule,
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: onSurface.withValues(alpha: 0.55))),
+                  s.nom,
+                  style: const TextStyle(
+                    fontSize: 14.5,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Text(
+                  _libellesVehicules[s.categorieVehicule] ??
+                      s.categorieVehicule,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: onSurface.withValues(alpha: 0.55),
+                  ),
+                ),
               ],
             ),
           ),

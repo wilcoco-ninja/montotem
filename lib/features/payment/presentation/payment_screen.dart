@@ -36,8 +36,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Future<void> _payer() async {
     FocusScope.of(context).unfocus();
 
-    final cleanAmountText =
-        _amountController.text.replaceAll(RegExp(r'\s+'), '');
+    final cleanAmountText = _amountController.text.replaceAll(
+      RegExp(r'\s+'),
+      '',
+    );
     final int? amount = int.tryParse(cleanAmountText);
     final String phone = _phoneController.text.trim();
     final String name = _nameController.text.trim();
@@ -174,8 +176,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.verified_user_outlined,
-                          size: 14, color: muted),
+                      Icon(
+                        Icons.verified_user_outlined,
+                        size: 14,
+                        color: muted,
+                      ),
                       const SizedBox(width: 6),
                       Text(
                         'Paiement sécurisé par KKiaPay',

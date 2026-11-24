@@ -17,17 +17,17 @@ class PaymentAccount {
   final String titulaire;
 
   String get libelleOperateur => switch (operateur) {
-        'mtn' => 'MTN MoMo',
-        'moov' => 'Moov Money',
-        'celtiis' => 'Celtiis Cash',
-        _ => operateur.toUpperCase(),
-      };
+    'mtn' => 'MTN MoMo',
+    'moov' => 'Moov Money',
+    'celtiis' => 'Celtiis Cash',
+    _ => operateur.toUpperCase(),
+  };
 
   factory PaymentAccount.fromJson(Map<String, dynamic> json) => PaymentAccount(
-        operateur: '${json['operateur'] ?? ''}'.toLowerCase(),
-        numero: '${json['numero'] ?? ''}',
-        titulaire: '${json['titulaire'] ?? ''}',
-      );
+    operateur: '${json['operateur'] ?? ''}'.toLowerCase(),
+    numero: '${json['numero'] ?? ''}',
+    titulaire: '${json['titulaire'] ?? ''}',
+  );
 }
 
 class PaymentAccountService {
@@ -46,8 +46,11 @@ class PaymentAccountService {
           .where((c) => c.numero.isNotEmpty && c.operateur.isNotEmpty)
           .toList();
     } catch (e) {
-      developer.log('obtenirComptesPaiement',
-          error: e, name: 'PaymentAccountService');
+      developer.log(
+        'obtenirComptesPaiement',
+        error: e,
+        name: 'PaymentAccountService',
+      );
       return const [];
     }
   }

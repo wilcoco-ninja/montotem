@@ -33,10 +33,10 @@ class DriverInfo {
 
   /// Le `RideKind` correspondant, ou null si ce n'est pas un conducteur.
   RideKind? get rideKind => switch (kind) {
-        'zemidjan' => RideKind.zemidjan,
-        'tricycle_fret' => RideKind.tricycleFret,
-        _ => null,
-      };
+    'zemidjan' => RideKind.zemidjan,
+    'tricycle_fret' => RideKind.tricycleFret,
+    _ => null,
+  };
 
   bool get conducteur => rideKind != null;
   bool get valide => statutValidation == 'approved';
@@ -58,8 +58,10 @@ class DriverService {
     try {
       final row = await _sb
           .from('providers')
-          .select('provider_kind, disponible, statut_validation, '
-              'momo_operateur, momo_numero, note_moyenne, missions_completees')
+          .select(
+            'provider_kind, disponible, statut_validation, '
+            'momo_operateur, momo_numero, note_moyenne, missions_completees',
+          )
           .eq('id', uid)
           .maybeSingle();
       if (row == null) return null;
@@ -84,25 +86,30 @@ class DriverService {
     final uid = currentUserId;
     if (uid == null) {
       throw const DriverException(
-          'Session expirée. Veuillez vous reconnecter.');
+        'Session expirée. Veuillez vous reconnecter.',
+      );
     }
     try {
       await _sb.from('providers').update({'disponible': value}).eq('id', uid);
     } catch (e) {
-      developer.log('Disponibilité conducteur',
-          error: e, name: 'DriverService');
+      developer.log(
+        'Disponibilité conducteur',
+        error: e,
+        name: 'DriverService',
+      );
       throw const DriverException(
-          'Impossible de changer votre disponibilité. Vérifiez votre connexion.');
+        'Impossible de changer votre disponibilité. Vérifiez votre connexion.',
+      );
     }
   }
 
   /// Met à jour la position du conducteur (limité à 1 fois / 15s par le serveur).
   Future<void> mettreAJourPosition(double lat, double lng) async {
     try {
-      await _sb.rpc('update_driver_location', params: {
-        'p_lat': lat,
-        'p_lng': lng,
-      });
+      await _sb.rpc(
+        'update_driver_location',
+        params: {'p_lat': lat, 'p_lng': lng},
+      );
     } catch (e) {
       developer.log('Position conducteur', error: e, name: 'DriverService');
     }
@@ -115,16 +122,23 @@ class DriverService {
     String? titulaire,
   }) async {
     try {
-      await _sb.rpc('set_provider_momo', params: {
-        'p_operateur': operateur,
-        'p_numero': numero,
-        'p_titulaire': titulaire,
-      });
+      await _sb.rpc(
+        'set_provider_momo',
+        params: {
+          'p_operateur': operateur,
+          'p_numero': numero,
+          'p_titulaire': titulaire,
+        },
+      );
     } catch (e) {
-      developer.log('Enregistrement Mobile Money',
-          error: e, name: 'DriverService');
+      developer.log(
+        'Enregistrement Mobile Money',
+        error: e,
+        name: 'DriverService',
+      );
       throw const DriverException(
-          'Impossible d\'enregistrer le numéro Mobile Money. Réessayez.');
+        'Impossible d\'enregistrer le numéro Mobile Money. Réessayez.',
+      );
     }
   }
 

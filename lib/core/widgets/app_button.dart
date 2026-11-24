@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 
 import 'package:montotem/core/theme/app_colors.dart';
@@ -67,24 +66,27 @@ class AppButton extends StatelessWidget {
 
     final Widget button = switch (variant) {
       AppButtonVariant.primary => FilledButton(onPressed: action, child: child),
-      AppButtonVariant.secondary =>
-        OutlinedButton(onPressed: action, child: child),
+      AppButtonVariant.secondary => OutlinedButton(
+        onPressed: action,
+        child: child,
+      ),
       AppButtonVariant.text => TextButton(onPressed: action, child: child),
       // Ã¢Å“â€¦ Contraste AAA dans les 3 espaces (clair/sombre) :
       //    on utilise scheme.error qui suit le thÃƒÂ¨me de l'espace.
       AppButtonVariant.danger => FilledButton(
-          onPressed: action,
-          style: FilledButton.styleFrom(
-            backgroundColor: context.readable(scheme.error),
-            foregroundColor: Colors.white,
-            disabledBackgroundColor: scheme.error.withValues(alpha: 0.3),
-          ),
-          child: child,
+        onPressed: action,
+        style: FilledButton.styleFrom(
+          backgroundColor: context.readable(scheme.error),
+          foregroundColor: Colors.white,
+          disabledBackgroundColor: scheme.error.withValues(alpha: 0.3),
         ),
+        child: child,
+      ),
     };
 
-    final Widget sized =
-        expand ? SizedBox(width: double.infinity, child: button) : button;
+    final Widget sized = expand
+        ? SizedBox(width: double.infinity, child: button)
+        : button;
 
     if (semanticsLabel == null) return sized;
     return Semantics(

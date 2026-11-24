@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 
 import 'package:montotem/core/services/routing_service.dart';
@@ -59,14 +58,22 @@ class RouteSelectionOverlay extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('ItinÃƒÂ©raires disponibles',
-                            style: TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.w800)),
-                        Text('$originName Ã¢â€ â€™ $destinationName',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 14.5, color: context.textSecondary)),
+                        const Text(
+                          'ItinÃƒÂ©raires disponibles',
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        Text(
+                          '$originName Ã¢â€ â€™ $destinationName',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 14.5,
+                            color: context.textSecondary,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -153,12 +160,15 @@ class _InfoItem extends StatelessWidget {
         children: [
           Icon(icon, size: 22, color: Theme.of(context).colorScheme.primary),
           const SizedBox(height: 4),
-          Text(value,
-              textAlign: TextAlign.center,
-              style:
-                  const TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
-          Text(label,
-              style: TextStyle(fontSize: 13.5, color: context.textSecondary)),
+          Text(
+            value,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+          ),
+          Text(
+            label,
+            style: TextStyle(fontSize: 13.5, color: context.textSecondary),
+          ),
         ],
       ),
     );
@@ -211,13 +221,19 @@ class _RouteOption extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: selected
-                  ? const Icon(Icons.check_rounded,
-                      size: 20, color: Colors.white)
-                  : Text('${index + 1}',
+                  ? const Icon(
+                      Icons.check_rounded,
+                      size: 20,
+                      color: Colors.white,
+                    )
+                  : Text(
+                      '${index + 1}',
                       style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w800,
-                          color: onSurface.withValues(alpha: 0.8))),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        color: onSurface.withValues(alpha: 0.8),
+                      ),
+                    ),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -228,38 +244,52 @@ class _RouteOption extends StatelessWidget {
                     spacing: 8,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      Text(route.formattedDuration,
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w800,
-                              color: selected ? accent : onSurface)),
+                      Text(
+                        route.formattedDuration,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          color: selected ? accent : onSurface,
+                        ),
+                      ),
                       if (best)
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 3),
+                            horizontal: 8,
+                            vertical: 3,
+                          ),
                           decoration: BoxDecoration(
-                            color:
-                                AppTheme.successColor.withValues(alpha: 0.14),
+                            color: AppTheme.successColor.withValues(
+                              alpha: 0.14,
+                            ),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Text('Le plus rapide',
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w800,
-                                  color:
-                                      context.readable(AppTheme.successColor))),
+                          child: Text(
+                            'Le plus rapide',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w800,
+                              color: context.readable(AppTheme.successColor),
+                            ),
+                          ),
                         ),
                     ],
                   ),
-                  Text(route.summary,
-                      style: TextStyle(
-                          fontSize: 15, color: context.textSecondary)),
+                  Text(
+                    route.summary,
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: context.textSecondary,
+                    ),
+                  ),
                 ],
               ),
             ),
-            Icon(Icons.navigation_rounded,
-                size: 22,
-                color: selected ? accent : onSurface.withValues(alpha: 0.4)),
+            Icon(
+              Icons.navigation_rounded,
+              size: 22,
+              color: selected ? accent : onSurface.withValues(alpha: 0.4),
+            ),
           ],
         ),
       ),

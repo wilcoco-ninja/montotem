@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show RealtimeChannel;
@@ -66,13 +65,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   void _initialiserCanauxTempsReel() {
     try {
       _canalNotifs = _adminService.ecouterNotificationsAdmin(_surNotification);
-      _canalMissions = _control.ecouter(
-        'missions',
-        () {
-          if (mounted) _chargerDonnees(silencieux: true);
-        },
-        nom: 'admin-dash-missions-prod',
-      );
+      _canalMissions = _control.ecouter('missions', () {
+        if (mounted) _chargerDonnees(silencieux: true);
+      }, nom: 'admin-dash-missions-prod');
     } catch (e) {
       debugPrint("Erreur d'initialisation des canaux temps réel : $e");
     }
@@ -86,12 +81,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   }
 
   String _routePour(String type) => switch (type) {
-        'payment_declared' => '/admin/control?tab=2',
-        'topup_declared' => '/admin/topups',
-        'provider_reported' => '/admin/reports',
-        'mission_created' || 'mission_completed' => '/admin/control',
-        _ => '/admin/providers',
-      };
+    'payment_declared' => '/admin/control?tab=2',
+    'topup_declared' => '/admin/topups',
+    'provider_reported' => '/admin/reports',
+    'mission_created' || 'mission_completed' => '/admin/control',
+    _ => '/admin/providers',
+  };
 
   void _surNotification(Map<String, dynamic> notif) {
     if (!mounted) return;
@@ -136,9 +131,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     try {
       final results = await Future.wait<Object?>([
         _adminService.obtenirStatistiques(),
-        _control.recentes().catchError(
-              (_) => <Map<String, dynamic>>[],
-            ),
+        _control.recentes().catchError((_) => <Map<String, dynamic>>[]),
       ]);
 
       if (!mounted) return;
@@ -186,15 +179,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   }) {
     return LayoutBuilder(
       builder: (context, c) {
-        final cols =
-            c.maxWidth >= 1024 ? grand : (c.maxWidth >= 600 ? moyen : petit);
+        final cols = c.maxWidth >= 1024
+            ? grand
+            : (c.maxWidth >= 600 ? moyen : petit);
         final w = (c.maxWidth - 14 * (cols - 1)) / cols;
         return Wrap(
           spacing: 14,
           runSpacing: 14,
-          children: [
-            for (final i in items) SizedBox(width: w, child: i),
-          ],
+          children: [for (final i in items) SizedBox(width: w, child: i)],
         );
       },
     );
@@ -590,11 +582,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         ? Map<String, dynamic>.from(m['provider'] as Map)
         : <String, dynamic>{};
 
-    final nom =
-        '${client['first_name'] ?? ''}${client['last_name'] ?? ''}'.trim();
+    final nom = '${client['first_name'] ?? ''}${client['last_name'] ?? ''}'
+        .trim();
     final nomClient = nom.isEmpty ? 'Client' : nom;
     final nomProvider = '${prov['business_name'] ?? 'Prestataire'}';
-    final total = ((m['travel_fee_fcfa'] as num?)?.toInt() ?? 0) +
+    final total =
+        ((m['travel_fee_fcfa'] as num?)?.toInt() ?? 0) +
         ((m['repair_fee_fcfa'] as num?)?.toInt() ?? 0);
 
     return SoftCard(
@@ -603,11 +596,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         railColor: s.couleur,
         child: Row(
           children: [
-            AvatarInline.fromName(
-              nomClient,
-              color: AppColors.navy,
-              size: 40,
-            ),
+            AvatarInline.fromName(nomClient, color: AppColors.navy, size: 40),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -742,8 +731,10 @@ class _ActionCard extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: color,
                   borderRadius: BorderRadius.circular(20),

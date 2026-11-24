@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -169,8 +168,8 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
   Widget _buildContenu(AppUser user) {
     final nomAffiche =
         (user.businessName != null && user.businessName!.isNotEmpty)
-            ? user.businessName!
-            : (user.name ?? 'Mon profil');
+        ? user.businessName!
+        : (user.name ?? 'Mon profil');
     final sousTitre = [
       if (user.metier != null && user.metier!.isNotEmpty) user.metier!,
       if (user.ville != null && user.ville!.isNotEmpty) user.ville!,
@@ -221,8 +220,9 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
     ];
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light
-          .copyWith(statusBarColor: Colors.transparent),
+      value: SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.transparent,
+      ),
       child: RefreshIndicator(
         onRefresh: _charger,
         child: ListView(
@@ -300,7 +300,8 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                     color: Colors.white,
                     tooltip: 'Retour',
                     icon: const Icon(Icons.arrow_back_rounded),
-                    onPressed: widget.onRetour ??
+                    onPressed:
+                        widget.onRetour ??
                         () => context.canPop()
                             ? context.pop()
                             : context.go('/provider/home'),
@@ -325,15 +326,19 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                               ),
                               child: CircleAvatar(
                                 radius: 44,
-                                backgroundColor:
-                                    Colors.white.withValues(alpha: 0.16),
+                                backgroundColor: Colors.white.withValues(
+                                  alpha: 0.16,
+                                ),
                                 backgroundImage: aPhoto
                                     ? NetworkImage(user.photoProfilUrl!)
                                     : null,
                                 child: aPhoto
                                     ? null
-                                    : const Icon(Icons.person_rounded,
-                                        size: 46, color: Colors.white),
+                                    : const Icon(
+                                        Icons.person_rounded,
+                                        size: 46,
+                                        color: Colors.white,
+                                      ),
                               ),
                             ),
                             if (user.isApproved)
@@ -347,10 +352,15 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                                     color: AppTheme.successColor,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                        color: AppColors.navy, width: 3),
+                                      color: AppColors.navy,
+                                      width: 3,
+                                    ),
                                   ),
-                                  child: const Icon(Icons.check_rounded,
-                                      color: Colors.white, size: 20),
+                                  child: const Icon(
+                                    Icons.check_rounded,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
                                 ),
                               ),
                           ],
@@ -469,8 +479,9 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
       message = 'Niveau maximum atteint. Bravo !';
     } else {
       final plage = suivant.$2 - actuel.$2;
-      progression =
-          ((_missions - actuel.$2) / plage).clamp(0.0, 1.0).toDouble();
+      progression = ((_missions - actuel.$2) / plage)
+          .clamp(0.0, 1.0)
+          .toDouble();
       final reste = suivant.$2 - _missions;
       message =
           '$reste mission${reste > 1 ? 's' : ''} terminÃƒÂ©e${reste > 1 ? 's' : ''} avant le niveau ${suivant.$1}.';
@@ -489,21 +500,31 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   color: AppColors.gold.withValues(alpha: 0.14),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Icon(Icons.workspace_premium_rounded,
-                    color: context.readable(AppColors.gold), size: 30),
+                child: Icon(
+                  Icons.workspace_premium_rounded,
+                  color: context.readable(AppColors.gold),
+                  size: 30,
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Niveau ${actuel.$1}',
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w900)),
                     Text(
-                        '$_missions mission${_missions > 1 ? 's' : ''} terminÃƒÂ©e${_missions > 1 ? 's' : ''}',
-                        style: TextStyle(
-                            fontSize: 15, color: context.textSecondary)),
+                      'Niveau ${actuel.$1}',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    Text(
+                      '$_missions mission${_missions > 1 ? 's' : ''} terminÃƒÂ©e${_missions > 1 ? 's' : ''}',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: context.textSecondary,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -520,8 +541,10 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
             ),
           ),
           const SizedBox(height: 8),
-          Text(message,
-              style: TextStyle(fontSize: 15, color: context.textSecondary)),
+          Text(
+            message,
+            style: TextStyle(fontSize: 15, color: context.textSecondary),
+          ),
           const SizedBox(height: 12),
           Row(
             children: [
@@ -545,8 +568,9 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                           _niveaux[i].$1,
                           style: TextStyle(
                             fontSize: 13.5,
-                            fontWeight:
-                                i == idx ? FontWeight.w800 : FontWeight.w600,
+                            fontWeight: i == idx
+                                ? FontWeight.w800
+                                : FontWeight.w600,
                           ),
                         ),
                       ),
@@ -666,8 +690,11 @@ class _PastilleEntete extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icone,
-              color: dore ? AppColors.amberTextDark : Colors.white, size: 18),
+          Icon(
+            icone,
+            color: dore ? AppColors.amberTextDark : Colors.white,
+            size: 18,
+          ),
           const SizedBox(width: 6),
           Flexible(
             child: Text(
@@ -706,12 +733,15 @@ class _MiniStat extends StatelessWidget {
         const SizedBox(height: 4),
         FittedBox(
           fit: BoxFit.scaleDown,
-          child: Text(valeur,
-              style:
-                  const TextStyle(fontSize: 26, fontWeight: FontWeight.w900)),
+          child: Text(
+            valeur,
+            style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
+          ),
         ),
-        Text(label,
-            style: TextStyle(fontSize: 14.5, color: context.textSecondary)),
+        Text(
+          label,
+          style: TextStyle(fontSize: 14.5, color: context.textSecondary),
+        ),
       ],
     );
   }
@@ -832,18 +862,22 @@ class _Rangee extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(titre,
-                    style: const TextStyle(
-                        fontSize: 16.5, fontWeight: FontWeight.w800)),
-                Text(sousTitre,
-                    style: TextStyle(
-                        fontSize: 14.5,
-                        height: 1.35,
-                        color: context.textSecondary)),
-                if (pastille != null) ...[
-                  const SizedBox(height: 6),
-                  pastille!,
-                ],
+                Text(
+                  titre,
+                  style: const TextStyle(
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                Text(
+                  sousTitre,
+                  style: TextStyle(
+                    fontSize: 14.5,
+                    height: 1.35,
+                    color: context.textSecondary,
+                  ),
+                ),
+                if (pastille != null) ...[const SizedBox(height: 6), pastille!],
               ],
             ),
           ),

@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -14,8 +13,9 @@ Future<void> showProviderMomoSheet(BuildContext context) {
     isScrollControlled: true,
     useSafeArea: true,
     builder: (_) => Padding(
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
       child: const _MomoSheet(),
     ),
   );
@@ -98,7 +98,8 @@ class _MomoSheetState extends State<_MomoSheet> {
       if (!mounted) return;
       Navigator.pop(context);
       _msg(
-          'NumÃƒÂ©ro enregistrÃƒÂ©. Vos clients peuvent vous payer par Mobile Money.');
+        'NumÃƒÂ©ro enregistrÃƒÂ©. Vos clients peuvent vous payer par Mobile Money.',
+      );
     } on MissionException catch (e) {
       if (!mounted) return;
       setState(() => _saving = false);
@@ -108,8 +109,8 @@ class _MomoSheetState extends State<_MomoSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final muted =
-        Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.85);
+    final muted = Theme.of(context).colorScheme.onSurface
+        .withValues(alpha: 0.85);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
@@ -123,9 +124,10 @@ class _MomoSheetState extends State<_MomoSheet> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text('Recevoir mes paiements',
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.w800)),
+                  const Text(
+                    'Recevoir mes paiements',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+                  ),
                   const SizedBox(height: 6),
                   Text(
                     'Ce numÃƒÂ©ro est montrÃƒÂ© au client uniquement quand vous '
@@ -133,23 +135,28 @@ class _MomoSheetState extends State<_MomoSheet> {
                     style: TextStyle(fontSize: 16, height: 1.4, color: muted),
                   ),
                   const SizedBox(height: 16),
-                  const Text('Votre opÃƒÂ©rateur',
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
+                  const Text(
+                    'Votre opÃƒÂ©rateur',
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+                  ),
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 10,
                     runSpacing: 10,
                     children: PayMethod.values
                         .where((m) => m.mobileMoney)
-                        .map((m) => ChoiceChip(
-                              label: Text(m.libelle,
-                                  style: const TextStyle(fontSize: 16)),
-                              selected: _operateur == m,
-                              onSelected: _saving
-                                  ? null
-                                  : (_) => setState(() => _operateur = m),
-                            ))
+                        .map(
+                          (m) => ChoiceChip(
+                            label: Text(
+                              m.libelle,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                            selected: _operateur == m,
+                            onSelected: _saving
+                                ? null
+                                : (_) => setState(() => _operateur = m),
+                          ),
+                        )
                         .toList(),
                   ),
                   const SizedBox(height: 16),

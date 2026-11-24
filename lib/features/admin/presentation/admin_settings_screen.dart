@@ -55,9 +55,11 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(success
-            ? 'Identifiants mis à jour.'
-            : 'Mot de passe actuel incorrect ou erreur serveur.'),
+        content: Text(
+          success
+              ? 'Identifiants mis à jour.'
+              : 'Mot de passe actuel incorrect ou erreur serveur.',
+        ),
       ),
     );
     if (success) {

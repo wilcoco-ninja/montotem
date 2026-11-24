@@ -67,26 +67,29 @@ class AuthService {
       final identities = signUpRes.user?.identities;
       if (identities != null && identities.isEmpty) {
         throw const ApiException(
-            'Ce compte existe déjà. Veuillez vous connecter.');
+          'Ce compte existe déjà. Veuillez vous connecter.',
+        );
       }
 
       if (signUpRes.session == null) {
         return SignUpOutcome.emailConfirmationRequired;
       }
 
-      await _sb.auth.updateUser(
-        UserAttributes(phone: normalizePhone(phone)),
-      );
+      await _sb.auth.updateUser(UserAttributes(phone: normalizePhone(phone)));
       return SignUpOutcome.phoneOtpSent;
     } on AuthException catch (e) {
       throw _mapAuthError(e);
     } on ApiException {
       rethrow;
     } catch (e) {
-      developer.log('Erreur signUpWithEmailPasswordPhone',
-          error: e, name: 'AuthService');
+      developer.log(
+        'Erreur signUpWithEmailPasswordPhone',
+        error: e,
+        name: 'AuthService',
+      );
       throw const ApiException(
-          'Erreur lors de la création du compte. Veuillez réessayer.');
+        'Erreur lors de la création du compte. Veuillez réessayer.',
+      );
     }
   }
 
@@ -104,32 +107,37 @@ class AuthService {
       );
       if (res.session == null) {
         throw const ApiException(
-            'Votre e-mail n\'est pas encore confirmé. Ouvrez le lien reçu '
-            'par e-mail, puis réessayez.');
+          'Votre e-mail n\'est pas encore confirmé. Ouvrez le lien reçu '
+          'par e-mail, puis réessayez.',
+        );
       }
-      await _sb.auth.updateUser(
-        UserAttributes(phone: normalizePhone(phone)),
-      );
+      await _sb.auth.updateUser(UserAttributes(phone: normalizePhone(phone)));
     } on AuthException catch (e) {
       final raw = e.message.toLowerCase();
       if (raw.contains('not confirmed') || e.code == 'email_not_confirmed') {
         throw const ApiException(
-            'Votre e-mail n\'est pas encore confirmé. Ouvrez le lien reçu '
-            'par e-mail, puis réessayez.');
+          'Votre e-mail n\'est pas encore confirmé. Ouvrez le lien reçu '
+          'par e-mail, puis réessayez.',
+        );
       }
       if (raw.contains('invalid login')) {
         throw const ApiException(
-            'Impossible de vous connecter. Vérifiez votre e-mail et votre '
-            'mot de passe.');
+          'Impossible de vous connecter. Vérifiez votre e-mail et votre '
+          'mot de passe.',
+        );
       }
       throw _mapAuthError(e);
     } on ApiException {
       rethrow;
     } catch (e) {
-      developer.log('Erreur continueSignUpAfterEmailConfirmation',
-          error: e, name: 'AuthService');
+      developer.log(
+        'Erreur continueSignUpAfterEmailConfirmation',
+        error: e,
+        name: 'AuthService',
+      );
       throw const ApiException(
-          'Erreur lors de la finalisation du compte. Veuillez réessayer.');
+        'Erreur lors de la finalisation du compte. Veuillez réessayer.',
+      );
     }
   }
 
@@ -145,7 +153,8 @@ class AuthService {
     } catch (e) {
       developer.log('Erreur resendSignupEmail', error: e, name: 'AuthService');
       throw const ApiException(
-          'Impossible de renvoyer l\'e-mail. Vérifiez votre connexion.');
+        'Impossible de renvoyer l\'e-mail. Vérifiez votre connexion.',
+      );
     }
   }
 
@@ -163,8 +172,11 @@ class AuthService {
       developer.log('Échec verifyEmailOtp', error: e, name: 'AuthService');
       return false;
     } catch (e) {
-      developer.log('Erreur inattendue verifyEmailOtp',
-          error: e, name: 'AuthService');
+      developer.log(
+        'Erreur inattendue verifyEmailOtp',
+        error: e,
+        name: 'AuthService',
+      );
       return false;
     }
   }
@@ -192,9 +204,7 @@ class AuthService {
 
   Future<void> resendPhoneOtp(String phone) async {
     try {
-      await _sb.auth.updateUser(
-        UserAttributes(phone: normalizePhone(phone)),
-      );
+      await _sb.auth.updateUser(UserAttributes(phone: normalizePhone(phone)));
     } on AuthException catch (e) {
       throw _mapAuthError(e);
     }
@@ -216,7 +226,8 @@ class AuthService {
     } catch (e) {
       developer.log('Erreur réseau sendOTP', error: e, name: 'AuthService');
       throw const ApiException(
-          'Impossible d\'envoyer le code. Vérifiez votre connexion.');
+        'Impossible d\'envoyer le code. Vérifiez votre connexion.',
+      );
     }
   }
 
@@ -246,11 +257,15 @@ class AuthService {
       );
       return res.session != null;
     } on AuthException catch (e) {
-      developer.log('Échec signInWithPasswordEmail: ${e.code} ${e.message}',
-          error: e, name: 'AuthService');
+      developer.log(
+        'Échec signInWithPasswordEmail: ${e.code} ${e.message}',
+        error: e,
+        name: 'AuthService',
+      );
       if (e.code == 'email_not_confirmed') {
         throw const ApiException(
-            'E-mail non confirmé. Ouvrez le lien reçu par e-mail.');
+          'E-mail non confirmé. Ouvrez le lien reçu par e-mail.',
+        );
       }
       if (e.code == 'invalid_credentials') {
         throw const ApiException('E-mail ou mot de passe incorrect.');
@@ -259,10 +274,14 @@ class AuthService {
     } on ApiException {
       rethrow;
     } catch (e) {
-      developer.log('Erreur inattendue signInWithPasswordEmail',
-          error: e, name: 'AuthService');
+      developer.log(
+        'Erreur inattendue signInWithPasswordEmail',
+        error: e,
+        name: 'AuthService',
+      );
       throw const ApiException(
-          'Une erreur est survenue lors de la connexion. Veuillez réessayer.');
+        'Une erreur est survenue lors de la connexion. Veuillez réessayer.',
+      );
     }
   }
 
@@ -288,17 +307,21 @@ class AuthService {
       );
       if (res.session == null) return false;
 
-      await _sb.auth.updateUser(
-        UserAttributes(password: nouveauMotDePasse),
-      );
+      await _sb.auth.updateUser(UserAttributes(password: nouveauMotDePasse));
       return true;
     } on AuthException catch (e) {
-      developer.log('Échec resetMotDePasse AuthException',
-          error: e, name: 'AuthService');
+      developer.log(
+        'Échec resetMotDePasse AuthException',
+        error: e,
+        name: 'AuthService',
+      );
       return false;
     } catch (e) {
-      developer.log('Échec resetMotDePasse Exception',
-          error: e, name: 'AuthService');
+      developer.log(
+        'Échec resetMotDePasse Exception',
+        error: e,
+        name: 'AuthService',
+      );
       return false;
     }
   }
@@ -319,17 +342,24 @@ class AuthService {
 
       if (response.user == null) {
         throw const ApiException(
-            'Impossible de mettre à jour le mot de passe.');
+          'Impossible de mettre à jour le mot de passe.',
+        );
       }
     } on AuthException catch (e) {
-      developer.log('Échec setPasswordWithEmail AuthException',
-          error: e, name: 'AuthService');
+      developer.log(
+        'Échec setPasswordWithEmail AuthException',
+        error: e,
+        name: 'AuthService',
+      );
       throw _mapAuthError(e);
     } on ApiException {
       rethrow;
     } catch (e) {
-      developer.log('Échec setPasswordWithEmail Exception',
-          error: e, name: 'AuthService');
+      developer.log(
+        'Échec setPasswordWithEmail Exception',
+        error: e,
+        name: 'AuthService',
+      );
       throw const ApiException('Erreur inattendue lors de la mise à jour.');
     }
   }
@@ -346,20 +376,25 @@ class AuthService {
     try {
       await PushService.instance.desinscrire();
     } catch (e) {
-      developer.log('Désinscription push échouée',
-          error: e, name: 'AuthService');
+      developer.log(
+        'Désinscription push échouée',
+        error: e,
+        name: 'AuthService',
+      );
     }
     try {
       await LocalCache.instance.effacerDonneesUtilisateur();
     } catch (e) {
-      developer.log('Nettoyage du cache échoué',
-          error: e, name: 'AuthService');
+      developer.log('Nettoyage du cache échoué', error: e, name: 'AuthService');
     }
     try {
       await OutboxService.instance.effacerDonneesUtilisateur();
     } catch (e) {
-      developer.log('Vidage de l\'outbox échoué',
-          error: e, name: 'AuthService');
+      developer.log(
+        'Vidage de l\'outbox échoué',
+        error: e,
+        name: 'AuthService',
+      );
     }
     await _sb.auth.signOut();
   }
@@ -373,15 +408,21 @@ class AuthService {
     final uid = currentUserId;
     if (uid == null) return null;
     try {
-      final profile =
-          await _sb.from('profiles').select().eq('id', uid).maybeSingle();
+      final profile = await _sb
+          .from('profiles')
+          .select()
+          .eq('id', uid)
+          .maybeSingle();
       if (profile == null) return null;
 
       Map<String, dynamic>? presta;
       var approuve = false;
       if (profile['role'] == 'provider') {
-        final row =
-            await _sb.from('providers').select().eq('id', uid).maybeSingle();
+        final row = await _sb
+            .from('providers')
+            .select()
+            .eq('id', uid)
+            .maybeSingle();
         if (row != null) {
           presta = {
             'business_name': row['business_name'],
@@ -410,12 +451,17 @@ class AuthService {
     } on PostgrestException catch (e) {
       developer.log('fetchCurrentUser échec', error: e, name: 'AuthService');
       throw const ApiException(
-          'Impossible de récupérer votre profil. Vérifiez votre connexion.');
+        'Impossible de récupérer votre profil. Vérifiez votre connexion.',
+      );
     } catch (e) {
-      developer.log('fetchCurrentUser erreur inattendue',
-          error: e, name: 'AuthService');
+      developer.log(
+        'fetchCurrentUser erreur inattendue',
+        error: e,
+        name: 'AuthService',
+      );
       throw const ApiException(
-          'Une erreur est survenue lors de la récupération du profil.');
+        'Une erreur est survenue lors de la récupération du profil.',
+      );
     }
   }
 
@@ -437,21 +483,24 @@ class AuthService {
     double? longitude,
   }) async {
     try {
-      await _sb.rpc('register_profile', params: {
-        'p_role': role.value,
-        'p_first_name': prenom,
-        'p_last_name': nom,
-        'p_email': email,
-        'p_phone': phone != null ? normalizePhone(phone) : null,
-        'p_photo_profil_url': photoProfilUrl,
-        'p_business_name': businessName,
-        'p_metier': metier,
-        'p_ville': ville,
-        'p_ifu': ifu,
-        'p_photo_cni_url': photoCniUrl,
-        'p_latitude': latitude,
-        'p_longitude': longitude,
-      });
+      await _sb.rpc(
+        'register_profile',
+        params: {
+          'p_role': role.value,
+          'p_first_name': prenom,
+          'p_last_name': nom,
+          'p_email': email,
+          'p_phone': phone != null ? normalizePhone(phone) : null,
+          'p_photo_profil_url': photoProfilUrl,
+          'p_business_name': businessName,
+          'p_metier': metier,
+          'p_ville': ville,
+          'p_ifu': ifu,
+          'p_photo_cni_url': photoCniUrl,
+          'p_latitude': latitude,
+          'p_longitude': longitude,
+        },
+      );
       return await fetchCurrentUser();
     } on PostgrestException catch (e) {
       developer.log('Erreur creerProfil', error: e, name: 'AuthService');
@@ -459,10 +508,14 @@ class AuthService {
     } on ApiException {
       rethrow;
     } catch (e) {
-      developer.log('Erreur inattendue creerProfil',
-          error: e, name: 'AuthService');
+      developer.log(
+        'Erreur inattendue creerProfil',
+        error: e,
+        name: 'AuthService',
+      );
       throw const ApiException(
-          'Une erreur est survenue lors de la création du profil.');
+        'Une erreur est survenue lors de la création du profil.',
+      );
     }
   }
 
@@ -479,14 +532,16 @@ class AuthService {
     String? folder,
   }) async {
     try {
-      final limite =
-          kind == UploadKind.identity ? _maxDocumentOctets : _maxAvatarOctets;
+      final limite = kind == UploadKind.identity
+          ? _maxDocumentOctets
+          : _maxAvatarOctets;
       if (bytes.isEmpty) {
         throw const UploadException('Le fichier est vide. Reprenez la photo.');
       }
       if (bytes.length > limite) {
         throw UploadException(
-            'Fichier trop volumineux (maximum ${limite ~/ (1024 * 1024)} Mo).');
+          'Fichier trop volumineux (maximum ${limite ~/ (1024 * 1024)} Mo).',
+        );
       }
 
       try {
@@ -508,7 +563,9 @@ class AuthService {
           : '';
       final path = '$prefix$userId/${timestamp}_$cleanName';
 
-      await _sb.storage.from(bucket).uploadBinary(
+      await _sb.storage
+          .from(bucket)
+          .uploadBinary(
             path,
             bytes,
             fileOptions: FileOptions(
@@ -537,8 +594,11 @@ class AuthService {
       developer.log('StorageException upload', error: e, name: 'AuthService');
       throw UploadException('Erreur de stockage : ${e.message}$hint');
     } catch (e) {
-      developer.log('Exception inattendue upload',
-          error: e, name: 'AuthService');
+      developer.log(
+        'Exception inattendue upload',
+        error: e,
+        name: 'AuthService',
+      );
       throw const UploadException('Échec de l\'envoi du fichier.');
     }
   }
@@ -582,8 +642,11 @@ class AuthService {
       final result = await _sb.rpc('is_admin');
       return result == true;
     } catch (e) {
-      developer.log('Vérification admin impossible',
-          error: e, name: 'AuthService');
+      developer.log(
+        'Vérification admin impossible',
+        error: e,
+        name: 'AuthService',
+      );
       return false;
     }
   }
@@ -620,8 +683,11 @@ class AuthService {
       );
       return true;
     } catch (e) {
-      developer.log('Échec changement identifiants admin',
-          error: e, name: 'AuthService');
+      developer.log(
+        'Échec changement identifiants admin',
+        error: e,
+        name: 'AuthService',
+      );
       return false;
     }
   }
@@ -681,24 +747,28 @@ class AuthService {
     final lower = e.message.toLowerCase();
     if (lower.contains('rate') || lower.contains('too many')) {
       return const ApiException(
-          'Trop de tentatives. Veuillez réessayer dans quelques minutes.');
+        'Trop de tentatives. Veuillez réessayer dans quelques minutes.',
+      );
     }
     if (lower.contains('invalid')) {
       return const ApiException('Informations fournies invalides.');
     }
     if (lower.contains('password')) {
       return const ApiException(
-          'Le mot de passe doit contenir au moins 6 caractères.');
+        'Le mot de passe doit contenir au moins 6 caractères.',
+      );
     }
     if (lower.contains('already registered') ||
         lower.contains('already exists') ||
         lower.contains('already been registered')) {
       return const ApiException(
-          'Ce compte existe déjà. Veuillez vous connecter.');
+        'Ce compte existe déjà. Veuillez vous connecter.',
+      );
     }
     if (lower.contains('phone')) {
       return const ApiException(
-          'Numéro de téléphone invalide ou déjà associé à un autre compte.');
+        'Numéro de téléphone invalide ou déjà associé à un autre compte.',
+      );
     }
     return ApiException(e.message);
   }

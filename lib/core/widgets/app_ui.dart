@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 
 import 'package:montotem/core/theme/app_colors.dart';
@@ -48,18 +47,14 @@ class SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = Theme.of(context).textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.w800,
-        );
+    final style = Theme.of(context).textTheme.titleMedium
+        ?.copyWith(fontWeight: FontWeight.w800);
     return Padding(
       padding: const EdgeInsets.fromLTRB(2, 24, 2, 10),
       child: Row(
         children: [
           Expanded(
-            child: Semantics(
-              header: true,
-              child: Text(text, style: style),
-            ),
+            child: Semantics(header: true, child: Text(text, style: style)),
           ),
           if (trailing != null) trailing!,
         ],
@@ -232,8 +227,10 @@ class _StateView extends StatelessWidget {
               child: Text(
                 title,
                 textAlign: TextAlign.center,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ),
             if (message != null && message!.isNotEmpty) ...[
@@ -315,12 +312,7 @@ class ErrorState extends StatelessWidget {
 // Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
 class SkeletonBox extends StatefulWidget {
-  const SkeletonBox({
-    super.key,
-    this.height = 16,
-    this.width,
-    this.radius,
-  });
+  const SkeletonBox({super.key, this.height = 16, this.width, this.radius});
 
   final double height;
   final double? width;
@@ -402,12 +394,7 @@ class SkeletonList extends StatelessWidget {
 // Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
 class PulseDot extends StatefulWidget {
-  const PulseDot({
-    super.key,
-    this.color,
-    this.size = 8,
-    this.animate = true,
-  });
+  const PulseDot({super.key, this.color, this.size = 8, this.animate = true});
 
   final Color? color;
   final double size;
@@ -472,13 +459,13 @@ class _PulseDotState extends State<PulseDot>
   }
 
   Widget _dot(Color color, double opacity) => Container(
-        width: widget.size,
-        height: widget.size,
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: opacity),
-          shape: BoxShape.circle,
-        ),
-      );
+    width: widget.size,
+    height: widget.size,
+    decoration: BoxDecoration(
+      color: color.withValues(alpha: opacity),
+      shape: BoxShape.circle,
+    ),
+  );
 }
 
 // Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
@@ -500,13 +487,16 @@ class AvatarInline extends StatelessWidget {
   final Color? borderColor;
 
   factory AvatarInline.fromName(String name, {Color? color, double size = 32}) {
-    final clean =
-        name.trim().split(RegExp(r'\s+')).where((w) => w.isNotEmpty).toList();
+    final clean = name
+        .trim()
+        .split(RegExp(r'\s+'))
+        .where((w) => w.isNotEmpty)
+        .toList();
     final ini = clean.isEmpty
         ? '?'
         : clean.length == 1
-            ? clean.first.substring(0, 1)
-            : '${clean.first[0]}${clean.last[0]}';
+        ? clean.first.substring(0, 1)
+        : '${clean.first[0]}${clean.last[0]}';
     return AvatarInline(
       initials: ini,
       color: color ?? AppColors.navy,
@@ -667,13 +657,16 @@ class KpiHero extends StatelessWidget {
               ),
               if (delta != null)
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
-                    color: (deltaPositive
-                            ? AppColors.success
-                            : AppColors.emergency)
-                        .withValues(alpha: 0.12),
+                    color:
+                        (deltaPositive
+                                ? AppColors.success
+                                : AppColors.emergency)
+                            .withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(999),
                   ),
                   child: Text(
@@ -681,9 +674,9 @@ class KpiHero extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 11.5,
                       fontWeight: FontWeight.w700,
-                      color: context.readable(deltaPositive
-                          ? AppColors.success
-                          : AppColors.emergency),
+                      color: context.readable(
+                        deltaPositive ? AppColors.success : AppColors.emergency,
+                      ),
                     ),
                   ),
                 ),
@@ -767,14 +760,18 @@ class InfoRow extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style:
-                      TextStyle(fontSize: 13.5, color: context.textSecondary),
+                  style: TextStyle(
+                    fontSize: 13.5,
+                    color: context.textSecondary,
+                  ),
                 ),
                 const SizedBox(height: 1),
                 Text(
                   value,
                   style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w700),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ],
             ),
@@ -896,8 +893,10 @@ class StatCard extends StatelessWidget {
                 if (hint != null)
                   Text(
                     hint!,
-                    style:
-                        TextStyle(fontSize: 13, color: context.textSecondary),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: context.textSecondary,
+                    ),
                   ),
               ],
             ),

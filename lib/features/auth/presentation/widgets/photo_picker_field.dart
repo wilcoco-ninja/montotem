@@ -1,4 +1,3 @@
-﻿
 import 'dart:developer' as developer;
 import 'dart:typed_data';
 
@@ -163,7 +162,9 @@ class _PhotoPickerFieldState extends State<PhotoPickerField> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Impossible de charger la photo. Veuillez rÃƒÂ©essayer.'),
+          content: Text(
+            'Impossible de charger la photo. Veuillez rÃƒÂ©essayer.',
+          ),
           duration: Duration(seconds: 4),
         ),
       );
@@ -207,81 +208,82 @@ class _PhotoPickerFieldState extends State<PhotoPickerField> {
           child: _isPicking
               ? const Center(child: CircularProgressIndicator())
               : bytes != null
-                  ? Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Image.memory(
-                          bytes,
-                          fit: BoxFit.cover,
-                          gaplessPlayback: true,
-                          errorBuilder: (_, __, ___) => const Center(
-                            child: Icon(Icons.broken_image, size: 36),
-                          ),
+              ? Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image.memory(
+                      bytes,
+                      fit: BoxFit.cover,
+                      gaplessPlayback: true,
+                      errorBuilder: (_, __, ___) => const Center(
+                        child: Icon(Icons.broken_image, size: 36),
+                      ),
+                    ),
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: CircleAvatar(
+                        radius: 14,
+                        backgroundColor: theme.colorScheme.primary,
+                        child: const Icon(
+                          Icons.check,
+                          size: 16,
+                          color: Colors.white,
                         ),
-                        Positioned(
-                          top: 8,
-                          right: 8,
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 8,
+                      right: 8,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: _supprimerPhoto,
+                          borderRadius: BorderRadius.circular(12),
                           child: CircleAvatar(
                             radius: 14,
-                            backgroundColor: theme.colorScheme.primary,
+                            backgroundColor: theme.colorScheme.error.withValues(
+                              alpha: 0.9,
+                            ),
                             child: const Icon(
-                              Icons.check,
+                              Icons.close,
                               size: 16,
                               color: Colors.white,
                             ),
                           ),
                         ),
-                        Positioned(
-                          bottom: 8,
-                          right: 8,
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: _supprimerPhoto,
-                              borderRadius: BorderRadius.circular(12),
-                              child: CircleAvatar(
-                                radius: 14,
-                                backgroundColor: theme.colorScheme.error
-                                    .withValues(alpha: 0.9),
-                                child: const Icon(
-                                  Icons.close,
-                                  size: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          widget.icon,
-                          size: 36,
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          widget.label,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: theme.colorScheme.onSurface,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Appuyez pour ajouter',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
+                  ],
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      widget.icon,
+                      size: 36,
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      widget.label,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: theme.colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Appuyez pour ajouter',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
         ),
       ),
     );

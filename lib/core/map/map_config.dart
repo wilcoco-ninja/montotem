@@ -46,10 +46,10 @@ class MapConfig {
   /// Toutes les interactions : zoom (pincer, double tap, molette), glisser,
   /// ET rotation à deux doigts dans tous les sens.
   static InteractionOptions get interaction => const InteractionOptions(
-        flags: InteractiveFlag.all,
-        // Seuil bas : la rotation se déclenche vite, sans geste exagéré.
-        rotationThreshold: 8,
-      );
+    flags: InteractiveFlag.all,
+    // Seuil bas : la rotation se déclenche vite, sans geste exagéré.
+    rotationThreshold: 8,
+  );
 
   static MapOptions options({
     required LatLng center,
@@ -75,15 +75,15 @@ class MapConfig {
   ///   écran blanc,
   /// - apparition en fondu (pas de « clignotement »).
   static TileLayer tileLayer() => TileLayer(
-        urlTemplate: tileUrl,
-        userAgentPackageName: userAgent,
-        maxNativeZoom: 19,
-        maxZoom: 22,
-        keepBuffer: 4,
-        panBuffer: 2,
-        tileDisplay: const TileDisplay.fadeIn(
-          duration: Duration(milliseconds: 160),
-        ),
-        evictErrorTileStrategy: EvictErrorTileStrategy.notVisibleRespectMargin,
-      );
+    urlTemplate: tileUrl,
+    userAgentPackageName: userAgent,
+    maxNativeZoom: 19,
+    maxZoom: 22,
+    keepBuffer: 4,
+    panBuffer: 2,
+    tileDisplay: const TileDisplay.fadeIn(
+      duration: Duration(milliseconds: 160),
+    ),
+    evictErrorTileStrategy: EvictErrorTileStrategy.notVisibleRespectMargin,
+  );
 }

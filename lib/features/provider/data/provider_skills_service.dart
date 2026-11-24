@@ -27,7 +27,8 @@ class ProviderSkillsService {
           .order('created_at');
       return rows
           .map<ProviderSkill>(
-              (r) => ProviderSkill(id: '${r['id']}', label: '${r['label']}'))
+            (r) => ProviderSkill(id: '${r['id']}', label: '${r['label']}'),
+          )
           .toList();
     } on PostgrestException {
       throw const SkillException('Impossible de charger vos compétences.');

@@ -22,8 +22,11 @@ class RideTariffService {
       await LocalCache.instance.ecrire(_cleCache, jsonEncode(tarifs.toRows()));
       return tarifs;
     } catch (e) {
-      developer.log('Tarifs courses : repli',
-          error: e, name: 'RideTariffService');
+      developer.log(
+        'Tarifs courses : repli',
+        error: e,
+        name: 'RideTariffService',
+      );
       final brut = LocalCache.instance.lire(_cleCache);
       if (brut != null) {
         try {

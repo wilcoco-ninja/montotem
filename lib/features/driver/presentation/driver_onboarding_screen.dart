@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -85,8 +84,8 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
   }
 
   void _msg(String m) => ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(m), duration: const Duration(seconds: 5)),
-      );
+    SnackBar(content: Text(m), duration: const Duration(seconds: 5)),
+  );
 
   bool _valider() {
     if (!(_keys[_etape].currentState?.validate() ?? true)) return false;
@@ -127,8 +126,9 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
   }
 
   Future<void> _choisirPosition() async {
-    final actuelle =
-        (_lat != null && _lng != null) ? LatLng(_lat!, _lng!) : null;
+    final actuelle = (_lat != null && _lng != null)
+        ? LatLng(_lat!, _lng!)
+        : null;
     final r = await Navigator.push<LatLng>(
       context,
       MaterialPageRoute(
@@ -158,26 +158,32 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
         folder: 'providers',
       );
 
-      await Supabase.instance.client.rpc('register_driver', params: {
-        'p_kind': _kind!,
-        'p_first_name': _prenom.text.trim(),
-        'p_last_name': _nom.text.trim(),
-        'p_business_name':
-            _nomAffiche.text.trim().isEmpty ? null : _nomAffiche.text.trim(),
-        'p_ville': _ville.text.trim().isEmpty ? null : _ville.text.trim(),
-        'p_photo_profil_url': profilUrl,
-        'p_photo_cni_url': cniUrl,
-        'p_latitude': _lat,
-        'p_longitude': _lng,
-      });
+      await Supabase.instance.client.rpc(
+        'register_driver',
+        params: {
+          'p_kind': _kind!,
+          'p_first_name': _prenom.text.trim(),
+          'p_last_name': _nom.text.trim(),
+          'p_business_name': _nomAffiche.text.trim().isEmpty
+              ? null
+              : _nomAffiche.text.trim(),
+          'p_ville': _ville.text.trim().isEmpty ? null : _ville.text.trim(),
+          'p_photo_profil_url': profilUrl,
+          'p_photo_cni_url': cniUrl,
+          'p_latitude': _lat,
+          'p_longitude': _lng,
+        },
+      );
 
       if (!mounted) return;
       context.go('/driver/home');
     } on PostgrestException catch (e) {
       final m = e.message;
       if (m.contains('ROLE_IMMUABLE')) {
-        _msg('Ce compte est dÃƒÂ©jÃƒÂ  inscrit comme client. '
-            'Contactez le support pour changer de rÃƒÂ´le.');
+        _msg(
+          'Ce compte est dÃƒÂ©jÃƒÂ  inscrit comme client. '
+          'Contactez le support pour changer de rÃƒÂ´le.',
+        );
       } else if (m.contains('KIND_INVALIDE')) {
         _msg('Type de conduite invalide.');
       } else {
@@ -220,8 +226,9 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                           ScrollViewKeyboardDismissBehavior.onDrag,
                       child: Form(
                         key: _keys[_etape],
-                        child:
-                            _etape == 0 ? _etapeIdentite() : _etapeActivite(),
+                        child: _etape == 0
+                            ? _etapeIdentite()
+                            : _etapeActivite(),
                       ),
                     ),
                   ),
@@ -266,10 +273,8 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                 border: Border.all(
                   color: selected
                       ? AppColors.amber
-                      : Theme.of(context)
-                          .colorScheme
-                          .outline
-                          .withValues(alpha: 0.2),
+                      : Theme.of(context).colorScheme.outline
+                            .withValues(alpha: 0.2),
                   width: selected ? 2 : 1,
                 ),
               ),
@@ -289,12 +294,20 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(data.$1,
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w800)),
-                        Text(data.$2,
-                            style: TextStyle(
-                                fontSize: 13, color: context.textSecondary)),
+                        Text(
+                          data.$1,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        Text(
+                          data.$2,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: context.textSecondary,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -315,8 +328,10 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text('Votre type de conduite',
-            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
+        const Text(
+          'Votre type de conduite',
+          style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+        ),
         const SizedBox(height: 10),
         for (final code in _types.keys) carteKind(code),
         const SizedBox(height: 22),
@@ -370,7 +385,8 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
       children: [
         AuthInfoBanner(
           title: _types[_kind]?.$1 ?? 'Conducteur',
-          message: 'Vous recevrez des courses autour de vous. '
+          message:
+              'Vous recevrez des courses autour de vous. '
               'Passez en ligne pour commencer ÃƒÂ  recevoir.',
           icon: _types[_kind]?.$3 ?? Icons.two_wheeler_rounded,
           color: scheme.primary,

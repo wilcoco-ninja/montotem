@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -75,8 +74,8 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _info == null
-              ? const Center(child: Text('Profil introuvable'))
-              : _contenu(_info!),
+          ? const Center(child: Text('Profil introuvable'))
+          : _contenu(_info!),
     );
   }
 
@@ -107,12 +106,16 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                       Text(
                         info.rideKind?.libelle ?? 'Conducteur',
                         style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w800),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                       Text(
                         info.rideKind?.description ?? '',
                         style: TextStyle(
-                            fontSize: 14, color: context.textSecondary),
+                          fontSize: 14,
+                          color: context.textSecondary,
+                        ),
                       ),
                     ],
                   ),
@@ -162,16 +165,18 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                       Text(
                         TravelFee.fcfa(balance),
                         style: const TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.w900),
+                          fontSize: 24,
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
                       Text(
                         blocked
                             ? 'Portefeuille bloquÃƒÂ© Ã‚Â· Rechargez-le'
                             : 'Mon solde',
                         style: TextStyle(
-                            fontSize: 14,
-                            color:
-                                blocked ? scheme.error : context.textSecondary),
+                          fontSize: 14,
+                          color: blocked ? scheme.error : context.textSecondary,
+                        ),
                       ),
                     ],
                   ),

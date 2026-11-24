@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -69,10 +68,12 @@ class _SwipeToConfirmState extends State<SwipeToConfirm> {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final actif = _actif;
-    final fond =
-        actif ? widget.color : scheme.onSurface.withValues(alpha: 0.12);
-    final texte =
-        actif ? Colors.white : scheme.onSurface.withValues(alpha: 0.75);
+    final fond = actif
+        ? widget.color
+        : scheme.onSurface.withValues(alpha: 0.12);
+    final texte = actif
+        ? Colors.white
+        : scheme.onSurface.withValues(alpha: 0.75);
     final libelle = (!widget.enabled && widget.disabledLabel != null)
         ? widget.disabledLabel!
         : widget.label;
@@ -110,7 +111,9 @@ class _SwipeToConfirmState extends State<SwipeToConfirm> {
                 Positioned.fill(
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        left: _knob + _pad * 2 + 6, right: 16),
+                      left: _knob + _pad * 2 + 6,
+                      right: 16,
+                    ),
                     child: Center(
                       child: widget.loading
                           ? const SizedBox(
@@ -145,14 +148,15 @@ class _SwipeToConfirmState extends State<SwipeToConfirm> {
                   top: _pad,
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
-                    onHorizontalDragStart:
-                        actif ? (_) => setState(() => _dragging = true) : null,
+                    onHorizontalDragStart: actif
+                        ? (_) => setState(() => _dragging = true)
+                        : null,
                     onHorizontalDragUpdate: actif
                         ? (d) => setState(() {
-                              _drag = (_drag + d.delta.dx)
-                                  .clamp(0.0, maxDrag)
-                                  .toDouble();
-                            })
+                            _drag = (_drag + d.delta.dx)
+                                .clamp(0.0, maxDrag)
+                                .toDouble();
+                          })
                         : null,
                     onHorizontalDragEnd: actif ? (_) => _fin(maxDrag) : null,
                     onHorizontalDragCancel: actif ? () => _fin(maxDrag) : null,

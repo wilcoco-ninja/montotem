@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 
 import 'package:montotem/core/utils/responsive.dart';
@@ -87,8 +86,9 @@ class AdaptiveScaffold extends StatelessWidget {
                       backgroundColor: scheme.surface,
                       indicatorColor: scheme.primary.withValues(alpha: 0.14),
                       selectedIconTheme: IconThemeData(color: scheme.onSurface),
-                      unselectedIconTheme:
-                          IconThemeData(color: scheme.onSurfaceVariant),
+                      unselectedIconTheme: IconThemeData(
+                        color: scheme.onSurfaceVariant,
+                      ),
                       selectedLabelTextStyle: TextStyle(
                         color: scheme.onSurface,
                         fontWeight: FontWeight.w800,
@@ -117,8 +117,10 @@ class AdaptiveScaffold extends StatelessWidget {
                         for (final d in destinations)
                           NavigationRailDestination(
                             icon: _destinationIcon(d.icon, d.showBadge),
-                            selectedIcon:
-                                _destinationIcon(d.selectedIcon, d.showBadge),
+                            selectedIcon: _destinationIcon(
+                              d.selectedIcon,
+                              d.showBadge,
+                            ),
                             label: Text(d.label),
                           ),
                       ],

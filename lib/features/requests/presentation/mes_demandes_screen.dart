@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show RealtimeChannel;
@@ -73,8 +72,9 @@ class _MesDemandesScreenState extends State<MesDemandesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          widget.embedded ? null : AppBar(title: const Text('Mes demandes')),
+      appBar: widget.embedded
+          ? null
+          : AppBar(title: const Text('Mes demandes')),
       body: widget.embedded ? SafeArea(bottom: false, child: _body()) : _body(),
     );
   }
@@ -120,7 +120,8 @@ class _MesDemandesScreenState extends State<MesDemandesScreen> {
                     const EmptyState(
                       icon: Icons.receipt_long_outlined,
                       title: 'Aucune demande pour le moment',
-                      message: 'Vos demandes de dÃƒÂ©pannage apparaÃƒÂ®tront ici.',
+                      message:
+                          'Vos demandes de dÃƒÂ©pannage apparaÃƒÂ®tront ici.',
                     )
                   else
                     for (var i = 0; i < _missions.length; i++) ...[
@@ -149,8 +150,11 @@ class _MesDemandesScreenState extends State<MesDemandesScreen> {
               color: couleur.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
-            child: Icon(m.status.icone,
-                color: context.readable(couleur), size: 26),
+            child: Icon(
+              m.status.icone,
+              color: context.readable(couleur),
+              size: 26,
+            ),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -162,7 +166,9 @@ class _MesDemandesScreenState extends State<MesDemandesScreen> {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w800),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
                 const SizedBox(height: 2),
                 Text(

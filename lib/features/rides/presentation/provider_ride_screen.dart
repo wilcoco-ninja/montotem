@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:math' as math;
 
@@ -157,7 +156,10 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
   Future<void> _envoyerPosition(Position p) async {
     try {
       final statut = await _service.envoyerPosition(
-          widget.rideId, p.latitude, p.longitude);
+        widget.rideId,
+        p.latitude,
+        p.longitude,
+      );
       if (statut != _r?.status.value) await _charger(silencieux: true);
     } on RideException {
       // Erreur passagère : la prochaine position réessaiera.
@@ -175,11 +177,13 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
     final me = _me;
     if (me == null) return;
     _cadre = true;
-    _map.fitCamera(CameraFit.coordinates(
-      coordinates: [me, r.pickup, r.dropoff],
-      padding: const EdgeInsets.all(70),
-      maxZoom: 16,
-    ));
+    _map.fitCamera(
+      CameraFit.coordinates(
+        coordinates: [me, r.pickup, r.dropoff],
+        padding: const EdgeInsets.all(70),
+        maxZoom: 16,
+      ),
+    );
   }
 
   Future<void> _agir(String action, {int? tarif}) async {
@@ -189,7 +193,10 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
       if (action == 'arrived' && me != null) {
         // Position fraîche avant la vérification de proximité côté serveur.
         await _service.envoyerPosition(
-            widget.rideId, me.latitude, me.longitude);
+          widget.rideId,
+          me.latitude,
+          me.longitude,
+        );
       }
       await _service.action(widget.rideId, action, tarifFcfa: tarif);
       await _charger(silencieux: true);
@@ -207,8 +214,9 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
         convenu: r.fareFcfa,
         plafond: (r.fareFcfa * 3) ~/ 2,
         mobileMoney: r.payment.mobileMoney,
-        commissionPct:
-            _config.commissionPourCourse(mobileMoney: r.payment.mobileMoney),
+        commissionPct: _config.commissionPourCourse(
+          mobileMoney: r.payment.mobileMoney,
+        ),
       ),
     );
     if (prix != null) await _agir('complete', tarif: prix);
@@ -238,8 +246,10 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Annuler la course ?'),
-        content: const Text('Le client sera prévenu.',
-            style: TextStyle(fontSize: 16)),
+        content: const Text(
+          'Le client sera prévenu.',
+          style: TextStyle(fontSize: 16),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
@@ -248,7 +258,8 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: TextButton.styleFrom(
-                foregroundColor: Theme.of(ctx).colorScheme.error),
+              foregroundColor: Theme.of(ctx).colorScheme.error,
+            ),
             child: const Text('Oui, annuler'),
           ),
         ],
@@ -257,8 +268,11 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
     if (ok != true) return;
     setState(() => _busy = true);
     try {
-      await _service.action(widget.rideId, 'cancel',
-          motif: 'Annulée par le conducteur');
+      await _service.action(
+        widget.rideId,
+        'cancel',
+        motif: 'Annulée par le conducteur',
+      );
       await _charger(silencieux: true);
     } on RideException catch (e) {
       if (mounted) _msg(e.message);
@@ -295,36 +309,35 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
       body: _loading && r == null
           ? const Center(child: CircularProgressIndicator())
           : _error != null && r == null
-              ? Center(
-                  child: SingleChildScrollView(
-                    child: ErrorState(message: _error!, onRetry: _charger),
-                  ),
-                )
-              : r == null
-                  ? const SizedBox.shrink()
-                  : LayoutBuilder(
-                      builder: (context, c) {
-                        final lateral =
-                            c.maxWidth >= 720 || c.maxWidth > c.maxHeight;
-                        if (lateral) {
-                          return Row(
-                            children: [
-                              Expanded(child: _carte(r)),
-                              SizedBox(
-                                width: math.min(c.maxWidth * 0.42, 460.0),
-                                child: _panneau(r, lateral: true),
-                              ),
-                            ],
-                          );
-                        }
-                        return Column(
-                          children: [
-                            Expanded(flex: 4, child: _carte(r)),
-                            Expanded(flex: 5, child: _panneau(r)),
-                          ],
-                        );
-                      },
-                    ),
+          ? Center(
+              child: SingleChildScrollView(
+                child: ErrorState(message: _error!, onRetry: _charger),
+              ),
+            )
+          : r == null
+          ? const SizedBox.shrink()
+          : LayoutBuilder(
+              builder: (context, c) {
+                final lateral = c.maxWidth >= 720 || c.maxWidth > c.maxHeight;
+                if (lateral) {
+                  return Row(
+                    children: [
+                      Expanded(child: _carte(r)),
+                      SizedBox(
+                        width: math.min(c.maxWidth * 0.42, 460.0),
+                        child: _panneau(r, lateral: true),
+                      ),
+                    ],
+                  );
+                }
+                return Column(
+                  children: [
+                    Expanded(flex: 4, child: _carte(r)),
+                    Expanded(flex: 5, child: _panneau(r)),
+                  ],
+                );
+              },
+            ),
     );
   }
 
@@ -351,47 +364,51 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
           userAgentPackageName: 'bj.totem.app',
         ),
         if (ligne.length >= 2)
-          PolylineLayer(polylines: [
-            Polyline(
-              points: ligne,
-              color: scheme.primary,
-              strokeWidth: 6,
-              borderColor: Colors.white,
-              borderStrokeWidth: 2,
-            ),
-          ]),
-        MarkerLayer(markers: [
-          Marker(
-            point: r.pickup,
-            width: 48,
-            height: 48,
-            alignment: Alignment.topCenter,
-            child: Icon(Icons.location_on, size: 44, color: scheme.secondary),
+          PolylineLayer(
+            polylines: [
+              Polyline(
+                points: ligne,
+                color: scheme.primary,
+                strokeWidth: 6,
+                borderColor: Colors.white,
+                borderStrokeWidth: 2,
+              ),
+            ],
           ),
-          Marker(
-            point: r.dropoff,
-            width: 48,
-            height: 48,
-            alignment: Alignment.topCenter,
-            child: Icon(Icons.location_on, size: 44, color: scheme.error),
-          ),
-          if (me != null)
+        MarkerLayer(
+          markers: [
             Marker(
-              point: me,
-              width: 30,
-              height: 30,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 3),
+              point: r.pickup,
+              width: 48,
+              height: 48,
+              alignment: Alignment.topCenter,
+              child: Icon(Icons.location_on, size: 44, color: scheme.secondary),
+            ),
+            Marker(
+              point: r.dropoff,
+              width: 48,
+              height: 48,
+              alignment: Alignment.topCenter,
+              child: Icon(Icons.location_on, size: 44, color: scheme.error),
+            ),
+            if (me != null)
+              Marker(
+                point: me,
+                width: 30,
+                height: 30,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 3),
+                  ),
                 ),
               ),
-            ),
-        ]),
-        const RichAttributionWidget(attributions: [
-          TextSourceAttribution('© OpenStreetMap contributors'),
-        ]),
+          ],
+        ),
+        const RichAttributionWidget(
+          attributions: [TextSourceAttribution('© OpenStreetMap contributors')],
+        ),
       ],
     );
   }
@@ -424,13 +441,20 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
             children: [
               Row(
                 children: [
-                  Icon(r.kind.icone,
-                      size: 30, color: theme.colorScheme.primary),
+                  Icon(
+                    r.kind.icone,
+                    size: 30,
+                    color: theme.colorScheme.primary,
+                  ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: Text(TravelFee.fcfa(r.prixFcfa),
-                        style: const TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.w800)),
+                    child: Text(
+                      TravelFee.fcfa(r.prixFcfa),
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
                   ),
                   StatusPill(
                     label: r.status.libelle,
@@ -490,27 +514,35 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
     if (r.status == RideStatus.completed) return _recapitulatif(r);
 
     final cash = !r.payment.mobileMoney;
-    final pct =
-        _config.commissionPourCourse(mobileMoney: r.payment.mobileMoney);
+    final pct = _config.commissionPourCourse(
+      mobileMoney: r.payment.mobileMoney,
+    );
     final texte = cash
         ? 'Le client vous remet ${TravelFee.fcfa(r.prixFcfa)} en espèces. '
-            '$pct % sont déduits de votre wallet à la fin de la course.'
+              '$pct % sont déduits de votre wallet à la fin de la course.'
         : 'Le client vous paie par ${r.payment.libelle} sur votre numéro '
-            'enregistré. Vérifiez la réception avant de terminer. '
-            '$pct % de commission sont déduits de votre wallet à la fin de '
-            'la course.';
+              'enregistré. Vérifiez la réception avant de terminer. '
+              '$pct % de commission sont déduits de votre wallet à la fin de '
+              'la course.';
 
     return SoftCard(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(cash ? Icons.payments_outlined : Icons.phone_android_rounded,
-              size: 26),
+          Icon(
+            cash ? Icons.payments_outlined : Icons.phone_android_rounded,
+            size: 26,
+          ),
           const SizedBox(width: 12),
           Expanded(
-            child: Text(texte,
-                style: const TextStyle(
-                    fontSize: 15.5, fontWeight: FontWeight.w600, height: 1.4)),
+            child: Text(
+              texte,
+              style: const TextStyle(
+                fontSize: 15.5,
+                fontWeight: FontWeight.w600,
+                height: 1.4,
+              ),
+            ),
           ),
         ],
       ),
@@ -549,9 +581,11 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
     switch (r.status) {
       case RideStatus.requested:
         return [
-          Text('Cette course n\'est pas encore à vous.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16, color: muted)),
+          Text(
+            'Cette course n\'est pas encore à vous.',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16, color: muted),
+          ),
         ];
 
       case RideStatus.accepted:
@@ -575,9 +609,9 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
             dist == null
                 ? 'Recherche de votre position…'
                 : proche
-                    ? 'Vous êtes au point de départ.'
-                    : 'Vous êtes à ${formaterDistance(dist)}. Le bouton '
-                        's\'active à moins de ${_rayonArriveeM.round()} m.',
+                ? 'Vous êtes au point de départ.'
+                : 'Vous êtes à ${formaterDistance(dist)}. Le bouton '
+                      's\'active à moins de ${_rayonArriveeM.round()} m.',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 15, color: muted),
           ),
@@ -620,9 +654,11 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
           ),
           if (dist != null) ...[
             const SizedBox(height: 8),
-            Text('Destination à ${formaterDistance(dist)}.',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 15, color: muted)),
+            Text(
+              'Destination à ${formaterDistance(dist)}.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 15, color: muted),
+            ),
           ],
         ];
 
@@ -651,9 +687,11 @@ class _ProviderRideScreenState extends State<ProviderRideScreen> {
 
       case RideStatus.completed:
         return [
-          Text('Course terminée. Merci !',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16, color: muted)),
+          Text(
+            'Course terminée. Merci !',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16, color: muted),
+          ),
         ];
 
       case RideStatus.cancelled:
@@ -689,8 +727,9 @@ class _PrixFinalDialog extends StatefulWidget {
 }
 
 class _PrixFinalDialogState extends State<_PrixFinalDialog> {
-  late final TextEditingController _c =
-      TextEditingController(text: '${widget.convenu}');
+  late final TextEditingController _c = TextEditingController(
+    text: '${widget.convenu}',
+  );
 
   @override
   void dispose() {
@@ -739,9 +778,10 @@ class _PrixFinalDialogState extends State<_PrixFinalDialog> {
               child: Text(
                 'Entre 100 et ${TravelFee.fcfa(widget.plafond)}.',
                 style: TextStyle(
-                    fontSize: 14.5,
-                    fontWeight: FontWeight.w700,
-                    color: scheme.error),
+                  fontSize: 14.5,
+                  fontWeight: FontWeight.w700,
+                  color: scheme.error,
+                ),
               ),
             ),
           if (_valide)
@@ -813,7 +853,10 @@ class _CodeVerificationDialogState extends State<_CodeVerificationDialog> {
             maxLength: 6,
             onChanged: (_) => setState(() {}),
             style: const TextStyle(
-                fontSize: 24, letterSpacing: 8, fontWeight: FontWeight.w700),
+              fontSize: 24,
+              letterSpacing: 8,
+              fontWeight: FontWeight.w700,
+            ),
             decoration: const InputDecoration(
               labelText: 'Code du client',
               counterText: '',
@@ -844,12 +887,12 @@ class _EtapesConducteur extends StatelessWidget {
   static const _labels = ['En route', 'Arrivé', 'En course', 'Terminée'];
 
   int get _index => switch (status) {
-        RideStatus.accepted => 0,
-        RideStatus.arrived => 1,
-        RideStatus.inProgress => 2,
-        RideStatus.completed => 3,
-        _ => -1,
-      };
+    RideStatus.accepted => 0,
+    RideStatus.arrived => 1,
+    RideStatus.inProgress => 2,
+    RideStatus.completed => 3,
+    _ => -1,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -881,8 +924,11 @@ class _EtapesConducteur extends StatelessWidget {
                     ),
                   ),
                   child: i < courant || (i == courant && fini)
-                      ? const Icon(Icons.check_rounded,
-                          color: Colors.white, size: 21)
+                      ? const Icon(
+                          Icons.check_rounded,
+                          color: Colors.white,
+                          size: 21,
+                        )
                       : Text(
                           '${i + 1}',
                           style: TextStyle(
@@ -901,8 +947,9 @@ class _EtapesConducteur extends StatelessWidget {
                     _labels[i],
                     style: TextStyle(
                       fontSize: 14,
-                      fontWeight:
-                          i == courant ? FontWeight.w800 : FontWeight.w600,
+                      fontWeight: i == courant
+                          ? FontWeight.w800
+                          : FontWeight.w600,
                     ),
                   ),
                 ),

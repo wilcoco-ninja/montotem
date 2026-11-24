@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -63,11 +62,8 @@ class DebugLoginScreen extends StatelessWidget {
             label: 'Interface Client',
             description: 'Accueil, matching, demandes',
             color: AppTheme.primaryColor,
-            onTap: () => _loginAndNavigate(
-              context,
-              '/home',
-              'client_test@example.com',
-            ),
+            onTap: () =>
+                _loginAndNavigate(context, '/home', 'client_test@example.com'),
           ),
           const SizedBox(height: 12),
           _DebugNavButton(

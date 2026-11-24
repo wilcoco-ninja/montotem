@@ -3,14 +3,14 @@ import 'dart:developer' as developer;
 import 'dart:ui' show PointerDeviceKind;
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';                 // ✅ corrigé
+import 'package:flutter/material.dart'; // ✅ corrigé
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/accessibility/accessibility_controller.dart';
 import 'core/constants/app_constants.dart';
-import 'core/flavor/app_flavor.dart';                    // ✅ ajouté
+import 'core/flavor/app_flavor.dart'; // ✅ ajouté
 import 'core/notifications/push_service.dart';
 import 'core/offline/outbox_service.dart';
 import 'core/power/power_mode_controller.dart';
@@ -76,7 +76,8 @@ Future<void> runMonTotemApp() async {
       }
 
       if (!envLoaded) {
-        startupError = 'Impossible de charger le fichier .env.\n\n'
+        startupError =
+            'Impossible de charger le fichier .env.\n\n'
             'Assurez-vous que :\n'
             '1. Le fichier existe à assets/.env\n'
             '2. Il est déclaré dans pubspec.yaml sous "assets:"\n'
@@ -86,7 +87,8 @@ Future<void> runMonTotemApp() async {
       if (startupError == null) {
         try {
           final url = dotenv.env['SUPABASE_URL'];
-          final key = dotenv.env['SUPABASE_ANON_KEY'] ??
+          final key =
+              dotenv.env['SUPABASE_ANON_KEY'] ??
               dotenv.env['SUPABASE_PUBLISHABLE_KEY'];
 
           if (url == null || url.isEmpty || key == null || key.isEmpty) {
@@ -194,11 +196,11 @@ class _AppScrollBehavior extends MaterialScrollBehavior {
 
   @override
   Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-        PointerDeviceKind.stylus,
-        PointerDeviceKind.trackpad,
-      };
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+    PointerDeviceKind.stylus,
+    PointerDeviceKind.trackpad,
+  };
 }
 
 class MonTotemApp extends StatelessWidget {

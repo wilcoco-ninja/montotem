@@ -44,8 +44,7 @@ class OutboxService {
   StreamSubscription<dynamic>? _reseauSouscription;
   final Map<String, Future<bool> Function(Map<String, dynamic>)> _handlers =
       <String, Future<bool> Function(Map<String, dynamic>)>{};
-  final StreamController<int> _compteur =
-      StreamController<int>.broadcast();
+  final StreamController<int> _compteur = StreamController<int>.broadcast();
 
   bool get pret => _boite != null && _boite!.isOpen;
 
@@ -148,8 +147,9 @@ class OutboxService {
       final kind = '${e['kind']}';
       final handler = _handlers[kind];
       if (handler == null) continue;
-      final payload =
-          e['p'] is Map ? Map<String, dynamic>.from(e['p'] as Map) : <String, dynamic>{};
+      final payload = e['p'] is Map
+          ? Map<String, dynamic>.from(e['p'] as Map)
+          : <String, dynamic>{};
       bool ok;
       try {
         ok = await handler(payload);
@@ -187,17 +187,16 @@ class OutboxService {
   void demarrer() {
     if (ecouteActive) return;
     try {
-      _reseauSouscription = Connectivity()
-          .onConnectivityChanged
+      _reseauSouscription = Connectivity().onConnectivityChanged
           .map<bool>(_sansReseau)
           .distinct()
           .listen((bool horsLigne) {
-        if (!horsLigne) {
-          Future<void>.delayed(const Duration(seconds: 2), () {
-            traiter();
+            if (!horsLigne) {
+              Future<void>.delayed(const Duration(seconds: 2), () {
+                traiter();
+              });
+            }
           });
-        }
-      });
     } catch (e) {
       developer.log(
         'Ecoute connectivite impossible',

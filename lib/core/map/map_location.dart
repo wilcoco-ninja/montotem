@@ -105,12 +105,12 @@ class MapLocation {
   }
 
   static String messageFor(LocationIssue issue) => switch (issue) {
-        LocationIssue.servicesOff =>
-          'Activez la localisation de votre téléphone.',
-        LocationIssue.denied => 'Autorisez la localisation pour voir '
-            'les dépanneurs autour de vous.',
-        LocationIssue.deniedForever =>
-          'Localisation refusée. Autorisez-la dans les réglages de l\'application.',
-        LocationIssue.unavailable => 'Position introuvable pour le moment.',
-      };
+    LocationIssue.servicesOff => 'Activez la localisation de votre téléphone.',
+    LocationIssue.denied =>
+      'Autorisez la localisation pour voir '
+          'les dépanneurs autour de vous.',
+    LocationIssue.deniedForever =>
+      'Localisation refusée. Autorisez-la dans les réglages de l\'application.',
+    LocationIssue.unavailable => 'Position introuvable pour le moment.',
+  };
 }

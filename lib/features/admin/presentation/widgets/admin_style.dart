@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 
 /// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
@@ -43,13 +42,12 @@ class AdminStyle {
     Color color = inkDim,
     FontWeight w = FontWeight.w800,
     double letterSpacing = 1.4,
-  }) =>
-      mono.copyWith(
-        fontSize: size,
-        color: color,
-        fontWeight: w,
-        letterSpacing: letterSpacing,
-      );
+  }) => mono.copyWith(
+    fontSize: size,
+    color: color,
+    fontWeight: w,
+    letterSpacing: letterSpacing,
+  );
 
   // Ã¢â€â‚¬Ã¢â€â‚¬ ThÃƒÂ¨me ÃƒÂ  appliquer sur chaque Scaffold admin Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
   static ThemeData theme() {
@@ -78,8 +76,10 @@ class AdminStyle {
       dividerTheme: const DividerThemeData(color: line, thickness: 1, space: 1),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: panel,
-        contentTextStyle:
-            const TextStyle(color: ink, fontWeight: FontWeight.w700),
+        contentTextStyle: const TextStyle(
+          color: ink,
+          fontWeight: FontWeight.w700,
+        ),
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -341,19 +341,24 @@ class McErrorPanel extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(children: [
-            const Icon(Icons.error_outline_rounded,
-                color: AdminStyle.danger, size: 22),
-            const SizedBox(width: 10),
-            Text(
-              title.toUpperCase(),
-              style: AdminStyle.label(
-                13,
+          Row(
+            children: [
+              const Icon(
+                Icons.error_outline_rounded,
                 color: AdminStyle.danger,
-                letterSpacing: 1.6,
+                size: 22,
               ),
-            ),
-          ]),
+              const SizedBox(width: 10),
+              Text(
+                title.toUpperCase(),
+                style: AdminStyle.label(
+                  13,
+                  color: AdminStyle.danger,
+                  letterSpacing: 1.6,
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 12),
           Text(
             message,
@@ -423,10 +428,7 @@ class McEmpty extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 13,
-                color: AdminStyle.inkFaint,
-              ),
+              style: const TextStyle(fontSize: 13, color: AdminStyle.inkFaint),
             ),
           ],
         ),
@@ -442,15 +444,15 @@ class McLoader extends StatelessWidget {
   const McLoader({super.key});
   @override
   Widget build(BuildContext context) => const Center(
-        child: SizedBox(
-          width: 26,
-          height: 26,
-          child: CircularProgressIndicator(
-            strokeWidth: 2.5,
-            color: AdminStyle.info,
-          ),
-        ),
-      );
+    child: SizedBox(
+      width: 26,
+      height: 26,
+      child: CircularProgressIndicator(
+        strokeWidth: 2.5,
+        color: AdminStyle.info,
+      ),
+    ),
+  );
 }
 
 // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
@@ -511,32 +513,34 @@ class McSectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 10),
-      child: Row(children: [
-        Container(
-          width: 3,
-          height: 14,
-          decoration: BoxDecoration(
-            color: AdminStyle.info,
-            borderRadius: BorderRadius.circular(1),
-            boxShadow: [
-              BoxShadow(
-                color: AdminStyle.info.withValues(alpha: 0.6),
-                blurRadius: 8,
-              ),
-            ],
+      child: Row(
+        children: [
+          Container(
+            width: 3,
+            height: 14,
+            decoration: BoxDecoration(
+              color: AdminStyle.info,
+              borderRadius: BorderRadius.circular(1),
+              boxShadow: [
+                BoxShadow(
+                  color: AdminStyle.info.withValues(alpha: 0.6),
+                  blurRadius: 8,
+                ),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(width: 10),
-        Text(
-          title.toUpperCase(),
-          style: AdminStyle.label(
-            11,
-            color: AdminStyle.ink,
-            letterSpacing: 1.8,
+          const SizedBox(width: 10),
+          Text(
+            title.toUpperCase(),
+            style: AdminStyle.label(
+              11,
+              color: AdminStyle.ink,
+              letterSpacing: 1.8,
+            ),
           ),
-        ),
-        if (trailing != null) ...[const Spacer(), trailing!],
-      ]),
+          if (trailing != null) ...[const Spacer(), trailing!],
+        ],
+      ),
     );
   }
 }

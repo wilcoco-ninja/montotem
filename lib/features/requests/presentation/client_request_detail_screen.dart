@@ -1,4 +1,3 @@
-﻿
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -96,16 +95,20 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Annuler la demande ?'),
-        content: const Text('Le dÃƒÂ©panneur sera prÃƒÂ©venu.',
-            style: TextStyle(fontSize: 16)),
+        content: const Text(
+          'Le dÃƒÂ©panneur sera prÃƒÂ©venu.',
+          style: TextStyle(fontSize: 16),
+        ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Non, garder')),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Non, garder'),
+          ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: TextButton.styleFrom(
-                foregroundColor: Theme.of(ctx).colorScheme.error),
+              foregroundColor: Theme.of(ctx).colorScheme.error,
+            ),
             child: const Text('Oui, annuler'),
           ),
         ],
@@ -113,7 +116,10 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
     );
     if (ok != true) return;
     try {
-      await _service.annuler(widget.requestId, motif: 'AnnulÃƒÂ©e par le client');
+      await _service.annuler(
+        widget.requestId,
+        motif: 'AnnulÃƒÂ©e par le client',
+      );
       await _charger(silencieux: true);
     } on MissionException catch (e) {
       if (mounted) _msg(e.message);
@@ -147,14 +153,14 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
       body: _loading && m == null
           ? const Center(child: CircularProgressIndicator())
           : _error != null && m == null
-              ? Center(
-                  child: SingleChildScrollView(
-                    child: ErrorState(message: _error!, onRetry: _charger),
-                  ),
-                )
-              : m == null
-                  ? const SizedBox.shrink()
-                  : _contenu(m),
+          ? Center(
+              child: SingleChildScrollView(
+                child: ErrorState(message: _error!, onRetry: _charger),
+              ),
+            )
+          : m == null
+          ? const SizedBox.shrink()
+          : _contenu(m),
     );
   }
 
@@ -219,16 +225,26 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(m.status.libelle,
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w800)),
+                  Text(
+                    m.status.libelle,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                   const SizedBox(height: 2),
-                  Text(m.providerName,
-                      style: TextStyle(fontSize: 16, color: muted)),
+                  Text(
+                    m.providerName,
+                    style: TextStyle(fontSize: 16, color: muted),
+                  ),
                   if (m.status == MissionStatus.accepted && eta != null)
-                    Text('ArrivÃƒÂ©e estimÃƒÂ©e : environ $eta min',
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w700)),
+                    Text(
+                      'ArrivÃƒÂ©e estimÃƒÂ©e : environ $eta min',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -252,37 +268,48 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
                   userAgentPackageName: 'bj.totem.app',
                 ),
                 if (prov != null)
-                  PolylineLayer(polylines: [
-                    Polyline(
+                  PolylineLayer(
+                    polylines: [
+                      Polyline(
                         points: [prov, m.clientPoint],
                         color: scheme.primary,
-                        strokeWidth: 4),
-                  ]),
-                MarkerLayer(markers: [
-                  Marker(
-                    point: m.clientPoint,
-                    width: 44,
-                    height: 44,
-                    alignment: Alignment.topCenter,
-                    child:
-                        Icon(Icons.location_on, size: 42, color: scheme.error),
+                        strokeWidth: 4,
+                      ),
+                    ],
                   ),
-                  if (prov != null)
+                MarkerLayer(
+                  markers: [
                     Marker(
-                      point: prov,
-                      width: 46,
-                      height: 46,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: scheme.primary,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 3),
-                        ),
-                        child: const Icon(Icons.build_rounded,
-                            color: Colors.white, size: 22),
+                      point: m.clientPoint,
+                      width: 44,
+                      height: 44,
+                      alignment: Alignment.topCenter,
+                      child: Icon(
+                        Icons.location_on,
+                        size: 42,
+                        color: scheme.error,
                       ),
                     ),
-                ]),
+                    if (prov != null)
+                      Marker(
+                        point: prov,
+                        width: 46,
+                        height: 46,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: scheme.primary,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 3),
+                          ),
+                          child: const Icon(
+                            Icons.build_rounded,
+                            color: Colors.white,
+                            size: 22,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -302,18 +329,21 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
         child: Column(
           children: [
             InfoRow(
-                icon: Icons.build_outlined,
-                label: 'ProblÃƒÂ¨me',
-                value: m.problem),
+              icon: Icons.build_outlined,
+              label: 'ProblÃƒÂ¨me',
+              value: m.problem,
+            ),
             InfoRow(
-                icon: Icons.payments_outlined,
-                label: 'Frais de dÃƒÂ©placement',
-                value: TravelFee.fcfa(m.travelFeeFcfa)),
+              icon: Icons.payments_outlined,
+              label: 'Frais de dÃƒÂ©placement',
+              value: TravelFee.fcfa(m.travelFeeFcfa),
+            ),
             if (m.status == MissionStatus.completed)
               InfoRow(
-                  icon: Icons.receipt_long_outlined,
-                  label: 'Total ÃƒÂ  rÃƒÂ©gler',
-                  value: TravelFee.fcfa(m.totalFcfa)),
+                icon: Icons.receipt_long_outlined,
+                label: 'Total ÃƒÂ  rÃƒÂ©gler',
+                value: TravelFee.fcfa(m.totalFcfa),
+              ),
           ],
         ),
       ),
@@ -464,8 +494,9 @@ class _Etapes extends StatelessWidget {
                     labels[i],
                     style: TextStyle(
                       fontSize: 16.5,
-                      fontWeight:
-                          i == current ? FontWeight.w800 : FontWeight.w500,
+                      fontWeight: i == current
+                          ? FontWeight.w800
+                          : FontWeight.w500,
                     ),
                   ),
                 ],

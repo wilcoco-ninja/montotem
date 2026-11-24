@@ -11,9 +11,9 @@ enum PayMethod {
   bool get mobileMoney => this != PayMethod.especes;
 
   static PayMethod fromCode(String? c) => PayMethod.values.firstWhere(
-        (m) => m.code == c,
-        orElse: () => PayMethod.especes,
-      );
+    (m) => m.code == c,
+    orElse: () => PayMethod.especes,
+  );
 }
 
 /// Numéro Mobile Money du prestataire, visible du client pendant la mission.
@@ -29,10 +29,10 @@ class MomoAccount {
   final String? titulaire;
 
   factory MomoAccount.fromJson(Map<String, dynamic> j) => MomoAccount(
-        methode: PayMethod.fromCode(j['operateur'] as String?),
-        numero: '${j['numero'] ?? ''}',
-        titulaire: j['titulaire'] as String?,
-      );
+    methode: PayMethod.fromCode(j['operateur'] as String?),
+    numero: '${j['numero'] ?? ''}',
+    titulaire: j['titulaire'] as String?,
+  );
 }
 
 enum PaymentStatus { enAttente, confirme, refuse }
@@ -69,8 +69,8 @@ class MissionPayment {
     final PaymentStatus statut = j['confirmed_at'] != null
         ? PaymentStatus.confirme
         : (j['rejected_at'] != null
-            ? PaymentStatus.refuse
-            : PaymentStatus.enAttente);
+              ? PaymentStatus.refuse
+              : PaymentStatus.enAttente);
     return MissionPayment(
       id: '${j['id']}',
       missionId: '${j['mission_id']}',

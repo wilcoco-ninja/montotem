@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -131,7 +130,9 @@ class _LevelTile extends StatelessWidget {
                 child: Text(
                   '${level.libelle} : Appeler le dÃƒÂ©panneur',
                   style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w700),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ),

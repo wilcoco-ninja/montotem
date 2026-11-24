@@ -47,12 +47,12 @@ class ApiConfig {
   }
 
   static Map<String, dynamic> getDebugInfo() => {
-        'isProduction': isProduction,
-        'isDebug': isDebug,
-        'isKkiapaySandbox': isKkiapaySandbox,
-        'kkiapayConfigured': kkiapayPublicKey.isNotEmpty,
-        'supabaseConfigured': supabaseUrl.isNotEmpty,
-      };
+    'isProduction': isProduction,
+    'isDebug': isDebug,
+    'isKkiapaySandbox': isKkiapaySandbox,
+    'kkiapayConfigured': kkiapayPublicKey.isNotEmpty,
+    'supabaseConfigured': supabaseUrl.isNotEmpty,
+  };
 
   static void logConfig() {
     if (!kDebugMode) return;

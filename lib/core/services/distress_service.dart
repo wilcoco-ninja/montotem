@@ -89,7 +89,8 @@ class DistressService {
     final hh = t.hour.toString().padLeft(2, '0');
     final mm = t.minute.toString().padLeft(2, '0');
     final b = StringBuffer(
-        'SOS MonTotem. Je suis en panne et j\'ai besoin d\'aide. ');
+      'SOS MonTotem. Je suis en panne et j\'ai besoin d\'aide. ',
+    );
     if (pos != null) {
       final lat = pos.lat.toStringAsFixed(5);
       final lng = pos.lng.toStringAsFixed(5);
@@ -103,11 +104,14 @@ class DistressService {
   }
 
   /// Ouvre l'application SMS avec le message prêt à envoyer.
-  static Future<bool> ouvrirSms(
-      {String numero = '', required String corps}) async {
+  static Future<bool> ouvrirSms({
+    String numero = '',
+    required String corps,
+  }) async {
     final sep = defaultTargetPlatform == TargetPlatform.iOS ? '&' : '?';
-    final uri =
-        Uri.parse('sms:$numero${sep}body=${Uri.encodeComponent(corps)}');
+    final uri = Uri.parse(
+      'sms:$numero${sep}body=${Uri.encodeComponent(corps)}',
+    );
     try {
       return await launchUrl(uri);
     } catch (e) {

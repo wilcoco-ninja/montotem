@@ -13,15 +13,9 @@ const List<String> kMetiersDepannage = [
 /// serveur (trigger providers_default_kind) : « Zémidjan » → zemidjan,
 /// « Tricycle Fret » → tricycle_fret. Ne pas modifier ces libellés sans
 /// adapter provider_kind_from_metier().
-const List<String> kMetiersTransport = [
-  'Zémidjan',
-  'Tricycle Fret',
-];
+const List<String> kMetiersTransport = ['Zémidjan', 'Tricycle Fret'];
 
-const List<String> kTousMetiers = [
-  ...kMetiersDepannage,
-  ...kMetiersTransport,
-];
+const List<String> kTousMetiers = [...kMetiersDepannage, ...kMetiersTransport];
 
 const Map<String, IconData> kIconesMetier = {
   'Mécanicien': Icons.build_outlined,

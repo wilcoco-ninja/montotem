@@ -1,4 +1,3 @@
-﻿
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -63,7 +62,12 @@ enum _Engin {
 class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
   static const String _cleBrouillon = 'totem_brouillon_conducteur';
   static const int _nbEtapes = 4;
-  static const List<String> _titres = ['Engin', 'IdentitÃƒÂ©', 'Papiers', 'Zone'];
+  static const List<String> _titres = [
+    'Engin',
+    'IdentitÃƒÂ©',
+    'Papiers',
+    'Zone',
+  ];
 
   final _auth = AuthService();
   final _quick = QuickAuthService();
@@ -176,8 +180,8 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
   // Ã¢â€â‚¬Ã¢â€â‚¬ Navigation entre ÃƒÂ©tapes Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
   void _msg(String m) => ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(m), duration: const Duration(seconds: 6)),
-      );
+    SnackBar(content: Text(m), duration: const Duration(seconds: 6)),
+  );
 
   String? _requis(String? v) =>
       (v == null || v.trim().length < 2) ? 'Requis' : null;
@@ -230,8 +234,9 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
   }
 
   Future<void> _choisirPosition() async {
-    final actuelle =
-        (_lat != null && _lng != null) ? LatLng(_lat!, _lng!) : null;
+    final actuelle = (_lat != null && _lng != null)
+        ? LatLng(_lat!, _lng!)
+        : null;
     final r = await Navigator.push<LatLng>(
       context,
       MaterialPageRoute(
@@ -290,12 +295,16 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
       if (mounted) _msg(e.message);
     } catch (_) {
       if (!mounted) return;
-      final horsLigne =
-          Provider.of<PowerModeController>(context, listen: false).horsLigne;
-      _msg(horsLigne
-          ? 'Pas de rÃƒÂ©seau. Votre dossier est gardÃƒÂ© sur ce tÃƒÂ©lÃƒÂ©phone : '
-              'rÃƒÂ©essayez dÃƒÂ¨s que le rÃƒÂ©seau revient.'
-          : 'Erreur rÃƒÂ©seau. RÃƒÂ©essayez dans un instant.');
+      final horsLigne = Provider.of<PowerModeController>(
+        context,
+        listen: false,
+      ).horsLigne;
+      _msg(
+        horsLigne
+            ? 'Pas de rÃƒÂ©seau. Votre dossier est gardÃƒÂ© sur ce tÃƒÂ©lÃƒÂ©phone : '
+                  'rÃƒÂ©essayez dÃƒÂ¨s que le rÃƒÂ©seau revient.'
+            : 'Erreur rÃƒÂ©seau. RÃƒÂ©essayez dans un instant.',
+      );
     } finally {
       if (mounted) setState(() => _envoi = false);
     }
@@ -318,7 +327,8 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
       if (row != null && row['provider_kind'] != code) {
         await sb
             .from('providers')
-            .update({'provider_kind': code}).eq('id', uid);
+            .update({'provider_kind': code})
+            .eq('id', uid);
       }
     } catch (_) {}
   }
@@ -333,122 +343,131 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
 
     return Theme(
       data: _theme,
-      child: Builder(builder: (context) {
-        final scheme = Theme.of(context).colorScheme;
-        return PopScope(
-          canPop: false,
-          onPopInvokedWithResult: (didPop, _) {
-            if (!didPop && !_envoi) _retour();
-          },
-          child: Scaffold(
-            // Ã¢â€ Â corrigÃƒÂ© : skin.bg Ã¢â€ â€™ scaffoldBackgroundColor du thÃƒÂ¨me courant
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            body: SafeArea(
-              child: AbsorbPointer(
-                absorbing: _envoi,
-                child: Column(
-                  children: [
-                    _EnTete(
-                      etape: _etape,
-                      nbEtapes: _nbEtapes,
-                      titre: _titres[_etape],
-                      engin: _engin,
-                      onBack: _retour,
-                    ),
-                    _RouteProgress(
-                      progression: _etape / (_nbEtapes - 1),
-                      engin: _engin,
-                      couleur: scheme.primary,
-                      duree: dureeAnim,
-                    ),
-                    Expanded(
-                      child: Center(
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 560),
-                          child: SingleChildScrollView(
-                            keyboardDismissBehavior:
-                                ScrollViewKeyboardDismissBehavior.onDrag,
-                            padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
-                            child: AnimatedSwitcher(
-                              duration: dureeAnim,
-                              child: KeyedSubtree(
-                                key: ValueKey(_etape),
-                                child: switch (_etape) {
-                                  0 => _etapeEngin(scheme),
-                                  1 => _etapeIdentite(),
-                                  2 => _etapePapiers(),
-                                  _ => _etapeZone(scheme),
-                                },
+      child: Builder(
+        builder: (context) {
+          final scheme = Theme.of(context).colorScheme;
+          return PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, _) {
+              if (!didPop && !_envoi) _retour();
+            },
+            child: Scaffold(
+              // Ã¢â€ Â corrigÃƒÂ© : skin.bg Ã¢â€ â€™ scaffoldBackgroundColor du thÃƒÂ¨me courant
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              body: SafeArea(
+                child: AbsorbPointer(
+                  absorbing: _envoi,
+                  child: Column(
+                    children: [
+                      _EnTete(
+                        etape: _etape,
+                        nbEtapes: _nbEtapes,
+                        titre: _titres[_etape],
+                        engin: _engin,
+                        onBack: _retour,
+                      ),
+                      _RouteProgress(
+                        progression: _etape / (_nbEtapes - 1),
+                        engin: _engin,
+                        couleur: scheme.primary,
+                        duree: dureeAnim,
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 560),
+                            child: SingleChildScrollView(
+                              keyboardDismissBehavior:
+                                  ScrollViewKeyboardDismissBehavior.onDrag,
+                              padding: const EdgeInsets.fromLTRB(
+                                20,
+                                18,
+                                20,
+                                24,
+                              ),
+                              child: AnimatedSwitcher(
+                                duration: dureeAnim,
+                                child: KeyedSubtree(
+                                  key: ValueKey(_etape),
+                                  child: switch (_etape) {
+                                    0 => _etapeEngin(scheme),
+                                    1 => _etapeIdentite(),
+                                    2 => _etapePapiers(),
+                                    _ => _etapeZone(scheme),
+                                  },
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 6, 20, 14),
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 560),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton.icon(
-                            onPressed: _envoi ? null : _suivant,
-                            icon: _envoi
-                                ? SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 3,
-                                      color: scheme.onPrimary,
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 6, 20, 14),
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 560),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton.icon(
+                              onPressed: _envoi ? null : _suivant,
+                              icon: _envoi
+                                  ? SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 3,
+                                        color: scheme.onPrimary,
+                                      ),
+                                    )
+                                  : Icon(
+                                      _etape < _nbEtapes - 1
+                                          ? Icons.arrow_forward_rounded
+                                          : Icons.flag_rounded,
                                     ),
-                                  )
-                                : Icon(_etape < _nbEtapes - 1
-                                    ? Icons.arrow_forward_rounded
-                                    : Icons.flag_rounded),
-                            label: Text(
-                              _etape < _nbEtapes - 1
-                                  ? 'CONTINUER'
-                                  : 'ENVOYER MON DOSSIER',
+                              label: Text(
+                                _etape < _nbEtapes - 1
+                                    ? 'CONTINUER'
+                                    : 'ENVOYER MON DOSSIER',
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 
   Widget _titreEtape(String titre, String texte) => Padding(
-        padding: const EdgeInsets.only(bottom: 18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              titre,
-              style: const TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w900,
-                height: 1.05,
-              ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              texte,
-              style: TextStyle(
-                fontSize: 16,
-                height: 1.4,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ],
+    padding: const EdgeInsets.only(bottom: 18),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          titre,
+          style: const TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.w900,
+            height: 1.05,
+          ),
         ),
-      );
+        const SizedBox(height: 6),
+        Text(
+          texte,
+          style: TextStyle(
+            fontSize: 16,
+            height: 1.4,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ],
+    ),
+  );
 
   // Ã¢â€â‚¬Ã¢â€â‚¬ Ãƒâ€°tape 1 : l'engin Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
   Widget _etapeEngin(ColorScheme scheme) {
@@ -477,7 +496,8 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
             ),
             child: InkWell(
               customBorder: BeveledRectangleBorder(
-                  borderRadius: BorderRadius.circular(22)),
+                borderRadius: BorderRadius.circular(22),
+              ),
               onTap: () {
                 HapticFeedback.selectionClick();
                 setState(() {
@@ -535,8 +555,10 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _titreEtape('Quel est votre engin ?',
-            'Touchez le vÃƒÂ´tre. Vous recevrez les courses qui lui correspondent.'),
+        _titreEtape(
+          'Quel est votre engin ?',
+          'Touchez le vÃƒÂ´tre. Vous recevrez les courses qui lui correspondent.',
+        ),
         IntrinsicHeight(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -562,7 +584,8 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
         const SizedBox(height: 16),
         _Astuce(
           icone: Icons.payments_rounded,
-          texte: 'Course payÃƒÂ©e en Mobile Money : aucune commission. '
+          texte:
+              'Course payÃƒÂ©e en Mobile Money : aucune commission. '
               'Course payÃƒÂ©e en espÃƒÂ¨ces : une commission est prÃƒÂ©levÃƒÂ©e sur '
               'votre portefeuille MonTotem.',
         ),
@@ -577,8 +600,10 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _titreEtape('Qui conduit ?',
-              'Comme sur votre piÃƒÂ¨ce d\'identitÃƒÂ©. Les clients verront votre prÃƒÂ©nom.'),
+          _titreEtape(
+            'Qui conduit ?',
+            'Comme sur votre piÃƒÂ¨ce d\'identitÃƒÂ©. Les clients verront votre prÃƒÂ©nom.',
+          ),
           TextFormField(
             controller: _prenom,
             textInputAction: TextInputAction.next,
@@ -657,8 +682,10 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _titreEtape('Vos papiers',
-            'Une seule fois. Visage dÃƒÂ©couvert, piÃƒÂ¨ce lisible, bien ÃƒÂ©clairÃƒÂ©e.'),
+        _titreEtape(
+          'Vos papiers',
+          'Une seule fois. Visage dÃƒÂ©couvert, piÃƒÂ¨ce lisible, bien ÃƒÂ©clairÃƒÂ©e.',
+        ),
         _cadrePhoto(
           _photoProfil,
           PhotoPickerField(
@@ -701,7 +728,10 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _titreEtape('Votre zone', 'LÃƒÂ  oÃƒÂ¹ vous travaillez le plus souvent.'),
+        _titreEtape(
+          'Votre zone',
+          'LÃƒÂ  oÃƒÂ¹ vous travaillez le plus souvent.',
+        ),
         Material(
           color: scheme.surface,
           shape: BeveledRectangleBorder(
@@ -712,8 +742,9 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
             ),
           ),
           child: InkWell(
-            customBorder:
-                BeveledRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            customBorder: BeveledRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
             onTap: _choisirPosition,
             child: Padding(
               padding: const EdgeInsets.all(18),
@@ -731,7 +762,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
                     child: Text(
                       aPos
                           ? 'Zone dÃƒÂ©finie\n'
-                              '${_lat!.toStringAsFixed(4)}, ${_lng!.toStringAsFixed(4)}'
+                                '${_lat!.toStringAsFixed(4)}, ${_lng!.toStringAsFixed(4)}'
                           : 'Placer ma zone sur la carte',
                       style: const TextStyle(
                         fontSize: 17,
@@ -755,7 +786,8 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
         const SizedBox(height: 14),
         const _Astuce(
           icone: Icons.verified_user_rounded,
-          texte: 'AprÃƒÂ¨s l\'envoi : vÃƒÂ©rification de votre identitÃƒÂ© (selfie), '
+          texte:
+              'AprÃƒÂ¨s l\'envoi : vÃƒÂ©rification de votre identitÃƒÂ© (selfie), '
               'puis validation par l\'ÃƒÂ©quipe MonTotem avant vos premiÃƒÂ¨res '
               'courses.',
         ),
@@ -857,48 +889,50 @@ class _RouteProgress extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-      child: LayoutBuilder(builder: (context, c) {
-        const vehicule = 44.0;
-        final largeur = c.maxWidth;
-        final x = (largeur - vehicule) * progression.clamp(0.0, 1.0);
-        return SizedBox(
-          height: 56,
-          child: Stack(
-            alignment: Alignment.centerLeft,
-            children: [
-              Positioned.fill(
-                top: 20,
-                bottom: 8,
-                child: CustomPaint(
-                  painter: _RoutePainter(
-                    progression: progression,
-                    couleur: couleur,
-                    bitume: scheme.surface,
-                    bord: scheme.outline,
+      child: LayoutBuilder(
+        builder: (context, c) {
+          const vehicule = 44.0;
+          final largeur = c.maxWidth;
+          final x = (largeur - vehicule) * progression.clamp(0.0, 1.0);
+          return SizedBox(
+            height: 56,
+            child: Stack(
+              alignment: Alignment.centerLeft,
+              children: [
+                Positioned.fill(
+                  top: 20,
+                  bottom: 8,
+                  child: CustomPaint(
+                    painter: _RoutePainter(
+                      progression: progression,
+                      couleur: couleur,
+                      bitume: scheme.surface,
+                      bord: scheme.outline,
+                    ),
                   ),
                 ),
-              ),
-              AnimatedPositioned(
-                duration: duree,
-                curve: Curves.easeOutCubic,
-                left: x,
-                top: 0,
-                width: vehicule,
-                height: vehicule,
-                child: TotemIcon(
-                  engin == _Engin.kloboto
-                      ? TotemGlyph.kloboto
-                      : TotemGlyph.zemidjan,
-                  size: vehicule,
-                  color: scheme.onSurface,
-                  accent: couleur,
-                  semanticLabel: 'Progression de l\'inscription',
+                AnimatedPositioned(
+                  duration: duree,
+                  curve: Curves.easeOutCubic,
+                  left: x,
+                  top: 0,
+                  width: vehicule,
+                  height: vehicule,
+                  child: TotemIcon(
+                    engin == _Engin.kloboto
+                        ? TotemGlyph.kloboto
+                        : TotemGlyph.zemidjan,
+                    size: vehicule,
+                    color: scheme.onSurface,
+                    accent: couleur,
+                    semanticLabel: 'Progression de l\'inscription',
+                  ),
                 ),
-              ),
-            ],
-          ),
-        );
-      }),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -1003,26 +1037,26 @@ class _Recap extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     Widget ligne(String k, String v) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 92,
-                child: Text(k,
-                    style: TextStyle(
-                        color: scheme.onSurfaceVariant, fontSize: 14.5)),
-              ),
-              Expanded(
-                child: Text(
-                  v.isEmpty ? 'Ã¢â‚¬â€' : v,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w800),
-                ),
-              ),
-            ],
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 92,
+            child: Text(
+              k,
+              style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 14.5),
+            ),
           ),
-        );
+          Expanded(
+            child: Text(
+              v.isEmpty ? 'Ã¢â‚¬â€' : v,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+            ),
+          ),
+        ],
+      ),
+    );
 
     return Card(
       child: Padding(

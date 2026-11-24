@@ -142,17 +142,18 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(texte),
-        backgroundColor:
-            erreur ? AdminStyle.danger : Theme.of(context).colorScheme.primary,
+        backgroundColor: erreur
+            ? AdminStyle.danger
+            : Theme.of(context).colorScheme.primary,
       ),
     );
   }
 
   Devise _deviseDeLigne(Map<String, dynamic> d) => Devise.depuisCode(
-        d['code'] as String?,
-        minorUnits: (d['minor_units'] as num?)?.toInt(),
-        roundingMode: d['rounding_mode'] as String?,
-      );
+    d['code'] as String?,
+    minorUnits: (d['minor_units'] as num?)?.toInt(),
+    roundingMode: d['rounding_mode'] as String?,
+  );
 
   String _date(DateTime d) =>
       '${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')} '
@@ -221,18 +222,22 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
   }
 
   List<Widget> _enteteOnglet(String titre, String sousTitre) => [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 16, 0, 4),
-          child: Text(titre, style: AdminStyle.label(15, color: AdminStyle.ink)),
+    Padding(
+      padding: const EdgeInsets.fromLTRB(0, 16, 0, 4),
+      child: Text(titre, style: AdminStyle.label(15, color: AdminStyle.ink)),
+    ),
+    Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Text(
+        sousTitre,
+        style: AdminStyle.label(
+          11,
+          color: AdminStyle.inkFaint,
+          w: FontWeight.w500,
         ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: Text(
-            sousTitre,
-            style: AdminStyle.label(11, color: AdminStyle.inkFaint, w: FontWeight.w500),
-          ),
-        ),
-      ];
+      ),
+    ),
+  ];
 
   // -- DEVISES ----------------------------------------------------------------
 
@@ -243,7 +248,7 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
         ..._enteteOnglet(
           'Devises du referentiel',
           'Unites mineures entieres (bigint serveur / int Dart). '
-          'Arrondi applique UNIQUEMENT cote serveur (ROUND / FLOOR / CEIL).',
+              'Arrondi applique UNIQUEMENT cote serveur (ROUND / FLOOR / CEIL).',
         ),
         for (final d in _devises) _carteDevise(d),
         if (_devises.isEmpty)
@@ -252,8 +257,7 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
             child: EmptyState(
               icon: Icons.currency_exchange_rounded,
               title: 'Aucune devise',
-              message:
-                  'Executez le script finance/11 (devises_zones) dans Supabase.',
+              message: 'Executez le script finance/11 (devises_zones) dans Supabase.',
             ),
           ),
       ],
@@ -262,9 +266,11 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
 
   Widget _carteDevise(Map<String, dynamic> d) {
     final devise = _deviseDeLigne(d);
-    final exemple =
-        Money.depuisParties(2500, devise.minorUnits == 2 ? 50 : 0, devise)
-            .formatter();
+    final exemple = Money.depuisParties(
+      2500,
+      devise.minorUnits == 2 ? 50 : 0,
+      devise,
+    ).formatter();
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(14),
@@ -328,7 +334,7 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
         ..._enteteOnglet(
           'Zones de service',
           'La devise d\'une course / prestation est dictée par la zone '
-          '(pays / ville), jamais par un taux de change cote client.',
+              '(pays / ville), jamais par un taux de change cote client.',
         ),
         for (final z in _zones) _carteZone(z),
         if (_zones.isEmpty)
@@ -337,8 +343,7 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
             child: EmptyState(
               icon: Icons.public_rounded,
               title: 'Aucune zone',
-              message:
-                  'Executez le script finance/11 (devises_zones) dans Supabase.',
+              message: 'Executez le script finance/11 (devises_zones) dans Supabase.',
             ),
           ),
       ],
@@ -410,7 +415,7 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
         ..._enteteOnglet(
           'Regles de commission',
           'Calcul definitif cote serveur. Pourcentage par categorie de '
-          'service, avec cascade de repli (script 019).',
+              'service, avec cascade de repli (script 019).',
         ),
         Align(
           alignment: Alignment.centerLeft,
@@ -516,10 +521,7 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
               ),
             ),
           ),
-          Text(
-            '$pct %',
-            style: AdminStyle.label(13, color: AdminStyle.info),
-          ),
+          Text('$pct %', style: AdminStyle.label(13, color: AdminStyle.info)),
         ],
       ),
     );
@@ -622,15 +624,18 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
     String categorie = estCreation
         ? _categoriesCommission.first.$1
         : (regleExistante['service_category'] as String? ??
-            _categoriesCommission.first.$1);
+              _categoriesCommission.first.$1);
     final pctCtrl = TextEditingController(
       text: estCreation
           ? ''
           : '${(regleExistante['pct'] as num?)?.toInt() ?? 0}',
     );
-    final noteCtrl =
-        TextEditingController(text: estCreation ? '' : (regleExistante['note'] as String?) ?? '');
-    var actif = estCreation ? true : (regleExistante['actif'] as bool?) ?? false;
+    final noteCtrl = TextEditingController(
+      text: estCreation ? '' : (regleExistante['note'] as String?) ?? '',
+    );
+    var actif = estCreation
+        ? true
+        : (regleExistante['actif'] as bool?) ?? false;
 
     final ok = await showDialog<bool>(
       context: context,
@@ -736,8 +741,12 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
         serviceCategory: categorie,
         pct: pct,
         actif: actif,
-        providerKind: estCreation ? null : (regleExistante['provider_kind'] as String?),
-        vehicleType: estCreation ? null : (regleExistante['vehicle_type'] as String?),
+        providerKind: estCreation
+            ? null
+            : (regleExistante['provider_kind'] as String?),
+        vehicleType: estCreation
+            ? null
+            : (regleExistante['vehicle_type'] as String?),
         note: noteCtrl.text.trim().isEmpty ? null : noteCtrl.text.trim(),
       );
       if (!mounted) return;
@@ -792,8 +801,8 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
         ..._enteteOnglet(
           'Dette cash : plafonds globaux',
           'Ces cles app_config federent le comportement des apps sans '
-          'recompiler. Un prestataire peut surcharger son propre plafond '
-          '(wallets.credit_limit > 0).',
+              'recompiler. Un prestataire peut surcharger son propre plafond '
+              '(wallets.credit_limit > 0).',
         ),
         _carteConfig(
           titre: 'Plafond global de dette cash',
@@ -826,8 +835,11 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
           ),
           child: Row(
             children: [
-              const Icon(Icons.info_outline_rounded,
-                  size: 18, color: AdminStyle.info),
+              const Icon(
+                Icons.info_outline_rounded,
+                size: 18,
+                color: AdminStyle.info,
+              ),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
@@ -942,7 +954,9 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
   Widget _ongletLedger() {
     final entrees = _filtreLedger == 'tous'
         ? _ledger
-        : _ledger.where((e) => (e['kind'] as String?) == _filtreLedger).toList();
+        : _ledger
+              .where((e) => (e['kind'] as String?) == _filtreLedger)
+              .toList();
     return RefreshIndicator(
       onRefresh: () => _chargerTout(silencieux: true),
       child: ListView(
@@ -951,7 +965,7 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
           ..._enteteOnglet(
             'Grand livre append-only (litiges)',
             'Ecritures immuables des ${_ledger.length} derniers mouvements, '
-            'tous prestataires. Ajuster uniquement via le bouton ci-dessous.',
+                'tous prestataires. Ajuster uniquement via le bouton ci-dessous.',
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
@@ -1001,8 +1015,8 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
     final nom = provider is Map && provider['business_name'] != null
         ? '${provider['business_name']}'
         : (provider is Map && provider['metier'] != null
-            ? '${provider['metier']}'
-            : 'Prestataire');
+              ? '${provider['metier']}'
+              : 'Prestataire');
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(14),
@@ -1057,7 +1071,8 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
               w: FontWeight.w500,
             ),
           ),
-          if (l.referenceId != null || l.clientRequestId != null ||
+          if (l.referenceId != null ||
+              l.clientRequestId != null ||
               (l.note ?? '').isNotEmpty) ...[
             const SizedBox(height: 4),
             Text(
@@ -1125,8 +1140,7 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
                         ),
                       )
                       .toList(),
-                  onChanged: (v) =>
-                      setDialogState(() => prestataire = v),
+                  onChanged: (v) => setDialogState(() => prestataire = v),
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
@@ -1186,8 +1200,7 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
                     credit ? 'Sens : credit (+)' : 'Sens : debit (-)',
                     style: AdminStyle.label(
                       12,
-                      color:
-                          credit ? AdminStyle.live : AdminStyle.danger,
+                      color: credit ? AdminStyle.live : AdminStyle.danger,
                       letterSpacing: 0.4,
                     ),
                   ),
@@ -1241,7 +1254,11 @@ class _AdminFinanceScreenState extends State<AdminFinanceScreen> {
       minorUnits: (deviseLigne?['minor_units'] as num?)?.toInt(),
       roundingMode: deviseLigne?['rounding_mode'] as String?,
     );
-    final minor = Money.depuisParties(montantUnites, 0, deviseServeur).minorUnits;
+    final minor = Money.depuisParties(
+      montantUnites,
+      0,
+      deviseServeur,
+    ).minorUnits;
     final signe = credit ? 1 : -1;
     final requestId = 'admin-${DateTime.now().millisecondsSinceEpoch}';
     try {

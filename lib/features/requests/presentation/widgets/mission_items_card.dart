@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 
 import 'package:montotem/core/theme/app_theme.dart';
@@ -55,16 +54,22 @@ class _MissionItemsCardState extends State<MissionItemsCard> {
                 const SizedBox(width: 8),
               ],
               Expanded(
-                child: Text(l,
-                    style: TextStyle(
-                        fontSize: fort ? 17 : 15.5,
-                        fontWeight: fort ? FontWeight.w800 : FontWeight.w500)),
-              ),
-              Text(TravelFee.fcfa(v),
+                child: Text(
+                  l,
                   style: TextStyle(
-                      fontSize: fort ? 18 : 15.5,
-                      fontWeight: FontWeight.w800,
-                      color: fort ? AppTheme.primaryColor : null)),
+                    fontSize: fort ? 17 : 15.5,
+                    fontWeight: fort ? FontWeight.w800 : FontWeight.w500,
+                  ),
+                ),
+              ),
+              Text(
+                TravelFee.fcfa(v),
+                style: TextStyle(
+                  fontSize: fort ? 18 : 15.5,
+                  fontWeight: FontWeight.w800,
+                  color: fort ? AppTheme.primaryColor : null,
+                ),
+              ),
             ],
           ),
         );
@@ -84,8 +89,11 @@ class _MissionItemsCardState extends State<MissionItemsCard> {
             for (final i in _items)
               ligne(i.nom, i.prixFcfa, icone: Icons.build_outlined),
           Divider(height: 18, color: scheme.onSurface.withValues(alpha: 0.12)),
-          ligne('DÃƒÂ©placement', m.travelFeeFcfa,
-              icone: Icons.local_shipping_outlined),
+          ligne(
+            'DÃƒÂ©placement',
+            m.travelFeeFcfa,
+            icone: Icons.local_shipping_outlined,
+          ),
           ligne('Total (prix fixes)', m.totalFcfa, fort: true),
         ],
       ),

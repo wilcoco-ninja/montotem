@@ -63,10 +63,10 @@ class WalletService {
             .eq('provider_id', uid)
             .order('created_at', ascending: false)
             .limit(50),
-        _sb.from('app_config').select('key, value_int').inFilter(
-              'key',
-              _clesConfig,
-            ),
+        _sb
+            .from('app_config')
+            .select('key, value_int')
+            .inFilter('key', _clesConfig),
       ]);
 
       final walletRow = res[0] as Map<String, dynamic>?;
@@ -74,12 +74,14 @@ class WalletService {
       final configRows = (res[2] as List).whereType<Map>().toList();
 
       final snapshot = WalletSnapshot(
-        wallet:
-            walletRow == null ? Wallet.vide(uid) : Wallet.fromJson(walletRow),
+        wallet: walletRow == null
+            ? Wallet.vide(uid)
+            : Wallet.fromJson(walletRow),
         config: WalletConfig.fromRows(configRows),
         transactions: txRows
             .map(
-                (e) => WalletTransaction.fromJson(Map<String, dynamic>.from(e)))
+              (e) => WalletTransaction.fromJson(Map<String, dynamic>.from(e)),
+            )
             .toList(),
         fetchedAt: DateTime.now(),
         fromCache: false,
@@ -98,17 +100,25 @@ class WalletService {
           }),
         );
       } catch (e) {
-        developer.log('Écriture cache wallet impossible',
-            error: e, name: 'WalletService');
+        developer.log(
+          'Écriture cache wallet impossible',
+          error: e,
+          name: 'WalletService',
+        );
       }
       return snapshot;
     } catch (e, stackTrace) {
-      developer.log('Chargement wallet',
-          error: e, stackTrace: stackTrace, name: 'WalletService');
+      developer.log(
+        'Chargement wallet',
+        error: e,
+        stackTrace: stackTrace,
+        name: 'WalletService',
+      );
       final cache = _depuisCache(uid);
       if (cache != null) return cache;
       throw const WalletException(
-          'Impossible de charger votre wallet. Vérifiez votre connexion.');
+        'Impossible de charger votre wallet. Vérifiez votre connexion.',
+      );
     }
   }
 
@@ -123,7 +133,8 @@ class WalletService {
         transactions: (j['tx'] as List)
             .whereType<Map>()
             .map(
-                (e) => WalletTransaction.fromJson(Map<String, dynamic>.from(e)))
+              (e) => WalletTransaction.fromJson(Map<String, dynamic>.from(e)),
+            )
             .toList(),
         fetchedAt: DateTime.tryParse('${j['at']}')?.toLocal() ?? DateTime.now(),
         fromCache: true,
@@ -206,20 +217,27 @@ class WalletService {
     required String reference,
   }) async {
     try {
-      await _sb.rpc('submit_wallet_topup', params: {
-        'p_amount': montantFcfa,
-        'p_operateur': operateur,
-        'p_payer_phone': payerPhone,
-        'p_transaction_ref': reference.trim(),
-      });
+      await _sb.rpc(
+        'submit_wallet_topup',
+        params: {
+          'p_amount': montantFcfa,
+          'p_operateur': operateur,
+          'p_payer_phone': payerPhone,
+          'p_transaction_ref': reference.trim(),
+        },
+      );
     } on PostgrestException catch (e) {
       developer.log('declarerRecharge', error: e, name: 'WalletService');
       throw WalletException(_message(e));
     } catch (e) {
-      developer.log('declarerRecharge inattendu',
-          error: e, name: 'WalletService');
+      developer.log(
+        'declarerRecharge inattendu',
+        error: e,
+        name: 'WalletService',
+      );
       throw const WalletException(
-          'Impossible d\'envoyer votre déclaration. Vérifiez votre connexion.');
+        'Impossible d\'envoyer votre déclaration. Vérifiez votre connexion.',
+      );
     }
   }
 

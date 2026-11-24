@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -55,7 +54,9 @@ class _ProviderCommissionCardState extends State<ProviderCommissionCard> {
                         const Text(
                           'Aucun abonnement',
                           style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w900),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
                         Text(
                           'MonTotem gagne uniquement quand vous travaillez.',
@@ -73,18 +74,19 @@ class _ProviderCommissionCardState extends State<ProviderCommissionCard> {
               const SizedBox(height: 14),
               _Point(
                 icone: Icons.payments_outlined,
-                texte: 'Commission : ${c.commissionCashPct} % (espÃƒÂ¨ces), '
+                texte:
+                    'Commission : ${c.commissionCashPct} % (espÃƒÂ¨ces), '
                     '${c.commissionMomoPct} % (Mobile Money), '
                     '${c.commissionTravelPct} % sur les frais de dÃƒÂ©placement.',
               ),
               const _Point(
                 icone: Icons.account_balance_wallet_outlined,
-                texte:
-                    'Elle est dÃƒÂ©duite automatiquement de votre portefeuille.',
+                texte: 'Elle est dÃƒÂ©duite automatiquement de votre portefeuille.',
               ),
               _Point(
                 icone: Icons.add_card_rounded,
-                texte: 'Rechargez par Mobile Money. Sous '
+                texte:
+                    'Rechargez par Mobile Money. Sous '
                     '${formaterFcfaSigne(c.seuilBlocageFcfa)}, votre compte est '
                     'mis en pause jusqu\'ÃƒÂ  la recharge.',
               ),

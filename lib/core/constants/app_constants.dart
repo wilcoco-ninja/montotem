@@ -23,12 +23,12 @@ class AppConstants {
   /// Libellé français d'un statut (à utiliser à la place de `statut.value`
   /// dans les écrans : l'utilisateur ne doit pas voir "accepted").
   static String libelleStatut(String statut) => switch (statut) {
-        statusPending => 'En attente',
-        statusAccepted => 'Acceptée',
-        statusArrived => 'Intervention en cours',
-        statusCompleted => 'Terminée',
-        statusCancelled => 'Annulée',
-        statusRefused => 'Refusée',
-        _ => statut,
-      };
+    statusPending => 'En attente',
+    statusAccepted => 'Acceptée',
+    statusArrived => 'Intervention en cours',
+    statusCompleted => 'Terminée',
+    statusCancelled => 'Annulée',
+    statusRefused => 'Refusée',
+    _ => statut,
+  };
 }

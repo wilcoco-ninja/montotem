@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -42,10 +41,7 @@ class RouteOverlay extends StatelessWidget {
                     color: scheme.primary.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(13),
                   ),
-                  child: Icon(
-                    Icons.directions_rounded,
-                    color: scheme.primary,
-                  ),
+                  child: Icon(Icons.directions_rounded, color: scheme.primary),
                 ),
                 const SizedBox(width: 12),
                 Expanded(

@@ -13,41 +13,41 @@ enum MissionStatus {
   refused;
 
   static MissionStatus fromValue(String? v) => MissionStatus.values.firstWhere(
-        (s) => s.name == v,
-        orElse: () => MissionStatus.pending,
-      );
+    (s) => s.name == v,
+    orElse: () => MissionStatus.pending,
+  );
 
   String get value => name;
 
   String get libelle => switch (this) {
-        MissionStatus.pending => 'En attente de réponse',
-        MissionStatus.accepted => 'Le dépanneur est en route',
-        MissionStatus.arrived => 'Le dépanneur est arrivé',
-        MissionStatus.working => 'Réparation en cours',
-        MissionStatus.completed => 'Terminée',
-        MissionStatus.cancelled => 'Annulée',
-        MissionStatus.refused => 'Refusée',
-      };
+    MissionStatus.pending => 'En attente de réponse',
+    MissionStatus.accepted => 'Le dépanneur est en route',
+    MissionStatus.arrived => 'Le dépanneur est arrivé',
+    MissionStatus.working => 'Réparation en cours',
+    MissionStatus.completed => 'Terminée',
+    MissionStatus.cancelled => 'Annulée',
+    MissionStatus.refused => 'Refusée',
+  };
 
   Color get couleur => switch (this) {
-        MissionStatus.pending => Colors.blueGrey,
-        MissionStatus.accepted => AppColors.navy,
-        MissionStatus.arrived => AppColors.amber,
-        MissionStatus.working => AppColors.amber,
-        MissionStatus.completed => AppColors.success,
-        MissionStatus.cancelled => AppColors.emergency,
-        MissionStatus.refused => AppColors.emergency,
-      };
+    MissionStatus.pending => Colors.blueGrey,
+    MissionStatus.accepted => AppColors.navy,
+    MissionStatus.arrived => AppColors.amber,
+    MissionStatus.working => AppColors.amber,
+    MissionStatus.completed => AppColors.success,
+    MissionStatus.cancelled => AppColors.emergency,
+    MissionStatus.refused => AppColors.emergency,
+  };
 
   IconData get icone => switch (this) {
-        MissionStatus.pending => Icons.hourglass_top_rounded,
-        MissionStatus.accepted => Icons.directions_car_rounded,
-        MissionStatus.arrived => Icons.place_rounded,
-        MissionStatus.working => Icons.build_circle_rounded,
-        MissionStatus.completed => Icons.check_circle_rounded,
-        MissionStatus.cancelled => Icons.cancel_rounded,
-        MissionStatus.refused => Icons.cancel_rounded,
-      };
+    MissionStatus.pending => Icons.hourglass_top_rounded,
+    MissionStatus.accepted => Icons.directions_car_rounded,
+    MissionStatus.arrived => Icons.place_rounded,
+    MissionStatus.working => Icons.build_circle_rounded,
+    MissionStatus.completed => Icons.check_circle_rounded,
+    MissionStatus.cancelled => Icons.cancel_rounded,
+    MissionStatus.refused => Icons.cancel_rounded,
+  };
 
   bool get actif =>
       this == MissionStatus.accepted ||
@@ -168,7 +168,8 @@ class Mission {
       providerPhone: j['provider_phone'] as String?,
       providerMomo: j['provider_momo'] is Map
           ? MomoAccount.fromJson(
-              Map<String, dynamic>.from(j['provider_momo'] as Map))
+              Map<String, dynamic>.from(j['provider_momo'] as Map),
+            )
           : null,
       reviewed: j['reviewed'] == true,
     );

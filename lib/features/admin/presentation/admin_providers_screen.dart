@@ -1,4 +1,3 @@
-﻿
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -78,10 +77,13 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          content:
-              Text(texte, style: const TextStyle(fontWeight: FontWeight.w700)),
-          backgroundColor:
-              erreur ? AppColors.emergencyStrong : AppColors.successText,
+          content: Text(
+            texte,
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
+          backgroundColor: erreur
+              ? AppColors.emergencyStrong
+              : AppColors.successText,
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -94,7 +96,10 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
       _afficherMessage('Dossier de $nom approuvÃƒÂ© avec succÃƒÂ¨s.');
       await _chargerDonnees(silencieux: true);
     } catch (e) {
-      _afficherMessage('Erreur lors de lÃ¢â‚¬â„¢approbation : $e', erreur: true);
+      _afficherMessage(
+        'Erreur lors de lÃ¢â‚¬â„¢approbation : $e',
+        erreur: true,
+      );
     } finally {
       if (mounted) setState(() => _actionEnCoursId = null);
     }
@@ -105,8 +110,10 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Rejeter le dossier de $nom ?',
-            style: const TextStyle(fontWeight: FontWeight.w800)),
+        title: Text(
+          'Rejeter le dossier de $nom ?',
+          style: const TextStyle(fontWeight: FontWeight.w800),
+        ),
         content: const Text(
           'Le prestataire ne pourra pas recevoir de missions sur la plateforme MonTotem. '
           'Vous pourrez rÃƒÂ©ÃƒÂ©valuer ou lÃ¢â‚¬â„¢approuver ultÃƒÂ©rieurement.',
@@ -120,7 +127,8 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
             style: FilledButton.styleFrom(
-                backgroundColor: AppColors.emergencyStrong),
+              backgroundColor: AppColors.emergencyStrong,
+            ),
             child: const Text('Confirmer le rejet'),
           ),
         ],
@@ -173,9 +181,13 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
               child: SegmentedButton<bool>(
                 segments: const [
                   ButtonSegment(
-                      value: false, label: Text('Tous les prestataires')),
+                    value: false,
+                    label: Text('Tous les prestataires'),
+                  ),
                   ButtonSegment(
-                      value: true, label: Text('En attente de validation')),
+                    value: true,
+                    label: Text('En attente de validation'),
+                  ),
                 ],
                 selected: {_pendingOnly},
                 showSelectedIcon: false,
@@ -199,7 +211,9 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
       return Center(
         child: SingleChildScrollView(
           child: ErrorState(
-              message: _errorMessage!, onRetry: () => _chargerDonnees()),
+            message: _errorMessage!,
+            onRetry: () => _chargerDonnees(),
+          ),
         ),
       );
     }
@@ -216,8 +230,7 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
               title: _pendingOnly
                   ? 'Aucun dossier en attente'
                   : 'Aucun prestataire enregistrÃƒÂ©',
-              message:
-                  'Les inscriptions de prestataires sÃ¢â‚¬â„¢afficheront ici en temps rÃƒÂ©el.',
+              message: 'Les inscriptions de prestataires sÃ¢â‚¬â„¢afficheront ici en temps rÃƒÂ©el.',
             ),
           ],
         ),
@@ -281,8 +294,8 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
     final nomAffiche = businessName.isNotEmpty
         ? businessName
         : '$firstName $lastName'.trim().isNotEmpty
-            ? '$firstName $lastName'.trim()
-            : phone;
+        ? '$firstName $lastName'.trim()
+        : phone;
 
     final enCours = _actionEnCoursId == id;
     final scheme = Theme.of(context).colorScheme;
@@ -303,13 +316,17 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                      fontWeight: FontWeight.w800, fontSize: 16),
+                    fontWeight: FontWeight.w800,
+                    fontSize: 16,
+                  ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   metier.isNotEmpty ? metier : 'MÃƒÂ©tier non spÃƒÂ©cifiÃƒÂ©',
                   style: TextStyle(
-                      color: onSurface.withValues(alpha: 0.7), fontSize: 13.5),
+                    color: onSurface.withValues(alpha: 0.7),
+                    fontSize: 13.5,
+                  ),
                 ),
                 if (ville.isNotEmpty)
                   Text(
@@ -317,12 +334,15 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                        color: onSurface.withValues(alpha: 0.55),
-                        fontSize: 12.5),
+                      color: onSurface.withValues(alpha: 0.55),
+                      fontSize: 12.5,
+                    ),
                   ),
                 const SizedBox(height: 8),
                 StatusPill(
-                  label: isApproved ? 'ApprouvÃƒÂ©' : 'En attente de validation',
+                  label: isApproved
+                      ? 'ApprouvÃƒÂ©'
+                      : 'En attente de validation',
                   color: isApproved ? scheme.secondary : scheme.error,
                   icon: isApproved
                       ? Icons.verified_rounded
@@ -358,8 +378,10 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
           color: Colors.grey.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(14),
         ),
-        child: const Text('Aucun document fourni',
-            style: TextStyle(color: Colors.grey)),
+        child: const Text(
+          'Aucun document fourni',
+          style: TextStyle(color: Colors.grey),
+        ),
       );
     }
     return ClipRRect(
@@ -378,8 +400,11 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.broken_image_outlined,
-                  size: 40, color: Colors.grey),
+              const Icon(
+                Icons.broken_image_outlined,
+                size: 40,
+                color: Colors.grey,
+              ),
               const SizedBox(height: 8),
               Text(messageErreur, style: const TextStyle(color: Colors.grey)),
             ],
@@ -402,8 +427,10 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
       final c = checks[e.key];
       if (c is! Map) continue;
       final visages = c['faces'] == null ? '' : ', visages : ${c['faces']}';
-      lignes.add('${e.value} : nettetÃƒÂ© ${c['sharpness'] ?? '-'}, '
-          'luminositÃƒÂ© ${c['brightness'] ?? '-'}$visages');
+      lignes.add(
+        '${e.value} : nettetÃƒÂ© ${c['sharpness'] ?? '-'}, '
+        'luminositÃƒÂ© ${c['brightness'] ?? '-'}$visages',
+      );
     }
     return lignes.join('\n');
   }
@@ -433,8 +460,9 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
     final controles = _analyserControles(p['id_checks']);
     final identiteComplete = p['identity_submitted_at'] != null;
 
-    final nomAffiche =
-        businessName.isNotEmpty ? businessName : '$firstName $lastName'.trim();
+    final nomAffiche = businessName.isNotEmpty
+        ? businessName
+        : '$firstName $lastName'.trim();
 
     showModalBottomSheet(
       context: context,
@@ -456,7 +484,9 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                 Text(
                   nomAffiche.isEmpty ? 'Dossier Prestataire' : nomAffiche,
                   style: const TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.w800),
+                    fontSize: 22,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Align(
@@ -478,9 +508,10 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                     child: Text(
                       'Attention : Le dossier dÃ¢â‚¬â„¢identitÃƒÂ© nÃ¢â‚¬â„¢est pas complÃƒÂ¨tement soumis.',
                       style: TextStyle(
-                          fontSize: 14.5,
-                          fontWeight: FontWeight.w700,
-                          color: scheme.error),
+                        fontSize: 14.5,
+                        fontWeight: FontWeight.w700,
+                        color: scheme.error,
+                      ),
                     ),
                   ),
                 InfoRow(
@@ -489,9 +520,10 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                   value: docType == null ? '' : libelleDocument(docType),
                 ),
                 InfoRow(
-                    icon: Icons.pin_outlined,
-                    label: 'NumÃƒÂ©ro',
-                    value: docNumero),
+                  icon: Icons.pin_outlined,
+                  label: 'NumÃƒÂ©ro',
+                  value: docNumero,
+                ),
                 const SizedBox(height: 8),
                 _blocImage(photoCni, 200, 'Recto introuvable'),
                 if (photoCniVerso != null && photoCniVerso.isNotEmpty) ...[
@@ -501,41 +533,53 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                 const SectionTitle('Garage / Atelier'),
                 _blocImage(photoGarage, 180, 'Photo du garage indisponible'),
                 InfoRow(
-                    icon: Icons.notes_outlined,
-                    label: 'Description',
-                    value: descGarage),
+                  icon: Icons.notes_outlined,
+                  label: 'Description',
+                  value: descGarage,
+                ),
                 if (controles.isNotEmpty) ...[
                   const SectionTitle('Analyse technique automatique'),
-                  Text(controles,
-                      style: const TextStyle(fontSize: 14, height: 1.45)),
+                  Text(
+                    controles,
+                    style: const TextStyle(fontSize: 14, height: 1.45),
+                  ),
                 ],
                 const SectionTitle('Informations gÃƒÂ©nÃƒÂ©rales'),
                 InfoRow(
-                    icon: Icons.person_outline,
-                    label: 'Nom complet',
-                    value: '$firstName $lastName'.trim()),
+                  icon: Icons.person_outline,
+                  label: 'Nom complet',
+                  value: '$firstName $lastName'.trim(),
+                ),
                 InfoRow(
-                    icon: Icons.phone_outlined,
-                    label: 'TÃƒÂ©lÃƒÂ©phone',
-                    value: phone),
+                  icon: Icons.phone_outlined,
+                  label: 'TÃƒÂ©lÃƒÂ©phone',
+                  value: phone,
+                ),
                 InfoRow(
-                    icon: Icons.email_outlined, label: 'Email', value: email),
+                  icon: Icons.email_outlined,
+                  label: 'Email',
+                  value: email,
+                ),
                 InfoRow(
-                    icon: Icons.build_outlined,
-                    label: 'MÃƒÂ©tier',
-                    value: metier),
+                  icon: Icons.build_outlined,
+                  label: 'MÃƒÂ©tier',
+                  value: metier,
+                ),
                 InfoRow(
-                    icon: Icons.store_outlined,
-                    label: 'Nom du Garage',
-                    value: businessName),
+                  icon: Icons.store_outlined,
+                  label: 'Nom du Garage',
+                  value: businessName,
+                ),
                 InfoRow(
-                    icon: Icons.location_city_outlined,
-                    label: 'Ville',
-                    value: ville),
+                  icon: Icons.location_city_outlined,
+                  label: 'Ville',
+                  value: ville,
+                ),
                 InfoRow(
-                    icon: Icons.badge_outlined,
-                    label: 'NumÃƒÂ©ro IFU',
-                    value: ifu),
+                  icon: Icons.badge_outlined,
+                  label: 'NumÃƒÂ©ro IFU',
+                  value: ifu,
+                ),
                 if (lat != null && lng != null)
                   InfoRow(
                     icon: Icons.place_outlined,

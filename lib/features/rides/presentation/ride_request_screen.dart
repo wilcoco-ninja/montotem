@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
@@ -49,8 +48,7 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
   LatLng? _depart;
   LatLng? _arrivee;
   int? _distanceM;
-  int?
-      _durationSeconds; // Durée réelle récupérée par le service de routage
+  int? _durationSeconds; // Durée réelle récupérée par le service de routage
   bool _estimation = false; // true si l'itinéraire routier est indisponible
   int _tarif = 0; // Tarif calculé automatiquement par l'application
 
@@ -113,9 +111,11 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
       if (mounted) setState(() => _erreurLocalisation = e.message);
     } catch (_) {
       if (mounted) {
-        setState(() => _erreurLocalisation =
-            'Impossible de vous localiser. Activez le GPS ou choisissez le '
-                'départ sur la carte.');
+        setState(
+          () => _erreurLocalisation =
+              'Impossible de vous localiser. Activez le GPS ou choisissez le '
+              'départ sur la carte.',
+        );
       }
     } finally {
       if (mounted) setState(() => _localisation = false);
@@ -131,7 +131,7 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
           titre: depart ? 'Point de départ' : 'Destination',
           consigne: depart
               ? 'Touchez la carte à l\'endroit où le conducteur doit venir vous '
-                  'chercher'
+                    'chercher'
               : 'Touchez la carte à l\'endroit où vous allez',
           positionInitiale: depart ? _depart : (_arrivee ?? _depart),
           couleur: depart ? scheme.secondary : scheme.error,
@@ -167,8 +167,9 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
     final secondes = (routeRes.durationSeconds * coef).round();
 
     // Calcul automatique et fixe du tarif par l'application (style Gozem)
-    final tarifCalcule =
-        _tarifs.pour(_kind).estimer(metres, durationSeconds: secondes);
+    final tarifCalcule = _tarifs
+        .pour(_kind)
+        .estimer(metres, durationSeconds: secondes);
 
     setState(() {
       _distanceM = metres;
@@ -185,8 +186,9 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
     final s = _durationSeconds ?? 0;
 
     // Recalcule automatiquement le tarif selon le nouveau type de service choisi (Zémidjan ou Tricycle)
-    final nouveauTarif =
-        m != null ? _tarifs.pour(k).estimer(m, durationSeconds: s) : _tarif;
+    final nouveauTarif = m != null
+        ? _tarifs.pour(k).estimer(m, durationSeconds: s)
+        : _tarif;
 
     setState(() {
       _kind = k;
@@ -277,7 +279,11 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
                   keyboardDismissBehavior:
                       ScrollViewKeyboardDismissBehavior.onDrag,
                   padding: EdgeInsets.fromLTRB(
-                      context.gutter, 8, context.gutter, 32),
+                    context.gutter,
+                    8,
+                    context.gutter,
+                    32,
+                  ),
                   children: _contenu(),
                 ),
               ),
@@ -338,8 +344,11 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
         children: [
           Row(
             children: [
-              Icon(Icons.trip_origin_rounded,
-                  color: scheme.secondary, size: 28),
+              Icon(
+                Icons.trip_origin_rounded,
+                color: scheme.secondary,
+                size: 28,
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -349,17 +358,21 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
                       d != null
                           ? 'Position définie'
                           : (_localisation
-                              ? 'Recherche de votre position…'
-                              : 'Position inconnue'),
+                                ? 'Recherche de votre position…'
+                                : 'Position inconnue'),
                       style: const TextStyle(
-                          fontSize: 17, fontWeight: FontWeight.w800),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                     if (d != null)
                       Text(
                         '${d.latitude.toStringAsFixed(5)}, '
                         '${d.longitude.toStringAsFixed(5)}',
                         style: TextStyle(
-                            fontSize: 14, color: context.textSecondary),
+                          fontSize: 14,
+                          color: context.textSecondary,
+                        ),
                       ),
                   ],
                 ),
@@ -374,11 +387,14 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
           ),
           if (_erreurLocalisation != null) ...[
             const SizedBox(height: 8),
-            Text(_erreurLocalisation!,
-                style: TextStyle(
-                    fontSize: 14.5,
-                    height: 1.35,
-                    color: context.readable(scheme.error))),
+            Text(
+              _erreurLocalisation!,
+              style: TextStyle(
+                fontSize: 14.5,
+                height: 1.35,
+                color: context.readable(scheme.error),
+              ),
+            ),
           ],
           const SizedBox(height: 12),
           Row(
@@ -436,14 +452,18 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
                           ? 'Destination définie'
                           : 'Destination à choisir',
                       style: const TextStyle(
-                          fontSize: 17, fontWeight: FontWeight.w800),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                     if (a != null)
                       Text(
                         '${a.latitude.toStringAsFixed(5)}, '
                         '${a.longitude.toStringAsFixed(5)}',
                         style: TextStyle(
-                            fontSize: 14, color: context.textSecondary),
+                          fontSize: 14,
+                          color: context.textSecondary,
+                        ),
                       ),
                   ],
                 ),
@@ -495,7 +515,9 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
                       ? 'Calcul de l\'itinéraire…'
                       : 'Distance : ${formaterDistance(distance)}',
                   style: const TextStyle(
-                      fontSize: 16.5, fontWeight: FontWeight.w700),
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               if (_calcul)
@@ -513,8 +535,9 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
-                    _calcul ? '...' :
-                        MontantLocal.formater(_tarif, devise: _devise),
+                    _calcul
+                        ? '...'
+                        : MontantLocal.formater(_tarif, devise: _devise),
                     style: TextStyle(
                       fontSize: 34,
                       fontWeight: FontWeight.w800,
@@ -533,8 +556,9 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
                 Text(
                   'Montant en ${_devise.libelle} · code ${_devise.code}',
                   style: TextStyle(
-                      fontSize: 12.5,
-                      color: context.textSecondary.withValues(alpha: 0.85)),
+                    fontSize: 12.5,
+                    color: context.textSecondary.withValues(alpha: 0.85),
+                  ),
                 ),
               ],
             ),
@@ -557,8 +581,9 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
                 ChoiceChip(
                   label: Text(m.libelle, style: const TextStyle(fontSize: 16)),
                   selected: _paiement == m,
-                  onSelected:
-                      _envoi ? null : (_) => setState(() => _paiement = m),
+                  onSelected: _envoi
+                      ? null
+                      : (_) => setState(() => _paiement = m),
                 ),
             ],
           ),
@@ -566,14 +591,17 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
           Text(
             _paiement.mobileMoney
                 ? 'Vous paierez directement le conducteur au numéro '
-                    '${_paiement.libelle} qui s\'affichera quand il aura '
-                    'accepté. Seuls les conducteurs qui reçoivent par '
-                    '${_paiement.libelle} peuvent prendre cette course.'
+                      '${_paiement.libelle} qui s\'affichera quand il aura '
+                      'accepté. Seuls les conducteurs qui reçoivent par '
+                      '${_paiement.libelle} peuvent prendre cette course.'
                 : 'Vous remettrez '
-                    '${_tarif > 0 ? MontantLocal.formater(_tarif, devise: _devise) : 'le prix de la course'} en espèces au '
-                    'conducteur, à l\'arrivée.',
+                      '${_tarif > 0 ? MontantLocal.formater(_tarif, devise: _devise) : 'le prix de la course'} en espèces au '
+                      'conducteur, à l\'arrivée.',
             style: TextStyle(
-                fontSize: 15, height: 1.4, color: context.textSecondary),
+              fontSize: 15,
+              height: 1.4,
+              color: context.textSecondary,
+            ),
           ),
         ],
       ),
@@ -601,8 +629,9 @@ class _KindTile extends StatelessWidget {
       selected: selected,
       label: kind.libelle,
       child: Material(
-        color:
-            selected ? scheme.primary.withValues(alpha: 0.09) : scheme.surface,
+        color: selected
+            ? scheme.primary.withValues(alpha: 0.09)
+            : scheme.surface,
         shape: RoundedRectangleBorder(
           borderRadius: radius,
           side: BorderSide(
@@ -621,17 +650,24 @@ class _KindTile extends StatelessWidget {
               children: [
                 Icon(kind.icone, size: 40, color: scheme.primary),
                 const SizedBox(height: 6),
-                Text(kind.libelle,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        fontSize: 17, fontWeight: FontWeight.w800)),
+                Text(
+                  kind.libelle,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
                 const SizedBox(height: 2),
-                Text(kind.description,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 13.5,
-                        height: 1.3,
-                        color: context.textSecondary)),
+                Text(
+                  kind.description,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 13.5,
+                    height: 1.3,
+                    color: context.textSecondary,
+                  ),
+                ),
               ],
             ),
           ),

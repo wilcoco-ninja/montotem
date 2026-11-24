@@ -22,10 +22,10 @@ class Responsive {
       of(context) == ScreenSize.compact;
 
   static double pagePadding(BuildContext context) => switch (of(context)) {
-        ScreenSize.compact => 20,
-        ScreenSize.medium => 28,
-        ScreenSize.expanded => 32,
-      };
+    ScreenSize.compact => 20,
+    ScreenSize.medium => 28,
+    ScreenSize.expanded => 32,
+  };
 
   /// Nombre de colonnes d'une grille de cartes selon la taille d'écran.
   static int columns(
@@ -33,12 +33,11 @@ class Responsive {
     int compact = 1,
     int medium = 2,
     int expanded = 3,
-  }) =>
-      switch (of(context)) {
-        ScreenSize.compact => compact,
-        ScreenSize.medium => medium,
-        ScreenSize.expanded => expanded,
-      };
+  }) => switch (of(context)) {
+    ScreenSize.compact => compact,
+    ScreenSize.medium => medium,
+    ScreenSize.expanded => expanded,
+  };
 }
 
 /// Extension pratique sur BuildContext pour un accès fluide au responsive (`context.gutter`, `context.isCompact`).

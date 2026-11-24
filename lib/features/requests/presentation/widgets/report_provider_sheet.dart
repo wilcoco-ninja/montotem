@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 
 import 'package:montotem/core/theme/app_theme.dart';
@@ -16,8 +15,9 @@ Future<void> showReportProviderSheet(
     isScrollControlled: true,
     useSafeArea: true,
     builder: (_) => Padding(
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
       child: _ReportSheet(providerId: providerId, missionId: missionId),
     ),
   );
@@ -57,11 +57,14 @@ class _ReportSheetState extends State<_ReportSheet> {
       );
       if (!mounted) return;
       Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content:
-            Text('Signalement envoyÃƒÂ©. L\'ÃƒÂ©quipe MONTOTEM va l\'examiner.'),
-        duration: Duration(seconds: 6),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Signalement envoyÃƒÂ©. L\'ÃƒÂ©quipe MONTOTEM va l\'examiner.',
+          ),
+          duration: Duration(seconds: 6),
+        ),
+      );
     } on MissionException catch (e) {
       if (!mounted) return;
       setState(() => _sending = false);
@@ -82,13 +85,18 @@ class _ReportSheetState extends State<_ReportSheet> {
         controller: controller,
         padding: const EdgeInsets.fromLTRB(18, 0, 18, 24),
         children: [
-          const Text('Signaler ce prestataire',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800)),
+          const Text(
+            'Signaler ce prestataire',
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+          ),
           const SizedBox(height: 6),
-          Text('Choisissez le motif. Votre signalement est confidentiel.',
-              style: TextStyle(
-                  fontSize: 16,
-                  color: scheme.onSurface.withValues(alpha: 0.8))),
+          Text(
+            'Choisissez le motif. Votre signalement est confidentiel.',
+            style: TextStyle(
+              fontSize: 16,
+              color: scheme.onSurface.withValues(alpha: 0.8),
+            ),
+          ),
           const SizedBox(height: 16),
           for (final m in kReportMotifs)
             Padding(
@@ -118,15 +126,21 @@ class _ReportSheetState extends State<_ReportSheet> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(m.libelle,
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w800)),
+                            Text(
+                              m.libelle,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
                             const SizedBox(height: 2),
-                            Text(m.aide,
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: scheme.onSurface
-                                        .withValues(alpha: 0.75))),
+                            Text(
+                              m.aide,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: scheme.onSurface.withValues(alpha: 0.75),
+                              ),
+                            ),
                           ],
                         ),
                       ),

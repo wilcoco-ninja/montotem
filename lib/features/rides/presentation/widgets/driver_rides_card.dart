@@ -1,4 +1,3 @@
-﻿
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -179,40 +178,55 @@ class _DriverRidesCardState extends State<DriverRidesCard> {
                 color: couleur.withValues(alpha: 0.14),
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Icon(info.rideKind!.icone,
-                  color: context.readable(couleur), size: 28),
+              child: Icon(
+                info.rideKind!.icone,
+                color: context.readable(couleur),
+                size: 28,
+              ),
             ),
             const SizedBox(width: 14),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(titre,
-                      style: const TextStyle(
-                          fontSize: 17, fontWeight: FontWeight.w800)),
-                  Text(detail,
-                      style: TextStyle(
-                          fontSize: 14.5,
-                          height: 1.35,
-                          color: context.textSecondary)),
+                  Text(
+                    titre,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  Text(
+                    detail,
+                    style: TextStyle(
+                      fontSize: 14.5,
+                      height: 1.35,
+                      color: context.textSecondary,
+                    ),
+                  ),
                 ],
               ),
             ),
             if ((_courses ?? 0) > 0)
               Container(
                 constraints: const BoxConstraints(minWidth: 36),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: context.readable(couleur),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 alignment: Alignment.center,
-                child: Text('${_courses!}',
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800)),
+                child: Text(
+                  '${_courses!}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
               )
             else
               const Icon(Icons.chevron_right_rounded),

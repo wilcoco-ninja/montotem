@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -58,23 +57,31 @@ class SosBanner extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Urgence vitale ?',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w800)),
+                      Text(
+                        'Urgence vitale ?',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
                       SizedBox(height: 2),
                       Text(
-                          'Accident, pompiers, police, ambulance : appuyez ici',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15.5,
-                              height: 1.3)),
+                        'Accident, pompiers, police, ambulance : appuyez ici',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.5,
+                          height: 1.3,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                Icon(Icons.chevron_right_rounded,
-                    color: Colors.white, size: 30),
+                Icon(
+                  Icons.chevron_right_rounded,
+                  color: Colors.white,
+                  size: 30,
+                ),
               ],
             ),
           ),

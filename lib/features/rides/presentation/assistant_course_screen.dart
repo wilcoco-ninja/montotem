@@ -1,4 +1,3 @@
-﻿
 // lib/features/rides/presentation/assistant_course_screen.dart
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart' show Position;

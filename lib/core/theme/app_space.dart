@@ -90,9 +90,9 @@ class AppSpaces {
 
   /// Page de connexion propre à chaque espace (une porte par rôle).
   static String door(AppSpace space) => switch (space) {
-        AppSpace.client => '/login',
-        AppSpace.driver => '/driver/login',
-        AppSpace.provider => '/pro/login',
-        AppSpace.admin => '/admin/login',
-      };
+    AppSpace.client => '/login',
+    AppSpace.driver => '/driver/login',
+    AppSpace.provider => '/pro/login',
+    AppSpace.admin => '/admin/login',
+  };
 }

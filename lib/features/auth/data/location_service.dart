@@ -12,7 +12,8 @@ class LocationService {
     final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       throw const LocationPermissionException(
-          'Les services de localisation sont désactivés.');
+        'Les services de localisation sont désactivés.',
+      );
     }
 
     LocationPermission permission = await Geolocator.checkPermission();
@@ -20,7 +21,8 @@ class LocationService {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         throw const LocationPermissionException(
-            'Permission de localisation refusée.');
+          'Permission de localisation refusée.',
+        );
       }
     }
 
@@ -49,6 +51,5 @@ class LocationService {
     double startLng,
     double endLat,
     double endLng,
-  ) =>
-      Geolocator.distanceBetween(startLat, startLng, endLat, endLng);
+  ) => Geolocator.distanceBetween(startLat, startLng, endLat, endLng);
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:supabase_flutter/supabase_flutter.dart'
-    show PostgrestException;
+import 'package:supabase_flutter/supabase_flutter.dart' show PostgrestException;
 
 import 'package:montotem/core/theme/app_colors.dart';
 import 'package:montotem/core/utils/responsive.dart';
@@ -76,8 +75,11 @@ class _LedgerHistoryScreenState extends State<LedgerHistoryScreen> {
       setState(() => _error = _messagePostgres(e.message));
     } catch (_) {
       if (!mounted) return;
-      setState(() => _error = 'Grand livre indisponible. Vérifiez votre '
-          'connexion puis réessayez.');
+      setState(
+        () => _error =
+            'Grand livre indisponible. Vérifiez votre '
+            'connexion puis réessayez.',
+      );
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -93,15 +95,20 @@ class _LedgerHistoryScreenState extends State<LedgerHistoryScreen> {
     return 'Lecture impossible pour le moment. Réessayez.';
   }
 
-  List<LedgerEntry> get _filtrees =>
-      [for (final e in _entries) if (_filtre.accepte(e)) e];
+  List<LedgerEntry> get _filtrees => [
+    for (final e in _entries)
+      if (_filtre.accepte(e)) e,
+  ];
 
   /// Écritures groupées par jour (du jour le plus récent au plus ancien).
   Map<DateTime, List<LedgerEntry>> get _groupes {
     final map = <DateTime, List<LedgerEntry>>{};
     for (final e in _filtrees) {
-      final jour =
-          DateTime(e.createdAt.year, e.createdAt.month, e.createdAt.day);
+      final jour = DateTime(
+        e.createdAt.year,
+        e.createdAt.month,
+        e.createdAt.day,
+      );
       map.putIfAbsent(jour, () => []).add(e);
     }
     final cles = map.keys.toList()..sort((a, b) => b.compareTo(a));
@@ -137,10 +144,7 @@ class _LedgerHistoryScreenState extends State<LedgerHistoryScreen> {
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: EdgeInsets.fromLTRB(gutter, 8, gutter, 32),
-        child: ContentWidth(
-          maxWidth: 720,
-          child: _contenu(),
-        ),
+        child: ContentWidth(maxWidth: 720, child: _contenu()),
       ),
     );
   }
@@ -162,7 +166,8 @@ class _LedgerHistoryScreenState extends State<LedgerHistoryScreen> {
 
     final colonne = <Widget>[
       SectionTitle(
-          'Chaque écriture, en détail · ${_entries.length} mouvements'),
+        'Chaque écriture, en détail · ${_entries.length} mouvements',
+      ),
       _filtres(),
       const SizedBox(height: 8),
     ];
@@ -186,9 +191,10 @@ class _LedgerHistoryScreenState extends State<LedgerHistoryScreen> {
             child: Text(
               _jour(entree.key),
               style: TextStyle(
-                  fontSize: 14.5,
-                  fontWeight: FontWeight.w800,
-                  color: context.textSecondary),
+                fontSize: 14.5,
+                fontWeight: FontWeight.w800,
+                color: context.textSecondary,
+              ),
             ),
           ),
         );
@@ -209,7 +215,10 @@ class _LedgerHistoryScreenState extends State<LedgerHistoryScreen> {
             'ou supprimée. Chaque paiement client porte un identifiant '
             'idempotent (anti double-débit).',
             style: TextStyle(
-                fontSize: 13, height: 1.4, color: context.textSecondary),
+              fontSize: 13,
+              height: 1.4,
+              color: context.textSecondary,
+            ),
           ),
         ),
       );
@@ -267,25 +276,32 @@ class _LedgerHistoryScreenState extends State<LedgerHistoryScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(e.libelle,
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w800)),
+                Text(
+                  e.libelle,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
                 Text(
                   '${_formatHeure.format(e.createdAt)}'
                   '${complement.isNotEmpty ? ' · $complement' : ''}',
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      fontSize: 13.5,
-                      height: 1.35,
-                      color: context.textSecondary),
+                    fontSize: 13.5,
+                    height: 1.35,
+                    color: context.textSecondary,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'Après : MoMo ${e.soldeFormatter(e.payableAfter)} · '
                   'dette ${e.soldeFormatter(e.debtAfter)}',
-                  style:
-                      TextStyle(fontSize: 12.5, color: context.textSecondary),
+                  style: TextStyle(
+                    fontSize: 12.5,
+                    color: context.textSecondary,
+                  ),
                 ),
               ],
             ),
@@ -294,7 +310,10 @@ class _LedgerHistoryScreenState extends State<LedgerHistoryScreen> {
           Text(
             e.amountFormatter(),
             style: TextStyle(
-                fontSize: 15.5, fontWeight: FontWeight.w800, color: fg),
+              fontSize: 15.5,
+              fontWeight: FontWeight.w800,
+              color: fg,
+            ),
           ),
         ],
       ),

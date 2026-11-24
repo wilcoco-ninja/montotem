@@ -1,4 +1,3 @@
-﻿
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -164,8 +163,9 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
         _code.clear();
       });
       _demarrerCooldown();
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) => _codeFocus.requestFocus());
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _codeFocus.requestFocus(),
+      );
     } on QuickAuthException catch (e) {
       if (mounted) setState(() => _error = e.message);
     } finally {
@@ -304,18 +304,18 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
       title: saisieCode
           ? 'Entrez le code'
           : (parEmail
-              ? 'Content de\nvous revoir'
-              : 'Un dÃƒÂ©panneur\npas loin de vous'),
+                ? 'Content de\nvous revoir'
+                : 'Un dÃƒÂ©panneur\npas loin de vous'),
       subtitle: saisieCode
           ? 'Code ÃƒÂ  6 chiffres envoyÃƒÂ© par $_nomCanal au $_e164'
           : (parEmail
-              ? 'Connectez-vous avec votre e-mail et votre mot de passe.'
-              : 'Choisissez comment recevoir votre code, ou connectez-vous '
-                  'avec votre e-mail.'),
+                ? 'Connectez-vous avec votre e-mail et votre mot de passe.'
+                : 'Choisissez comment recevoir votre code, ou connectez-vous '
+                      'avec votre e-mail.'),
       icon: saisieCode
           ? (_canal == _Canal.whatsapp
-              ? Icons.chat_outlined
-              : Icons.sms_outlined)
+                ? Icons.chat_outlined
+                : Icons.sms_outlined)
           : Icons.bolt_rounded,
       onBack: _loading
           ? null
@@ -340,7 +340,10 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Vous ÃƒÂªtes prestataire ?', style: TextStyle(color: muted)),
+              Text(
+                'Vous ÃƒÂªtes prestataire ?',
+                style: TextStyle(color: muted),
+              ),
               TextButton(
                 onPressed: _loading ? null : () => context.go('/pro/login'),
                 child: const Text(
@@ -502,7 +505,7 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
               textInputAction: TextInputAction.next,
               autofillHints: const [
                 AutofillHints.username,
-                AutofillHints.email
+                AutofillHints.email,
               ],
               validator: _validerEmail,
             ),
@@ -522,8 +525,9 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
-                onPressed:
-                    _loading ? null : () => context.push('/forgot-password'),
+                onPressed: _loading
+                    ? null
+                    : () => context.push('/forgot-password'),
                 child: const Text('Mot de passe oubliÃƒÂ© ?'),
               ),
             ),

@@ -1,4 +1,3 @@
-﻿
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -232,7 +231,8 @@ class _AdminTrackingScreenState extends State<AdminTrackingScreen>
             top: 12,
             left: 12,
             child: StatusPillOnMap(
-              label: '${_prestataires.length} prestataire(s) Ã‚Â· '
+              label:
+                  '${_prestataires.length} prestataire(s) Ã‚Â· '
                   '${_etats.length} en mission Ã‚Â· '
                   '${_positionsLive.length} suivi(s) en direct',
             ),
@@ -255,11 +255,7 @@ class _AdminTrackingScreenState extends State<AdminTrackingScreen>
                 ),
               ),
             ),
-          const Positioned(
-            left: 12,
-            bottom: 12,
-            child: _Legende(),
-          ),
+          const Positioned(left: 12, bottom: 12, child: _Legende()),
         ],
       ),
     );

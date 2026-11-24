@@ -7,12 +7,11 @@ enum ArrondiMode {
   plancher,
   plafond;
 
-  static ArrondiMode depuisCode(String? code) =>
-      switch (code?.toUpperCase()) {
-        'FLOOR' => ArrondiMode.plancher,
-        'CEIL' => ArrondiMode.plafond,
-        _ => ArrondiMode.arrondi,
-      };
+  static ArrondiMode depuisCode(String? code) => switch (code?.toUpperCase()) {
+    'FLOOR' => ArrondiMode.plancher,
+    'CEIL' => ArrondiMode.plafond,
+    _ => ArrondiMode.arrondi,
+  };
 }
 
 /// Devise référentielle — miroir exact de la table PostgreSQL `devises`
@@ -86,8 +85,11 @@ class Devise {
   /// Devise par code avec repli sûr sur XOF (le serveur reste la référence) ;
   /// un `minorUnits` / `rounding_mode` venant de la table `devises` a la
   /// priorité s'il est fourni.
-  static Devise depuisCode(String? code,
-      {int? minorUnits, String? roundingMode}) {
+  static Devise depuisCode(
+    String? code, {
+    int? minorUnits,
+    String? roundingMode,
+  }) {
     final base = _parCode(code) ?? defaut;
     if (minorUnits == null && roundingMode == null) return base;
     final int unites;
@@ -124,16 +126,15 @@ class Devise {
   }
 
   Map<String, dynamic> toJson() => {
-        'code': code,
-        'libelle': libelle,
-        'minor_units': minorUnits,
-        'rounding_mode': arrondi.name,
-        'symbole': symbole,
-      };
+    'code': code,
+    'libelle': libelle,
+    'minor_units': minorUnits,
+    'rounding_mode': arrondi.name,
+    'symbole': symbole,
+  };
 
   @override
-  bool operator ==(Object other) =>
-      other is Devise && other.code == code;
+  bool operator ==(Object other) => other is Devise && other.code == code;
 
   @override
   int get hashCode => code.hashCode;
@@ -159,8 +160,10 @@ class Money implements Comparable<Money> {
   /// Ex. : Money.depuisParties(1, 50, Devise.ngn) = 150 kobo.
   static Money depuisParties(int majeur, int mineur, Devise devise) {
     final facteur = devise.minorUnits == 0 ? 1 : 100;
-    return Money._(majeur.abs() * facteur + mineur * (majeur < 0 ? -1 : 1),
-        devise);
+    return Money._(
+      majeur.abs() * facteur + mineur * (majeur < 0 ? -1 : 1),
+      devise,
+    );
   }
 
   int get signe => minorUnits.sign;
@@ -222,7 +225,8 @@ class Money implements Comparable<Money> {
   Money _verifier(Money autre) {
     if (autre.devise != devise) {
       throw ArgumentError(
-          'Devises incompatibles : ${devise.code} vs ${autre.devise.code}');
+        'Devises incompatibles : ${devise.code} vs ${autre.devise.code}',
+      );
     }
     return autre;
   }

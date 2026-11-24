@@ -64,7 +64,7 @@ class LedgerEntry {
       note: m['note'] as String?,
       createdAt:
           DateTime.tryParse((m['created_at'] as String?) ?? '')?.toLocal() ??
-              DateTime.now(),
+          DateTime.now(),
     );
   }
 }
@@ -73,17 +73,17 @@ extension LedgerEntryLibelles on LedgerEntry {
   bool get estDebit => amountMinor < 0;
 
   String get libelle => switch (kind) {
-        'cash_encaisse' => 'Cash encaissé',
-        'commission_cash' => 'Commission course cash',
-        'commission_momo' => 'Commission Mobile Money',
-        'commission_travel' => 'Commission frais déplacement',
-        'momo_paiement' => 'Paiement Mobile Money',
-        'topup' => 'Recharge du wallet',
-        'debit_commission' => 'Paiement de ma commission',
-        'remboursement' => 'Remboursement',
-        'ajustement' => 'Ajustement administrateur',
-        _ => kind,
-      };
+    'cash_encaisse' => 'Cash encaissé',
+    'commission_cash' => 'Commission course cash',
+    'commission_momo' => 'Commission Mobile Money',
+    'commission_travel' => 'Commission frais déplacement',
+    'momo_paiement' => 'Paiement Mobile Money',
+    'topup' => 'Recharge du wallet',
+    'debit_commission' => 'Paiement de ma commission',
+    'remboursement' => 'Remboursement',
+    'ajustement' => 'Ajustement administrateur',
+    _ => kind,
+  };
 
   /// Montant signé : "+2 500 FCFA", "-350 FCFA", "0 FCFA".
   String amountFormatter() {
@@ -98,17 +98,17 @@ extension LedgerEntryLibelles on LedgerEntry {
       Money.zero(devise).fromMinor(minor < 0 ? 0 : minor).formatter();
 
   IconData get icone => switch (kind) {
-        'cash_encaisse' => Icons.payments_rounded,
-        'commission_cash' => Icons.receipt_long_rounded,
-        'commission_momo' => Icons.receipt_long_rounded,
-        'commission_travel' => Icons.alt_route_rounded,
-        'momo_paiement' => Icons.account_balance_wallet_rounded,
-        'topup' => Icons.add_card_rounded,
-        'debit_commission' => Icons.currency_exchange_rounded,
-        'remboursement' => Icons.replay_rounded,
-        'ajustement' => Icons.tune_rounded,
-        _ => Icons.receipt_outlined,
-      };
+    'cash_encaisse' => Icons.payments_rounded,
+    'commission_cash' => Icons.receipt_long_rounded,
+    'commission_momo' => Icons.receipt_long_rounded,
+    'commission_travel' => Icons.alt_route_rounded,
+    'momo_paiement' => Icons.account_balance_wallet_rounded,
+    'topup' => Icons.add_card_rounded,
+    'debit_commission' => Icons.currency_exchange_rounded,
+    'remboursement' => Icons.replay_rounded,
+    'ajustement' => Icons.tune_rounded,
+    _ => Icons.receipt_outlined,
+  };
 }
 
 /// Lecture du grand livre personnel du prestataire connecté.

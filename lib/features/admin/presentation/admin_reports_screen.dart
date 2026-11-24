@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show RealtimeChannel;
 
@@ -82,8 +81,10 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          content: Text(message,
-              style: const TextStyle(fontWeight: FontWeight.w700)),
+          content: Text(
+            message,
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
           backgroundColor: erreur
               ? Theme.of(context).colorScheme.error
               : Theme.of(context).colorScheme.secondary,
@@ -92,8 +93,11 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
       );
   }
 
-  Future<void> _traiterSignalement(Map<String, dynamic> r, String statut,
-      {bool suspendre = false}) async {
+  Future<void> _traiterSignalement(
+    Map<String, dynamic> r,
+    String statut, {
+    bool suspendre = false,
+  }) async {
     final controller = TextEditingController();
     final note = await showDialog<String>(
       context: context,
@@ -111,8 +115,7 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
           style: const TextStyle(fontSize: 15),
           decoration: const InputDecoration(
             labelText: 'Note dÃ¢â‚¬â„¢instruction interne (optionnel)',
-            hintText:
-                'Ex. : Ãƒâ€°change tÃƒÂ©lÃƒÂ©phonique effectuÃƒÂ©, avertissement ÃƒÂ©mis',
+            hintText: 'Ex. : Ãƒâ€°change tÃƒÂ©lÃƒÂ©phonique effectuÃƒÂ©, avertissement ÃƒÂ©mis',
             border: OutlineInputBorder(),
           ),
         ),
@@ -128,9 +131,11 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
                   ? Theme.of(ctx).colorScheme.error
                   : Theme.of(ctx).colorScheme.primary,
             ),
-            child: Text(suspendre
-                ? 'Confirmer la suspension'
-                : 'Valider lÃ¢â‚¬â„¢arbitrage'),
+            child: Text(
+              suspendre
+                  ? 'Confirmer la suspension'
+                  : 'Valider lÃ¢â‚¬â„¢arbitrage',
+            ),
           ),
         ],
       ),
@@ -142,11 +147,17 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
     final id = '${r['id']}';
     setState(() => _busyId = id);
     try {
-      await _service.traiterSignalement(id, statut,
-          note: note, suspendre: suspendre);
-      _afficherMessage(suspendre
-          ? 'Prestataire suspendu et dossier clÃƒÂ´turÃƒÂ©.'
-          : 'Statut du signalement mis ÃƒÂ  jour.');
+      await _service.traiterSignalement(
+        id,
+        statut,
+        note: note,
+        suspendre: suspendre,
+      );
+      _afficherMessage(
+        suspendre
+            ? 'Prestataire suspendu et dossier clÃƒÂ´turÃƒÂ©.'
+            : 'Statut du signalement mis ÃƒÂ  jour.',
+      );
       await _chargerDonnees(silencieux: true);
     } catch (e) {
       _afficherMessage('$e'.replaceFirst('Exception: ', ''), erreur: true);
@@ -216,8 +227,7 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
             const EmptyState(
               icon: Icons.flag_outlined,
               title: 'Aucun signalement en cours',
-              message:
-                  'Les litiges ou plaintes signalÃƒÂ©s par les clients apparaÃƒÂ®tront ici.',
+              message: 'Les litiges ou plaintes signalÃƒÂ©s par les clients apparaÃƒÂ®tront ici.',
             ),
           ],
         ),
@@ -259,7 +269,9 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
                 child: Text(
                   libelleMotif('${r['motif']}'),
                   style: const TextStyle(
-                      fontSize: 17, fontWeight: FontWeight.w800),
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ),
               const SizedBox(width: 8),
@@ -267,9 +279,10 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
             ],
           ),
           const SizedBox(height: 8),
-          Text('Prestataire mis en cause : ${_nomGarage(r['provider'])}',
-              style:
-                  const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+          Text(
+            'Prestataire mis en cause : ${_nomGarage(r['provider'])}',
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+          ),
           const SizedBox(height: 2),
           Text(
             'SignalÃƒÂ© par : ${_nomClient(r['reporter'])} Ã¢â‚¬Â¢ ${_dateFormatee(r['created_at'])}',
@@ -295,9 +308,10 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
             Text(
               'Note interne dÃ¢â‚¬â„¢instruction : ${r['admin_note']}',
               style: const TextStyle(
-                  fontSize: 13.5,
-                  fontStyle: FontStyle.italic,
-                  color: Colors.blueGrey),
+                fontSize: 13.5,
+                fontStyle: FontStyle.italic,
+                color: Colors.blueGrey,
+              ),
             ),
           ],
           if (ouvert) ...[
@@ -323,8 +337,9 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
                   ),
                   FilledButton.icon(
                     icon: const Icon(Icons.block_rounded, size: 18),
-                    style:
-                        FilledButton.styleFrom(backgroundColor: scheme.error),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: scheme.error,
+                    ),
                     onPressed: () =>
                         _traiterSignalement(r, 'resolved', suspendre: true),
                     label: const Text('Suspendre le prestataire'),

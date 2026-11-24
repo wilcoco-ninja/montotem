@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -24,13 +23,13 @@ enum GatedAction {
 
 extension on GatedAction {
   String get titre => switch (this) {
-        GatedAction.contacter => 'Pour contacter ce rÃƒÂ©parateur',
-        GatedAction.appeler => 'Pour appeler ce rÃƒÂ©parateur',
-        GatedAction.rendezVous => 'Pour prendre rendez-vous',
-        GatedAction.voirInfos => 'Pour voir les infos du prestataire',
-        GatedAction.course => 'Pour commander votre course',
-        GatedAction.depannage => 'Pour demander un dÃƒÂ©pannage',
-      };
+    GatedAction.contacter => 'Pour contacter ce rÃƒÂ©parateur',
+    GatedAction.appeler => 'Pour appeler ce rÃƒÂ©parateur',
+    GatedAction.rendezVous => 'Pour prendre rendez-vous',
+    GatedAction.voirInfos => 'Pour voir les infos du prestataire',
+    GatedAction.course => 'Pour commander votre course',
+    GatedAction.depannage => 'Pour demander un dÃƒÂ©pannage',
+  };
 }
 
 /// ExÃƒÂ©cute [onAllowed] si l'utilisateur est connectÃƒÂ© ; sinon ouvre la
@@ -88,8 +87,11 @@ class AuthGateSheet extends StatelessWidget {
                   color: AppTheme.primaryColor.withValues(alpha: 0.12),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.bolt_rounded,
-                    size: 32, color: AppTheme.primaryColor),
+                child: const Icon(
+                  Icons.bolt_rounded,
+                  size: 32,
+                  color: AppTheme.primaryColor,
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -104,7 +106,9 @@ class AuthGateSheet extends StatelessWidget {
                 prestataireNom!,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: 14, color: onSurface.withValues(alpha: 0.6)),
+                  fontSize: 14,
+                  color: onSurface.withValues(alpha: 0.6),
+                ),
               ),
             ],
             const SizedBox(height: 10),
@@ -113,9 +117,10 @@ class AuthGateSheet extends StatelessWidget {
               'de tÃƒÂ©lÃƒÂ©phone et un code SMS, rien de plus.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 14,
-                  height: 1.45,
-                  color: onSurface.withValues(alpha: 0.7)),
+                fontSize: 14,
+                height: 1.45,
+                color: onSurface.withValues(alpha: 0.7),
+              ),
             ),
             const SizedBox(height: 22),
             AppButton(

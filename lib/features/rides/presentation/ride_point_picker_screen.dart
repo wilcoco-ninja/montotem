@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -39,9 +38,12 @@ class _RidePointPickerScreenState extends State<RidePointPickerScreen> {
   @override
   void initState() {
     super.initState();
-    _position = widget.positionInitiale ??
+    _position =
+        widget.positionInitiale ??
         const LatLng(
-            AppConstants.initialLatitude, AppConstants.initialLongitude);
+          AppConstants.initialLatitude,
+          AppConstants.initialLongitude,
+        );
     if (widget.positionInitiale == null) _centrerSurMoi(silencieux: true);
   }
 
@@ -61,9 +63,11 @@ class _RidePointPickerScreenState extends State<RidePointPickerScreen> {
       if (_mapPrete) _map.move(pt, AppConstants.defaultZoom);
     } catch (_) {
       if (mounted && !silencieux) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Impossible de rÃƒÂ©cupÃƒÂ©rer votre position GPS.'),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Impossible de rÃƒÂ©cupÃƒÂ©rer votre position GPS.'),
+          ),
+        );
       }
     } finally {
       if (mounted) setState(() => _recherche = false);
@@ -108,8 +112,11 @@ class _RidePointPickerScreenState extends State<RidePointPickerScreen> {
                     width: 56,
                     height: 56,
                     alignment: Alignment.topCenter,
-                    child: Icon(Icons.location_on,
-                        size: 52, color: widget.couleur),
+                    child: Icon(
+                      Icons.location_on,
+                      size: 52,
+                      color: widget.couleur,
+                    ),
                   ),
                 ],
               ),
@@ -129,18 +136,25 @@ class _RidePointPickerScreenState extends State<RidePointPickerScreen> {
               elevation: 4,
               borderRadius: BorderRadius.circular(14),
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 12,
+                ),
                 child: Row(
                   children: [
-                    Icon(Icons.touch_app_outlined,
-                        color: scheme.primary, size: 28),
+                    Icon(
+                      Icons.touch_app_outlined,
+                      color: scheme.primary,
+                      size: 28,
+                    ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         widget.consigne,
                         style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w700),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                   ],

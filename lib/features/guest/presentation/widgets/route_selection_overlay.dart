@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 
 import 'package:montotem/core/services/routing_service.dart';
@@ -210,8 +209,9 @@ class _RouteOption extends StatelessWidget {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color:
-              isSelected ? accent.withValues(alpha: 0.08) : Colors.transparent,
+          color: isSelected
+              ? accent.withValues(alpha: 0.08)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(AppTheme.radiusMd),
           border: Border.all(
             color: isSelected ? accent : onSurface.withValues(alpha: 0.12),
@@ -229,8 +229,11 @@ class _RouteOption extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: isSelected
-                  ? const Icon(Icons.check_rounded,
-                      size: 18, color: Colors.white)
+                  ? const Icon(
+                      Icons.check_rounded,
+                      size: 18,
+                      color: Colors.white,
+                    )
                   : Text(
                       '${index + 1}',
                       style: TextStyle(
@@ -263,8 +266,9 @@ class _RouteOption extends StatelessWidget {
                             vertical: 3,
                           ),
                           decoration: BoxDecoration(
-                            color:
-                                AppTheme.successColor.withValues(alpha: 0.14),
+                            color: AppTheme.successColor.withValues(
+                              alpha: 0.14,
+                            ),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: const Text(

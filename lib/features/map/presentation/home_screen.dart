@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -70,9 +69,11 @@ class _HomeScreenState extends State<HomeScreen> {
       final uid = _missions.currentUserId;
       final liste = await _missions.mesMissions();
       final actives = liste
-          .where((m) =>
-              m.clientId == uid &&
-              (m.status.actif || m.status == MissionStatus.pending))
+          .where(
+            (m) =>
+                m.clientId == uid &&
+                (m.status.actif || m.status == MissionStatus.pending),
+          )
           .toList();
       if (mounted) {
         setState(() => _active = actives.isEmpty ? null : actives.first);
@@ -83,9 +84,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _allerA(int i) => setState(() {
-        _tab = i;
-        if (i == 1) _mapVisited = true;
-      });
+    _tab = i;
+    if (i == 1) _mapVisited = true;
+  });
 
   void _ouvrirCarte([String? vehicle]) {
     final dejaCree = _mapVisited;
@@ -191,10 +192,11 @@ class _HomeTab extends StatelessWidget {
     final mission = active;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: (Theme.of(context).brightness == Brightness.dark
-              ? SystemUiOverlayStyle.light
-              : SystemUiOverlayStyle.dark)
-          .copyWith(statusBarColor: Colors.transparent),
+      value:
+          (Theme.of(context).brightness == Brightness.dark
+                  ? SystemUiOverlayStyle.light
+                  : SystemUiOverlayStyle.dark)
+              .copyWith(statusBarColor: Colors.transparent),
       child: SafeArea(
         bottom: false,
         child: RefreshIndicator(
@@ -315,7 +317,9 @@ class _HomeTab extends StatelessWidget {
                       ),
 
                       // Ã¢â€â‚¬Ã¢â€â‚¬ DÃƒÂ©pannage : rail de vÃƒÂ©hicules Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
-                      const ClientSectionTitle('Quel vÃƒÂ©hicule est en panne ?'),
+                      const ClientSectionTitle(
+                        'Quel vÃƒÂ©hicule est en panne ?',
+                      ),
                       Row(
                         children: [
                           for (var i = 0; i < _vehicules.length; i++) ...[

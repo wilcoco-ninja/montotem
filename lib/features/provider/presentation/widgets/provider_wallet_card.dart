@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -71,10 +70,10 @@ class ProviderWalletCard extends StatelessWidget {
 
     final String detail = bloque
         ? 'Les nouvelles demandes sont suspendues. Rechargez pour ÃƒÂªtre '
-            'dÃƒÂ©bloquÃƒÂ©.'
+              'dÃƒÂ©bloquÃƒÂ©.'
         : (negatif
-            ? 'Marge avant blocage : ${formaterFcfaSigne(marge)}.'
-            : _commission(cfg));
+              ? 'Marge avant blocage : ${formaterFcfaSigne(marge)}.'
+              : _commission(cfg));
 
     return Container(
       decoration: BoxDecoration(
@@ -114,7 +113,9 @@ class ProviderWalletCard extends StatelessWidget {
                       Text(
                         'Mon portefeuille',
                         style: TextStyle(
-                            fontSize: 14.5, color: context.textSecondary),
+                          fontSize: 14.5,
+                          color: context.textSecondary,
+                        ),
                       ),
                       FittedBox(
                         fit: BoxFit.scaleDown,
@@ -144,7 +145,10 @@ class ProviderWalletCard extends StatelessWidget {
             Text(
               detail,
               style: TextStyle(
-                  fontSize: 15, height: 1.35, color: context.textSecondary),
+                fontSize: 15,
+                height: 1.35,
+                color: context.textSecondary,
+              ),
             ),
             if (s.fromCache) ...[
               const SizedBox(height: 6),
@@ -155,8 +159,10 @@ class ProviderWalletCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       'Hors ligne : dernier solde connu.',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ],
@@ -167,8 +173,9 @@ class ProviderWalletCard extends StatelessWidget {
               AppButton(
                 label: 'Recharger mon portefeuille',
                 icon: Icons.add_card_rounded,
-                variant:
-                    bloque ? AppButtonVariant.danger : AppButtonVariant.primary,
+                variant: bloque
+                    ? AppButtonVariant.danger
+                    : AppButtonVariant.primary,
                 onPressed: onTap,
               ),
             ] else

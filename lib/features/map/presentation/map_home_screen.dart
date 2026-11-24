@@ -1,4 +1,3 @@
-﻿
 // lib/features/map/presentation/map_home_screen.dart
 import 'dart:async';
 import 'dart:math' as math;
@@ -32,29 +31,29 @@ enum _Genre { zemidjan, kloboto, depanneur }
 
 extension on _Genre {
   String get label => switch (this) {
-        _Genre.zemidjan => 'ZÃƒÂ©midjan',
-        _Genre.kloboto => 'Kloboto',
-        _Genre.depanneur => 'DÃƒÂ©panneur',
-      };
+    _Genre.zemidjan => 'ZÃƒÂ©midjan',
+    _Genre.kloboto => 'Kloboto',
+    _Genre.depanneur => 'DÃƒÂ©panneur',
+  };
 
   IconData get icon => switch (this) {
-        _Genre.zemidjan => Icons.two_wheeler_rounded,
-        _Genre.kloboto => Icons.electric_rickshaw_rounded,
-        _Genre.depanneur => Icons.build_circle_rounded,
-      };
+    _Genre.zemidjan => Icons.two_wheeler_rounded,
+    _Genre.kloboto => Icons.electric_rickshaw_rounded,
+    _Genre.depanneur => Icons.build_circle_rounded,
+  };
 
   Color get color => switch (this) {
-        _Genre.zemidjan => const Color(0xFFF59E0B),
-        _Genre.kloboto => const Color(0xFF16A34A),
-        _Genre.depanneur => const Color(0xFFDC2626),
-      };
+    _Genre.zemidjan => const Color(0xFFF59E0B),
+    _Genre.kloboto => const Color(0xFF16A34A),
+    _Genre.depanneur => const Color(0xFFDC2626),
+  };
 
   /// Code transmis ÃƒÂ  la route /ride/new (null = pas un conducteur).
   String? get codeCourse => switch (this) {
-        _Genre.zemidjan => 'zemidjan',
-        _Genre.kloboto => 'tricycle_fret',
-        _Genre.depanneur => null,
-      };
+    _Genre.zemidjan => 'zemidjan',
+    _Genre.kloboto => 'tricycle_fret',
+    _Genre.depanneur => null,
+  };
 }
 
 /// VÃƒÂ©hicule en panne : clÃƒÂ© = valeur stockÃƒÂ©e dans providers.vehicle_types.
@@ -73,7 +72,8 @@ _Genre _genreDe(Prestataire p) {
     return _Genre.depanneur;
   }
   final m = p.metier.toLowerCase();
-  if (m.contains('zÃƒÂ©midjan') || m.contains('zemidjan')) return _Genre.zemidjan;
+  if (m.contains('zÃƒÂ©midjan') || m.contains('zemidjan'))
+    return _Genre.zemidjan;
   if (m.contains('kloboto') || m.contains('klobot')) return _Genre.kloboto;
   return _Genre.depanneur;
 }
@@ -203,7 +203,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
         for (final row in data.whereType<Map>())
           '${row['provider_id']}':
               (row['vehicle_types'] as List?)?.map((e) => '$e').toList() ??
-                  const <String>[],
+              const <String>[],
       };
     } catch (_) {
       return const {};
@@ -257,10 +257,10 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
   }
 
   double _km(Prestataire p) => _distance.as(
-        LengthUnit.Kilometer,
-        _userPosition,
-        LatLng(p.latitude, p.longitude),
-      );
+    LengthUnit.Kilometer,
+    _userPosition,
+    LatLng(p.latitude, p.longitude),
+  );
 
   int _eta(double km) => math.max(1, (km * 1.25 / 25 * 60).ceil());
 
@@ -275,8 +275,10 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
       _dansRayon.where((p) => _genreDe(p) == g && p.disponible).length;
 
   int _nbPanne(String type) => _dansRayon
-      .where((p) =>
-          _genreDe(p) == _Genre.depanneur && p.disponible && _typeOk(p, type))
+      .where(
+        (p) =>
+            _genreDe(p) == _Genre.depanneur && p.disponible && _typeOk(p, type),
+      )
       .length;
 
   void _choisirCat(_Cat c) {
@@ -313,8 +315,10 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     if (_visibles.isNotEmpty) {
       _selectionner(_visibles.first);
     } else {
-      _msg('Aucun dÃƒÂ©panneur disponible ÃƒÂ  moins de ${_rayonKm.toInt()} km '
-          'pour ce vÃƒÂ©hicule.');
+      _msg(
+        'Aucun dÃƒÂ©panneur disponible ÃƒÂ  moins de ${_rayonKm.toInt()} km '
+        'pour ce vÃƒÂ©hicule.',
+      );
     }
   }
 
@@ -399,12 +403,15 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Se dÃƒÂ©connecter ?'),
-        content: const Text('Vous pourrez vous reconnecter ÃƒÂ  tout moment.',
-            style: TextStyle(fontSize: 16)),
+        content: const Text(
+          'Vous pourrez vous reconnecter ÃƒÂ  tout moment.',
+          style: TextStyle(fontSize: 16),
+        ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Annuler')),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Annuler'),
+          ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: TextButton.styleFrom(foregroundColor: AppTheme.errorColor),
@@ -445,14 +452,17 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text('Que cherchez-vous ?',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+              const Text(
+                'Que cherchez-vous ?',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+              ),
               const SizedBox(height: 14),
               _OptionTile(
                 icon: Icons.two_wheeler_rounded,
                 color: _Genre.zemidjan.color,
                 titre: 'ZÃƒÂ©midjan',
-                sousTitre: '${_nbGenre(_Genre.zemidjan)} disponible(s) prÃƒÂ¨s '
+                sousTitre:
+                    '${_nbGenre(_Genre.zemidjan)} disponible(s) prÃƒÂ¨s '
                     'de vous',
                 onTap: () {
                   Navigator.pop(ctx);
@@ -464,7 +474,8 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                 icon: Icons.electric_rickshaw_rounded,
                 color: _Genre.kloboto.color,
                 titre: 'Kloboto (tricycle)',
-                sousTitre: '${_nbGenre(_Genre.kloboto)} disponible(s) prÃƒÂ¨s '
+                sousTitre:
+                    '${_nbGenre(_Genre.kloboto)} disponible(s) prÃƒÂ¨s '
                     'de vous',
                 onTap: () {
                   Navigator.pop(ctx);
@@ -502,14 +513,19 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text('Quel vÃƒÂ©hicule est en panne ?',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+              const Text(
+                'Quel vÃƒÂ©hicule est en panne ?',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+              ),
               const SizedBox(height: 6),
               Text(
                 'Nous affichons les dÃƒÂ©panneurs disponibles les plus proches '
                 'de vous, pour une rÃƒÂ©paration express.',
                 style: TextStyle(
-                    fontSize: 15, height: 1.4, color: context.textSecondary),
+                  fontSize: 15,
+                  height: 1.4,
+                  color: context.textSecondary,
+                ),
               ),
               const SizedBox(height: 14),
               for (final e in _vehiculesPanne.entries) ...[
@@ -551,8 +567,10 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
             return const Center(
               child: Padding(
                 padding: EdgeInsets.all(24),
-                child: Text('Aucun rÃƒÂ©sultat ÃƒÂ  proximitÃƒÂ©.',
-                    style: TextStyle(fontSize: 16)),
+                child: Text(
+                  'Aucun rÃƒÂ©sultat ÃƒÂ  proximitÃƒÂ©.',
+                  style: TextStyle(fontSize: 16),
+                ),
               ),
             );
           }
@@ -570,13 +588,16 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                   backgroundColor: g.color.withValues(alpha: 0.15),
                   child: Icon(g.icon, color: g.color),
                 ),
-                title: Text(_titre(p),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontWeight: FontWeight.w800)),
-                subtitle:
-                    Text('${km.toStringAsFixed(1)} km Ã‚Â· Ã¢â€°Ë† ${_eta(km)} min'
-                        ' Ã‚Â· ${p.disponible ? 'Disponible' : 'Indisponible'}'),
+                title: Text(
+                  _titre(p),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontWeight: FontWeight.w800),
+                ),
+                subtitle: Text(
+                  '${km.toStringAsFixed(1)} km Ã‚Â· Ã¢â€°Ë† ${_eta(km)} min'
+                  ' Ã‚Â· ${p.disponible ? 'Disponible' : 'Indisponible'}',
+                ),
                 onTap: () {
                   Navigator.pop(ctx);
                   _selectionner(p);
@@ -654,11 +675,14 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                           children: [
                             if (_routeGeometry.isNotEmpty)
                               ActionChip(
-                                avatar:
-                                    const Icon(Icons.close_rounded, size: 20),
+                                avatar: const Icon(
+                                  Icons.close_rounded,
+                                  size: 20,
+                                ),
                                 label: const Text('Effacer l\'itinÃƒÂ©raire'),
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.surface,
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .surface,
                                 onPressed: () =>
                                     setState(() => _routeGeometry = const []),
                               ),
@@ -678,7 +702,9 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                           'Ã‚Â© OpenStreetMap contributors',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 10.5, color: context.textSecondary),
+                            fontSize: 10.5,
+                            color: context.textSecondary,
+                          ),
                         ),
                       ],
                     ),
@@ -774,7 +800,9 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                          fontSize: 16.5, color: context.textSecondary),
+                        fontSize: 16.5,
+                        color: context.textSecondary,
+                      ),
                     ),
                   ),
                   _avatar(context),
@@ -802,8 +830,10 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
           ? [
               PopupMenuItem<String>(
                 enabled: false,
-                child: Text(identite,
-                    style: const TextStyle(fontWeight: FontWeight.w800)),
+                child: Text(
+                  identite,
+                  style: const TextStyle(fontWeight: FontWeight.w800),
+                ),
               ),
               const PopupMenuItem(
                 value: '/rides',
@@ -842,10 +872,14 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                 value: 'logout',
                 child: ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading:
-                      Icon(Icons.logout_rounded, color: AppTheme.errorColor),
-                  title: Text('Se dÃƒÂ©connecter',
-                      style: TextStyle(color: AppTheme.errorColor)),
+                  leading: Icon(
+                    Icons.logout_rounded,
+                    color: AppTheme.errorColor,
+                  ),
+                  title: Text(
+                    'Se dÃƒÂ©connecter',
+                    style: TextStyle(color: AppTheme.errorColor),
+                  ),
                 ),
               ),
             ]
@@ -906,12 +940,27 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: [
-          _chip(context, 'Tous', Icons.apps_rounded, _cat == _Cat.tous,
-              _reinitialiser),
-          _chip(context, 'ZÃƒÂ©midjan', Icons.two_wheeler_rounded,
-              _cat == _Cat.zemidjan, () => _choisirCat(_Cat.zemidjan)),
-          _chip(context, 'Kloboto', Icons.electric_rickshaw_rounded,
-              _cat == _Cat.kloboto, () => _choisirCat(_Cat.kloboto)),
+          _chip(
+            context,
+            'Tous',
+            Icons.apps_rounded,
+            _cat == _Cat.tous,
+            _reinitialiser,
+          ),
+          _chip(
+            context,
+            'ZÃƒÂ©midjan',
+            Icons.two_wheeler_rounded,
+            _cat == _Cat.zemidjan,
+            () => _choisirCat(_Cat.zemidjan),
+          ),
+          _chip(
+            context,
+            'Kloboto',
+            Icons.electric_rickshaw_rounded,
+            _cat == _Cat.kloboto,
+            () => _choisirCat(_Cat.kloboto),
+          ),
           _chip(
             context,
             panne && vp != null
@@ -921,21 +970,31 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
             panne,
             _ouvrirPanne,
           ),
-          _chip(context, 'Disponibles', Icons.bolt_rounded, _seulementDispos,
-              () {
-            setState(() {
-              _seulementDispos = !_seulementDispos;
-              _selectedId = null;
-              _recalculer();
-            });
-          }),
+          _chip(
+            context,
+            'Disponibles',
+            Icons.bolt_rounded,
+            _seulementDispos,
+            () {
+              setState(() {
+                _seulementDispos = !_seulementDispos;
+                _selectedId = null;
+                _recalculer();
+              });
+            },
+          ),
         ],
       ),
     );
   }
 
-  Widget _chip(BuildContext context, String label, IconData icon, bool selected,
-      VoidCallback onTap) {
+  Widget _chip(
+    BuildContext context,
+    String label,
+    IconData icon,
+    bool selected,
+    VoidCallback onTap,
+  ) {
     final scheme = Theme.of(context).colorScheme;
     final fg = selected ? scheme.onPrimary : scheme.onSurface;
     return Padding(
@@ -959,11 +1018,14 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                 children: [
                   Icon(icon, size: 19, color: fg),
                   const SizedBox(width: 6),
-                  Text(label,
-                      style: TextStyle(
-                          fontSize: 14.5,
-                          fontWeight: FontWeight.w800,
-                          color: fg)),
+                  Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 14.5,
+                      fontWeight: FontWeight.w800,
+                      color: fg,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -982,8 +1044,8 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
       child: _errorMessage != null
           ? _erreur()
           : sel != null
-              ? _carteSelection(context, sel)
-              : _actions(context),
+          ? _carteSelection(context, sel)
+          : _actions(context),
     );
   }
 
@@ -993,11 +1055,15 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
         const Icon(Icons.cloud_off_rounded, color: AppTheme.errorColor),
         const SizedBox(width: 12),
         Expanded(
-          child: Text(_errorMessage!,
-              style:
-                  const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
+          child: Text(
+            _errorMessage!,
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+          ),
         ),
-        TextButton(onPressed: _chargerDonnees, child: const Text('RÃƒÂ©essayer')),
+        TextButton(
+          onPressed: _chargerDonnees,
+          child: const Text('RÃƒÂ©essayer'),
+        ),
       ],
     );
   }
@@ -1008,8 +1074,8 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     final titre = _isLoading
         ? 'Recherche en coursÃ¢â‚¬Â¦'
         : n == 0
-            ? 'Aucun rÃƒÂ©sultat ÃƒÂ  moins de ${_rayonKm.toInt()} km'
-            : '$n autour de vous';
+        ? 'Aucun rÃƒÂ©sultat ÃƒÂ  moins de ${_rayonKm.toInt()} km'
+        : '$n autour de vous';
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -1018,16 +1084,24 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
         Row(
           children: [
             Expanded(
-              child: Text(titre,
-                  style: const TextStyle(
-                      fontSize: 17, fontWeight: FontWeight.w800)),
+              child: Text(
+                titre,
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
             ),
             if (n > 0)
               TextButton(
-                  onPressed: _ouvrirListe, child: const Text('Voir la liste')),
+                onPressed: _ouvrirListe,
+                child: const Text('Voir la liste'),
+              ),
             if (n == 0 && filtresActifs && !_isLoading)
               TextButton(
-                  onPressed: _reinitialiser, child: const Text('Voir tout')),
+                onPressed: _reinitialiser,
+                child: const Text('Voir tout'),
+              ),
           ],
         ),
         if (!_connecte)
@@ -1037,7 +1111,10 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
               'Explorez librement. Connectez-vous pour commander une course '
               'ou voir les infos d\'un prestataire.',
               style: TextStyle(
-                  fontSize: 14, height: 1.35, color: context.textSecondary),
+                fontSize: 14,
+                height: 1.35,
+                color: context.textSecondary,
+              ),
             ),
           ),
         Row(
@@ -1092,17 +1169,23 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(_titre(p),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontSize: 17.5, fontWeight: FontWeight.w800)),
+                  Text(
+                    _titre(p),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 17.5,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                   Text(
                     connecte ? p.metier : 'Connectez-vous pour voir son profil',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style:
-                        TextStyle(fontSize: 14.5, color: context.textSecondary),
+                    style: TextStyle(
+                      fontSize: 14.5,
+                      color: context.textSecondary,
+                    ),
                   ),
                 ],
               ),
@@ -1153,8 +1236,9 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
           ),
         const SizedBox(height: 8),
         AppButton(
-          label:
-              connecte ? 'Voir les infos' : 'Se connecter pour voir les infos',
+          label: connecte
+              ? 'Voir les infos'
+              : 'Se connecter pour voir les infos',
           icon: connecte
               ? Icons.info_outline_rounded
               : Icons.lock_outline_rounded,
@@ -1205,12 +1289,20 @@ class _OptionTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(titre,
-                    style: const TextStyle(
-                        fontSize: 17, fontWeight: FontWeight.w800)),
-                Text(sousTitre,
-                    style: TextStyle(
-                        fontSize: 14.5, color: context.textSecondary)),
+                Text(
+                  titre,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                Text(
+                  sousTitre,
+                  style: TextStyle(
+                    fontSize: 14.5,
+                    color: context.textSecondary,
+                  ),
+                ),
               ],
             ),
           ),

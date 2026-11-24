@@ -11,31 +11,16 @@ import 'package:montotem/core/theme/app_space.dart';
 ///
 /// Le rôle est fixé AVANT tout accès à `AppRouter.router` (voir main_*.dart).
 enum AppFlavor {
-  client(
-    'MonTotem',
-    AppSpace.client,
-    '/login',
-    '/register/quick',
-  ),
+  client('MonTotem', AppSpace.client, '/login', '/register/quick'),
   driver(
     'MonTotem Driver',
     AppSpace.driver,
     '/driver/login',
     '/register/driver',
   ),
-  pro(
-    'MonTotem Pro',
-    AppSpace.provider,
-    '/pro/login',
-    '/register/provider',
-  );
+  pro('MonTotem Pro', AppSpace.provider, '/pro/login', '/register/provider');
 
-  const AppFlavor(
-    this.appName,
-    this.space,
-    this.doorRoute,
-    this.registerRoute,
-  );
+  const AppFlavor(this.appName, this.space, this.doorRoute, this.registerRoute);
 
   /// Nom affiché sur l'écran d'accueil du téléphone.
   final String appName;
@@ -55,10 +40,10 @@ enum AppFlavor {
 
   /// Racine d'accueil selon le rôle (après connexion).
   String get homeRoute => switch (this) {
-        AppFlavor.client => '/home',
-        AppFlavor.driver => '/driver/home',
-        AppFlavor.pro => '/provider/home',
-      };
+    AppFlavor.client => '/home',
+    AppFlavor.driver => '/driver/home',
+    AppFlavor.pro => '/provider/home',
+  };
 
   /// À définir UNE fois au démarrage, avant tout accès à `AppRouter.router`.
   static AppFlavor current = AppFlavor.client;

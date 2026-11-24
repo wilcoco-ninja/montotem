@@ -95,16 +95,13 @@ class PowerModeController extends ChangeNotifier with WidgetsBindingObserver {
     } catch (_) {}
 
     try {
-      _reseauSub = Connectivity().onConnectivityChanged.listen(
-        (dynamic r) {
-          final hors = _aucuneConnexion(r);
-          if (hors != _horsLigne) {
-            _horsLigne = hors;
-            notifyListeners();
-          }
-        },
-        onError: (_) {},
-      );
+      _reseauSub = Connectivity().onConnectivityChanged.listen((dynamic r) {
+        final hors = _aucuneConnexion(r);
+        if (hors != _horsLigne) {
+          _horsLigne = hors;
+          notifyListeners();
+        }
+      }, onError: (_) {});
     } catch (_) {}
 
     // La batterie n'a pas de flux de pourcentage : on relit toutes les

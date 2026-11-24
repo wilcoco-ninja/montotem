@@ -1,4 +1,3 @@
-﻿
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -153,8 +152,9 @@ class _MissionChatState extends State<_MissionChat> {
                               style: TextStyle(
                                 fontSize: 16,
                                 height: 1.35,
-                                color:
-                                    mine ? scheme.onPrimary : scheme.onSurface,
+                                color: mine
+                                    ? scheme.onPrimary
+                                    : scheme.onSurface,
                               ),
                             ),
                           ),

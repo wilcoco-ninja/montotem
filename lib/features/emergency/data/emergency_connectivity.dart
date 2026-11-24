@@ -14,6 +14,5 @@ Future<bool> estHorsLigne() async {
   }
 }
 
-Stream<bool> horsLigneStream() => Connectivity()
-    .onConnectivityChanged
+Stream<bool> horsLigneStream() => Connectivity().onConnectivityChanged
     .map<bool>((dynamic r) => _aucuneConnexion(r));

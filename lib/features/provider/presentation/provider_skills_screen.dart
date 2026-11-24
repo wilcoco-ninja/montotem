@@ -91,8 +91,8 @@ class _ProviderSkillsScreenState extends State<ProviderSkillsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final muted =
-        Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8);
+    final muted = Theme.of(context).colorScheme.onSurface
+        .withValues(alpha: 0.8);
     final existants = _skills.map((s) => s.label.toLowerCase()).toSet();
 
     return Scaffold(
@@ -133,27 +133,33 @@ class _ProviderSkillsScreenState extends State<ProviderSkillsScreen> {
                     runSpacing: 8,
                     children: _suggestions
                         .where((s) => !existants.contains(s.toLowerCase()))
-                        .map((s) => ActionChip(
-                              avatar: const Icon(Icons.add, size: 18),
-                              label: Text(s),
-                              onPressed: _busy ? null : () => _ajouter(s),
-                            ))
+                        .map(
+                          (s) => ActionChip(
+                            avatar: const Icon(Icons.add, size: 18),
+                            label: Text(s),
+                            onPressed: _busy ? null : () => _ajouter(s),
+                          ),
+                        )
                         .toList(),
                   ),
                   SectionTitle('Mes compétences (${_skills.length})'),
                   if (_skills.isEmpty)
-                    Text('Aucune compétence ajoutée pour le moment.',
-                        style: TextStyle(fontSize: 16, color: muted))
+                    Text(
+                      'Aucune compétence ajoutée pour le moment.',
+                      style: TextStyle(fontSize: 16, color: muted),
+                    )
                   else
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
                       children: _skills
-                          .map((s) => InputChip(
-                                label: Text(s.label),
-                                onDeleted: () => _supprimer(s),
-                                deleteButtonTooltipMessage: 'Supprimer',
-                              ))
+                          .map(
+                            (s) => InputChip(
+                              label: Text(s.label),
+                              onDeleted: () => _supprimer(s),
+                              deleteButtonTooltipMessage: 'Supprimer',
+                            ),
+                          )
                           .toList(),
                     ),
                 ],

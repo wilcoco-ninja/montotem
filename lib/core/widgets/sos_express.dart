@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
@@ -39,8 +38,10 @@ const kSosMetiers = <SosMetier>[
   SosMetier('zemidjan', 'Zem', Icons.two_wheeler_rounded),
 ];
 
-SosMetier _metierDe(String kind) => kSosMetiers
-    .firstWhere((m) => m.kind == kind, orElse: () => kSosMetiers.first);
+SosMetier _metierDe(String kind) => kSosMetiers.firstWhere(
+  (m) => m.kind == kind,
+  orElse: () => kSosMetiers.first,
+);
 
 // Ã¢â€â‚¬Ã¢â€â‚¬ DonnÃƒÂ©es Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
@@ -61,19 +62,19 @@ class Proche {
   });
 
   factory Proche.fromJson(Map<String, dynamic> j) => Proche(
-        id: '${j['id']}',
-        nom: (j['nom'] as String?) ?? 'Prestataire',
-        metier: (j['metier'] as String?) ?? '',
-        kind: (j['provider_kind'] as String?) ?? '',
-        latitude: (j['latitude'] as num?)?.toDouble() ?? 0,
-        longitude: (j['longitude'] as num?)?.toDouble() ?? 0,
-        distanceM: (j['distance_m'] as num?)?.toInt() ?? 0,
-        etaMin: (j['eta_min'] as num?)?.toInt() ?? 1,
-        fraisFcfa: (j['travel_fee_fcfa'] as num?)?.toInt() ?? 0,
-        note: (j['note_moyenne'] as num?)?.toDouble() ?? 0,
-        disponible: (j['disponible'] as bool?) ?? true,
-        telephone: j['telephone'] as String?,
-      );
+    id: '${j['id']}',
+    nom: (j['nom'] as String?) ?? 'Prestataire',
+    metier: (j['metier'] as String?) ?? '',
+    kind: (j['provider_kind'] as String?) ?? '',
+    latitude: (j['latitude'] as num?)?.toDouble() ?? 0,
+    longitude: (j['longitude'] as num?)?.toDouble() ?? 0,
+    distanceM: (j['distance_m'] as num?)?.toInt() ?? 0,
+    etaMin: (j['eta_min'] as num?)?.toInt() ?? 1,
+    fraisFcfa: (j['travel_fee_fcfa'] as num?)?.toInt() ?? 0,
+    note: (j['note_moyenne'] as num?)?.toDouble() ?? 0,
+    disponible: (j['disponible'] as bool?) ?? true,
+    telephone: j['telephone'] as String?,
+  );
 
   final String id;
   final String nom;
@@ -108,14 +109,17 @@ class SosService {
     double rayonKm = 3,
     int limite = 3,
   }) async {
-    final r = await Supabase.instance.client.rpc('providers_nearest', params: {
-      'p_lat': position.latitude,
-      'p_lng': position.longitude,
-      'p_kind': kind,
-      'p_vehicle': vehicule,
-      'p_radius_km': rayonKm,
-      'p_limit': limite,
-    });
+    final r = await Supabase.instance.client.rpc(
+      'providers_nearest',
+      params: {
+        'p_lat': position.latitude,
+        'p_lng': position.longitude,
+        'p_kind': kind,
+        'p_vehicle': vehicule,
+        'p_radius_km': rayonKm,
+        'p_limit': limite,
+      },
+    );
     return (r as List)
         .whereType<Map>()
         .map((e) => Proche.fromJson(Map<String, dynamic>.from(e)))
@@ -169,13 +173,13 @@ class SosExpressBar extends StatelessWidget {
           final icone = (w * 0.38).clamp(20.0, 28.0).toDouble();
 
           Widget case_(SosMetier m) => SizedBox(
-                width: w,
-                child: _CaseMetier(
-                  metier: m,
-                  icone: icone,
-                  onTap: () => onSelect(m),
-                ),
-              );
+            width: w,
+            child: _CaseMetier(
+              metier: m,
+              icone: icone,
+              onTap: () => onSelect(m),
+            ),
+          );
 
           if (!defile) {
             return Padding(
@@ -334,8 +338,7 @@ class _PanneButtonState extends State<PanneButton>
       ),
       child: Semantics(
         button: true,
-        label:
-            'Je suis en panne. Trouver 3 dÃƒÂ©panneurs ÃƒÂ  moins de 3 kilomÃƒÂ¨tres',
+        label: 'Je suis en panne. Trouver 3 dÃƒÂ©panneurs ÃƒÂ  moins de 3 kilomÃƒÂ¨tres',
         excludeSemantics: true,
         child: FilledButton.icon(
           onPressed: widget.onPressed,
@@ -446,7 +449,8 @@ class _NearestSheetState extends State<_NearestSheet> {
       builder: (context, snap) {
         if (snap.connectionState != ConnectionState.done) {
           return _Chargement(
-              texte: 'Je cherche le ${m.label} le plus procheÃ¢â‚¬Â¦');
+            texte: 'Je cherche le ${m.label} le plus procheÃ¢â‚¬Â¦',
+          );
         }
         if (snap.hasError) {
           final gps = snap.error is _SansPosition;
@@ -454,7 +458,7 @@ class _NearestSheetState extends State<_NearestSheet> {
             icon: gps ? Icons.location_off_rounded : Icons.wifi_off_rounded,
             texte: gps
                 ? 'Activez la localisation (GPS) de votre tÃƒÂ©lÃƒÂ©phone, '
-                    'puis rÃƒÂ©essayez.'
+                      'puis rÃƒÂ©essayez.'
                 : 'Connexion impossible. VÃƒÂ©rifiez votre rÃƒÂ©seau et rÃƒÂ©essayez.',
             action: 'RÃƒÂ©essayer',
             onAction: () => _relancer(),
@@ -486,8 +490,11 @@ class _NearestSheetState extends State<_NearestSheet> {
 }
 
 class _ResultatProche extends StatelessWidget {
-  const _ResultatProche(
-      {required this.p, required this.metier, this.onVoirCarte});
+  const _ResultatProche({
+    required this.p,
+    required this.metier,
+    this.onVoirCarte,
+  });
 
   final Proche p;
   final SosMetier metier;
@@ -515,12 +522,16 @@ class _ResultatProche extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                          fontSize: 24, fontWeight: FontWeight.w900),
+                        fontSize: 24,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
                     Text(
                       p.metier,
-                      style:
-                          TextStyle(fontSize: 16, color: context.textSecondary),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: context.textSecondary,
+                      ),
                     ),
                   ],
                 ),
@@ -544,14 +555,17 @@ class _ResultatProche extends StatelessWidget {
                 const Icon(Icons.payments_rounded, size: 28),
                 const SizedBox(width: 12),
                 const Expanded(
-                  child: Text('Frais de dÃƒÂ©placement',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                  child: Text(
+                    'Frais de dÃƒÂ©placement',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                  ),
                 ),
                 Text(
                   _fcfa(p.fraisFcfa),
                   style: const TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.w900),
+                    fontSize: 22,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
               ],
             ),
@@ -642,13 +656,17 @@ class _PanneSheetState extends State<_PanneSheet> {
     final pos = await widget.position();
     if (pos == null) throw const _SansPosition();
     final ordre = _ordre;
-    final res = await Future.wait(ordre.map((k) => SosService.chercher(
+    final res = await Future.wait(
+      ordre.map(
+        (k) => SosService.chercher(
           position: pos,
           kind: k,
           vehicule: _vehicule,
           rayonKm: _rayon,
           limite: 1,
-        )));
+        ),
+      ),
+    );
     return [
       for (var i = 0; i < ordre.length; i++)
         _Choix(_metierDe(ordre[i]), res[i].isEmpty ? null : res[i].first),
@@ -674,7 +692,8 @@ class _PanneSheetState extends State<_PanneSheet> {
       builder: (context, snap) {
         if (snap.connectionState != ConnectionState.done) {
           return _Chargement(
-              texte: 'Je scanne ${_rayon.toInt()} km autour de vousÃ¢â‚¬Â¦');
+            texte: 'Je scanne ${_rayon.toInt()} km autour de vousÃ¢â‚¬Â¦',
+          );
         }
         if (snap.hasError) {
           final gps = snap.error is _SansPosition;
@@ -682,7 +701,7 @@ class _PanneSheetState extends State<_PanneSheet> {
             icon: gps ? Icons.location_off_rounded : Icons.wifi_off_rounded,
             texte: gps
                 ? 'Activez la localisation (GPS) de votre tÃƒÂ©lÃƒÂ©phone, '
-                    'puis rÃƒÂ©essayez.'
+                      'puis rÃƒÂ©essayez.'
                 : 'Connexion impossible. VÃƒÂ©rifiez votre rÃƒÂ©seau et rÃƒÂ©essayez.',
             action: 'RÃƒÂ©essayer',
             onAction: () => setState(() => _future = _charger()),
@@ -704,7 +723,9 @@ class _PanneSheetState extends State<_PanneSheet> {
                           ? 'Personne ÃƒÂ  moins de ${_rayon.toInt()} km'
                           : 'Du secours ÃƒÂ  moins de ${_rayon.toInt()} km',
                       style: const TextStyle(
-                          fontSize: 22, fontWeight: FontWeight.w900),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
                   ),
                   TextButton(
@@ -712,7 +733,9 @@ class _PanneSheetState extends State<_PanneSheet> {
                       _vehicule = null;
                       _future = null;
                     }),
-                    child: Text(_vehicule == 'moto' ? 'Moto Ã¢Å“Å½' : 'Auto Ã¢Å“Å½'),
+                    child: Text(
+                      _vehicule == 'moto' ? 'Moto Ã¢Å“Å½' : 'Auto Ã¢Å“Å½',
+                    ),
                   ),
                 ],
               ),
@@ -734,11 +757,14 @@ class _PanneSheetState extends State<_PanneSheet> {
                 OutlinedButton.icon(
                   onPressed: _elargir,
                   icon: const Icon(Icons.zoom_out_map_rounded),
-                  label: Text(trouves < choix.length
-                      ? 'Ãƒâ€°largir la recherche ÃƒÂ  10 km'
-                      : 'Chercher plus loin (10 km)'),
+                  label: Text(
+                    trouves < choix.length
+                        ? 'Ãƒâ€°largir la recherche ÃƒÂ  10 km'
+                        : 'Chercher plus loin (10 km)',
+                  ),
                   style: OutlinedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(52)),
+                    minimumSize: const Size.fromHeight(52),
+                  ),
                 ),
             ],
           ),
@@ -756,34 +782,37 @@ class _ChoixVehicule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget tuile(String cle, String label, IconData icon) => Expanded(
-          child: Semantics(
-            button: true,
-            label: label,
-            excludeSemantics: true,
-            child: Material(
-              color: kVolt,
-              borderRadius: BorderRadius.circular(22),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(22),
-                onTap: () => onChoix(cle),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 22),
-                  child: Column(
-                    children: [
-                      Icon(icon, size: 52, color: AppColors.navy),
-                      const SizedBox(height: 6),
-                      Text(label,
-                          style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w900,
-                              color: AppColors.navy)),
-                    ],
+      child: Semantics(
+        button: true,
+        label: label,
+        excludeSemantics: true,
+        child: Material(
+          color: kVolt,
+          borderRadius: BorderRadius.circular(22),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(22),
+            onTap: () => onChoix(cle),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 22),
+              child: Column(
+                children: [
+                  Icon(icon, size: 52, color: AppColors.navy),
+                  const SizedBox(height: 6),
+                  Text(
+                    label,
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w900,
+                      color: AppColors.navy,
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ),
-        );
+        ),
+      ),
+    );
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
@@ -791,11 +820,15 @@ class _ChoixVehicule extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text('Quel vÃƒÂ©hicule est en panne ?',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900)),
+          const Text(
+            'Quel vÃƒÂ©hicule est en panne ?',
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+          ),
           const SizedBox(height: 4),
-          Text('Une seule fois : nous le mÃƒÂ©morisons.',
-              style: TextStyle(fontSize: 15, color: context.textSecondary)),
+          Text(
+            'Une seule fois : nous le mÃƒÂ©morisons.',
+            style: TextStyle(fontSize: 15, color: context.textSecondary),
+          ),
           const SizedBox(height: 16),
           Row(
             children: [
@@ -811,8 +844,11 @@ class _ChoixVehicule extends StatelessWidget {
 }
 
 class _CarteChoix extends StatelessWidget {
-  const _CarteChoix(
-      {required this.choix, required this.rayon, this.onVoirCarte});
+  const _CarteChoix({
+    required this.choix,
+    required this.rayon,
+    this.onVoirCarte,
+  });
 
   final _Choix choix;
   final double rayon;
@@ -839,9 +875,10 @@ class _CarteChoix extends StatelessWidget {
                   child: Text(
                     'Aucun ${m.label} ÃƒÂ  ${rayon.toInt()} km',
                     style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: context.textSecondary),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: context.textSecondary,
+                    ),
                   ),
                 ),
               ],
@@ -857,15 +894,21 @@ class _CarteChoix extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(p.nom,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w900)),
+                          Text(
+                            p.nom,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
                           Text(
                             '${m.label} Ã‚Â· ${p.resume}',
                             style: TextStyle(
-                                fontSize: 15, color: context.textSecondary),
+                              fontSize: 15,
+                              color: context.textSecondary,
+                            ),
                           ),
                         ],
                       ),
@@ -873,7 +916,9 @@ class _CarteChoix extends StatelessWidget {
                     Text(
                       _fcfa(p.fraisFcfa),
                       style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w900),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
                   ],
                 ),
@@ -893,8 +938,11 @@ class _CarteChoix extends StatelessWidget {
 // Ã¢â€â‚¬Ã¢â€â‚¬ PiÃƒÂ¨ces communes Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
 class _IconeMetier extends StatelessWidget {
-  const _IconeMetier(
-      {required this.icon, required this.taille, this.actif = true});
+  const _IconeMetier({
+    required this.icon,
+    required this.taille,
+    this.actif = true,
+  });
 
   final IconData icon;
   final double taille;
@@ -909,16 +957,21 @@ class _IconeMetier extends StatelessWidget {
         color: actif ? kVolt : Colors.grey.withValues(alpha: 0.25),
         shape: BoxShape.circle,
       ),
-      child: Icon(icon,
-          size: taille * 0.55,
-          color: actif ? AppColors.navy : context.textSecondary),
+      child: Icon(
+        icon,
+        size: taille * 0.55,
+        color: actif ? AppColors.navy : context.textSecondary,
+      ),
     );
   }
 }
 
 class _BoutonAppel extends StatelessWidget {
-  const _BoutonAppel(
-      {required this.p, required this.label, this.compact = false});
+  const _BoutonAppel({
+    required this.p,
+    required this.label,
+    this.compact = false,
+  });
 
   final Proche p;
   final String label;
@@ -946,8 +999,10 @@ class _BoutonAppel extends StatelessWidget {
       foregroundColor: AppColors.navy,
       minimumSize: Size.fromHeight(hauteur),
       shape: const StadiumBorder(),
-      textStyle:
-          TextStyle(fontSize: compact ? 17 : 20, fontWeight: FontWeight.w900),
+      textStyle: TextStyle(
+        fontSize: compact ? 17 : 20,
+        fontWeight: FontWeight.w900,
+      ),
     );
 
     if (tel == null || tel.isEmpty) {
@@ -1001,10 +1056,11 @@ class _Chargement extends StatelessWidget {
         children: [
           const CircularProgressIndicator(),
           const SizedBox(height: 16),
-          Text(texte,
-              textAlign: TextAlign.center,
-              style:
-                  const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+          Text(
+            texte,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+          ),
         ],
       ),
     );
@@ -1034,10 +1090,11 @@ class _Message extends StatelessWidget {
         children: [
           Icon(icon, size: 48, color: context.textSecondary),
           const SizedBox(height: 12),
-          Text(texte,
-              textAlign: TextAlign.center,
-              style:
-                  const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+          Text(
+            texte,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+          ),
           if (action != null && onAction != null) ...[
             const SizedBox(height: 16),
             FilledButton(
@@ -1047,8 +1104,10 @@ class _Message extends StatelessWidget {
                 foregroundColor: AppColors.navy,
                 minimumSize: const Size.fromHeight(52),
                 shape: const StadiumBorder(),
-                textStyle:
-                    const TextStyle(fontSize: 17, fontWeight: FontWeight.w900),
+                textStyle: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w900,
+                ),
               ),
               child: Text(action!),
             ),

@@ -1,4 +1,3 @@
-﻿
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -79,15 +78,12 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
       final pt = LatLng(p.latitude, p.longitude);
       setState(() => _me = pt);
       if (_mapReady) _map.move(pt, 14);
-      _gps = _location.watchPosition().listen(
-        (Position q) {
-          if (!mounted) return;
-          final n = LatLng(q.latitude, q.longitude);
-          setState(() => _me = n);
-          _envoyerPosition(q);
-        },
-        onError: (_) {},
-      );
+      _gps = _location.watchPosition().listen((Position q) {
+        if (!mounted) return;
+        final n = LatLng(q.latitude, q.longitude);
+        setState(() => _me = n);
+        _envoyerPosition(q);
+      }, onError: (_) {});
       _chargerProches();
     } catch (_) {
       // GPS indisponible : la carte reste sur Cotonou.
@@ -110,10 +106,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
       return;
     }
     try {
-      final liste = await _rides.proches(
-        lat: me.latitude,
-        lng: me.longitude,
-      );
+      final liste = await _rides.proches(lat: me.latitude, lng: me.longitude);
       if (mounted) setState(() => _proches = liste);
     } on RideException {
       // Erreur transitoire : la prochaine actualisation rechargera.
@@ -129,9 +122,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
       await _charger();
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erreur : $e')),
-        );
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Erreur : $e')));
       }
     } finally {
       if (mounted) setState(() => _toggling = false);
@@ -146,9 +138,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
       if (mounted) _chargerProches();
     } on RideException catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.message)),
-        );
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(e.message)));
       }
     }
   }
@@ -192,18 +183,13 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     }
 
     return Scaffold(
-      body: Stack(
-        children: [
-          _carte(),
-          _barreHaut(),
-          _panneauBas(),
-        ],
-      ),
+      body: Stack(children: [_carte(), _barreHaut(), _panneauBas()]),
     );
   }
 
   Widget _carte() {
-    final centre = _me ??
+    final centre =
+        _me ??
         const LatLng(
           AppConstants.initialLatitude,
           AppConstants.initialLongitude,
@@ -224,30 +210,32 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
           userAgentPackageName: 'bj.totem.app',
         ),
         if (_me != null)
-          MarkerLayer(markers: [
-            Marker(
-              point: _me!,
-              width: 44,
-              height: 44,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue.withValues(alpha: 0.2),
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Container(
-                    width: 22,
-                    height: 22,
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 3),
+          MarkerLayer(
+            markers: [
+              Marker(
+                point: _me!,
+                width: 44,
+                height: 44,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue.withValues(alpha: 0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Container(
+                      width: 22,
+                      height: 22,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 3),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ]),
+            ],
+          ),
       ],
     );
   }
@@ -318,14 +306,17 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                       child: Text(
                         _info!.rideKind?.libelle ?? 'Conducteur',
                         style: const TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.w900),
+                          fontSize: 22,
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
                     ),
                     StatusPill(
                       label: enLigne ? 'En ligne' : 'Hors ligne',
                       color: enLigne ? AppTheme.successColor : Colors.grey,
-                      icon:
-                          enLigne ? Icons.wifi_rounded : Icons.wifi_off_rounded,
+                      icon: enLigne
+                          ? Icons.wifi_rounded
+                          : Icons.wifi_off_rounded,
                     ),
                   ],
                 ),
@@ -334,8 +325,10 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   Text(
                     '${_proches.length} course${_proches.length > 1 ? 's' : ''} '
                     'ÃƒÂ  proximitÃƒÂ©',
-                    style:
-                        TextStyle(fontSize: 15, color: context.textSecondary),
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: context.textSecondary,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   if (_proches.isEmpty)
@@ -344,7 +337,9 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                       child: Text(
                         'Aucune course pour le moment. Restez en ligne.',
                         style: TextStyle(
-                            fontSize: 14, color: context.textSecondary),
+                          fontSize: 14,
+                          color: context.textSecondary,
+                        ),
                       ),
                     )
                   else
@@ -360,8 +355,10 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                 ] else
                   Text(
                     'Passez en ligne pour recevoir des courses',
-                    style:
-                        TextStyle(fontSize: 15, color: context.textSecondary),
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: context.textSecondary,
+                    ),
                   ),
                 const SizedBox(height: 12),
                 FilledButton.icon(
@@ -375,12 +372,15 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   label: Text(
                     enLigne ? 'PASSER HORS LIGNE' : 'PASSER EN LIGNE',
                     style: const TextStyle(
-                        fontSize: 17, fontWeight: FontWeight.w900),
+                      fontSize: 17,
+                      fontWeight: FontWeight.w900,
+                    ),
                   ),
                   style: FilledButton.styleFrom(
                     minimumSize: const Size.fromHeight(58),
-                    backgroundColor:
-                        enLigne ? AppTheme.errorColor : AppTheme.successColor,
+                    backgroundColor: enLigne
+                        ? AppTheme.errorColor
+                        : AppTheme.successColor,
                     foregroundColor: Colors.white,
                   ),
                 ),
@@ -407,13 +407,17 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                 Text(
                   '${n.kind.libelle} Ã‚Â· ${TravelFee.fcfa(n.fareFcfa)}',
                   style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w800),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
                 Text(
                   'DÃƒÂ©part ÃƒÂ  ${formaterDistance(n.distanceToPickupM)} Ã‚Â· '
                   'Trajet ${formaterDistance(n.tripDistanceM)}',
-                  style:
-                      TextStyle(fontSize: 13.5, color: context.textSecondary),
+                  style: TextStyle(
+                    fontSize: 13.5,
+                    color: context.textSecondary,
+                  ),
                 ),
               ],
             ),

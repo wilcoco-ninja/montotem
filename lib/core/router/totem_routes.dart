@@ -26,8 +26,5 @@ final List<RouteBase> totemRoutes = [
     path: '/register/transport',
     builder: (_, __) => const TransportRegisterScreen(),
   ),
-  GoRoute(
-    path: '/survie',
-    builder: (_, __) => const SurvivalKitScreen(),
-  ),
+  GoRoute(path: '/survie', builder: (_, __) => const SurvivalKitScreen()),
 ];

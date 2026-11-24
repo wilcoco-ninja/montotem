@@ -33,10 +33,14 @@ class MapFly {
     final ctrl = AnimationController(vsync: vsync, duration: duration);
     _active = ctrl;
 
-    final lat =
-        Tween<double>(begin: cam.center.latitude, end: destination.latitude);
-    final lng =
-        Tween<double>(begin: cam.center.longitude, end: destination.longitude);
+    final lat = Tween<double>(
+      begin: cam.center.latitude,
+      end: destination.latitude,
+    );
+    final lng = Tween<double>(
+      begin: cam.center.longitude,
+      end: destination.longitude,
+    );
     final z = Tween<double>(begin: cam.zoom, end: zoom);
     final curve = CurvedAnimation(parent: ctrl, curve: Curves.easeInOutCubic);
 

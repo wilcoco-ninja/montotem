@@ -77,17 +77,17 @@ class ServiceTarif {
   final int prixFcfa;
 
   factory ServiceTarif.fromJson(Map<String, dynamic> j) => ServiceTarif(
-        id: j['id'] == null ? null : '${j['id']}',
-        nom: '${j['nom'] ?? ''}',
-        categorieVehicule: '${j['categorie_vehicule'] ?? 'voiture'}',
-        prixFcfa: (j['prix_fcfa'] as num?)?.toInt() ?? 0,
-      );
+    id: j['id'] == null ? null : '${j['id']}',
+    nom: '${j['nom'] ?? ''}',
+    categorieVehicule: '${j['categorie_vehicule'] ?? 'voiture'}',
+    prixFcfa: (j['prix_fcfa'] as num?)?.toInt() ?? 0,
+  );
 
   Map<String, dynamic> toJson() => {
-        'nom': nom,
-        'categorie_vehicule': categorieVehicule,
-        'prix_fcfa': prixFcfa,
-      };
+    'nom': nom,
+    'categorie_vehicule': categorieVehicule,
+    'prix_fcfa': prixFcfa,
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -136,13 +136,14 @@ class ProviderPublicCatalog {
       ProviderPublicCatalog(
         vehicleTypes:
             (j['vehicle_types'] as List?)?.map((e) => '$e').toList() ??
-                const [],
+            const [],
         skills: (j['skills'] as List?)?.map((e) => '$e').toList() ?? const [],
         tarifKmFcfa: (j['tarif_km_fcfa'] as num?)?.toInt() ?? 0,
         fraisMinFcfa: (j['frais_deplacement_min_fcfa'] as num?)?.toInt() ?? 0,
         rayonMaxKm: (j['rayon_max_km'] as num?)?.toInt() ?? 15,
         accepteMobileMoney: j['accepte_mobile_money'] == true,
-        services: (j['services'] as List?)
+        services:
+            (j['services'] as List?)
                 ?.whereType<Map>()
                 .map((e) => ServiceTarif.fromJson(Map<String, dynamic>.from(e)))
                 .where((s) => s.prixFcfa > 0)

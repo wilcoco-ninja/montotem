@@ -150,7 +150,10 @@ class _ProviderMissionScreenState extends State<ProviderMissionScreen> {
   Future<void> _envoyerPosition(Position p) async {
     try {
       final statut = await _service.envoyerPosition(
-          widget.missionId, p.latitude, p.longitude);
+        widget.missionId,
+        p.latitude,
+        p.longitude,
+      );
       if (statut != _m?.status.value) await _charger(silencieux: true);
     } on MissionException {
       // Erreur réseau passagère
@@ -168,11 +171,13 @@ class _ProviderMissionScreenState extends State<ProviderMissionScreen> {
     final me = _me;
     if (me == null) return;
     _cadre = true;
-    _map.fitCamera(CameraFit.coordinates(
-      coordinates: [me, m.clientPoint],
-      padding: EdgeInsets.fromLTRB(60, 230, 60, _lateral ? 70 : 380),
-      maxZoom: 17,
-    ));
+    _map.fitCamera(
+      CameraFit.coordinates(
+        coordinates: [me, m.clientPoint],
+        padding: EdgeInsets.fromLTRB(60, 230, 60, _lateral ? 70 : 380),
+        maxZoom: 17,
+      ),
+    );
   }
 
   void _recadrer(Mission m) {
@@ -262,10 +267,7 @@ class _ProviderMissionScreenState extends State<ProviderMissionScreen> {
       } catch (e) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Erreur : $e'),
-            backgroundColor: Colors.red,
-          ),
+          SnackBar(content: Text('Erreur : $e'), backgroundColor: Colors.red),
         );
       } finally {
         if (mounted) setState(() => _busy = false);
@@ -378,48 +380,55 @@ class _ProviderMissionScreenState extends State<ProviderMissionScreen> {
           userAgentPackageName: 'bj.totem.app',
         ),
         if (_route.length >= 2)
-          PolylineLayer(polylines: [
-            Polyline(
-              points: _route,
-              color: AppTheme.primaryColor,
-              strokeWidth: 6,
-              borderColor: Colors.white,
-              borderStrokeWidth: 2,
-            ),
-          ]),
-        MarkerLayer(markers: [
-          Marker(
-            point: m.clientPoint,
-            width: 56,
-            height: 56,
-            alignment: Alignment.topCenter,
-            child: const Icon(Icons.location_on,
-                size: 52, color: AppTheme.errorColor),
+          PolylineLayer(
+            polylines: [
+              Polyline(
+                points: _route,
+                color: AppTheme.primaryColor,
+                strokeWidth: 6,
+                borderColor: Colors.white,
+                borderStrokeWidth: 2,
+              ),
+            ],
           ),
-          if (me != null)
+        MarkerLayer(
+          markers: [
             Marker(
-              point: me,
-              width: 44,
-              height: 44,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue.withValues(alpha: 0.2),
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Container(
-                    width: 22,
-                    height: 22,
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 3),
+              point: m.clientPoint,
+              width: 56,
+              height: 56,
+              alignment: Alignment.topCenter,
+              child: const Icon(
+                Icons.location_on,
+                size: 52,
+                color: AppTheme.errorColor,
+              ),
+            ),
+            if (me != null)
+              Marker(
+                point: me,
+                width: 44,
+                height: 44,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue.withValues(alpha: 0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Container(
+                      width: 22,
+                      height: 22,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 3),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-        ]),
+          ],
+        ),
       ],
     );
   }
@@ -451,7 +460,9 @@ class _ProviderMissionScreenState extends State<ProviderMissionScreen> {
                     borderRadius: BorderRadius.circular(30),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 4),
+                        horizontal: 6,
+                        vertical: 4,
+                      ),
                       child: StatusPill(
                         label: m.status.libelle,
                         color: m.status.couleur,
@@ -480,15 +491,20 @@ class _ProviderMissionScreenState extends State<ProviderMissionScreen> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: scheme.surface.withValues(alpha: 0.9),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     '© OpenStreetMap contributors',
-                    style: TextStyle(fontSize: 11, color: context.textSecondary),
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: context.textSecondary,
+                    ),
                   ),
                 ),
               ),
@@ -616,21 +632,25 @@ class _ProviderMissionScreenState extends State<ProviderMissionScreen> {
           ),
         ),
       if (avecPoignee) const SizedBox(height: 14),
-      Text(m.problem,
-          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900)),
+      Text(
+        m.problem,
+        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+      ),
       const SizedBox(height: 8),
       Wrap(
         spacing: 8,
         runSpacing: 6,
         children: [
           StatusPill(
-              label: m.status.libelle,
-              color: m.status.couleur,
-              icon: m.status.icone),
+            label: m.status.libelle,
+            color: m.status.couleur,
+            icon: m.status.icone,
+          ),
           StatusPill(
-              label: vehicule.$1,
-              color: AppTheme.primaryColor,
-              icon: vehicule.$2),
+            label: vehicule.$1,
+            color: AppTheme.primaryColor,
+            icon: vehicule.$2,
+          ),
         ],
       ),
       if (suivi) ...[
@@ -645,32 +665,38 @@ class _ProviderMissionScreenState extends State<ProviderMissionScreen> {
           children: [
             if (m.clientAddress != null && m.clientAddress!.isNotEmpty)
               InfoRow(
-                  icon: Icons.place_outlined,
-                  label: 'Adresse',
-                  value: m.clientAddress!),
+                icon: Icons.place_outlined,
+                label: 'Adresse',
+                value: m.clientAddress!,
+              ),
             if (m.status == MissionStatus.accepted && _distM != null)
               InfoRow(
-                  icon: Icons.near_me_rounded,
-                  label: 'Distance restante',
-                  value: _dist(_distM!)),
+                icon: Icons.near_me_rounded,
+                label: 'Distance restante',
+                value: _dist(_distM!),
+              ),
             InfoRow(
-                icon: Icons.payments_outlined,
-                label: 'Frais de déplacement',
-                value: TravelFee.fcfa(m.travelFeeFcfa)),
+              icon: Icons.payments_outlined,
+              label: 'Frais de déplacement',
+              value: TravelFee.fcfa(m.travelFeeFcfa),
+            ),
             if (m.status == MissionStatus.completed) ...[
               InfoRow(
-                  icon: Icons.build_circle_outlined,
-                  label: 'Réparation',
-                  value: TravelFee.fcfa(m.repairFeeFcfa)),
+                icon: Icons.build_circle_outlined,
+                label: 'Réparation',
+                value: TravelFee.fcfa(m.repairFeeFcfa),
+              ),
               InfoRow(
-                  icon: Icons.receipt_long_outlined,
-                  label: 'Total à percevoir',
-                  value: TravelFee.fcfa(m.totalFcfa)),
+                icon: Icons.receipt_long_outlined,
+                label: 'Total à percevoir',
+                value: TravelFee.fcfa(m.totalFcfa),
+              ),
               if (m.dureeTravail != null)
                 InfoRow(
-                    icon: Icons.timer_outlined,
-                    label: 'Durée du travail',
-                    value: '${m.dureeTravail!.inMinutes} min'),
+                  icon: Icons.timer_outlined,
+                  label: 'Durée du travail',
+                  value: '${m.dureeTravail!.inMinutes} min',
+                ),
             ],
           ],
         ),
@@ -735,7 +761,11 @@ class _ProviderMissionScreenState extends State<ProviderMissionScreen> {
     final scheme = Theme.of(context).colorScheme;
     return Container(
       padding: EdgeInsets.fromLTRB(
-          16, 12, 16, 12 + MediaQuery.paddingOf(context).bottom),
+        16,
+        12,
+        16,
+        12 + MediaQuery.paddingOf(context).bottom,
+      ),
       decoration: BoxDecoration(
         color: scheme.surface,
         border: Border(
@@ -954,12 +984,12 @@ class _EtapesMission extends StatelessWidget {
   static const _labels = ['En route', 'Arrivé', 'Travail', 'Terminé'];
 
   int get _index => switch (status) {
-        MissionStatus.accepted => 0,
-        MissionStatus.arrived => 1,
-        MissionStatus.working => 2,
-        MissionStatus.completed => 3,
-        _ => -1,
-      };
+    MissionStatus.accepted => 0,
+    MissionStatus.arrived => 1,
+    MissionStatus.working => 2,
+    MissionStatus.completed => 3,
+    _ => -1,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -993,8 +1023,8 @@ class _EtapesMission extends StatelessWidget {
                         color: i == dernier
                             ? Colors.transparent
                             : (i < courant || termine
-                                ? AppTheme.successColor
-                                : gris),
+                                  ? AppTheme.successColor
+                                  : gris),
                       ),
                     ),
                   ],
@@ -1006,8 +1036,9 @@ class _EtapesMission extends StatelessWidget {
                     _labels[i],
                     style: TextStyle(
                       fontSize: 14,
-                      fontWeight:
-                          i == courant ? FontWeight.w800 : FontWeight.w600,
+                      fontWeight: i == courant
+                          ? FontWeight.w800
+                          : FontWeight.w600,
                     ),
                   ),
                 ),

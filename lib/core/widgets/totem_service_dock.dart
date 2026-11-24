@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -121,8 +120,9 @@ class _Tuile extends StatelessWidget {
             side: BorderSide(color: fond ?? scheme.outline),
           ),
           child: InkWell(
-            customBorder:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            customBorder: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
             onTap: () {
               HapticFeedback.selectionClick();
               onTap();

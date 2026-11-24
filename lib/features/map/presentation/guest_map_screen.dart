@@ -1,4 +1,3 @@
-﻿
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -126,8 +125,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
     } catch (_) {
       if (!mounted) return;
       setState(() {
-        _errorMessage =
-            'Impossible de charger les prestataires. VÃƒÂ©rifiez votre connexion.';
+        _errorMessage = 'Impossible de charger les prestataires. VÃƒÂ©rifiez votre connexion.';
       });
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -143,7 +141,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
         for (final row in data.whereType<Map>())
           '${row['provider_id']}':
               (row['vehicle_types'] as List?)?.map((e) => '$e').toList() ??
-                  const <String>[],
+              const <String>[],
       };
     } catch (_) {
       return const {};
@@ -196,10 +194,10 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
   }
 
   double _km(Prestataire p) => _distance.as(
-        LengthUnit.Kilometer,
-        _userPosition,
-        LatLng(p.latitude, p.longitude),
-      );
+    LengthUnit.Kilometer,
+    _userPosition,
+    LatLng(p.latitude, p.longitude),
+  );
 
   void _choisirFiltre(String type) {
     setState(() {
@@ -371,8 +369,11 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
                 color: Theme.of(context).colorScheme.outlineVariant,
               ),
               Expanded(
-                child:
-                    _carte(context, hauteurListe: hauteurListe, lateral: true),
+                child: _carte(
+                  context,
+                  hauteurListe: hauteurListe,
+                  lateral: true,
+                ),
               ),
             ],
           );
@@ -577,8 +578,9 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
                 DecoratedBox(
                   decoration: BoxDecoration(
                     color: scheme.surface,
-                    borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(26)),
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(26),
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withValues(alpha: 0.14),
@@ -624,7 +626,10 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
           child: Wrap(
-              spacing: 8, runSpacing: 8, children: _chips(elevated: false)),
+            spacing: 8,
+            runSpacing: 8,
+            children: _chips(elevated: false),
+          ),
         ),
         Expanded(child: _panneauBas(context, hauteurListe, lateral: true)),
       ],
@@ -637,13 +642,18 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
     return '$n dÃƒÂ©panneur${n > 1 ? 's' : ''} ÃƒÂ  proximitÃƒÂ©$suffixe';
   }
 
-  Widget _panneauBas(BuildContext context, double hauteur,
-      {bool lateral = false}) {
+  Widget _panneauBas(
+    BuildContext context,
+    double hauteur, {
+    bool lateral = false,
+  }) {
     if (_errorMessage != null) {
-      return _message(context,
-          texte: _errorMessage!,
-          erreur: true,
-          action: ('RÃƒÂ©essayer', _charger));
+      return _message(
+        context,
+        texte: _errorMessage!,
+        erreur: true,
+        action: ('RÃƒÂ©essayer', _charger),
+      );
     }
     if (_isLoading) {
       return _message(context, texte: 'Recherche des dÃƒÂ©panneursÃ¢â‚¬Â¦');
@@ -819,8 +829,9 @@ class _ProviderMarker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ring =
-        prestataire.disponible ? AppColors.success : Colors.grey.shade600;
+    final ring = prestataire.disponible
+        ? AppColors.success
+        : Colors.grey.shade600;
     return Container(
       decoration: BoxDecoration(
         color: selected ? ring : Colors.white,
@@ -894,22 +905,33 @@ class _ProviderCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(p.nomAffiche,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w800)),
-                      Text(p.metier,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: 13.5, color: context.textSecondary)),
+                      Text(
+                        p.nomAffiche,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      Text(
+                        p.metier,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 13.5,
+                          color: context.textSecondary,
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 if (p.verifie)
-                  Icon(Icons.verified_rounded,
-                      color: context.readable(AppColors.success), size: 22),
+                  Icon(
+                    Icons.verified_rounded,
+                    color: context.readable(AppColors.success),
+                    size: 22,
+                  ),
               ],
             ),
             Wrap(
@@ -944,7 +966,9 @@ class _ProviderCard extends StatelessWidget {
                 style: FilledButton.styleFrom(
                   minimumSize: const Size(64, 44),
                   textStyle: const TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.w800),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
                 child: const Text('Voir la fiche'),
               ),

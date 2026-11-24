@@ -27,8 +27,9 @@ class Totem {
   // ── Urgence ───────────────────────────────────────────────────────────
   static const Color urgence = Color(0xFFD32F2F); // gros texte blanc seulement
   static const Color urgenceProfond = Color(0xFFA31515); // blanc : 7,85:1
-  static const Color urgenceClair =
-      Color(0xFFFF9C94); // sur fond sombre : 9,2:1
+  static const Color urgenceClair = Color(
+    0xFFFF9C94,
+  ); // sur fond sombre : 9,2:1
 
   // ── Les « peaux » (skins) ─────────────────────────────────────────────
 

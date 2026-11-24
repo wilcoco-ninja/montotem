@@ -14,14 +14,17 @@ class ProvidersNearestService {
     int limite = 3,
   }) async {
     try {
-      final data = await _sb.rpc('providers_nearest', params: {
-        'p_lat': position.latitude,
-        'p_lng': position.longitude,
-        'p_kind': kind,
-        'p_vehicle': vehicule,
-        'p_radius_km': rayonKm,
-        'p_limit': limite,
-      });
+      final data = await _sb.rpc(
+        'providers_nearest',
+        params: {
+          'p_lat': position.latitude,
+          'p_lng': position.longitude,
+          'p_kind': kind,
+          'p_vehicle': vehicule,
+          'p_radius_km': rayonKm,
+          'p_limit': limite,
+        },
+      );
       if (data is! List) return const [];
       return data.whereType<Map>().map((e) {
         final j = Map<String, dynamic>.from(e);

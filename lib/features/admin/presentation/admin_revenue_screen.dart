@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -115,12 +114,24 @@ class _AdminRevenuePanelState extends State<AdminRevenuePanel>
             SoftCard(
               child: Column(
                 children: [
-                  _part('Courses en espÃƒÂ¨ces', r.commissionCash,
-                      r.commissionTotal, AppColors.navy),
-                  _part('Courses Mobile Money', r.commissionMomo,
-                      r.commissionTotal, AppTheme.successColor),
-                  _part('Frais de dÃƒÂ©placement', r.commissionTravel,
-                      r.commissionTotal, AppColors.amber),
+                  _part(
+                    'Courses en espÃƒÂ¨ces',
+                    r.commissionCash,
+                    r.commissionTotal,
+                    AppColors.navy,
+                  ),
+                  _part(
+                    'Courses Mobile Money',
+                    r.commissionMomo,
+                    r.commissionTotal,
+                    AppTheme.successColor,
+                  ),
+                  _part(
+                    'Frais de dÃƒÂ©placement',
+                    r.commissionTravel,
+                    r.commissionTotal,
+                    AppColors.amber,
+                  ),
                 ],
               ),
             ),
@@ -181,29 +192,36 @@ class _AdminRevenuePanelState extends State<AdminRevenuePanel>
               color: AppTheme.successColor.withValues(alpha: 0.14),
               borderRadius: BorderRadius.circular(18),
             ),
-            child: Icon(Icons.percent_rounded,
-                size: 30, color: context.readable(AppTheme.successColor)),
+            child: Icon(
+              Icons.percent_rounded,
+              size: 30,
+              color: context.readable(AppTheme.successColor),
+            ),
           ),
           const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Commissions MonTotem',
-                    style:
-                        TextStyle(fontSize: 15, color: context.textSecondary)),
+                Text(
+                  'Commissions MonTotem',
+                  style: TextStyle(fontSize: 15, color: context.textSecondary),
+                ),
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   alignment: Alignment.centerLeft,
                   child: Text(
                     TravelFee.fcfa(r.commissionTotal),
                     style: const TextStyle(
-                        fontSize: 32, fontWeight: FontWeight.w900),
+                      fontSize: 32,
+                      fontWeight: FontWeight.w900,
+                    ),
                   ),
                 ),
-                Text('sur ${r.days} jours',
-                    style:
-                        TextStyle(fontSize: 14, color: context.textSecondary)),
+                Text(
+                  'sur ${r.days} jours',
+                  style: TextStyle(fontSize: 14, color: context.textSecondary),
+                ),
               ],
             ),
           ),
@@ -213,8 +231,9 @@ class _AdminRevenuePanelState extends State<AdminRevenuePanel>
   }
 
   Widget _part(String label, int montant, int total, Color couleur) {
-    final ratio =
-        total <= 0 ? 0.0 : (montant / total).clamp(0.0, 1.0).toDouble();
+    final ratio = total <= 0
+        ? 0.0
+        : (montant / total).clamp(0.0, 1.0).toDouble();
     final pct = (ratio * 100).round();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -226,18 +245,28 @@ class _AdminRevenuePanelState extends State<AdminRevenuePanel>
               Container(
                 width: 14,
                 height: 14,
-                decoration:
-                    BoxDecoration(color: couleur, shape: BoxShape.circle),
+                decoration: BoxDecoration(
+                  color: couleur,
+                  shape: BoxShape.circle,
+                ),
               ),
               const SizedBox(width: 10),
               Expanded(
-                child: Text(label,
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w700)),
-              ),
-              Text('${TravelFee.fcfa(montant)} Ã‚Â· $pct %',
+                child: Text(
+                  label,
                   style: const TextStyle(
-                      fontSize: 15.5, fontWeight: FontWeight.w800)),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              Text(
+                '${TravelFee.fcfa(montant)} Ã‚Â· $pct %',
+                style: const TextStyle(
+                  fontSize: 15.5,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 6),
@@ -247,9 +276,7 @@ class _AdminRevenuePanelState extends State<AdminRevenuePanel>
               value: ratio,
               minHeight: 8,
               color: couleur,
-              backgroundColor: Theme.of(context)
-                  .colorScheme
-                  .onSurface
+              backgroundColor: Theme.of(context).colorScheme.onSurface
                   .withValues(alpha: 0.1),
             ),
           ),
@@ -321,12 +348,18 @@ class _BarresEmpilees extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(d(serie.first.date),
-                style: TextStyle(fontSize: 13, color: context.textSecondary)),
-            Text(d(serie[serie.length ~/ 2].date),
-                style: TextStyle(fontSize: 13, color: context.textSecondary)),
-            Text(d(serie.last.date),
-                style: TextStyle(fontSize: 13, color: context.textSecondary)),
+            Text(
+              d(serie.first.date),
+              style: TextStyle(fontSize: 13, color: context.textSecondary),
+            ),
+            Text(
+              d(serie[serie.length ~/ 2].date),
+              style: TextStyle(fontSize: 13, color: context.textSecondary),
+            ),
+            Text(
+              d(serie.last.date),
+              style: TextStyle(fontSize: 13, color: context.textSecondary),
+            ),
           ],
         ),
         const SizedBox(height: 10),

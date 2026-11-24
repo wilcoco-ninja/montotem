@@ -15,9 +15,11 @@ class AdminControlService {
     try {
       final rows = await _sb
           .from('missions')
-          .select('*, '
-              'client:profiles!missions_client_id_fkey(first_name,last_name,phone), '
-              'provider:providers!missions_provider_id_fkey(business_name,metier)')
+          .select(
+            '*, '
+            'client:profiles!missions_client_id_fkey(first_name,last_name,phone), '
+            'provider:providers!missions_provider_id_fkey(business_name,metier)',
+          )
           .order('created_at', ascending: false)
           .limit(150);
       return _liste(rows);
@@ -40,19 +42,23 @@ class AdminControlService {
     try {
       final rows = await _sb
           .from('missions')
-          .select('*, '
-              'client:profiles!missions_client_id_fkey(first_name,last_name,phone), '
-              'provider:providers!missions_provider_id_fkey(business_name,metier)')
+          .select(
+            '*, '
+            'client:profiles!missions_client_id_fkey(first_name,last_name,phone), '
+            'provider:providers!missions_provider_id_fkey(business_name,metier)',
+          )
           .order('created_at', ascending: false)
           .limit(limite);
       return _liste(rows);
     } on PostgrestException catch (e) {
       if (_estRelationCasse(e)) {
-        return _liste(await _sb
-            .from('missions')
-            .select()
-            .order('created_at', ascending: false)
-            .limit(limite));
+        return _liste(
+          await _sb
+              .from('missions')
+              .select()
+              .order('created_at', ascending: false)
+              .limit(limite),
+        );
       }
       rethrow;
     }
@@ -60,31 +66,38 @@ class AdminControlService {
 
   // ── CHRONOLOGIE / MESSAGES / PAIEMENTS ───────────────────────────────────
   Future<List<Map<String, dynamic>>> evenements(String missionId) async =>
-      _liste(await _sb
-          .from('mission_events')
-          .select()
-          .eq('mission_id', missionId)
-          .order('created_at'));
+      _liste(
+        await _sb
+            .from('mission_events')
+            .select()
+            .eq('mission_id', missionId)
+            .order('created_at'),
+      );
 
-  Future<List<Map<String, dynamic>>> messages(String missionId) async =>
-      _liste(await _sb
-          .from('mission_messages')
-          .select()
-          .eq('mission_id', missionId)
-          .order('created_at'));
+  Future<List<Map<String, dynamic>>> messages(String missionId) async => _liste(
+    await _sb
+        .from('mission_messages')
+        .select()
+        .eq('mission_id', missionId)
+        .order('created_at'),
+  );
 
   Future<List<Map<String, dynamic>>> paiements(String missionId) async =>
-      _liste(await _sb
-          .from('mission_payments')
-          .select()
-          .eq('mission_id', missionId)
-          .order('created_at'));
+      _liste(
+        await _sb
+            .from('mission_payments')
+            .select()
+            .eq('mission_id', missionId)
+            .order('created_at'),
+      );
 
   // ── FINANCES ─────────────────────────────────────────────────────────────
   Future<Map<String, dynamic>> finances(int jours) async {
     try {
-      final data =
-          await _sb.rpc('admin_finance_summary', params: {'p_days': jours});
+      final data = await _sb.rpc(
+        'admin_finance_summary',
+        params: {'p_days': jours},
+      );
       return Map<String, dynamic>.from(data as Map);
     } on PostgrestException catch (e) {
       throw Exception('Finances indisponibles : ${e.message}');
@@ -96,19 +109,23 @@ class AdminControlService {
     try {
       final rows = await _sb
           .from('provider_reports')
-          .select('*, '
-              'reporter:profiles!provider_reports_reporter_id_fkey(first_name,last_name,phone), '
-              'provider:providers!provider_reports_provider_id_fkey(business_name,metier)')
+          .select(
+            '*, '
+            'reporter:profiles!provider_reports_reporter_id_fkey(first_name,last_name,phone), '
+            'provider:providers!provider_reports_provider_id_fkey(business_name,metier)',
+          )
           .order('created_at', ascending: false)
           .limit(100);
       return _liste(rows);
     } on PostgrestException catch (e) {
       if (_estRelationCasse(e)) {
-        return _liste(await _sb
-            .from('provider_reports')
-            .select()
-            .order('created_at', ascending: false)
-            .limit(100));
+        return _liste(
+          await _sb
+              .from('provider_reports')
+              .select()
+              .order('created_at', ascending: false)
+              .limit(100),
+        );
       }
       throw Exception('Signalements indisponibles : ${e.message}');
     }
@@ -121,19 +138,25 @@ class AdminControlService {
     bool suspendre = false,
   }) async {
     try {
-      await _sb.rpc('admin_resolve_report', params: {
-        'p_report': id,
-        'p_status': statut,
-        'p_note': note,
-        'p_suspend': suspendre,
-      });
+      await _sb.rpc(
+        'admin_resolve_report',
+        params: {
+          'p_report': id,
+          'p_status': statut,
+          'p_note': note,
+          'p_suspend': suspendre,
+        },
+      );
     } on PostgrestException catch (e) {
       throw Exception('Action impossible : ${e.message}');
     }
   }
 
-  RealtimeChannel ecouter(String table, void Function() onChange,
-      {String? nom}) {
+  RealtimeChannel ecouter(
+    String table,
+    void Function() onChange, {
+    String? nom,
+  }) {
     final canal = _sb.channel(nom ?? 'admin-ctl-$table');
     canal
         .onPostgresChanges(

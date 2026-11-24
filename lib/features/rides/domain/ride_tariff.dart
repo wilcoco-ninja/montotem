@@ -14,12 +14,17 @@ class RideTariff {
   final int minFcfa;
   final int maxSurgePct;
 
-  int estimer(int distanceMeters,
-      {int durationSeconds = 0, double surgeMultiplier = 1.0}) {
+  int estimer(
+    int distanceMeters, {
+    int durationSeconds = 0,
+    double surgeMultiplier = 1.0,
+  }) {
     final km = distanceMeters / 1000.0;
     final minutes = durationSeconds / 60.0;
-    final effectiveSurge =
-        surgeMultiplier.clamp(1.0, 1.0 + (maxSurgePct / 100.0));
+    final effectiveSurge = surgeMultiplier.clamp(
+      1.0,
+      1.0 + (maxSurgePct / 100.0),
+    );
 
     final brut =
         (baseFcfa + (km * kmFcfa) + (minutes * minuteFcfa)) * effectiveSurge;
@@ -40,17 +45,19 @@ class RideTariff {
 class RideTariffs {
   const RideTariffs({
     this.zemidjan = const RideTariff(
-        baseFcfa: 250,
-        kmFcfa: 120,
-        minuteFcfa: 20,
-        minFcfa: 400,
-        maxSurgePct: 40),
+      baseFcfa: 250,
+      kmFcfa: 120,
+      minuteFcfa: 20,
+      minFcfa: 400,
+      maxSurgePct: 40,
+    ),
     this.tricycleFret = const RideTariff(
-        baseFcfa: 600,
-        kmFcfa: 250,
-        minuteFcfa: 40,
-        minFcfa: 1000,
-        maxSurgePct: 40),
+      baseFcfa: 600,
+      kmFcfa: 250,
+      minuteFcfa: 40,
+      minFcfa: 1000,
+      maxSurgePct: 40,
+    ),
   });
 
   final RideTariff zemidjan;
@@ -68,17 +75,19 @@ class RideTariffs {
 
   factory RideTariffs.fromRows(List rows) {
     var zem = const RideTariff(
-        baseFcfa: 250,
-        kmFcfa: 120,
-        minuteFcfa: 20,
-        minFcfa: 400,
-        maxSurgePct: 40);
+      baseFcfa: 250,
+      kmFcfa: 120,
+      minuteFcfa: 20,
+      minFcfa: 400,
+      maxSurgePct: 40,
+    );
     var tri = const RideTariff(
-        baseFcfa: 600,
-        kmFcfa: 250,
-        minuteFcfa: 40,
-        minFcfa: 1000,
-        maxSurgePct: 40);
+      baseFcfa: 600,
+      kmFcfa: 250,
+      minuteFcfa: 40,
+      minFcfa: 1000,
+      maxSurgePct: 40,
+    );
 
     for (final row in rows) {
       if (row is Map) {
@@ -95,25 +104,25 @@ class RideTariffs {
   }
 
   List toRows() => [
-        {
-          'key': 'zemidjan_tariff',
-          'value_json': {
-            'base_fcfa': zemidjan.baseFcfa,
-            'km_fcfa': zemidjan.kmFcfa,
-            'minute_fcfa': zemidjan.minuteFcfa,
-            'min_fcfa': zemidjan.minFcfa,
-            'max_surge_pct': zemidjan.maxSurgePct,
-          }
-        },
-        {
-          'key': 'tricycle_tariff',
-          'value_json': {
-            'base_fcfa': tricycleFret.baseFcfa,
-            'km_fcfa': tricycleFret.kmFcfa,
-            'minute_fcfa': tricycleFret.minuteFcfa,
-            'min_fcfa': tricycleFret.minFcfa,
-            'max_surge_pct': tricycleFret.maxSurgePct,
-          }
-        },
-      ];
+    {
+      'key': 'zemidjan_tariff',
+      'value_json': {
+        'base_fcfa': zemidjan.baseFcfa,
+        'km_fcfa': zemidjan.kmFcfa,
+        'minute_fcfa': zemidjan.minuteFcfa,
+        'min_fcfa': zemidjan.minFcfa,
+        'max_surge_pct': zemidjan.maxSurgePct,
+      },
+    },
+    {
+      'key': 'tricycle_tariff',
+      'value_json': {
+        'base_fcfa': tricycleFret.baseFcfa,
+        'km_fcfa': tricycleFret.kmFcfa,
+        'minute_fcfa': tricycleFret.minuteFcfa,
+        'min_fcfa': tricycleFret.minFcfa,
+        'max_surge_pct': tricycleFret.maxSurgePct,
+      },
+    },
+  ];
 }

@@ -33,7 +33,8 @@ class RideService {
       rethrow;
     } catch (_) {
       throw const RideException(
-          'Connexion impossible. Vérifiez votre réseau et réessayez.');
+        'Connexion impossible. Vérifiez votre réseau et réessayez.',
+      );
     }
   }
 
@@ -67,8 +68,9 @@ class RideService {
         },
       );
       throw const RideException(
-          'Hors ligne : votre demande est enregistrée. Elle sera envoyée '
-          'automatiquement dès que le réseau revient.');
+        'Hors ligne : votre demande est enregistrée. Elle sera envoyée '
+        'automatiquement dès que le réseau revient.',
+      );
     }
     return _creerDirecte(
       kind: kind,
@@ -89,38 +91,43 @@ class RideService {
     required RidePaymentMethod paiement,
     String? adresseDepart,
     String? adresseArrivee,
-  }) =>
-      _run(() async {
-        final id = await _sb.rpc('create_ride', params: {
-          'p_service_kind': kind.code,
-          'p_pickup_lat': depart.latitude,
-          'p_pickup_lng': depart.longitude,
-          'p_dropoff_lat': arrivee.latitude,
-          'p_dropoff_lng': arrivee.longitude,
-          'p_fare_fcfa': tarifFcfa,
-          'p_payment_method': paiement.code,
-          'p_pickup_address': adresseDepart,
-          'p_dropoff_address': adresseArrivee,
-        });
-        return '$id';
-      });
+  }) => _run(() async {
+    final id = await _sb.rpc(
+      'create_ride',
+      params: {
+        'p_service_kind': kind.code,
+        'p_pickup_lat': depart.latitude,
+        'p_pickup_lng': depart.longitude,
+        'p_dropoff_lat': arrivee.latitude,
+        'p_dropoff_lng': arrivee.longitude,
+        'p_fare_fcfa': tarifFcfa,
+        'p_payment_method': paiement.code,
+        'p_pickup_address': adresseDepart,
+        'p_dropoff_address': adresseArrivee,
+      },
+    );
+    return '$id';
+  });
 
   /// Rejoue une creation de course mise en file hors ligne.
   /// true : course creee. false : refus metier definitif du serveur (la
   /// tache est retiree). Exception : echec reseau transitoire (reessai).
   Future<bool> rejouerCreation(Map<String, dynamic> p) async {
     try {
-      await _sb.rpc('create_ride', params: {
-        'p_service_kind': p['serviceKind'],
-        'p_pickup_lat': (p['latDepart'] as num).toDouble(),
-        'p_pickup_lng': (p['lngDepart'] as num).toDouble(),
-        'p_dropoff_lat': (p['latArrivee'] as num).toDouble(),
-        'p_dropoff_lng': (p['lngArrivee'] as num).toDouble(),
-        'p_fare_fcfa': (p['tarifFcfa'] as num).toInt(),
-        'p_payment_method': p['paiement'],
-        'p_pickup_address': p['adresseDepart'],
-        'p_dropoff_address': p['adresseArrivee'],
-      });
+      await _sb.rpc(
+        'create_ride',
+        params: {
+          'p_service_kind': p['serviceKind'],
+          'p_pickup_lat': (p['latDepart'] as num).toDouble(),
+          'p_pickup_lng': (p['lngDepart'] as num).toDouble(),
+          'p_dropoff_lat': (p['latArrivee'] as num).toDouble(),
+          'p_dropoff_lng': (p['lngArrivee'] as num).toDouble(),
+          'p_fare_fcfa': (p['tarifFcfa'] as num).toInt(),
+          'p_payment_method': p['paiement'],
+          'p_pickup_address': p['adresseDepart'],
+          'p_dropoff_address': p['adresseArrivee'],
+        },
+      );
       return true;
     } on PostgrestException {
       return false;
@@ -128,10 +135,10 @@ class RideService {
   }
 
   Future<Ride> details(String id) => _run(() async {
-        final data = await _sb.rpc('ride_details', params: {'p_id': id});
-        if (data is! Map) throw const RideException('Course introuvable.');
-        return Ride.fromJson(Map<String, dynamic>.from(data));
-      });
+    final data = await _sb.rpc('ride_details', params: {'p_id': id});
+    if (data is! Map) throw const RideException('Course introuvable.');
+    return Ride.fromJson(Map<String, dynamic>.from(data));
+  });
 
   /// Course non terminée du client connecté, ou null s'il n'en a aucune.
   Future<Ride?> courseActiveClient() async {
@@ -145,12 +152,12 @@ class RideService {
 
   /// Historique du client ou du conducteur connecté (100 dernières courses).
   Future<List<Ride>> mesCourses() => _run(() async {
-        final data = await _sb.rpc('my_rides');
-        return (data as List)
-            .whereType<Map>()
-            .map((e) => Ride.fromJson(Map<String, dynamic>.from(e)))
-            .toList();
-      });
+    final data = await _sb.rpc('my_rides');
+    return (data as List)
+        .whereType<Map>()
+        .map((e) => Ride.fromJson(Map<String, dynamic>.from(e)))
+        .toList();
+  });
 
   /// action : accept | arrived | start | complete | cancel.
   /// Retourne le nouveau statut.
@@ -159,52 +166,54 @@ class RideService {
     String action, {
     int? tarifFcfa,
     String? motif,
-  }) =>
-      _run(() async {
-        final statut = await _sb.rpc('ride_action', params: {
-          'p_ride': id,
-          'p_action': action,
-          'p_fare': tarifFcfa,
-          'p_reason': motif,
-        });
-        return '$statut';
-      });
+  }) => _run(() async {
+    final statut = await _sb.rpc(
+      'ride_action',
+      params: {
+        'p_ride': id,
+        'p_action': action,
+        'p_fare': tarifFcfa,
+        'p_reason': motif,
+      },
+    );
+    return '$statut';
+  });
 
   /// Envoie la position du conducteur ; retourne le statut courant.
   Future<String> envoyerPosition(String id, double lat, double lng) =>
       _run(() async {
-        final statut = await _sb.rpc('update_ride_provider_position',
-            params: {'p_ride': id, 'p_lat': lat, 'p_lng': lng});
+        final statut = await _sb.rpc(
+          'update_ride_provider_position',
+          params: {'p_ride': id, 'p_lat': lat, 'p_lng': lng},
+        );
         return '$statut';
       });
 
   /// Confirme la fin de course avec le code a 6 chiffres transmis par le
   /// client. Retourne le nouveau statut ('completed').
   Future<String> confirmerFin(String id, String code) => _run(() async {
-        final statut = await _sb.rpc('ride_confirm_otp', params: {
-          'p_ride': id,
-          'p_code': code,
-        });
-        return '$statut';
-      });
+    final statut = await _sb.rpc(
+      'ride_confirm_otp',
+      params: {'p_ride': id, 'p_code': code},
+    );
+    return '$statut';
+  });
 
   /// Courses ouvertes autour du conducteur (vide s'il est bloqué).
   Future<List<NearbyRide>> proches({
     required double lat,
     required double lng,
     double rayonKm = 5,
-  }) =>
-      _run(() async {
-        final data = await _sb.rpc('rides_nearby', params: {
-          'p_lat': lat,
-          'p_lng': lng,
-          'p_radius_km': rayonKm,
-        });
-        return (data as List)
-            .whereType<Map>()
-            .map((e) => NearbyRide.fromJson(Map<String, dynamic>.from(e)))
-            .toList();
-      });
+  }) => _run(() async {
+    final data = await _sb.rpc(
+      'rides_nearby',
+      params: {'p_lat': lat, 'p_lng': lng, 'p_radius_km': rayonKm},
+    );
+    return (data as List)
+        .whereType<Map>()
+        .map((e) => NearbyRide.fromJson(Map<String, dynamic>.from(e)))
+        .toList();
+  });
 
   RealtimeChannel ecouterCourse(String id, void Function() onChange) {
     final canal = _sb.channel('ride-$id');

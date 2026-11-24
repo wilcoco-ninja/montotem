@@ -12,10 +12,10 @@ class RegistrationRole {
 
   /// Formulaire d'inscription du rôle (sélecteur de rôle si inconnu).
   static String formRoute(String? role) => switch (role) {
-        'provider' => '/register/provider',
-        'client' => '/register/client',
-        _ => '/register/role',
-      };
+    'provider' => '/register/provider',
+    'client' => '/register/client',
+    _ => '/register/role',
+  };
 
   /// Ajoute ?role=... à un chemin quand le rôle est connu.
   static String withRole(String path, String? role) =>

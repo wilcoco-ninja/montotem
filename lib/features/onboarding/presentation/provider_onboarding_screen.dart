@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -116,7 +115,8 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
     );
     if (user == null) {
       WidgetsBinding.instance.addPostFrameCallback(
-          (_) => mounted ? context.go('/register/quick?role=provider') : null);
+        (_) => mounted ? context.go('/register/quick?role=provider') : null,
+      );
     }
   }
 
@@ -148,7 +148,8 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
   }
 
   void _msg(String m) => ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(m), duration: const Duration(seconds: 5)));
+    SnackBar(content: Text(m), duration: const Duration(seconds: 5)),
+  );
 
   String? _requis(String? v) =>
       (v == null || v.trim().isEmpty) ? 'Requis' : null;
@@ -203,7 +204,8 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
           }
           if (s.fixe && (s.prix == null || s.prix! <= 0)) {
             _msg(
-                'Ã‚Â« ${s.nom} Ã‚Â» : indiquez un prix ou passez en Ã‚Â« Sur devis Ã‚Â»');
+              'Ã‚Â« ${s.nom} Ã‚Â» : indiquez un prix ou passez en Ã‚Â« Sur devis Ã‚Â»',
+            );
             return false;
           }
         }
@@ -230,12 +232,14 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
   }
 
   Future<void> _choisirPosition() async {
-    final actuelle =
-        (_lat != null && _lng != null) ? LatLng(_lat!, _lng!) : null;
+    final actuelle = (_lat != null && _lng != null)
+        ? LatLng(_lat!, _lng!)
+        : null;
     final r = await Navigator.push<LatLng>(
       context,
       MaterialPageRoute(
-          builder: (_) => PositionPickerScreen(positionInitiale: actuelle)),
+        builder: (_) => PositionPickerScreen(positionInitiale: actuelle),
+      ),
     );
     if (r == null || !mounted) return;
     setState(() {
@@ -252,10 +256,17 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
     setState(() => _envoi = true);
     try {
       final profilUrl = await _auth.uploaderDocument(
-          _photoProfil!, 'profil.jpg',
-          kind: UploadKind.avatar, folder: 'providers');
-      final cniUrl = await _auth.uploaderDocument(_photoCni!, 'cni.jpg',
-          kind: UploadKind.identity, folder: 'providers');
+        _photoProfil!,
+        'profil.jpg',
+        kind: UploadKind.avatar,
+        folder: 'providers',
+      );
+      final cniUrl = await _auth.uploaderDocument(
+        _photoCni!,
+        'cni.jpg',
+        kind: UploadKind.identity,
+        folder: 'providers',
+      );
 
       await _quick.registerProvider(
         firstName: _prenom.text,
@@ -274,11 +285,13 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
         await _catalogue.enregistrer(
           vehicleTypes: _vehicleTypes.toList(),
           services: _services
-              .map((s) => ServiceTarif(
-                    nom: s.nom.trim(),
-                    categorieVehicule: s.categorie,
-                    prixFcfa: s.fixe ? (s.prix ?? 0) : 0,
-                  ))
+              .map(
+                (s) => ServiceTarif(
+                  nom: s.nom.trim(),
+                  categorieVehicule: s.categorie,
+                  prixFcfa: s.fixe ? (s.prix ?? 0) : 0,
+                ),
+              )
               .toList(),
           tarifKmFcfa: _tarifKmVal,
           fraisMinFcfa: _fraisMinVal,
@@ -316,7 +329,8 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
             onPressed: _envoi ? null : _retour,
           ),
           title: Text(
-              'Ãƒâ€°tape ${_etape + 1}/${titres.length} Ã‚Â· ${titres[_etape]}'),
+            'Ãƒâ€°tape ${_etape + 1}/${titres.length} Ã‚Â· ${titres[_etape]}',
+          ),
         ),
         body: SafeArea(
           child: ContentWidth(
@@ -365,28 +379,34 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
   }
 
   Widget _intro(String titre, String texte) => Padding(
-        padding: const EdgeInsets.only(bottom: 18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(titre,
-                style:
-                    const TextStyle(fontSize: 22, fontWeight: FontWeight.w800)),
-            const SizedBox(height: 4),
-            Text(texte,
-                style: TextStyle(
-                    fontSize: 14,
-                    height: 1.4,
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.65))),
-          ],
+    padding: const EdgeInsets.only(bottom: 18),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          titre,
+          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
         ),
-      );
+        const SizedBox(height: 4),
+        Text(
+          texte,
+          style: TextStyle(
+            fontSize: 14,
+            height: 1.4,
+            color: Theme.of(context).colorScheme.onSurface
+                .withValues(alpha: 0.65),
+          ),
+        ),
+      ],
+    ),
+  );
 
-  Widget _photo(String label, IconData icon, Uint8List? bytes,
-      ValueChanged<Uint8List?> onChanged) {
+  Widget _photo(
+    String label,
+    IconData icon,
+    Uint8List? bytes,
+    ValueChanged<Uint8List?> onChanged,
+  ) {
     final scheme = Theme.of(context).colorScheme;
     final erreur = _photosSignalees && bytes == null;
     return Container(
@@ -395,7 +415,11 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
         border: erreur ? Border.all(color: scheme.error, width: 1.6) : null,
       ),
       child: PhotoPickerField(
-          label: label, icon: icon, bytes: bytes, onChanged: onChanged),
+        label: label,
+        icon: icon,
+        bytes: bytes,
+        onChanged: onChanged,
+      ),
     );
   }
 
@@ -418,10 +442,8 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
                 border: Border.all(
                   color: selected
                       ? AppColors.amber
-                      : Theme.of(context)
-                          .colorScheme
-                          .outline
-                          .withValues(alpha: 0.2),
+                      : Theme.of(context).colorScheme.outline
+                            .withValues(alpha: 0.2),
                   width: selected ? 2 : 1,
                 ),
               ),
@@ -441,13 +463,21 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(nomMetier,
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w800)),
+                        Text(
+                          nomMetier,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
                         const SizedBox(height: 2),
-                        Text(description,
-                            style: TextStyle(
-                                fontSize: 13, color: context.textSecondary)),
+                        Text(
+                          description,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: context.textSecondary,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -468,85 +498,116 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Transport & Courses',
-            style: TextStyle(
-                fontSize: 14.5,
-                fontWeight: FontWeight.w700,
-                color: context.textSecondary)),
+        Text(
+          'Transport & Courses',
+          style: TextStyle(
+            fontSize: 14.5,
+            fontWeight: FontWeight.w700,
+            color: context.textSecondary,
+          ),
+        ),
         const SizedBox(height: 8),
-        carteMetier('ZÃƒÂ©midjan', 'Transport rapide de passagers ÃƒÂ  moto',
-            Icons.two_wheeler_rounded),
-        carteMetier('Tricycle Fret', 'Transport de marchandises et bagages',
-            Icons.local_shipping_rounded),
+        carteMetier(
+          'ZÃƒÂ©midjan',
+          'Transport rapide de passagers ÃƒÂ  moto',
+          Icons.two_wheeler_rounded,
+        ),
+        carteMetier(
+          'Tricycle Fret',
+          'Transport de marchandises et bagages',
+          Icons.local_shipping_rounded,
+        ),
         const SizedBox(height: 14),
-        Text('DÃƒÂ©pannage & Garage',
-            style: TextStyle(
-                fontSize: 14.5,
-                fontWeight: FontWeight.w700,
-                color: context.textSecondary)),
+        Text(
+          'DÃƒÂ©pannage & Garage',
+          style: TextStyle(
+            fontSize: 14.5,
+            fontWeight: FontWeight.w700,
+            color: context.textSecondary,
+          ),
+        ),
         const SizedBox(height: 8),
         for (final m in kMetiersDepannage)
-          carteMetier(m, 'Assistance et rÃƒÂ©paration technique',
-              kIconesMetier[m] ?? Icons.build_outlined),
+          carteMetier(
+            m,
+            'Assistance et rÃƒÂ©paration technique',
+            kIconesMetier[m] ?? Icons.build_outlined,
+          ),
       ],
     );
   }
 
   Widget _etape1() => Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      _intro(
+        'Qui ÃƒÂªtes-vous ?',
+        'VÃƒÂ©rifiÃƒÂ©e une seule fois, votre identitÃƒÂ© rassure les clients.',
+      ),
+      const Text(
+        'Votre activitÃƒÂ©',
+        style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+      ),
+      const SizedBox(height: 10),
+      _choixActivite(),
+      const SizedBox(height: 22),
+      AppTextField(
+        label: 'Nom',
+        icon: Icons.person_outline,
+        controller: _nom,
+        textInputAction: TextInputAction.next,
+        validator: _requis,
+      ),
+      const SizedBox(height: 14),
+      AppTextField(
+        label: 'PrÃƒÂ©nom',
+        icon: Icons.person_outline,
+        controller: _prenom,
+        textInputAction: TextInputAction.next,
+        validator: _requis,
+      ),
+      const SizedBox(height: 14),
+      AppTextField(
+        label: _phone.isNotEmpty
+            ? 'TÃƒÂ©lÃƒÂ©phone vÃƒÂ©rifiÃƒÂ©'
+            : 'Email du compte',
+        icon: _phone.isNotEmpty ? Icons.phone_outlined : Icons.email_outlined,
+        controller: _contact,
+        readOnly: true,
+      ),
+      const SizedBox(height: 14),
+      AppTextField(
+        label: _transport ? 'NumÃƒÂ©ro IFU (facultatif)' : 'NumÃƒÂ©ro IFU',
+        icon: Icons.badge_outlined,
+        controller: _ifu,
+        validator: _transport ? null : _requis,
+      ),
+      const SizedBox(height: 22),
+      const SectionTitle('VÃƒÂ©rification'),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _intro('Qui ÃƒÂªtes-vous ?',
-              'VÃƒÂ©rifiÃƒÂ©e une seule fois, votre identitÃƒÂ© rassure les clients.'),
-          const Text('Votre activitÃƒÂ©',
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
-          const SizedBox(height: 10),
-          _choixActivite(),
-          const SizedBox(height: 22),
-          AppTextField(
-              label: 'Nom',
-              icon: Icons.person_outline,
-              controller: _nom,
-              textInputAction: TextInputAction.next,
-              validator: _requis),
-          const SizedBox(height: 14),
-          AppTextField(
-              label: 'PrÃƒÂ©nom',
-              icon: Icons.person_outline,
-              controller: _prenom,
-              textInputAction: TextInputAction.next,
-              validator: _requis),
-          const SizedBox(height: 14),
-          AppTextField(
-              label: _phone.isNotEmpty
-                  ? 'TÃƒÂ©lÃƒÂ©phone vÃƒÂ©rifiÃƒÂ©'
-                  : 'Email du compte',
-              icon: _phone.isNotEmpty
-                  ? Icons.phone_outlined
-                  : Icons.email_outlined,
-              controller: _contact,
-              readOnly: true),
-          const SizedBox(height: 14),
-          AppTextField(
-              label: _transport ? 'NumÃƒÂ©ro IFU (facultatif)' : 'NumÃƒÂ©ro IFU',
-              icon: Icons.badge_outlined,
-              controller: _ifu,
-              validator: _transport ? null : _requis),
-          const SizedBox(height: 22),
-          const SectionTitle('VÃƒÂ©rification'),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                  child: _photo('Photo de profil', Icons.person_outline,
-                      _photoProfil, (b) => setState(() => _photoProfil = b))),
-              const SizedBox(width: 12),
-              Expanded(
-                  child: _photo('PiÃƒÂ¨ce d\'identitÃƒÂ©', Icons.badge_outlined,
-                      _photoCni, (b) => setState(() => _photoCni = b))),
-            ],
+          Expanded(
+            child: _photo(
+              'Photo de profil',
+              Icons.person_outline,
+              _photoProfil,
+              (b) => setState(() => _photoProfil = b),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: _photo(
+              'PiÃƒÂ¨ce d\'identitÃƒÂ©',
+              Icons.badge_outlined,
+              _photoCni,
+              (b) => setState(() => _photoCni = b),
+            ),
           ),
         ],
-      );
+      ),
+    ],
+  );
 
   Widget _etape2() => _transport ? _etapeActivite() : _etapeAtelier();
 
@@ -562,10 +623,9 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
           child: Row(
             children: [
               Icon(
-                  aPos
-                      ? Icons.check_circle_rounded
-                      : Icons.location_off_outlined,
-                  color: aPos ? scheme.secondary : scheme.primary),
+                aPos ? Icons.check_circle_rounded : Icons.location_off_outlined,
+                color: aPos ? scheme.secondary : scheme.primary,
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
@@ -588,11 +648,14 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _intro('Votre zone d\'activitÃƒÂ©',
-            'DÃƒÂ©finissez votre secteur pour recevoir les courses instantanÃƒÂ©ment.'),
+        _intro(
+          'Votre zone d\'activitÃƒÂ©',
+          'DÃƒÂ©finissez votre secteur pour recevoir les courses instantanÃƒÂ©ment.',
+        ),
         AuthInfoBanner(
           title: _metier ?? 'Transport',
-          message: 'Vous recevez les courses autour de vous en temps rÃƒÂ©el. '
+          message:
+              'Vous recevez les courses autour de vous en temps rÃƒÂ©el. '
               'Les paiements en espÃƒÂ¨ces impliquent une commission sur votre wallet, '
               'tandis que les paiements Mobile Money sont sans commission.',
           icon: _metier == 'Tricycle Fret'
@@ -621,14 +684,17 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _intro('Votre atelier',
-            'Dites aux clients ce que vous rÃƒÂ©parez et oÃƒÂ¹ vous trouver.'),
+        _intro(
+          'Votre atelier',
+          'Dites aux clients ce que vous rÃƒÂ©parez et oÃƒÂ¹ vous trouver.',
+        ),
         AppTextField(
-            label: 'Nom de l\'atelier / garage',
-            icon: Icons.store_outlined,
-            controller: _garage,
-            textInputAction: TextInputAction.next,
-            validator: _requis),
+          label: 'Nom de l\'atelier / garage',
+          icon: Icons.store_outlined,
+          controller: _garage,
+          textInputAction: TextInputAction.next,
+          validator: _requis,
+        ),
         const SectionTitle('VÃƒÂ©hicules pris en charge'),
         Wrap(
           spacing: 10,
@@ -641,8 +707,9 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
               selected: on,
               onSelected: (v) => setState(() {
                 v ? _vehicleTypes.add(e.key) : _vehicleTypes.remove(e.key);
-                _services
-                    .removeWhere((s) => !_vehicleTypes.contains(s.categorie));
+                _services.removeWhere(
+                  (s) => !_vehicleTypes.contains(s.categorie),
+                );
               }),
             );
           }).toList(),
@@ -655,7 +722,7 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
           controller: _whatsapp,
           keyboardType: TextInputType.phone,
           inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'[0-9+ ]'))
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9+ ]')),
           ],
           maxLength: 20,
         ),
@@ -668,40 +735,54 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
   }
 
   Widget _etape3() => Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _intro('Vos prestations',
-              'Prix fixe ou sur devis : les clients voient votre grille avant de vous contacter.'),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: _suggestions
-                .where((s) => !_services.any((x) => x.nom == s))
-                .map((s) => ActionChip(
-                      avatar: const Icon(Icons.add, size: 16),
-                      label: Text(s),
-                      onPressed: () => setState(() => _services.add(_Svc(
-                          nom: s,
-                          categorie: _vehicleTypes.isNotEmpty
-                              ? _vehicleTypes.first
-                              : 'voiture'))),
-                    ))
-                .toList(),
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      _intro(
+        'Vos prestations',
+        'Prix fixe ou sur devis : les clients voient votre grille avant de vous contacter.',
+      ),
+      Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: _suggestions
+            .where((s) => !_services.any((x) => x.nom == s))
+            .map(
+              (s) => ActionChip(
+                avatar: const Icon(Icons.add, size: 16),
+                label: Text(s),
+                onPressed: () => setState(
+                  () => _services.add(
+                    _Svc(
+                      nom: s,
+                      categorie: _vehicleTypes.isNotEmpty
+                          ? _vehicleTypes.first
+                          : 'voiture',
+                    ),
+                  ),
+                ),
+              ),
+            )
+            .toList(),
+      ),
+      const SizedBox(height: 14),
+      for (var i = 0; i < _services.length; i++) _carteService(i),
+      const SizedBox(height: 8),
+      AppButton(
+        label: 'Ajouter une prestation',
+        icon: Icons.add_rounded,
+        variant: AppButtonVariant.secondary,
+        onPressed: () => setState(
+          () => _services.add(
+            _Svc(
+              categorie: _vehicleTypes.isNotEmpty
+                  ? _vehicleTypes.first
+                  : 'voiture',
+            ),
           ),
-          const SizedBox(height: 14),
-          for (var i = 0; i < _services.length; i++) _carteService(i),
-          const SizedBox(height: 8),
-          AppButton(
-            label: 'Ajouter une prestation',
-            icon: Icons.add_rounded,
-            variant: AppButtonVariant.secondary,
-            onPressed: () => setState(() => _services.add(_Svc(
-                categorie: _vehicleTypes.isNotEmpty
-                    ? _vehicleTypes.first
-                    : 'voiture'))),
-          ),
-        ],
-      );
+        ),
+      ),
+    ],
+  );
 
   Widget _carteService(int i) {
     final s = _services[i];
@@ -719,7 +800,9 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
                     initialValue: s.nom,
                     maxLength: 80,
                     decoration: const InputDecoration(
-                        labelText: 'Prestation', counterText: ''),
+                      labelText: 'Prestation',
+                      counterText: '',
+                    ),
                     onChanged: (v) => s.nom = v,
                   ),
                 ),
@@ -734,11 +817,13 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
             Wrap(
               spacing: 8,
               children: _vehicleTypes
-                  .map((v) => ChoiceChip(
-                        label: Text(_vehicules[v]!.$1),
-                        selected: s.categorie == v,
-                        onSelected: (_) => setState(() => s.categorie = v),
-                      ))
+                  .map(
+                    (v) => ChoiceChip(
+                      label: Text(_vehicules[v]!.$1),
+                      selected: s.categorie == v,
+                      onSelected: (_) => setState(() => s.categorie = v),
+                    ),
+                  )
                   .toList(),
             ),
             const SizedBox(height: 10),
@@ -759,7 +844,10 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 maxLength: 7,
                 decoration: const InputDecoration(
-                    labelText: 'Prix', suffixText: 'FCFA', counterText: ''),
+                  labelText: 'Prix',
+                  suffixText: 'FCFA',
+                  counterText: '',
+                ),
                 onChanged: (v) => s.prix = int.tryParse(v),
               ),
             ],
@@ -772,12 +860,17 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
   Widget _etape4() {
     final scheme = Theme.of(context).colorScheme;
     final frais = TravelFee.estimate(
-        km: _simuKm, tarifKmFcfa: _tarifKmVal, minimumFcfa: _fraisMinVal);
+      km: _simuKm,
+      tarifKmFcfa: _tarifKmVal,
+      minimumFcfa: _fraisMinVal,
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _intro('Frais de dÃƒÂ©placement',
-            'CalculÃƒÂ©s automatiquement selon la distance entre vous et le client en panne.'),
+        _intro(
+          'Frais de dÃƒÂ©placement',
+          'CalculÃƒÂ©s automatiquement selon la distance entre vous et le client en panne.',
+        ),
         AppTextField(
           label: 'Tarif par kilomÃƒÂ¨tre',
           icon: Icons.route_outlined,
@@ -819,8 +912,10 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
         SoftCard(
           child: Column(
             children: [
-              Text('Client ÃƒÂ  ${_simuKm.round()} km',
-                  style: const TextStyle(fontWeight: FontWeight.w700)),
+              Text(
+                'Client ÃƒÂ  ${_simuKm.round()} km',
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              ),
               Slider(
                 value: _simuKm,
                 min: 1,
@@ -830,9 +925,10 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
               Text(
                 TravelFee.fcfa(frais),
                 style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.w800,
-                    color: scheme.primary),
+                  fontSize: 26,
+                  fontWeight: FontWeight.w800,
+                  color: scheme.primary,
+                ),
               ),
               const SizedBox(height: 2),
               const Text('DÃƒÂ©placement estimÃƒÂ© affichÃƒÂ© au client'),
@@ -870,8 +966,8 @@ class _StepHeader extends StatelessWidget {
                       color: i < current
                           ? scheme.secondary
                           : (i == current
-                              ? scheme.primary
-                              : Colors.transparent),
+                                ? scheme.primary
+                                : Colors.transparent),
                       border: Border.all(
                         color: i <= current
                             ? Colors.transparent
@@ -880,8 +976,11 @@ class _StepHeader extends StatelessWidget {
                       ),
                     ),
                     child: i < current
-                        ? const Icon(Icons.check_rounded,
-                            color: Colors.white, size: 24)
+                        ? const Icon(
+                            Icons.check_rounded,
+                            color: Colors.white,
+                            size: 24,
+                          )
                         : Text(
                             '${i + 1}',
                             style: TextStyle(
@@ -903,8 +1002,9 @@ class _StepHeader extends StatelessWidget {
                         maxLines: 1,
                         style: TextStyle(
                           fontSize: 14,
-                          fontWeight:
-                              i == current ? FontWeight.w800 : FontWeight.w600,
+                          fontWeight: i == current
+                              ? FontWeight.w800
+                              : FontWeight.w600,
                           color: i == current
                               ? scheme.onSurface
                               : scheme.onSurface.withValues(alpha: 0.8),

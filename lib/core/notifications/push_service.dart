@@ -54,7 +54,8 @@ class PushService {
     );
     await _local
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+          AndroidFlutterLocalNotificationsPlugin
+        >()
         ?.createNotificationChannel(_canal);
 
     _sb.auth.onAuthStateChange.listen((s) {
@@ -75,11 +76,13 @@ class PushService {
     try {
       await _local
           .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
+            AndroidFlutterLocalNotificationsPlugin
+          >()
           ?.requestNotificationsPermission();
       await _local
           .resolvePlatformSpecificImplementation<
-              IOSFlutterLocalNotificationsPlugin>()
+            IOSFlutterLocalNotificationsPlugin
+          >()
           ?.requestPermissions(alert: true, badge: true, sound: true);
 
       await _arreter();
@@ -120,26 +123,28 @@ class PushService {
       'type': n['type'],
       if (payload is Map) ...Map<String, dynamic>.from(payload),
     };
-    unawaited(_local.show(
-      id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
-      title: titre,
-      body: n['body'] as String?,
-      notificationDetails: NotificationDetails(
-        android: AndroidNotificationDetails(
-          _canal.id,
-          _canal.name,
-          channelDescription: _canal.description,
-          importance: Importance.high,
-          priority: Priority.high,
+    unawaited(
+      _local.show(
+        id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+        title: titre,
+        body: n['body'] as String?,
+        notificationDetails: NotificationDetails(
+          android: AndroidNotificationDetails(
+            _canal.id,
+            _canal.name,
+            channelDescription: _canal.description,
+            importance: Importance.high,
+            priority: Priority.high,
+          ),
+          iOS: const DarwinNotificationDetails(
+            presentAlert: true,
+            presentSound: true,
+            presentBadge: true,
+          ),
         ),
-        iOS: const DarwinNotificationDetails(
-          presentAlert: true,
-          presentSound: true,
-          presentBadge: true,
-        ),
+        payload: jsonEncode(data),
       ),
-      payload: jsonEncode(data),
-    ));
+    );
   }
 
   Future<void> _ouvrir(Map<String, dynamic> data) async {
@@ -162,11 +167,9 @@ class PushService {
     return switch (type) {
       'provider_approved' ||
       'provider_rejected' ||
-      'provider_pending' =>
-        '/provider/profile',
+      'provider_pending' => '/provider/profile',
       'subscription_approved' ||
-      'subscription_rejected' =>
-        '/provider/subscription',
+      'subscription_rejected' => '/provider/subscription',
       'provider_registration' || 'identity_submitted' => '/admin/providers',
       'payment_declared' => '/admin/control?tab=2',
       'provider_reported' => '/admin/control?tab=3',
@@ -179,8 +182,11 @@ class PushService {
     final uid = _sb.auth.currentUser?.id;
     if (uid == null) return null;
     try {
-      final row =
-          await _sb.from('profiles').select('role').eq('id', uid).maybeSingle();
+      final row = await _sb
+          .from('profiles')
+          .select('role')
+          .eq('id', uid)
+          .maybeSingle();
       _role = row?['role'] as String?;
     } catch (_) {}
     return _role;

@@ -38,8 +38,7 @@ class MatchingService {
         p.longitude,
       );
       return p.disponible && dist <= distanceMaxKm * 1000;
-    }).toList()
-      ..sort((a, b) => b.noteMoyenne.compareTo(a.noteMoyenne));
+    }).toList()..sort((a, b) => b.noteMoyenne.compareTo(a.noteMoyenne));
 
     return proches;
   }
@@ -64,7 +63,10 @@ class MatchingService {
       if (data is List) {
         return data
             .whereType<Map<dynamic, dynamic>>()
-            .map((raw) => _anonymiser(_depuisLigne(Map<String, dynamic>.from(raw))))
+            .map(
+              (raw) =>
+                  _anonymiser(_depuisLigne(Map<String, dynamic>.from(raw))),
+            )
             .toList();
       }
     } on PostgrestException catch (e, stackTrace) {
@@ -85,15 +87,15 @@ class MatchingService {
 
   /// Ne garde que ce qu'un visiteur a le droit de voir.
   Prestataire _anonymiser(Prestataire p) => Prestataire(
-        id: p.id,
-        nom: '',
-        metier: p.metier,
-        latitude: p.latitude,
-        longitude: p.longitude,
-        disponible: p.disponible,
-        verifie: p.verifie,
-        kind: p.kind,
-      );
+    id: p.id,
+    nom: '',
+    metier: p.metier,
+    latitude: p.latitude,
+    longitude: p.longitude,
+    disponible: p.disponible,
+    verifie: p.verifie,
+    kind: p.kind,
+  );
 
   Future<List<Prestataire>> _fetchPrestataires() async {
     try {

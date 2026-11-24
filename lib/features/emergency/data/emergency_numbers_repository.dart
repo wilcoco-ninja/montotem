@@ -111,8 +111,11 @@ class EmergencyNumbersRepository {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_kCache, jsonEncode(data));
     } catch (e) {
-      developer.log('synchronisation numéros',
-          error: e, name: 'EmergencyNumbers');
+      developer.log(
+        'synchronisation numéros',
+        error: e,
+        name: 'EmergencyNumbers',
+      );
     }
   }
 
@@ -149,8 +152,8 @@ class EmergencyNumbersRepository {
       if (p != null) return ResolutionPays(p, choisi: true);
     }
 
-    final locale =
-        PlatformDispatcher.instance.locale.countryCode?.toUpperCase();
+    final locale = PlatformDispatcher.instance.locale.countryCode
+        ?.toUpperCase();
 
     if (lat != null && lng != null) {
       final candidats = _pays.where((p) => p.contient(lat, lng)).toList()

@@ -29,9 +29,7 @@ class AdminFinanceService {
   /// minor_units (0 ou 2), rounding_mode, symbole.
   Future<List<Map<String, dynamic>>> listerDevises() async {
     try {
-      return _liste(
-        await _sb.from('devises').select().order('position'),
-      );
+      return _liste(await _sb.from('devises').select().order('position'));
     } on PostgrestException catch (e) {
       throw Exception('Devises indisponibles : ${e.message}');
     }
@@ -40,9 +38,7 @@ class AdminFinanceService {
   /// Zones de service : pays / ville(s) -> devise_code (script finance/11).
   Future<List<Map<String, dynamic>>> listerZones() async {
     try {
-      return _liste(
-        await _sb.from('zones').select().order('code'),
-      );
+      return _liste(await _sb.from('zones').select().order('code'));
     } on PostgrestException catch (e) {
       throw Exception('Zones indisponibles : ${e.message}');
     }
@@ -100,15 +96,18 @@ class AdminFinanceService {
     String? note,
   }) async {
     try {
-      await _sb.rpc('admin_upsert_commission_rule', params: {
-        'p_id': id,
-        'p_service_category': serviceCategory,
-        'p_provider_kind': providerKind,
-        'p_vehicle_type': vehicleType,
-        'p_pct': pct,
-        'p_actif': actif,
-        'p_note': note,
-      });
+      await _sb.rpc(
+        'admin_upsert_commission_rule',
+        params: {
+          'p_id': id,
+          'p_service_category': serviceCategory,
+          'p_provider_kind': providerKind,
+          'p_vehicle_type': vehicleType,
+          'p_pct': pct,
+          'p_actif': actif,
+          'p_note': note,
+        },
+      );
     } on PostgrestException catch (e) {
       if (e.code == '42883' || e.code == 'PGRST202') {
         throw Exception(
@@ -123,9 +122,7 @@ class AdminFinanceService {
   /// Supprime une regle de commission (RPC 043).
   Future<void> supprimerRegle(String id) async {
     try {
-      await _sb.rpc('admin_delete_commission_rule', params: {
-        'p_id': id,
-      });
+      await _sb.rpc('admin_delete_commission_rule', params: {'p_id': id});
     } on PostgrestException catch (e) {
       if (e.code == '42883' || e.code == 'PGRST202') {
         throw Exception(
@@ -168,17 +165,12 @@ class AdminFinanceService {
   /// Ecrit une cle entiere d'app_config via `admin_set_config` (script 14).
   /// Repli : upsert direct (app_config n'a pas de RLS, mais la borne
   /// is_admin() du RPC reste preferenciale).
-  Future<void> definirConfigInt(
-    String cle,
-    int valeur, {
-    String? note,
-  }) async {
+  Future<void> definirConfigInt(String cle, int valeur, {String? note}) async {
     try {
-      await _sb.rpc('admin_set_config', params: {
-        'p_key': cle,
-        'p_value_int': valeur,
-        'p_note': note,
-      });
+      await _sb.rpc(
+        'admin_set_config',
+        params: {'p_key': cle, 'p_value_int': valeur, 'p_note': note},
+      );
     } on PostgrestException catch (e) {
       if (e.code == '42883' || e.code == 'PGRST202') {
         try {
@@ -266,14 +258,17 @@ class AdminFinanceService {
     String? note,
   }) async {
     try {
-      await _sb.rpc('admin_ajuster_ledger', params: {
-        'p_provider': providerId,
-        'p_devise': deviseCode,
-        'p_montant_minor': montantMinor,
-        'p_kind': kind,
-        'p_note': note,
-        'p_client_request_id': clientRequestId,
-      });
+      await _sb.rpc(
+        'admin_ajuster_ledger',
+        params: {
+          'p_provider': providerId,
+          'p_devise': deviseCode,
+          'p_montant_minor': montantMinor,
+          'p_kind': kind,
+          'p_note': note,
+          'p_client_request_id': clientRequestId,
+        },
+      );
     } on PostgrestException catch (e) {
       if (e.code == '42883' || e.code == 'PGRST202') {
         throw Exception(

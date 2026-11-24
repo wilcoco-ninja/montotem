@@ -1,4 +1,3 @@
-﻿
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -82,21 +81,20 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
         _position = LatLng(p.latitude, p.longitude);
         _erreurPosition = null;
       });
-      _gps = _location.watchPosition().listen(
-        (Position q) {
-          if (mounted) {
-            setState(() => _position = LatLng(q.latitude, q.longitude));
-          }
-        },
-        onError: (_) {},
-      );
+      _gps = _location.watchPosition().listen((Position q) {
+        if (mounted) {
+          setState(() => _position = LatLng(q.latitude, q.longitude));
+        }
+      }, onError: (_) {});
       _actualiser(silencieux: true);
     } on LocationPermissionException catch (e) {
       if (mounted) setState(() => _erreurPosition = e.message);
     } catch (_) {
       if (mounted) {
-        setState(() =>
-            _erreurPosition = 'Impossible de vous localiser. Activez le GPS.');
+        setState(
+          () =>
+              _erreurPosition = 'Impossible de vous localiser. Activez le GPS.',
+        );
       }
     }
   }
@@ -192,10 +190,8 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
     }
   }
 
-  CommissionCalcul _calcul(NearbyRide n) => _config.calculerCourse(
-        n.fareFcfa,
-        mobileMoney: n.payment.mobileMoney,
-      );
+  CommissionCalcul _calcul(NearbyRide n) =>
+      _config.calculerCourse(n.fareFcfa, mobileMoney: n.payment.mobileMoney);
 
   String _age(DateTime d) {
     final min = DateTime.now().difference(d).inMinutes;
@@ -286,9 +282,13 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(enLigne ? 'En ligne' : 'Hors ligne',
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w800)),
+                Text(
+                  enLigne ? 'En ligne' : 'Hors ligne',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
                 Text(
                   enLigne
                       ? 'Vous recevez les courses autour de vous.'
@@ -321,80 +321,97 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
     }
 
     if (info == null) {
-      ajouter(_Bandeau(
-        icone: Icons.error_outline_rounded,
-        couleur: scheme.error,
-        titre: 'Dossier prestataire introuvable',
-        texte: 'Reprenez votre inscription prestataire.',
-      ));
+      ajouter(
+        _Bandeau(
+          icone: Icons.error_outline_rounded,
+          couleur: scheme.error,
+          titre: 'Dossier prestataire introuvable',
+          texte: 'Reprenez votre inscription prestataire.',
+        ),
+      );
       return liste;
     }
 
     if (!info.conducteur) {
-      ajouter(_Bandeau(
-        icone: Icons.info_outline_rounded,
-        couleur: scheme.tertiary,
-        titre: 'Section rÃƒÂ©servÃƒÂ©e aux conducteurs',
-        texte: 'Votre activitÃƒÂ© n\'est pas un service de transport : les '
-            'courses ZÃƒÂ©midjan et Tricycle Fret ne vous sont pas proposÃƒÂ©es.',
-      ));
+      ajouter(
+        _Bandeau(
+          icone: Icons.info_outline_rounded,
+          couleur: scheme.tertiary,
+          titre: 'Section rÃƒÂ©servÃƒÂ©e aux conducteurs',
+          texte:
+              'Votre activitÃƒÂ© n\'est pas un service de transport : les '
+              'courses ZÃƒÂ©midjan et Tricycle Fret ne vous sont pas proposÃƒÂ©es.',
+        ),
+      );
       return liste;
     }
 
     if (!info.valide) {
-      ajouter(_Bandeau(
-        icone: Icons.hourglass_top_rounded,
-        couleur: scheme.primary,
-        titre: 'Dossier en cours de validation',
-        texte: 'Vous recevrez des courses dÃƒÂ¨s que votre dossier est validÃƒÂ©.',
-        action: 'Voir mon dossier',
-        onAction: () => context.push('/provider/identity'),
-      ));
+      ajouter(
+        _Bandeau(
+          icone: Icons.hourglass_top_rounded,
+          couleur: scheme.primary,
+          titre: 'Dossier en cours de validation',
+          texte: 'Vous recevrez des courses dÃƒÂ¨s que votre dossier est validÃƒÂ©.',
+          action: 'Voir mon dossier',
+          onAction: () => context.push('/provider/identity'),
+        ),
+      );
     } else if (!info.abonnementActif) {
-      ajouter(_Bandeau(
-        icone: Icons.workspace_premium_outlined,
-        couleur: scheme.error,
-        titre: 'Abonnement inactif',
-        texte: 'Sans abonnement actif, vous ne recevez aucune course.',
-        action: 'Choisir une formule',
-        onAction: () => context.push('/provider/subscription'),
-      ));
+      ajouter(
+        _Bandeau(
+          icone: Icons.workspace_premium_outlined,
+          couleur: scheme.error,
+          titre: 'Abonnement inactif',
+          texte: 'Sans abonnement actif, vous ne recevez aucune course.',
+          action: 'Choisir une formule',
+          onAction: () => context.push('/provider/subscription'),
+        ),
+      );
     }
 
     final w = _wallet;
     if (w != null && w.blocked) {
-      ajouter(_Bandeau(
-        icone: Icons.lock_outline_rounded,
-        couleur: scheme.error,
-        titre: 'Wallet bloquÃƒÂ©',
-        texte: 'Solde ${formaterFcfaSigne(w.balanceFcfa)}. Rechargez-le pour '
-            'recevoir de nouvelles courses.',
-        action: 'Recharger',
-        onAction: () => context.push('/provider/wallet'),
-      ));
+      ajouter(
+        _Bandeau(
+          icone: Icons.lock_outline_rounded,
+          couleur: scheme.error,
+          titre: 'Wallet bloquÃƒÂ©',
+          texte:
+              'Solde ${formaterFcfaSigne(w.balanceFcfa)}. Rechargez-le pour '
+              'recevoir de nouvelles courses.',
+          action: 'Recharger',
+          onAction: () => context.push('/provider/wallet'),
+        ),
+      );
     }
 
     if (_erreurPosition != null) {
-      ajouter(_Bandeau(
-        icone: Icons.location_off_outlined,
-        couleur: scheme.tertiary,
-        titre: 'Position GPS indisponible',
-        texte: _erreurPosition!,
-        action: 'RÃƒÂ©essayer',
-        onAction: _demarrerPosition,
-      ));
+      ajouter(
+        _Bandeau(
+          icone: Icons.location_off_outlined,
+          couleur: scheme.tertiary,
+          titre: 'Position GPS indisponible',
+          texte: _erreurPosition!,
+          action: 'RÃƒÂ©essayer',
+          onAction: _demarrerPosition,
+        ),
+      );
     }
 
     if (!info.momoConfigure) {
-      ajouter(_Bandeau(
-        icone: Icons.account_balance_wallet_outlined,
-        couleur: scheme.primary,
-        titre: 'Courses Mobile Money',
-        texte: 'Enregistrez votre numÃƒÂ©ro de rÃƒÂ©ception pour pouvoir accepter '
-            'les courses payÃƒÂ©es par MTN, Moov ou Celtiis.',
-        action: 'Enregistrer',
-        onAction: () => showProviderMomoSheet(context),
-      ));
+      ajouter(
+        _Bandeau(
+          icone: Icons.account_balance_wallet_outlined,
+          couleur: scheme.primary,
+          titre: 'Courses Mobile Money',
+          texte:
+              'Enregistrez votre numÃƒÂ©ro de rÃƒÂ©ception pour pouvoir accepter '
+              'les courses payÃƒÂ©es par MTN, Moov ou Celtiis.',
+          action: 'Enregistrer',
+          onAction: () => showProviderMomoSheet(context),
+        ),
+      );
     }
 
     return liste;
@@ -412,19 +429,26 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('${r.kind.libelle} Ã‚Â· ${TravelFee.fcfa(r.prixFcfa)}',
-                    style: const TextStyle(
-                        fontSize: 17, fontWeight: FontWeight.w800)),
+                Text(
+                  '${r.kind.libelle} Ã‚Â· ${TravelFee.fcfa(r.prixFcfa)}',
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
                 const SizedBox(height: 6),
                 StatusPill(
-                    label: r.status.libelle,
-                    color: couleur,
-                    icon: r.status.icone),
+                  label: r.status.libelle,
+                  color: couleur,
+                  icon: r.status.icone,
+                ),
               ],
             ),
           ),
-          const Text('Reprendre',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
+          const Text(
+            'Reprendre',
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+          ),
           const Icon(Icons.chevron_right_rounded),
         ],
       ),
@@ -455,7 +479,8 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
         EmptyState(
           icon: Icons.location_searching_rounded,
           title: 'Recherche de votre positionÃ¢â‚¬Â¦',
-          message: 'Les courses s\'affichent dÃƒÂ¨s que votre GPS est trouvÃƒÂ©.',
+          message:
+              'Les courses s\'affichent dÃƒÂ¨s que votre GPS est trouvÃƒÂ©.',
         ),
       ];
     }
@@ -464,7 +489,8 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
         EmptyState(
           icon: Icons.inbox_outlined,
           title: 'Aucune course pour le moment',
-          message: 'Restez en ligne : les demandes ÃƒÂ  moins de 5 km arrivent '
+          message:
+              'Restez en ligne : les demandes ÃƒÂ  moins de 5 km arrivent '
               'ici et par notification.',
         ),
       ];
@@ -496,9 +522,13 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
               Icon(n.kind.icone, size: 30, color: scheme.primary),
               const SizedBox(width: 10),
               Expanded(
-                child: Text(TravelFee.fcfa(n.fareFcfa),
-                    style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.w800)),
+                child: Text(
+                  TravelFee.fcfa(n.fareFcfa),
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
               ),
               StatusPill(
                 label: n.payment.libelle,
@@ -531,7 +561,10 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
             if (depart.isNotEmpty)
               Text('DÃƒÂ©part : $depart', style: const TextStyle(fontSize: 15)),
             if (arrivee.isNotEmpty)
-              Text('ArrivÃƒÂ©e : $arrivee', style: const TextStyle(fontSize: 15)),
+              Text(
+                'ArrivÃƒÂ©e : $arrivee',
+                style: const TextStyle(fontSize: 15),
+              ),
           ],
           const SizedBox(height: 8),
           Text(
@@ -539,13 +572,18 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
             '-${TravelFee.fcfa(calcul.commissionFcfa)} Ã‚Â· Net '
             '${TravelFee.fcfa(calcul.netFcfa)}'
             '${cash ? '' : '\nLe client vous paie directement par '
-                '${n.payment.libelle} ; la commission est dÃƒÂ©duite de votre '
-                'wallet.'}',
+                      '${n.payment.libelle} ; la commission est dÃƒÂ©duite de votre '
+                      'wallet.'}',
             style: TextStyle(
-                fontSize: 14.5, height: 1.35, color: context.textSecondary),
+              fontSize: 14.5,
+              height: 1.35,
+              color: context.textSecondary,
+            ),
           ),
-          Text(_age(n.createdAt),
-              style: TextStyle(fontSize: 13.5, color: context.textSecondary)),
+          Text(
+            _age(n.createdAt),
+            style: TextStyle(fontSize: 13.5, color: context.textSecondary),
+          ),
           const SizedBox(height: 12),
           AppButton(
             label: peut
@@ -601,17 +639,23 @@ class _Bandeau extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(titre,
-                        style: TextStyle(
-                            fontSize: 16.5,
-                            fontWeight: FontWeight.w800,
-                            color: fg)),
+                    Text(
+                      titre,
+                      style: TextStyle(
+                        fontSize: 16.5,
+                        fontWeight: FontWeight.w800,
+                        color: fg,
+                      ),
+                    ),
                     const SizedBox(height: 2),
-                    Text(texte,
-                        style: TextStyle(
-                            fontSize: 15,
-                            height: 1.35,
-                            color: context.textSecondary)),
+                    Text(
+                      texte,
+                      style: TextStyle(
+                        fontSize: 15,
+                        height: 1.35,
+                        color: context.textSecondary,
+                      ),
+                    ),
                   ],
                 ),
               ),

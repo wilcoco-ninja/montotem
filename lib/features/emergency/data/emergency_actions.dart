@@ -35,13 +35,15 @@ Future<bool> envoyerPositionSms({
   final pos = (lat == null || lng == null)
       ? 'Position inconnue.'
       : 'Ma position : ${lienCarte(lat, lng)} '
-          '(${lat.toStringAsFixed(5)}, ${lng.toStringAsFixed(5)}).';
-  final msg = 'SOS : j\'ai besoin d\'aide ($situation). $pos '
+            '(${lat.toStringAsFixed(5)}, ${lng.toStringAsFixed(5)}).';
+  final msg =
+      'SOS : j\'ai besoin d\'aide ($situation). $pos '
       'Message envoyé depuis MONTOTEM.';
   final tel = contact.replaceAll(RegExp(r'[^\d+]'), '');
   try {
     return await launchUrl(
-        Uri.parse('sms:$tel?body=${Uri.encodeComponent(msg)}'));
+      Uri.parse('sms:$tel?body=${Uri.encodeComponent(msg)}'),
+    );
   } catch (_) {
     return false;
   }

@@ -1,4 +1,3 @@
-﻿
 import 'dart:developer' as developer;
 
 import 'package:dio/dio.dart';
@@ -156,13 +155,16 @@ class _ProviderRegistrationScreenState
 
   void _ajouterService(String categorie, [String nom = '']) {
     if (nom.isNotEmpty &&
-        _services.any((s) =>
-            s.categorie == categorie &&
-            s.nom.toLowerCase() == nom.toLowerCase())) {
+        _services.any(
+          (s) =>
+              s.categorie == categorie &&
+              s.nom.toLowerCase() == nom.toLowerCase(),
+        )) {
       return;
     }
-    setState(() =>
-        _services.add(_Svc(id: _svcSeq++, nom: nom, categorie: categorie)));
+    setState(
+      () => _services.add(_Svc(id: _svcSeq++, nom: nom, categorie: categorie)),
+    );
   }
 
   void _ajouterCompetence(String brut) {
@@ -170,11 +172,14 @@ class _ProviderRegistrationScreenState
     if (texte.isEmpty) return;
     if (texte.length < kCompetenceMin || texte.length > kCompetenceMax) {
       _afficherMessage(
-          'Une compÃƒÂ©tence doit faire entre $kCompetenceMin et $kCompetenceMax caractÃƒÂ¨res.');
+        'Une compÃƒÂ©tence doit faire entre $kCompetenceMin et $kCompetenceMax caractÃƒÂ¨res.',
+      );
       return;
     }
     if (_competences.length >= kCompetencesMaxParPrestataire) {
-      _afficherMessage('Maximum $kCompetencesMaxParPrestataire compÃƒÂ©tences.');
+      _afficherMessage(
+        'Maximum $kCompetencesMaxParPrestataire compÃƒÂ©tences.',
+      );
       return;
     }
     if (_competences.any((c) => c.toLowerCase() == texte.toLowerCase())) {
@@ -211,10 +216,12 @@ class _ProviderRegistrationScreenState
   Future<void> _tenterGeocodageInverse(LatLng point) async {
     setState(() => _isGeocodage = true);
     try {
-      final dio = Dio(BaseOptions(
-        connectTimeout: const Duration(seconds: 10),
-        receiveTimeout: const Duration(seconds: 10),
-      ));
+      final dio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 10),
+          receiveTimeout: const Duration(seconds: 10),
+        ),
+      );
 
       final response = await dio.get(
         'https://nominatim.openstreetmap.org/reverse',
@@ -223,9 +230,9 @@ class _ProviderRegistrationScreenState
           'lon': point.longitude,
           'format': 'jsonv2',
         },
-        options: Options(headers: {
-          'User-Agent': 'MonTotemApp/1.0 (contact@montotem.com)',
-        }),
+        options: Options(
+          headers: {'User-Agent': 'MonTotemApp/1.0 (contact@montotem.com)'},
+        ),
       );
       final adresse = response.data?['display_name'] as String?;
       if (adresse != null &&
@@ -276,7 +283,9 @@ class _ProviderRegistrationScreenState
 
     if (_photoProfil == null || _photoCni == null) {
       setState(() => _photosManquantesSignalees = true);
-      _afficherMessage('Photo de profil et piÃƒÂ¨ce d\'identitÃƒÂ© obligatoires.');
+      _afficherMessage(
+        'Photo de profil et piÃƒÂ¨ce d\'identitÃƒÂ© obligatoires.',
+      );
       return;
     }
     final erreur = _verifierLogique();
@@ -320,11 +329,13 @@ class _ProviderRegistrationScreenState
         await _catalogue.enregistrer(
           vehicleTypes: _vehicules.toList(),
           services: _services
-              .map((s) => ServiceTarif(
-                    nom: s.nom.trim(),
-                    categorieVehicule: s.categorie,
-                    prixFcfa: s.fixe ? (s.prix ?? 0) : 0,
-                  ))
+              .map(
+                (s) => ServiceTarif(
+                  nom: s.nom.trim(),
+                  categorieVehicule: s.categorie,
+                  prixFcfa: s.fixe ? (s.prix ?? 0) : 0,
+                ),
+              )
               .toList(),
           tarifKmFcfa: _tarifKm,
           fraisMinFcfa: _fraisMin,
@@ -345,7 +356,8 @@ class _ProviderRegistrationScreenState
       if (!mounted) return;
       if (echecs > 0) {
         _afficherMessage(
-            '$echecs compÃƒÂ©tence(s) non enregistrÃƒÂ©e(s). Ajoutez-les depuis votre profil.');
+          '$echecs compÃƒÂ©tence(s) non enregistrÃƒÂ©e(s). Ajoutez-les depuis votre profil.',
+        );
       }
       context.go('/provider/identity');
     } on UploadException catch (e) {
@@ -353,8 +365,12 @@ class _ProviderRegistrationScreenState
     } on QuickAuthException catch (e) {
       if (mounted) _afficherMessage(e.message);
     } catch (e, st) {
-      developer.log('Inscription prestataire',
-          error: e, stackTrace: st, name: 'ProviderRegistrationScreen');
+      developer.log(
+        'Inscription prestataire',
+        error: e,
+        stackTrace: st,
+        name: 'ProviderRegistrationScreen',
+      );
       if (mounted) {
         _afficherMessage('Erreur inattendue ou rÃƒÂ©seau. RÃƒÂ©essayez.');
       }
@@ -428,43 +444,43 @@ class _ProviderRegistrationScreenState
   }
 
   List<Widget> _blocIdentite() => [
-        const AuthSectionHeader(
-          icon: Icons.person_outline_rounded,
-          title: 'Informations personnelles',
-        ),
-        const SizedBox(height: 16),
-        AppTextField(
-          label: 'Nom',
-          icon: Icons.person_outline,
-          controller: _nomController,
-          textInputAction: TextInputAction.next,
-          validator: _requis,
-        ),
-        const SizedBox(height: 14),
-        AppTextField(
-          label: 'PrÃƒÂ©nom',
-          icon: Icons.person_outline,
-          controller: _prenomController,
-          textInputAction: TextInputAction.next,
-          validator: _requis,
-        ),
-        const SizedBox(height: 14),
-        AppTextField(
-          label: 'Email du compte',
-          helper: 'Modifiable depuis les paramÃƒÂ¨tres du compte',
-          icon: Icons.email_outlined,
-          controller: _emailController,
-          readOnly: true,
-        ),
-        const SizedBox(height: 14),
-        AppTextField(
-          label: 'TÃƒÂ©lÃƒÂ©phone vÃƒÂ©rifiÃƒÂ©',
-          helper: 'NumÃƒÂ©ro validÃƒÂ© par SMS',
-          icon: Icons.phone_outlined,
-          controller: _phoneController,
-          readOnly: true,
-        ),
-      ];
+    const AuthSectionHeader(
+      icon: Icons.person_outline_rounded,
+      title: 'Informations personnelles',
+    ),
+    const SizedBox(height: 16),
+    AppTextField(
+      label: 'Nom',
+      icon: Icons.person_outline,
+      controller: _nomController,
+      textInputAction: TextInputAction.next,
+      validator: _requis,
+    ),
+    const SizedBox(height: 14),
+    AppTextField(
+      label: 'PrÃƒÂ©nom',
+      icon: Icons.person_outline,
+      controller: _prenomController,
+      textInputAction: TextInputAction.next,
+      validator: _requis,
+    ),
+    const SizedBox(height: 14),
+    AppTextField(
+      label: 'Email du compte',
+      helper: 'Modifiable depuis les paramÃƒÂ¨tres du compte',
+      icon: Icons.email_outlined,
+      controller: _emailController,
+      readOnly: true,
+    ),
+    const SizedBox(height: 14),
+    AppTextField(
+      label: 'TÃƒÂ©lÃƒÂ©phone vÃƒÂ©rifiÃƒÂ©',
+      helper: 'NumÃƒÂ©ro validÃƒÂ© par SMS',
+      icon: Icons.phone_outlined,
+      controller: _phoneController,
+      readOnly: true,
+    ),
+  ];
 
   List<Widget> _blocAtelier() {
     final scheme = Theme.of(context).colorScheme;
@@ -472,33 +488,36 @@ class _ProviderRegistrationScreenState
     final color = hasPosition ? scheme.secondary : scheme.primary;
 
     Widget groupeMetiers(String titre, List<String> metiers) => Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          titre,
+          style: TextStyle(
+            fontSize: 14.5,
+            fontWeight: FontWeight.w700,
+            color: Theme.of(context).colorScheme.onSurface
+                .withValues(alpha: 0.65),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 10,
+          runSpacing: 10,
           children: [
-            Text(titre,
-                style: TextStyle(
-                    fontSize: 14.5,
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.65))),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: [
-                for (final m in metiers)
-                  ChoiceChip(
-                    avatar: Icon(kIconesMetier[m] ?? Icons.build_outlined,
-                        size: 20),
-                    label: Text(m),
-                    selected: _metier == m,
-                    onSelected: (_) => setState(() => _metier = m),
-                  ),
-              ],
-            ),
+            for (final m in metiers)
+              ChoiceChip(
+                avatar: Icon(
+                  kIconesMetier[m] ?? Icons.build_outlined,
+                  size: 20,
+                ),
+                label: Text(m),
+                selected: _metier == m,
+                onSelected: (_) => setState(() => _metier = m),
+              ),
           ],
-        );
+        ),
+      ],
+    );
 
     return [
       const AuthSectionHeader(
@@ -533,7 +552,7 @@ class _ProviderRegistrationScreenState
         controller: _whatsappController,
         keyboardType: TextInputType.phone,
         inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp(r'[0-9+ ]'))
+          FilteringTextInputFormatter.allow(RegExp(r'[0-9+ ]')),
         ],
         maxLength: 20,
       ),
@@ -575,10 +594,13 @@ class _ProviderRegistrationScreenState
               child: Text(
                 hasPosition
                     ? 'Position dÃƒÂ©finie\n'
-                        '${_latitude!.toStringAsFixed(5)}, ${_longitude!.toStringAsFixed(5)}'
+                          '${_latitude!.toStringAsFixed(5)}, ${_longitude!.toStringAsFixed(5)}'
                     : 'Obligatoire : oÃƒÂ¹ vous serez localisÃƒÂ©',
                 style: const TextStyle(
-                    fontSize: 15, fontWeight: FontWeight.w700, height: 1.35),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  height: 1.35,
+                ),
               ),
             ),
           ],
@@ -587,8 +609,9 @@ class _ProviderRegistrationScreenState
       const SizedBox(height: 12),
       AppButton(
         label: hasPosition ? 'Modifier la position' : 'Placer sur la carte',
-        icon:
-            hasPosition ? Icons.edit_location_alt_outlined : Icons.map_outlined,
+        icon: hasPosition
+            ? Icons.edit_location_alt_outlined
+            : Icons.map_outlined,
         variant: AppButtonVariant.secondary,
         onPressed: _choisirPosition,
       ),
@@ -614,7 +637,8 @@ class _ProviderRegistrationScreenState
   List<Widget> _blocCompetences() {
     final suggestions = kCompetencesSuggerees
         .where(
-            (s) => !_competences.any((c) => c.toLowerCase() == s.toLowerCase()))
+          (s) => !_competences.any((c) => c.toLowerCase() == s.toLowerCase()),
+        )
         .toList();
 
     return [
@@ -677,8 +701,7 @@ class _ProviderRegistrationScreenState
       const AuthSectionHeader(
         icon: Icons.bolt_rounded,
         title: 'Tarifs express',
-        subtitle:
-            'Prix fixe par prestation, vu par les clients avant de vous contacter',
+        subtitle: 'Prix fixe par prestation, vu par les clients avant de vous contacter',
       ),
       const SizedBox(height: 14),
       if (_vehicules.isEmpty)
@@ -689,18 +712,21 @@ class _ProviderRegistrationScreenState
         )
       else
         for (final type in _vehicules) ...[
-          Text(kVehicules[type]!.label,
-              style:
-                  const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
+          Text(
+            kVehicules[type]!.label,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+          ),
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,
             runSpacing: 8,
             children: [
               for (final s in kServicesExpress[type] ?? const <String>[])
-                if (!_services.any((x) =>
-                    x.categorie == type &&
-                    x.nom.toLowerCase() == s.toLowerCase()))
+                if (!_services.any(
+                  (x) =>
+                      x.categorie == type &&
+                      x.nom.toLowerCase() == s.toLowerCase(),
+                ))
                   ActionChip(
                     avatar: Icon(kVehicules[type]!.icon, size: 18),
                     label: Text(s),
@@ -731,8 +757,11 @@ class _ProviderRegistrationScreenState
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(kVehicules[s.categorie]?.icon ?? Icons.build_outlined,
-                    size: 26, color: scheme.primary),
+                Icon(
+                  kVehicules[s.categorie]?.icon ?? Icons.build_outlined,
+                  size: 26,
+                  color: scheme.primary,
+                ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: TextFormField(
@@ -741,7 +770,9 @@ class _ProviderRegistrationScreenState
                     maxLength: 80,
                     textCapitalization: TextCapitalization.sentences,
                     decoration: const InputDecoration(
-                        labelText: 'Prestation', counterText: ''),
+                      labelText: 'Prestation',
+                      counterText: '',
+                    ),
                     onChanged: (v) => s.nom = v,
                   ),
                 ),
@@ -760,7 +791,10 @@ class _ProviderRegistrationScreenState
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               maxLength: 7,
               decoration: const InputDecoration(
-                  labelText: 'Prix fixe', suffixText: 'FCFA', counterText: ''),
+                labelText: 'Prix fixe',
+                suffixText: 'FCFA',
+                counterText: '',
+              ),
               onChanged: (v) => s.prix = int.tryParse(v),
             ),
           ],
@@ -772,7 +806,10 @@ class _ProviderRegistrationScreenState
   List<Widget> _blocDeplacement() {
     final scheme = Theme.of(context).colorScheme;
     final frais = TravelFee.estimate(
-        km: _simuKm, tarifKmFcfa: _tarifKm, minimumFcfa: _fraisMin);
+      km: _simuKm,
+      tarifKmFcfa: _tarifKm,
+      minimumFcfa: _fraisMin,
+    );
 
     return [
       const AuthSectionHeader(
@@ -820,14 +857,18 @@ class _ProviderRegistrationScreenState
           if (_simuKm > v) _simuKm = v;
         }),
       ),
-      Text('Jusqu\'ÃƒÂ  ${_rayon.round()} km',
-          style: const TextStyle(fontSize: 15)),
+      Text(
+        'Jusqu\'ÃƒÂ  ${_rayon.round()} km',
+        style: const TextStyle(fontSize: 15),
+      ),
       const SizedBox(height: 14),
       SoftCard(
         child: Column(
           children: [
-            Text('Simulation : client ÃƒÂ  ${_simuKm.round()} km',
-                style: const TextStyle(fontWeight: FontWeight.w700)),
+            Text(
+              'Simulation : client ÃƒÂ  ${_simuKm.round()} km',
+              style: const TextStyle(fontWeight: FontWeight.w700),
+            ),
             Slider(
               value: _simuKm.clamp(1, _rayon < 2 ? 2 : _rayon).toDouble(),
               min: 1,
@@ -837,9 +878,10 @@ class _ProviderRegistrationScreenState
             Text(
               TravelFee.fcfa(frais),
               style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w800,
-                  color: scheme.primary),
+                fontSize: 26,
+                fontWeight: FontWeight.w800,
+                color: scheme.primary,
+              ),
             ),
             const SizedBox(height: 2),
             const Text('DÃƒÂ©placement estimÃƒÂ© affichÃƒÂ© au client'),
@@ -872,81 +914,81 @@ class _ProviderRegistrationScreenState
   }
 
   List<Widget> _blocPhotos() => [
-        const AuthSectionHeader(
-          icon: Icons.photo_camera_outlined,
-          title: 'Photos',
-          subtitle: 'Requis pour la sÃƒÂ©curitÃƒÂ© de vos futurs clients',
-        ),
-        const SizedBox(height: 16),
-        LayoutBuilder(
-          builder: (context, constraints) {
-            if (constraints.maxWidth < 380) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _photo(
-                    label: 'Photo de profil',
-                    icon: Icons.person_outline,
-                    bytes: _photoProfil,
-                    onChanged: (b) => setState(() {
-                      _photoProfil = b;
-                      _profilUrl = null;
-                      if (b != null && _photoCni != null) {
-                        _photosManquantesSignalees = false;
-                      }
-                    }),
-                  ),
-                  const SizedBox(height: 12),
-                  _photo(
-                    label: 'PiÃƒÂ¨ce d\'identitÃƒÂ©',
-                    icon: Icons.badge_outlined,
-                    bytes: _photoCni,
-                    onChanged: (b) => setState(() {
-                      _photoCni = b;
-                      _cniUrl = null;
-                      if (b != null && _photoProfil != null) {
-                        _photosManquantesSignalees = false;
-                      }
-                    }),
-                  ),
-                ],
-              );
-            }
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: _photo(
-                    label: 'Photo de profil',
-                    icon: Icons.person_outline,
-                    bytes: _photoProfil,
-                    onChanged: (b) => setState(() {
-                      _photoProfil = b;
-                      _profilUrl = null;
-                      if (b != null && _photoCni != null) {
-                        _photosManquantesSignalees = false;
-                      }
-                    }),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _photo(
-                    label: 'PiÃƒÂ¨ce d\'identitÃƒÂ©',
-                    icon: Icons.badge_outlined,
-                    bytes: _photoCni,
-                    onChanged: (b) => setState(() {
-                      _photoCni = b;
-                      _cniUrl = null;
-                      if (b != null && _photoProfil != null) {
-                        _photosManquantesSignalees = false;
-                      }
-                    }),
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
-      ];
+    const AuthSectionHeader(
+      icon: Icons.photo_camera_outlined,
+      title: 'Photos',
+      subtitle: 'Requis pour la sÃƒÂ©curitÃƒÂ© de vos futurs clients',
+    ),
+    const SizedBox(height: 16),
+    LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth < 380) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _photo(
+                label: 'Photo de profil',
+                icon: Icons.person_outline,
+                bytes: _photoProfil,
+                onChanged: (b) => setState(() {
+                  _photoProfil = b;
+                  _profilUrl = null;
+                  if (b != null && _photoCni != null) {
+                    _photosManquantesSignalees = false;
+                  }
+                }),
+              ),
+              const SizedBox(height: 12),
+              _photo(
+                label: 'PiÃƒÂ¨ce d\'identitÃƒÂ©',
+                icon: Icons.badge_outlined,
+                bytes: _photoCni,
+                onChanged: (b) => setState(() {
+                  _photoCni = b;
+                  _cniUrl = null;
+                  if (b != null && _photoProfil != null) {
+                    _photosManquantesSignalees = false;
+                  }
+                }),
+              ),
+            ],
+          );
+        }
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: _photo(
+                label: 'Photo de profil',
+                icon: Icons.person_outline,
+                bytes: _photoProfil,
+                onChanged: (b) => setState(() {
+                  _photoProfil = b;
+                  _profilUrl = null;
+                  if (b != null && _photoCni != null) {
+                    _photosManquantesSignalees = false;
+                  }
+                }),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _photo(
+                label: 'PiÃƒÂ¨ce d\'identitÃƒÂ©',
+                icon: Icons.badge_outlined,
+                bytes: _photoCni,
+                onChanged: (b) => setState(() {
+                  _photoCni = b;
+                  _cniUrl = null;
+                  if (b != null && _photoProfil != null) {
+                    _photosManquantesSignalees = false;
+                  }
+                }),
+              ),
+            ),
+          ],
+        );
+      },
+    ),
+  ];
 }

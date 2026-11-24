@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 
 import 'package:montotem/core/theme/app_colors.dart';
@@ -15,7 +14,11 @@ const kCategories = [
   Categorie('zemidjan', 'ZÃƒÂ©midjan', Icons.two_wheeler_rounded),
   Categorie('mecanicien', 'MÃƒÂ©canicien', Icons.build_rounded),
   Categorie('vulcanisateur', 'Pneus', Icons.tire_repair_rounded),
-  Categorie('electricien', 'Ãƒâ€°lectricien', Icons.electrical_services_rounded),
+  Categorie(
+    'electricien',
+    'Ãƒâ€°lectricien',
+    Icons.electrical_services_rounded,
+  ),
   Categorie('station', 'Essence', Icons.local_gas_station_rounded),
   Categorie('garage', 'Garage', Icons.garage_rounded),
 ];
@@ -55,11 +58,10 @@ class CategoryRail extends StatelessWidget {
     final offBg = scheme.surfaceContainerHighest.withValues(alpha: 0.5);
     final offFg = scheme.onSurface;
     final radius = theme.cardTheme.shape is RoundedRectangleBorder
-        ? (theme.cardTheme.shape as RoundedRectangleBorder)
-            .borderRadius
-            .resolve(TextDirection.ltr)
-            .topLeft
-            .x
+        ? (theme.cardTheme.shape as RoundedRectangleBorder).borderRadius
+              .resolve(TextDirection.ltr)
+              .topLeft
+              .x
         : 16.0;
 
     return SizedBox(
@@ -88,7 +90,8 @@ class CategoryRail extends StatelessWidget {
                   border: on
                       ? null
                       : Border.all(
-                          color: scheme.outline.withValues(alpha: 0.35)),
+                          color: scheme.outline.withValues(alpha: 0.35),
+                        ),
                   boxShadow: on
                       ? [
                           BoxShadow(
@@ -101,11 +104,7 @@ class CategoryRail extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      c.icone,
-                      size: 30,
-                      color: on ? onAccent : offFg,
-                    ),
+                    Icon(c.icone, size: 30, color: on ? onAccent : offFg),
                     const SizedBox(height: 6),
                     Text(
                       c.label,

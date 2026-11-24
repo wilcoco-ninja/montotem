@@ -53,14 +53,15 @@ class RevenueSummary {
     final serie = ((j['series'] as List?) ?? const [])
         .whereType<Map>()
         .map<RevenueDay>((e) {
-      final m = Map<String, dynamic>.from(e);
-      return RevenueDay(
-        date: DateTime.tryParse('${m['day']}') ?? DateTime.now(),
-        cash: (m['cash'] as num?)?.toInt() ?? 0,
-        momo: (m['momo'] as num?)?.toInt() ?? 0,
-        travel: (m['travel'] as num?)?.toInt() ?? 0,
-      );
-    }).toList();
+          final m = Map<String, dynamic>.from(e);
+          return RevenueDay(
+            date: DateTime.tryParse('${m['day']}') ?? DateTime.now(),
+            cash: (m['cash'] as num?)?.toInt() ?? 0,
+            momo: (m['momo'] as num?)?.toInt() ?? 0,
+            travel: (m['travel'] as num?)?.toInt() ?? 0,
+          );
+        })
+        .toList();
 
     return RevenueSummary(
       days: n('days'),
@@ -84,13 +85,18 @@ class AdminRevenueService {
 
   Future<RevenueSummary> resume(int jours) async {
     try {
-      final data =
-          await _sb.rpc('admin_revenue_summary', params: {'p_days': jours});
+      final data = await _sb.rpc(
+        'admin_revenue_summary',
+        params: {'p_days': jours},
+      );
       if (data is! Map) throw const FormatException('Réponse invalide.');
       return RevenueSummary.fromJson(Map<String, dynamic>.from(data));
     } on PostgrestException catch (e) {
-      developer.log('admin_revenue_summary',
-          error: e, name: 'AdminRevenueService');
+      developer.log(
+        'admin_revenue_summary',
+        error: e,
+        name: 'AdminRevenueService',
+      );
       if (e.message.contains('INTERDIT')) {
         throw Exception('Action réservée à l\'administrateur.');
       }

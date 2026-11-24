@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -84,20 +83,23 @@ class ProviderKindChoiceScreen extends StatelessWidget {
                   fond: const Color(0xFF0D0F12),
                   bord: AppColors.brandYellow,
                   titre: 'JE CONDUIS',
-                  sous:
-                      'ZÃƒÂ©midjan ou Tricycle Kloboto.\nRecevez des courses autour de vous.',
+                  sous: 'ZÃƒÂ©midjan ou Tricycle Kloboto.\nRecevez des courses autour de vous.',
                   couleurTitre: AppColors.brandYellow,
                   couleurTexte: const Color(0xFFF5F7FA),
                   biseaute: true,
                   icones: const [
-                    TotemIcon(TotemGlyph.zemidjan,
-                        size: 66,
-                        color: Color(0xFFF5F7FA),
-                        accent: AppColors.brandYellow),
-                    TotemIcon(TotemGlyph.kloboto,
-                        size: 66,
-                        color: Color(0xFFF5F7FA),
-                        accent: AppColors.success),
+                    TotemIcon(
+                      TotemGlyph.zemidjan,
+                      size: 66,
+                      color: Color(0xFFF5F7FA),
+                      accent: AppColors.brandYellow,
+                    ),
+                    TotemIcon(
+                      TotemGlyph.kloboto,
+                      size: 66,
+                      color: Color(0xFFF5F7FA),
+                      accent: AppColors.success,
+                    ),
                   ],
                   etiquette: '4 ÃƒÂ©tapes Ã‚Â· 3 minutes',
                   onTap: () => context.go('/register/transport'),
@@ -116,8 +118,12 @@ class ProviderKindChoiceScreen extends StatelessWidget {
                   couleurTexte: _onAtelier,
                   biseaute: false,
                   icones: const [
-                    TotemIcon(TotemGlyph.depannage,
-                        size: 66, color: _onAtelier, accent: _onAtelier),
+                    TotemIcon(
+                      TotemGlyph.depannage,
+                      size: 66,
+                      color: _onAtelier,
+                      accent: _onAtelier,
+                    ),
                   ],
                   etiquette: 'Atelier Ã‚Â· prestations Ã‚Â· dÃƒÂ©placement',
                   onTap: () => context.go('/register/provider/depannage'),
@@ -131,8 +137,11 @@ class ProviderKindChoiceScreen extends StatelessWidget {
                       child: Text(
                         'Dans les deux cas, votre identitÃƒÂ© est vÃƒÂ©rifiÃƒÂ©e avant '
                         'les premiÃƒÂ¨res missions.',
-                        style:
-                            TextStyle(fontSize: 14, height: 1.35, color: soft),
+                        style: TextStyle(
+                          fontSize: 14,
+                          height: 1.35,
+                          color: soft,
+                        ),
                       ),
                     ),
                   ],
@@ -203,8 +212,11 @@ class _Porte extends StatelessWidget {
                   children: [
                     for (final i in icones) ...[i, const SizedBox(width: 10)],
                     const Spacer(),
-                    Icon(Icons.arrow_forward_rounded,
-                        color: couleurTitre, size: 34),
+                    Icon(
+                      Icons.arrow_forward_rounded,
+                      color: couleurTitre,
+                      size: 34,
+                    ),
                   ],
                 ),
                 const SizedBox(height: 14),

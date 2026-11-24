@@ -1,4 +1,3 @@
-﻿
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -83,7 +82,8 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
     if (_selfie == null) {
       setState(() => _photoManquanteSignalee = true);
       _afficherMessage(
-          'Une photo est nÃƒÂ©cessaire pour finaliser l\'inscription');
+        'Une photo est nÃƒÂ©cessaire pour finaliser l\'inscription',
+      );
       return;
     }
 
@@ -143,8 +143,8 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final muted =
-        Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7);
+    final muted = Theme.of(context).colorScheme.onSurface
+        .withValues(alpha: 0.7);
     final erreurPhoto = _photoManquanteSignalee && _selfie == null;
 
     return AuthShell(
@@ -174,8 +174,7 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
             children: [
               const AuthInfoBanner(
                 title: 'Compte sÃƒÂ©curisÃƒÂ©',
-                message:
-                    'Mot de passe et tÃƒÂ©lÃƒÂ©phone dÃƒÂ©jÃƒÂ  configurÃƒÂ©s. ComplÃƒÂ©tez votre profil.',
+                message: 'Mot de passe et tÃƒÂ©lÃƒÂ©phone dÃƒÂ©jÃƒÂ  configurÃƒÂ©s. ComplÃƒÂ©tez votre profil.',
               ),
               const SizedBox(height: 22),
               const AuthSectionHeader(

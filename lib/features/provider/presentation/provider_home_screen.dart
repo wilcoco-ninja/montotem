@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -112,8 +111,9 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
       ]);
       if (!mounted) return;
       final uid = _service.currentUserId;
-      final missions =
-          (res[0] as List<Mission>).where((m) => m.providerId == uid).toList();
+      final missions = (res[0] as List<Mission>)
+          .where((m) => m.providerId == uid)
+          .toList();
       final pendantes = missions
           .where((m) => m.status == MissionStatus.pending)
           .map((m) => m.id)
@@ -246,9 +246,11 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
       .fold<int>(0, (a, m) => a + m.paidFcfa);
 
   int get _termineesMois => _missions
-      .where((m) =>
-          m.status == MissionStatus.completed &&
-          !m.createdAt.isBefore(_debutMois))
+      .where(
+        (m) =>
+            m.status == MissionStatus.completed &&
+            !m.createdAt.isBefore(_debutMois),
+      )
       .length;
 
   List<({DateTime date, int montant})> get _serieSemaine {
@@ -257,8 +259,9 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
       final jour = today.subtract(Duration(days: 6 - i));
       final suivant = jour.add(const Duration(days: 1));
       final total = _missions
-          .where((m) =>
-              !m.createdAt.isBefore(jour) && m.createdAt.isBefore(suivant))
+          .where(
+            (m) => !m.createdAt.isBefore(jour) && m.createdAt.isBefore(suivant),
+          )
           .fold<int>(0, (a, m) => a + m.paidFcfa);
       return (date: jour, montant: total);
     });
@@ -266,13 +269,16 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
 
   int? get _tauxAcceptation {
     final traitees = _missions
-        .where((m) =>
-            m.status != MissionStatus.pending &&
-            m.status != MissionStatus.cancelled)
+        .where(
+          (m) =>
+              m.status != MissionStatus.pending &&
+              m.status != MissionStatus.cancelled,
+        )
         .length;
     if (traitees == 0) return null;
-    final refus =
-        _missions.where((m) => m.status == MissionStatus.refused).length;
+    final refus = _missions
+        .where((m) => m.status == MissionStatus.refused)
+        .length;
     return (((traitees - refus) / traitees) * 100).round();
   }
 
@@ -291,7 +297,9 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
     return s.transactions
         .where((t) => t.estCommission && !t.createdAt.isBefore(d))
         .fold<int>(
-            0, (a, t) => a + (t.amountFcfa < 0 ? -t.amountFcfa : t.amountFcfa));
+          0,
+          (a, t) => a + (t.amountFcfa < 0 ? -t.amountFcfa : t.amountFcfa),
+        );
   }
 
   void _ouvrirGains() {
@@ -313,8 +321,9 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
         serie: serie,
         termineesMois: _termineesMois,
         commissionJour: _commissionDepuis(_aujourdhui),
-        commissionSemaine:
-            _commissionDepuis(_aujourdhui.subtract(const Duration(days: 6))),
+        commissionSemaine: _commissionDepuis(
+          _aujourdhui.subtract(const Duration(days: 6)),
+        ),
         config: _wallet?.config,
       ),
     );
@@ -339,8 +348,9 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
       );
     }
 
-    final nouvelles =
-        _missions.where((m) => m.status == MissionStatus.pending).toList();
+    final nouvelles = _missions
+        .where((m) => m.status == MissionStatus.pending)
+        .toList();
     final enCours = _missions.where((m) => m.status.actif).toList();
     final terminees = _missions
         .where((m) => m.status == MissionStatus.completed)
@@ -356,9 +366,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
       child: Stack(
         children: [
           Positioned.fill(child: _carte(nouvelles, enCours)),
-          Positioned.fill(
-            child: _panneau(wide, enCours, terminees, alertes),
-          ),
+          Positioned.fill(child: _panneau(wide, enCours, terminees, alertes)),
           Positioned.fill(child: _barreHaut(alertes.length)),
           if (nouvelles.isNotEmpty) _demandePopup(nouvelles, wide),
         ],
@@ -369,9 +377,12 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
   // Ã¢â€â‚¬Ã¢â€â‚¬ Carte Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
   Widget _carte(List<Mission> nouvelles, List<Mission> enCours) {
-    final centre = _me ??
+    final centre =
+        _me ??
         const LatLng(
-            AppConstants.initialLatitude, AppConstants.initialLongitude);
+          AppConstants.initialLatitude,
+          AppConstants.initialLongitude,
+        );
     return FlutterMap(
       mapController: _map,
       options: MapOptions(
@@ -403,57 +414,67 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
         : _indexDemande.clamp(0, nouvelles.length - 1).toInt();
     for (var i = 0; i < nouvelles.length; i++) {
       final choisi = i == sel;
-      out.add(Marker(
-        point: nouvelles[i].clientPoint,
-        width: choisi ? 60 : 48,
-        height: choisi ? 60 : 48,
-        alignment: Alignment.topCenter,
-        child: Icon(
-          Icons.location_on,
-          size: choisi ? 56 : 44,
-          color: AppTheme.errorColor,
+      out.add(
+        Marker(
+          point: nouvelles[i].clientPoint,
+          width: choisi ? 60 : 48,
+          height: choisi ? 60 : 48,
+          alignment: Alignment.topCenter,
+          child: Icon(
+            Icons.location_on,
+            size: choisi ? 56 : 44,
+            color: AppTheme.errorColor,
+          ),
         ),
-      ));
+      );
     }
     for (final m in enCours) {
-      out.add(Marker(
-        point: m.clientPoint,
-        width: 50,
-        height: 50,
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppTheme.warningColor,
-            shape: BoxShape.circle,
-            border: Border.all(color: Colors.white, width: 3),
+      out.add(
+        Marker(
+          point: m.clientPoint,
+          width: 50,
+          height: 50,
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppTheme.warningColor,
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white, width: 3),
+            ),
+            child: const Icon(
+              Icons.build_rounded,
+              color: Colors.white,
+              size: 24,
+            ),
           ),
-          child: const Icon(Icons.build_rounded, color: Colors.white, size: 24),
         ),
-      ));
+      );
     }
     final me = _me;
     if (me != null) {
-      out.add(Marker(
-        point: me,
-        width: 44,
-        height: 44,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.blue.withValues(alpha: 0.2),
-            shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: Container(
-              width: 22,
-              height: 22,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 3),
+      out.add(
+        Marker(
+          point: me,
+          width: 44,
+          height: 44,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.blue.withValues(alpha: 0.2),
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Container(
+                width: 22,
+                height: 22,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 3),
+                ),
               ),
             ),
           ),
         ),
-      ));
+      );
     }
     return out;
   }
@@ -484,27 +505,29 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                   ),
                   const Spacer(),
                   const SizedBox(
-                      width:
-                          54), // Espace ÃƒÂ©quilibrÃƒÂ© sans le bouton taille texte
+                    width: 54,
+                  ), // Espace ÃƒÂ©quilibrÃƒÂ© sans le bouton taille texte
                 ],
               ),
               const SizedBox(height: 6),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .surface
+                    color: Theme.of(context).colorScheme.surface
                         .withValues(alpha: 0.9),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     'Ã‚Â© OpenStreetMap contributors',
-                    style:
-                        TextStyle(fontSize: 11, color: context.textSecondary),
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: context.textSecondary,
+                    ),
                   ),
                 ),
               ),
@@ -688,8 +711,10 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
             label: const Text('Se mettre en pause'),
             style: OutlinedButton.styleFrom(
               minimumSize: const Size.fromHeight(64),
-              textStyle:
-                  const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+              textStyle: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+              ),
             ),
           )
         : FilledButton.icon(
@@ -699,7 +724,9 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                     width: 22,
                     height: 22,
                     child: CircularProgressIndicator(
-                        strokeWidth: 2.6, color: Colors.white),
+                      strokeWidth: 2.6,
+                      color: Colors.white,
+                    ),
                   )
                 : const Icon(Icons.power_settings_new_rounded, size: 30),
             label: const Text('Passer en ligne'),
@@ -707,8 +734,10 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
               backgroundColor: AppTheme.successColor,
               foregroundColor: Colors.white,
               minimumSize: const Size.fromHeight(64),
-              textStyle:
-                  const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+              textStyle: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w900,
+              ),
             ),
           );
 
@@ -733,8 +762,9 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                           height: 12 + 24 * t,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: AppTheme.successColor
-                                .withValues(alpha: 0.35 * (1 - t)),
+                            color: AppTheme.successColor.withValues(
+                              alpha: 0.35 * (1 - t),
+                            ),
                           ),
                         );
                       },
@@ -758,18 +788,21 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                   Text(
                     on ? 'Vous ÃƒÂªtes en ligne' : 'Vous ÃƒÂªtes hors ligne',
                     style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w900),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900,
+                    ),
                   ),
                   Text(
                     on
                         ? (aDemande
-                            ? 'Une demande vous attend.'
-                            : 'Recherche de demandes autour de vousÃ¢â‚¬Â¦')
+                              ? 'Une demande vous attend.'
+                              : 'Recherche de demandes autour de vousÃ¢â‚¬Â¦')
                         : 'Passez en ligne pour recevoir des demandes.',
                     style: TextStyle(
-                        fontSize: 15,
-                        height: 1.3,
-                        color: context.textSecondary),
+                      fontSize: 15,
+                      height: 1.3,
+                      color: context.textSecondary,
+                    ),
                   ),
                 ],
               ),
@@ -798,23 +831,31 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
           children: [
             Row(
               children: [
-                Icon(m.status.icone,
-                    color: context.readable(m.status.couleur), size: 34),
+                Icon(
+                  m.status.icone,
+                  color: context.readable(m.status.couleur),
+                  size: 34,
+                ),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(m.problem,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.w800)),
+                      Text(
+                        m.problem,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
                       const SizedBox(height: 6),
                       StatusPill(
-                          label: m.status.libelle,
-                          color: m.status.couleur,
-                          icon: m.status.icone),
+                        label: m.status.libelle,
+                        color: m.status.couleur,
+                        icon: m.status.icone,
+                      ),
                     ],
                   ),
                 ),
@@ -839,22 +880,32 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
         onTap: () => _ouvrir(m),
         child: Row(
           children: [
-            Icon(m.status.icone,
-                color: context.readable(m.status.couleur), size: 30),
+            Icon(
+              m.status.icone,
+              color: context.readable(m.status.couleur),
+              size: 30,
+            ),
             const SizedBox(width: 12),
             Expanded(
-              child: Text(m.problem,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w800)),
+              child: Text(
+                m.problem,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
             ),
             const SizedBox(width: 8),
-            Text(TravelFee.fcfa(m.paidFcfa),
-                style: TextStyle(
-                    fontSize: 15.5,
-                    fontWeight: FontWeight.w800,
-                    color: context.readable(AppTheme.successColor))),
+            Text(
+              TravelFee.fcfa(m.paidFcfa),
+              style: TextStyle(
+                fontSize: 15.5,
+                fontWeight: FontWeight.w800,
+                color: context.readable(AppTheme.successColor),
+              ),
+            ),
             const Icon(Icons.chevron_right_rounded),
           ],
         ),
@@ -894,8 +945,10 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                   padding: const EdgeInsets.all(18),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(26),
-                    border:
-                        Border.all(color: AppTheme.successColor, width: 2.5),
+                    border: Border.all(
+                      color: AppTheme.successColor,
+                      width: 2.5,
+                    ),
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -905,7 +958,9 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 6),
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
                             decoration: BoxDecoration(
                               color: AppTheme.successColor,
                               borderRadius: BorderRadius.circular(20),
@@ -927,9 +982,13 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                               icon: const Icon(Icons.chevron_left_rounded),
                               onPressed: () => _changerDemande(-1, nouvelles),
                             ),
-                            Text('${i + 1}/$total',
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w800)),
+                            Text(
+                              '${i + 1}/$total',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
                             IconButton(
                               tooltip: 'Demande suivante',
                               icon: const Icon(Icons.chevron_right_rounded),
@@ -945,12 +1004,18 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                         child: Text(
                           TravelFee.fcfa(m.travelFeeFcfa),
                           style: const TextStyle(
-                              fontSize: 36, fontWeight: FontWeight.w900),
+                            fontSize: 36,
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
                       ),
-                      Text('Frais de dÃƒÂ©placement',
-                          style: TextStyle(
-                              fontSize: 15, color: context.textSecondary)),
+                      Text(
+                        'Frais de dÃƒÂ©placement',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: context.textSecondary,
+                        ),
+                      ),
                       const SizedBox(height: 14),
                       Row(
                         children: [
@@ -961,24 +1026,33 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                               color: scheme.primary.withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            child:
-                                Icon(vehicule, color: scheme.primary, size: 28),
+                            child: Icon(
+                              vehicule,
+                              color: scheme.primary,
+                              size: 28,
+                            ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(m.problem,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w800)),
-                                Text(m.clientName,
-                                    style: TextStyle(
-                                        fontSize: 15.5,
-                                        color: context.textSecondary)),
+                                Text(
+                                  m.problem,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                                Text(
+                                  m.clientName,
+                                  style: TextStyle(
+                                    fontSize: 15.5,
+                                    color: context.textSecondary,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -1004,11 +1078,15 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                       if (m.description != null &&
                           m.description!.isNotEmpty) ...[
                         const SizedBox(height: 8),
-                        Text(m.description!,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 15, color: context.textSecondary)),
+                        Text(
+                          m.description!,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: context.textSecondary,
+                          ),
+                        ),
                       ],
                       const SizedBox(height: 16),
                       Row(
@@ -1050,31 +1128,36 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
     final id = _identity;
 
     if (id != null && !id.soumis) {
-      liste.add(_Alerte(
-        icon: Icons.badge_outlined,
-        color: AppTheme.warningColor,
-        titre: 'Envoyez vos documents',
-        texte:
-            'Sans dossier d\'identitÃƒÂ©, votre compte ne peut pas ÃƒÂªtre validÃƒÂ©.',
-        onTap: () => _aller('/provider/identity'),
-      ));
+      liste.add(
+        _Alerte(
+          icon: Icons.badge_outlined,
+          color: AppTheme.warningColor,
+          titre: 'Envoyez vos documents',
+          texte: 'Sans dossier d\'identitÃƒÂ©, votre compte ne peut pas ÃƒÂªtre validÃƒÂ©.',
+          onTap: () => _aller('/provider/identity'),
+        ),
+      );
     } else if (id != null && id.statutValidation == 'rejected') {
-      liste.add(_Alerte(
-        icon: Icons.error_outline_rounded,
-        color: AppTheme.errorColor,
-        titre: 'Dossier refusÃƒÂ©',
-        texte: (id.motifRefus ?? '').isEmpty
-            ? 'Corrigez votre dossier et renvoyez-le.'
-            : 'Motif : ${id.motifRefus}',
-        onTap: () => _aller('/provider/identity'),
-      ));
+      liste.add(
+        _Alerte(
+          icon: Icons.error_outline_rounded,
+          color: AppTheme.errorColor,
+          titre: 'Dossier refusÃƒÂ©',
+          texte: (id.motifRefus ?? '').isEmpty
+              ? 'Corrigez votre dossier et renvoyez-le.'
+              : 'Motif : ${id.motifRefus}',
+          onTap: () => _aller('/provider/identity'),
+        ),
+      );
     } else if (id != null && id.statutValidation == 'pending') {
-      liste.add(const _Alerte(
-        icon: Icons.hourglass_top_rounded,
-        color: AppTheme.primaryColor,
-        titre: 'Dossier en cours de vÃƒÂ©rification',
-        texte: 'Vous recevrez des demandes dÃƒÂ¨s qu\'il sera validÃƒÂ©.',
-      ));
+      liste.add(
+        const _Alerte(
+          icon: Icons.hourglass_top_rounded,
+          color: AppTheme.primaryColor,
+          titre: 'Dossier en cours de vÃƒÂ©rification',
+          texte: 'Vous recevrez des demandes dÃƒÂ¨s qu\'il sera validÃƒÂ©.',
+        ),
+      );
     }
 
     return liste;
@@ -1202,9 +1285,10 @@ class _Kpi extends StatelessWidget {
           const SizedBox(height: 6),
           FittedBox(
             fit: BoxFit.scaleDown,
-            child: Text(valeur,
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.w900)),
+            child: Text(
+              valeur,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
+            ),
           ),
           const SizedBox(height: 2),
           Text(
@@ -1258,17 +1342,23 @@ class _Alerte extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(titre,
-                        style: TextStyle(
-                            fontSize: 16.5,
-                            fontWeight: FontWeight.w800,
-                            color: fg)),
+                    Text(
+                      titre,
+                      style: TextStyle(
+                        fontSize: 16.5,
+                        fontWeight: FontWeight.w800,
+                        color: fg,
+                      ),
+                    ),
                     const SizedBox(height: 2),
-                    Text(texte,
-                        style: TextStyle(
-                            fontSize: 15,
-                            height: 1.35,
-                            color: context.textSecondary)),
+                    Text(
+                      texte,
+                      style: TextStyle(
+                        fontSize: 15,
+                        height: 1.35,
+                        color: context.textSecondary,
+                      ),
+                    ),
                   ],
                 ),
               ),

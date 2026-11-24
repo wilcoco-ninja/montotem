@@ -70,8 +70,10 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
           _bloqueJusqua = DateTime.now().add(_blocage);
           _echecs = 0;
         }
-        setState(() => _errorMessage =
-            'E-mail ou mot de passe incorrect, ou compte non administrateur.');
+        setState(
+          () => _errorMessage =
+              'E-mail ou mot de passe incorrect, ou compte non administrateur.',
+        );
         return;
       }
 
@@ -79,11 +81,16 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
       TextInput.finishAutofillContext();
       context.go('/admin/dashboard');
     } catch (e, stackTrace) {
-      developer.log('Erreur de connexion admin',
-          error: e, stackTrace: stackTrace);
+      developer.log(
+        'Erreur de connexion admin',
+        error: e,
+        stackTrace: stackTrace,
+      );
       if (!mounted) return;
-      setState(() => _errorMessage =
-          'Une erreur de connexion est survenue. Veuillez réessayer.');
+      setState(
+        () => _errorMessage =
+            'Une erreur de connexion est survenue. Veuillez réessayer.',
+      );
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -94,7 +101,8 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
     if (!kIsWeb) {
       return AuthShell(
         title: 'Console web uniquement',
-        subtitle: 'L\'administration de MONTOTEM s\'utilise depuis un '
+        subtitle:
+            'L\'administration de MONTOTEM s\'utilise depuis un '
             'navigateur sur ordinateur.',
         icon: Icons.desktop_windows_outlined,
         onBack: () => context.go('/explore'),

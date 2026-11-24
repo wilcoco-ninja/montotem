@@ -7,10 +7,10 @@ enum UserRole {
   String get value => name;
 
   static UserRole fromValue(String? v) => switch (v) {
-        'provider' => UserRole.provider,
-        'admin' => UserRole.admin,
-        _ => UserRole.client,
-      };
+    'provider' => UserRole.provider,
+    'admin' => UserRole.admin,
+    _ => UserRole.client,
+  };
 }
 
 /// Profil applicatif d'un utilisateur (client, prestataire ou admin).
@@ -81,13 +81,13 @@ class AppUser {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'phone': phone,
-        'role': role.value,
-        'inscription_complete': inscriptionComplete,
-        if (name != null) 'last_name': name,
-        if (firstName != null) 'first_name': firstName,
-        'is_approved': isApproved,
-        if (photoProfilUrl != null) 'photo_profil_url': photoProfilUrl,
-      };
+    'id': id,
+    'phone': phone,
+    'role': role.value,
+    'inscription_complete': inscriptionComplete,
+    if (name != null) 'last_name': name,
+    if (firstName != null) 'first_name': firstName,
+    'is_approved': isApproved,
+    if (photoProfilUrl != null) 'photo_profil_url': photoProfilUrl,
+  };
 }

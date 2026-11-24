@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -46,8 +45,9 @@ class AppTheme {
 
   static TextTheme _textTheme(Brightness brightness) {
     final base = ThemeData(brightness: brightness).textTheme;
-    final ink =
-        brightness == Brightness.light ? AppColors.inkLight : AppColors.inkDark;
+    final ink = brightness == Brightness.light
+        ? AppColors.inkLight
+        : AppColors.inkDark;
     // La police est appliquÃƒÂ©e style par style (ÃƒÂ©vite le conflit de types
     // TextTheme selon la version de google_fonts/Flutter).
     TextStyle? f(TextStyle? s) =>
@@ -84,42 +84,47 @@ class AppTheme {
     final accent = isLight ? AppColors.navy : AppColors.navyOnDark;
     final onAccent = isLight ? Colors.white : AppColors.navy;
     final ink = isLight ? AppColors.inkLight : AppColors.inkDark;
-    final textSecondary =
-        isLight ? AppColors.textSecondaryLight : AppColors.textSecondaryDark;
-    final textTertiary =
-        isLight ? AppColors.textTertiaryLight : AppColors.textTertiaryDark;
-    final danger =
-        isLight ? AppColors.emergencyStrong : AppColors.emergencyTextDark;
+    final textSecondary = isLight
+        ? AppColors.textSecondaryLight
+        : AppColors.textSecondaryDark;
+    final textTertiary = isLight
+        ? AppColors.textTertiaryLight
+        : AppColors.textTertiaryDark;
+    final danger = isLight
+        ? AppColors.emergencyStrong
+        : AppColors.emergencyTextDark;
     final line = isLight
         ? AppColors.navy.withValues(alpha: 0.16)
         : Colors.white.withValues(alpha: 0.18);
 
-    final scheme = ColorScheme.fromSeed(
-      seedColor: AppColors.navy,
-      brightness: brightness,
-    ).copyWith(
-      primary: accent,
-      onPrimary: onAccent,
-      secondary: AppColors.success,
-      onSecondary: Colors.white,
-      tertiary: AppColors.amber,
-      onTertiary: AppColors.navy,
-      error: danger,
-      onError: isLight ? Colors.white : AppColors.navy,
-      surface: surface,
-      onSurface: ink,
-      onSurfaceVariant: textSecondary,
-    );
+    final scheme =
+        ColorScheme.fromSeed(
+          seedColor: AppColors.navy,
+          brightness: brightness,
+        ).copyWith(
+          primary: accent,
+          onPrimary: onAccent,
+          secondary: AppColors.success,
+          onSecondary: Colors.white,
+          tertiary: AppColors.amber,
+          onTertiary: AppColors.navy,
+          error: danger,
+          onError: isLight ? Colors.white : AppColors.navy,
+          surface: surface,
+          onSurface: ink,
+          onSurfaceVariant: textSecondary,
+        );
 
     final textTheme = _textTheme(brightness);
 
     OutlineInputBorder border(Color c, [double w = 1.2]) => OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radiusMd),
-          borderSide: BorderSide(color: c, width: w),
-        );
+      borderRadius: BorderRadius.circular(radiusMd),
+      borderSide: BorderSide(color: c, width: w),
+    );
 
-    final shape =
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(radiusMd));
+    final shape = RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(radiusMd),
+    );
 
     // Overlay (hover / pressed / focus) commun aux boutons
     WidgetStateProperty<Color?> overlay(Color base) =>
@@ -139,14 +144,17 @@ class AppTheme {
     final overlayStyle =
         (isLight ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light)
             .copyWith(
-      statusBarColor: Colors.transparent,
-      systemNavigationBarColor: bg,
-      systemNavigationBarIconBrightness:
-          isLight ? Brightness.dark : Brightness.light,
-    );
+              statusBarColor: Colors.transparent,
+              systemNavigationBarColor: bg,
+              systemNavigationBarIconBrightness: isLight
+                  ? Brightness.dark
+                  : Brightness.light,
+            );
 
-    final btnText =
-        GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w800, fontSize: 16);
+    final btnText = GoogleFonts.plusJakartaSans(
+      fontWeight: FontWeight.w800,
+      fontSize: 16,
+    );
 
     return ThemeData(
       useMaterial3: true,
@@ -203,23 +211,27 @@ class AppTheme {
           ),
           shape: WidgetStatePropertyAll(shape),
           elevation: WidgetStateProperty.resolveWith(
-              (s) => s.contains(WidgetState.disabled)
-                  ? 0
-                  : s.contains(WidgetState.pressed)
-                      ? 0
-                      : s.contains(WidgetState.hovered)
-                          ? 4
-                          : 2),
+            (s) => s.contains(WidgetState.disabled)
+                ? 0
+                : s.contains(WidgetState.pressed)
+                ? 0
+                : s.contains(WidgetState.hovered)
+                ? 4
+                : 2,
+          ),
           shadowColor: WidgetStatePropertyAll(
-              AppColors.navy.withValues(alpha: isLight ? 0.35 : 0.6)),
-          backgroundColor: WidgetStateProperty.resolveWith((s) =>
-              s.contains(WidgetState.disabled)
-                  ? accent.withValues(alpha: 0.30)
-                  : accent),
-          foregroundColor: WidgetStateProperty.resolveWith((s) =>
-              s.contains(WidgetState.disabled)
-                  ? onAccent.withValues(alpha: 0.7)
-                  : onAccent),
+            AppColors.navy.withValues(alpha: isLight ? 0.35 : 0.6),
+          ),
+          backgroundColor: WidgetStateProperty.resolveWith(
+            (s) => s.contains(WidgetState.disabled)
+                ? accent.withValues(alpha: 0.30)
+                : accent,
+          ),
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (s) => s.contains(WidgetState.disabled)
+                ? onAccent.withValues(alpha: 0.7)
+                : onAccent,
+          ),
           overlayColor: overlay(onAccent),
           iconSize: const WidgetStatePropertyAll(22),
           textStyle: WidgetStatePropertyAll(btnText),
@@ -239,17 +251,21 @@ class AppTheme {
             EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           ),
           shape: WidgetStatePropertyAll(shape),
-          foregroundColor: WidgetStateProperty.resolveWith((s) =>
-              s.contains(WidgetState.disabled)
-                  ? ink.withValues(alpha: 0.38)
-                  : (isLight ? AppColors.navy : Colors.white)),
-          side: WidgetStateProperty.resolveWith((s) => BorderSide(
-                color: s.contains(WidgetState.focused) ||
-                        s.contains(WidgetState.hovered)
-                    ? accent
-                    : accent.withValues(alpha: 0.65),
-                width: 1.6,
-              )),
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (s) => s.contains(WidgetState.disabled)
+                ? ink.withValues(alpha: 0.38)
+                : (isLight ? AppColors.navy : Colors.white),
+          ),
+          side: WidgetStateProperty.resolveWith(
+            (s) => BorderSide(
+              color:
+                  s.contains(WidgetState.focused) ||
+                      s.contains(WidgetState.hovered)
+                  ? accent
+                  : accent.withValues(alpha: 0.65),
+              width: 1.6,
+            ),
+          ),
           overlayColor: overlay(accent),
           iconSize: const WidgetStatePropertyAll(22),
           textStyle: WidgetStatePropertyAll(btnText),
@@ -262,13 +278,18 @@ class AppTheme {
             EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           ),
           shape: WidgetStatePropertyAll(shape),
-          foregroundColor: WidgetStateProperty.resolveWith((s) =>
-              s.contains(WidgetState.disabled)
-                  ? ink.withValues(alpha: 0.38)
-                  : (isLight ? AppColors.navy : AppColors.navyOnDark)),
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (s) => s.contains(WidgetState.disabled)
+                ? ink.withValues(alpha: 0.38)
+                : (isLight ? AppColors.navy : AppColors.navyOnDark),
+          ),
           overlayColor: overlay(accent),
-          textStyle: WidgetStatePropertyAll(GoogleFonts.plusJakartaSans(
-              fontWeight: FontWeight.w700, fontSize: 15)),
+          textStyle: WidgetStatePropertyAll(
+            GoogleFonts.plusJakartaSans(
+              fontWeight: FontWeight.w700,
+              fontSize: 15,
+            ),
+          ),
         ),
       ),
       iconButtonTheme: IconButtonThemeData(
@@ -283,14 +304,20 @@ class AppTheme {
           minimumSize: const WidgetStatePropertyAll(Size(48, minTap)),
           shape: WidgetStatePropertyAll(shape),
           side: WidgetStatePropertyAll(BorderSide(color: line, width: 1.4)),
-          backgroundColor: WidgetStateProperty.resolveWith((s) =>
-              s.contains(WidgetState.selected)
-                  ? accent.withValues(alpha: 0.16)
-                  : Colors.transparent),
+          backgroundColor: WidgetStateProperty.resolveWith(
+            (s) => s.contains(WidgetState.selected)
+                ? accent.withValues(alpha: 0.16)
+                : Colors.transparent,
+          ),
           foregroundColor: WidgetStateProperty.resolveWith(
-              (s) => s.contains(WidgetState.selected) ? ink : textSecondary),
-          textStyle: WidgetStatePropertyAll(GoogleFonts.plusJakartaSans(
-              fontWeight: FontWeight.w700, fontSize: 14)),
+            (s) => s.contains(WidgetState.selected) ? ink : textSecondary,
+          ),
+          textStyle: WidgetStatePropertyAll(
+            GoogleFonts.plusJakartaSans(
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+            ),
+          ),
         ),
       ),
       // Avant : fond turquoise + texte blanc (2,3:1). DÃƒÂ©sormais bleu nuit.
@@ -299,7 +326,8 @@ class AppTheme {
         foregroundColor: onAccent,
         elevation: 5,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(radiusLg)),
+          borderRadius: BorderRadius.circular(radiusLg),
+        ),
       ),
 
       // Ã¢â€â‚¬Ã¢â€â‚¬ Champs de saisie Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
@@ -307,8 +335,10 @@ class AppTheme {
         filled: true,
         fillColor: surface,
         isDense: false,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 18,
+          vertical: 18,
+        ),
         border: border(line),
         enabledBorder: border(textTertiary.withValues(alpha: 0.7)),
         focusedBorder: border(accent, 2.4),
@@ -316,35 +346,45 @@ class AppTheme {
         focusedErrorBorder: border(danger, 2.4),
         disabledBorder: border(line.withValues(alpha: 0.08)),
         labelStyle: TextStyle(color: textSecondary, fontSize: 15),
-        floatingLabelStyle: WidgetStateTextStyle.resolveWith((s) => TextStyle(
-              color: s.contains(WidgetState.error)
-                  ? danger
-                  : s.contains(WidgetState.focused)
-                      ? (isLight ? AppColors.navy : AppColors.navyOnDark)
-                      : textSecondary,
-              fontWeight: FontWeight.w700,
-            )),
+        floatingLabelStyle: WidgetStateTextStyle.resolveWith(
+          (s) => TextStyle(
+            color: s.contains(WidgetState.error)
+                ? danger
+                : s.contains(WidgetState.focused)
+                ? (isLight ? AppColors.navy : AppColors.navyOnDark)
+                : textSecondary,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
         hintStyle: TextStyle(color: textTertiary, fontSize: 15),
         helperStyle: TextStyle(color: textSecondary, fontSize: 13.5),
         errorStyle: TextStyle(
-            color: danger, fontSize: 13.5, fontWeight: FontWeight.w700),
+          color: danger,
+          fontSize: 13.5,
+          fontWeight: FontWeight.w700,
+        ),
         errorMaxLines: 3,
-        prefixIconColor:
-            WidgetStateColor.resolveWith((s) => s.contains(WidgetState.error)
-                ? danger
-                : s.contains(WidgetState.focused)
-                    ? accent
-                    : textSecondary),
+        prefixIconColor: WidgetStateColor.resolveWith(
+          (s) => s.contains(WidgetState.error)
+              ? danger
+              : s.contains(WidgetState.focused)
+              ? accent
+              : textSecondary,
+        ),
         suffixIconColor: WidgetStateColor.resolveWith(
-            (s) => s.contains(WidgetState.focused) ? accent : textSecondary),
+          (s) => s.contains(WidgetState.focused) ? accent : textSecondary,
+        ),
       ),
 
       // Ã¢â€â‚¬Ã¢â€â‚¬ Divers Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
       chipTheme: ChipThemeData(
         backgroundColor: accent.withValues(alpha: 0.08),
         selectedColor: accent.withValues(alpha: 0.22),
-        labelStyle:
-            TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: ink),
+        labelStyle: TextStyle(
+          fontWeight: FontWeight.w700,
+          fontSize: 15,
+          color: ink,
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         side: BorderSide(color: line),
@@ -361,9 +401,10 @@ class AppTheme {
         insetPadding: const EdgeInsets.all(16),
         backgroundColor: isLight ? AppColors.navy : AppColors.inkDark,
         contentTextStyle: TextStyle(
-            color: isLight ? Colors.white : AppColors.navy,
-            fontWeight: FontWeight.w700,
-            fontSize: 16),
+          color: isLight ? Colors.white : AppColors.navy,
+          fontWeight: FontWeight.w700,
+          fontSize: 16,
+        ),
         actionTextColor: isLight ? AppColors.navyOnDark : AppColors.navy,
         shape: shape,
         elevation: 6,
@@ -372,7 +413,8 @@ class AppTheme {
         backgroundColor: surface,
         surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(radiusLg)),
+          borderRadius: BorderRadius.circular(radiusLg),
+        ),
       ),
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: surface,

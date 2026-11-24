@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 
 import 'package:montotem/core/widgets/app_ui.dart';
@@ -140,8 +139,9 @@ class _LeaderboardTile extends StatelessWidget {
               '$rang',
               style: TextStyle(
                 fontWeight: FontWeight.w800,
-                color:
-                    rang <= 3 ? _rangColor : onSurface.withValues(alpha: 0.7),
+                color: rang <= 3
+                    ? _rangColor
+                    : onSurface.withValues(alpha: 0.7),
               ),
             ),
           ),

@@ -35,10 +35,10 @@ class AdminRideService {
 
   Future<void> annuler(String id, String motif) async {
     try {
-      await _sb.rpc('admin_cancel_ride', params: {
-        'p_ride': id,
-        'p_reason': motif,
-      });
+      await _sb.rpc(
+        'admin_cancel_ride',
+        params: {'p_ride': id, 'p_reason': motif},
+      );
     } on PostgrestException catch (e) {
       developer.log('Annulation course', error: e, name: 'AdminRideService');
       throw AdminRideException(_message(e));

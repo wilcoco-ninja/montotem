@@ -1,4 +1,3 @@
-﻿
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -98,8 +97,10 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          content: Text(message,
-              style: const TextStyle(fontWeight: FontWeight.w700)),
+          content: Text(
+            message,
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
           backgroundColor: erreur
               ? Theme.of(context).colorScheme.error
               : Theme.of(context).colorScheme.secondary,
@@ -125,8 +126,10 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Annulation administrative de course',
-            style: TextStyle(fontWeight: FontWeight.w800)),
+        title: const Text(
+          'Annulation administrative de course',
+          style: TextStyle(fontWeight: FontWeight.w800),
+        ),
         content: TextField(
           controller: controller,
           autofocus: true,
@@ -147,7 +150,8 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
           FilledButton(
             onPressed: () => Navigator.pop(ctx, controller.text.trim()),
             style: FilledButton.styleFrom(
-                backgroundColor: Theme.of(ctx).colorScheme.error),
+              backgroundColor: Theme.of(ctx).colorScheme.error,
+            ),
             child: const Text('Confirmer lÃ¢â‚¬â„¢annulation'),
           ),
         ],
@@ -164,7 +168,9 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
     setState(() => _busyId = r.id);
     try {
       await _service.annuler(r.id, motif);
-      _afficherMessage('Course annulÃƒÂ©e avec succÃƒÂ¨s. Participants notifiÃƒÂ©s.');
+      _afficherMessage(
+        'Course annulÃƒÂ©e avec succÃƒÂ¨s. Participants notifiÃƒÂ©s.',
+      );
       await _chargerDonnees(silencieux: true);
     } on AdminRideException catch (e) {
       _afficherMessage(e.message, erreur: true);
@@ -201,7 +207,9 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
                   child: Text(
                     '${r.kind.libelle} Ã¢â‚¬Â¢ ${TravelFee.fcfa(r.prixFcfa)}',
                     style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w800),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
               ],
@@ -285,8 +293,10 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
                     Icon(Icons.circle, size: 10, color: scheme.primary),
                     const SizedBox(width: 10),
                     Expanded(
-                      child: Text('${_format.format(e.$2!)} Ã¢â‚¬â€ ${e.$1}',
-                          style: const TextStyle(fontSize: 14.5)),
+                      child: Text(
+                        '${_format.format(e.$2!)} Ã¢â‚¬â€ ${e.$1}',
+                        style: const TextStyle(fontSize: 14.5),
+                      ),
                     ),
                   ],
                 ),
@@ -334,13 +344,15 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
         body: _loading
             ? const Center(child: CircularProgressIndicator())
             : _error != null
-                ? Center(
-                    child: SingleChildScrollView(
-                      child: ErrorState(
-                          message: _error!, onRetry: () => _chargerDonnees()),
-                    ),
-                  )
-                : TabBarView(children: [_buildListeTab(), _buildCarteTab()]),
+            ? Center(
+                child: SingleChildScrollView(
+                  child: ErrorState(
+                    message: _error!,
+                    onRetry: () => _chargerDonnees(),
+                  ),
+                ),
+              )
+            : TabBarView(children: [_buildListeTab(), _buildCarteTab()]),
       ),
     );
   }
@@ -371,8 +383,7 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
                     child: EmptyState(
                       icon: Icons.two_wheeler_rounded,
                       title: 'Aucune course correspondante',
-                      message:
-                          'Les courses en temps rÃƒÂ©el apparaÃƒÂ®tront ici instantanÃƒÂ©ment.',
+                      message: 'Les courses en temps rÃƒÂ©el apparaÃƒÂ®tront ici instantanÃƒÂ©ment.',
                     ),
                   )
                 : RefreshIndicator(
@@ -407,7 +418,9 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
                 child: Text(
                   '${r.kind.libelle} Ã¢â‚¬Â¢ ${TravelFee.fcfa(r.prixFcfa)}',
                   style: const TextStyle(
-                      fontSize: 16.5, fontWeight: FontWeight.w800),
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ),
               if (busy)
@@ -418,9 +431,10 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
                 )
               else
                 StatusPill(
-                    label: r.status.libelle,
-                    color: couleur,
-                    icon: r.status.icone),
+                  label: r.status.libelle,
+                  color: couleur,
+                  icon: r.status.icone,
+                ),
             ],
           ),
           const SizedBox(height: 8),
@@ -445,40 +459,49 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
     final markers = <Marker>[];
 
     for (final r in actives) {
-      lignes.add(Polyline(
-        points: [r.pickup, r.dropoff],
-        color: r.status.couleur.withValues(alpha: 0.65),
-        strokeWidth: 3.5,
-      ));
-      markers.add(Marker(
-        point: r.pickup,
-        width: 40,
-        height: 40,
-        alignment: Alignment.topCenter,
-        child: GestureDetector(
-          onTap: () => _ouvrirDetailCourse(r),
-          child: Icon(Icons.location_on_rounded,
-              size: 38, color: scheme.secondary),
+      lignes.add(
+        Polyline(
+          points: [r.pickup, r.dropoff],
+          color: r.status.couleur.withValues(alpha: 0.65),
+          strokeWidth: 3.5,
         ),
-      ));
-      final prov = r.providerPoint;
-      if (prov != null && r.status.actif) {
-        markers.add(Marker(
-          point: prov,
-          width: 44,
-          height: 44,
+      );
+      markers.add(
+        Marker(
+          point: r.pickup,
+          width: 40,
+          height: 40,
+          alignment: Alignment.topCenter,
           child: GestureDetector(
             onTap: () => _ouvrirDetailCourse(r),
-            child: Container(
-              decoration: BoxDecoration(
-                color: r.status.couleur,
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 2.5),
-              ),
-              child: Icon(r.kind.icone, color: Colors.white, size: 20),
+            child: Icon(
+              Icons.location_on_rounded,
+              size: 38,
+              color: scheme.secondary,
             ),
           ),
-        ));
+        ),
+      );
+      final prov = r.providerPoint;
+      if (prov != null && r.status.actif) {
+        markers.add(
+          Marker(
+            point: prov,
+            width: 44,
+            height: 44,
+            child: GestureDetector(
+              onTap: () => _ouvrirDetailCourse(r),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: r.status.couleur,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 2.5),
+                ),
+                child: Icon(r.kind.icone, color: Colors.white, size: 20),
+              ),
+            ),
+          ),
+        );
       }
     }
 
@@ -487,7 +510,9 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
         FlutterMap(
           options: const MapOptions(
             initialCenter: LatLng(
-                AppConstants.initialLatitude, AppConstants.initialLongitude),
+              AppConstants.initialLatitude,
+              AppConstants.initialLongitude,
+            ),
             initialZoom: 12,
           ),
           children: [
@@ -497,9 +522,11 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
             ),
             PolylineLayer(polylines: lignes),
             MarkerLayer(markers: markers),
-            const RichAttributionWidget(attributions: [
-              TextSourceAttribution('Ã‚Â© OpenStreetMap contributors'),
-            ]),
+            const RichAttributionWidget(
+              attributions: [
+                TextSourceAttribution('Ã‚Â© OpenStreetMap contributors'),
+              ],
+            ),
           ],
         ),
         Positioned(
@@ -511,12 +538,13 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
               color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(20),
               boxShadow: const [
-                BoxShadow(color: Colors.black12, blurRadius: 6)
+                BoxShadow(color: Colors.black12, blurRadius: 6),
               ],
             ),
-            child: Text('${actives.length} course(s) active(s) en direct',
-                style:
-                    const TextStyle(fontSize: 14, fontWeight: FontWeight.w800)),
+            child: Text(
+              '${actives.length} course(s) active(s) en direct',
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
+            ),
           ),
         ),
       ],

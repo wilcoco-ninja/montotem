@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show RealtimeChannel;
@@ -157,7 +156,8 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
           TextButton(
             onPressed: () => Navigator.pop(ctx, controller.text.trim()),
             style: TextButton.styleFrom(
-                foregroundColor: Theme.of(ctx).colorScheme.error),
+              foregroundColor: Theme.of(ctx).colorScheme.error,
+            ),
             child: const Text('Refuser'),
           ),
         ],
@@ -207,11 +207,11 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
   int _int(dynamic v) => (v as num?)?.toInt() ?? 0;
 
   String _operateur(dynamic code) => switch ('$code') {
-        'mtn' => 'MTN MoMo',
-        'moov' => 'Moov Money',
-        'celtiis' => 'Celtiis Cash',
-        _ => '$code',
-      };
+    'mtn' => 'MTN MoMo',
+    'moov' => 'Moov Money',
+    'celtiis' => 'Celtiis Cash',
+    _ => '$code',
+  };
 
   String _date(dynamic iso) {
     final d = DateTime.tryParse('$iso')?.toLocal();
@@ -337,7 +337,9 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
                   nom.isEmpty ? 'Prestataire' : nom,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                      fontSize: 17, fontWeight: FontWeight.w800),
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ),
               const SizedBox(width: 8),
@@ -355,10 +357,16 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
           const Divider(height: 20),
           _ligne('Montant', TravelFee.fcfa(_int(d['amount_fcfa'])), fort: true),
           _ligne('OpÃƒÂ©rateur', _operateur(d['operateur'])),
-          _ligne('PayÃƒÂ© depuis', '${d['payer_phone']}',
-              copie: '${d['payer_phone']}'),
-          _ligne('RÃƒÂ©fÃƒÂ©rence', '${d['transaction_ref']}',
-              copie: '${d['transaction_ref']}'),
+          _ligne(
+            'PayÃƒÂ© depuis',
+            '${d['payer_phone']}',
+            copie: '${d['payer_phone']}',
+          ),
+          _ligne(
+            'RÃƒÂ©fÃƒÂ©rence',
+            '${d['transaction_ref']}',
+            copie: '${d['transaction_ref']}',
+          ),
           _ligne('DÃƒÂ©clarÃƒÂ©e le', _date(d['created_at'])),
           if (statut != 'awaiting_validation' && d['reviewed_at'] != null)
             _ligne('TraitÃƒÂ©e le', _date(d['reviewed_at'])),
@@ -390,8 +398,10 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
                     child: OutlinedButton.icon(
                       onPressed: () => _refuser(d),
                       icon: Icon(Icons.close_rounded, color: scheme.error),
-                      label: Text('Refuser',
-                          style: TextStyle(color: scheme.error)),
+                      label: Text(
+                        'Refuser',
+                        style: TextStyle(color: scheme.error),
+                      ),
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: scheme.error),
                       ),
@@ -429,8 +439,10 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
         children: [
           SizedBox(
             width: 112,
-            child: Text(label,
-                style: TextStyle(fontSize: 14, color: context.textSecondary)),
+            child: Text(
+              label,
+              style: TextStyle(fontSize: 14, color: context.textSecondary),
+            ),
           ),
           Expanded(
             child: Text(
@@ -447,8 +459,11 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
               borderRadius: BorderRadius.circular(12),
               child: Padding(
                 padding: const EdgeInsets.all(4),
-                child: Icon(Icons.copy_rounded,
-                    size: 18, color: context.textSecondary),
+                child: Icon(
+                  Icons.copy_rounded,
+                  size: 18,
+                  color: context.textSecondary,
+                ),
               ),
             ),
         ],

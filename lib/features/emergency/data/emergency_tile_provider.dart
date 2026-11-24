@@ -53,8 +53,9 @@ class TileDiskCache {
         }
       }
       if (total <= plafond) return;
-      fichiers
-          .sort((a, b) => a.lastModifiedSync().compareTo(b.lastModifiedSync()));
+      fichiers.sort(
+        (a, b) => a.lastModifiedSync().compareTo(b.lastModifiedSync()),
+      );
       for (final f in fichiers) {
         if (total <= cible) break;
         total -= await f.length();
@@ -124,9 +125,9 @@ class TileDiskCache {
                 .replaceFirst('{x}', '$x')
                 .replaceFirst('{y}', '$y');
             try {
-              final res = await client.get(Uri.parse(url), headers: {
-                'User-Agent': _userAgent
-              }).timeout(const Duration(seconds: 10));
+              final res = await client
+                  .get(Uri.parse(url), headers: {'User-Agent': _userAgent})
+                  .timeout(const Duration(seconds: 10));
               if (res.statusCode == 200 && res.bodyBytes.isNotEmpty) {
                 await ecrire(cle, res.bodyBytes);
               }
@@ -199,8 +200,9 @@ class _CachedTileImage extends ImageProvider<_CachedTileImage> {
         }
       } catch (_) {}
     }
-    final buffer =
-        await ui.ImmutableBuffer.fromUint8List(octets ?? _transparent);
+    final buffer = await ui.ImmutableBuffer.fromUint8List(
+      octets ?? _transparent,
+    );
     return decode(buffer);
   }
 

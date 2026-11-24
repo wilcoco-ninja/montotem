@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show RealtimeChannel;
@@ -57,7 +56,7 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
     'jeu.',
     'ven.',
     'sam.',
-    'dim.'
+    'dim.',
   ];
   static const _lettres = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
 
@@ -227,16 +226,18 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
           titre: _jourCourt(j[i].date),
           libelle: switch (_fenetre) {
             _Fenetre.sept => _lettres[j[i].date.weekday - 1],
-            _Fenetre.trente => (j[i].date.day == 1 || j[i].date.day % 5 == 0)
-                ? '${j[i].date.day}'
-                : '',
+            _Fenetre.trente =>
+              (j[i].date.day == 1 || j[i].date.day % 5 == 0)
+                  ? '${j[i].date.day}'
+                  : '',
             _Fenetre.quatreVingtDix =>
               (j[i].date.day == 1 || j[i].date.day == 15)
                   ? '${j[i].date.day}'
                   : '',
           },
           valeur: j[i].gross,
-          accent: _offset == 0 &&
+          accent:
+              _offset == 0 &&
               j[i].date.day == aujourdhui.day &&
               j[i].date.month == aujourdhui.month,
         ),
@@ -272,8 +273,9 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
     final tx = (_wallet?.transactions ?? const <WalletTransaction>[])
         .where((t) => _dans(t.createdAt))
         .toList();
-    final terminees =
-        ms.where((m) => m.status == MissionStatus.completed).length;
+    final terminees = ms
+        .where((m) => m.status == MissionStatus.completed)
+        .length;
     final r = _resume;
     final gutter = context.gutter;
 
@@ -308,7 +310,9 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
                               child: Text(
                                 '$_erreurResume Touchez pour rÃƒÂ©essayer.',
                                 style: const TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.w700),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                           ],
@@ -351,7 +355,8 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
                         if (_offset == 0 && r != null) ...[
                           InfoRow(
                             icon: Icons.two_wheeler_rounded,
-                            label: 'Courses en espÃƒÂ¨ces (${r.ridesCashCount})',
+                            label:
+                                'Courses en espÃƒÂ¨ces (${r.ridesCashCount})',
                             value: TravelFee.fcfa(r.ridesCashFcfa),
                           ),
                           InfoRow(
@@ -379,7 +384,8 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
                       child: EmptyState(
                         icon: Icons.payments_outlined,
                         title: 'Aucun gain sur cette pÃƒÂ©riode',
-                        message: 'Vos interventions payÃƒÂ©es apparaÃƒÂ®tront ici.',
+                        message:
+                            'Vos interventions payÃƒÂ©es apparaÃƒÂ®tront ici.',
                       ),
                     ),
                   if (ms.isNotEmpty) ...[
@@ -445,8 +451,9 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
                         disabledColor: Colors.white24,
                         tooltip: 'PÃƒÂ©riode prÃƒÂ©cÃƒÂ©dente',
                         icon: const Icon(Icons.chevron_left_rounded),
-                        onPressed:
-                            _offset >= _maxOffset ? null : () => _decaler(1),
+                        onPressed: _offset >= _maxOffset
+                            ? null
+                            : () => _decaler(1),
                       ),
                       Expanded(
                         child: Center(
@@ -539,30 +546,44 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
         },
         child: Row(
           children: [
-            Icon(m.status.icone,
-                color: context.readable(m.status.couleur), size: 30),
+            Icon(
+              m.status.icone,
+              color: context.readable(m.status.couleur),
+              size: 30,
+            ),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(m.problem,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w800)),
-                  Text('${_jourCourt(m.createdAt)} Ã‚Â· ${_hm(m.createdAt)}',
-                      style: TextStyle(
-                          fontSize: 14, color: context.textSecondary)),
+                  Text(
+                    m.problem,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  Text(
+                    '${_jourCourt(m.createdAt)} Ã‚Â· ${_hm(m.createdAt)}',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: context.textSecondary,
+                    ),
+                  ),
                 ],
               ),
             ),
             const SizedBox(width: 8),
-            Text(TravelFee.fcfa(m.paidFcfa),
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w900,
-                    color: context.readable(AppTheme.successColor))),
+            Text(
+              TravelFee.fcfa(m.paidFcfa),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w900,
+                color: context.readable(AppTheme.successColor),
+              ),
+            ),
             const Icon(Icons.chevron_right_rounded),
           ],
         ),
@@ -598,14 +619,22 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(t.libelle,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontSize: 15.5, fontWeight: FontWeight.w800)),
-                  Text('${_jourCourt(t.createdAt)} Ã‚Â· ${_hm(t.createdAt)}',
-                      style: TextStyle(
-                          fontSize: 13.5, color: context.textSecondary)),
+                  Text(
+                    t.libelle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 15.5,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  Text(
+                    '${_jourCourt(t.createdAt)} Ã‚Â· ${_hm(t.createdAt)}',
+                    style: TextStyle(
+                      fontSize: 13.5,
+                      color: context.textSecondary,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -616,13 +645,15 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
                 Text(
                   '${credit ? '+' : ''}${formaterFcfaSigne(t.amountFcfa)}',
                   style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w900,
-                      color: context.readable(couleur)),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w900,
+                    color: context.readable(couleur),
+                  ),
                 ),
-                Text('Solde ${formaterFcfaSigne(t.balanceAfter)}',
-                    style:
-                        TextStyle(fontSize: 13, color: context.textSecondary)),
+                Text(
+                  'Solde ${formaterFcfaSigne(t.balanceAfter)}',
+                  style: TextStyle(fontSize: 13, color: context.textSecondary),
+                ),
               ],
             ),
           ],
@@ -709,8 +740,8 @@ class _Graphique extends StatelessWidget {
                         color: b.valeur == 0
                             ? scheme.onSurface.withValues(alpha: 0.10)
                             : (b.accent
-                                ? AppTheme.successColor
-                                : scheme.primary.withValues(alpha: 0.4)),
+                                  ? AppTheme.successColor
+                                  : scheme.primary.withValues(alpha: 0.4)),
                         borderRadius: BorderRadius.circular(peu ? 6 : 1),
                       ),
                     ),
@@ -723,7 +754,9 @@ class _Graphique extends StatelessWidget {
                               child: Text(
                                 b.libelle,
                                 style: const TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w800),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800,
+                                ),
                               ),
                             ),
                     ),

@@ -90,7 +90,8 @@ class ImageQualityService {
   Future<List<Face>> _visages(Uint8List bytes) async {
     final dir = await getTemporaryDirectory();
     final file = File(
-        '${dir.path}/idcheck_${DateTime.now().microsecondsSinceEpoch}.jpg');
+      '${dir.path}/idcheck_${DateTime.now().microsecondsSinceEpoch}.jpg',
+    );
     await file.writeAsBytes(bytes, flush: true);
     final detector = FaceDetector(
       options: FaceDetectorOptions(
@@ -119,8 +120,10 @@ class ImageQualityService {
       p.add('Photo trop petite. Reprenez-la avec l\'appareil photo.');
     }
     if (m['sharpness']! < nettete) {
-      p.add('Photo floue. Tenez le téléphone bien droit et immobile, '
-          'puis reprenez la photo.');
+      p.add(
+        'Photo floue. Tenez le téléphone bien droit et immobile, '
+        'puis reprenez la photo.',
+      );
     }
     if (m['brightness']! < minLum) {
       p.add('Photo trop sombre. Placez-vous face à la lumière du jour.');
@@ -131,23 +134,30 @@ class ImageQualityService {
   }
 
   Map<String, dynamic> _metrics(Map<String, double> m) => {
-        'width': m['width']!.round(),
-        'height': m['height']!.round(),
-        'brightness': m['brightness']!.round(),
-        'sharpness': m['sharpness']!.round(),
-      };
+    'width': m['width']!.round(),
+    'height': m['height']!.round(),
+    'brightness': m['brightness']!.round(),
+    'sharpness': m['sharpness']!.round(),
+  };
 
   /// Photo du visage : un seul visage, entier, de face, yeux ouverts.
   Future<PhotoCheck> analyserSelfie(Uint8List bytes) async {
     final m = await compute(_mesures, bytes);
     if (m['ok'] != 1) {
       return const PhotoCheck(
-          ok: false, problemes: ['Photo illisible. Reprenez-la.']);
+        ok: false,
+        problemes: ['Photo illisible. Reprenez-la.'],
+      );
     }
     final w = m['width']!;
     final h = m['height']!;
-    final problemes = _problemesBase(m,
-        minCote: 600, nettete: _netteteSelfie, minLum: 70, maxLum: 210);
+    final problemes = _problemesBase(
+      m,
+      minCote: 600,
+      nettete: _netteteSelfie,
+      minLum: 70,
+      maxLum: 210,
+    );
     final metrics = _metrics(m);
     var controle = false;
 
@@ -157,8 +167,10 @@ class ImageQualityService {
         controle = true;
         metrics['faces'] = faces.length;
         if (faces.isEmpty) {
-          problemes.add('Aucun visage détecté. Votre visage doit être entier '
-              'et face à l\'appareil.');
+          problemes.add(
+            'Aucun visage détecté. Votre visage doit être entier '
+            'et face à l\'appareil.',
+          );
         } else if (faces.length > 1) {
           problemes.add('Une seule personne doit apparaître sur la photo.');
         } else {
@@ -167,22 +179,26 @@ class ImageQualityService {
           final ratio = box.width * box.height / (w * h);
           metrics['face_ratio'] = double.parse(ratio.toStringAsFixed(3));
           if (ratio < 0.10) {
-            problemes
-                .add('Rapprochez-vous : votre visage doit remplir le cadre.');
+            problemes.add(
+              'Rapprochez-vous : votre visage doit remplir le cadre.',
+            );
           }
-          final coupe = box.left < w * 0.01 ||
+          final coupe =
+              box.left < w * 0.01 ||
               box.top < h * 0.01 ||
               box.right > w * 0.99 ||
               box.bottom > h * 0.99;
           if (coupe) {
-            problemes
-                .add('Votre visage est coupé. Reculez un peu et centrez-vous.');
+            problemes.add(
+              'Votre visage est coupé. Reculez un peu et centrez-vous.',
+            );
           }
           final yaw = f.headEulerAngleY ?? 0;
           final roll = f.headEulerAngleZ ?? 0;
           if (yaw.abs() > 20 || roll.abs() > 20) {
-            problemes
-                .add('Regardez droit vers l\'appareil, sans pencher la tête.');
+            problemes.add(
+              'Regardez droit vers l\'appareil, sans pencher la tête.',
+            );
           }
           final yeux = math.min(
             f.leftEyeOpenProbability ?? 1,
@@ -213,13 +229,22 @@ class ImageQualityService {
     final m = await compute(_mesures, bytes);
     if (m['ok'] != 1) {
       return const PhotoCheck(
-          ok: false, problemes: ['Photo illisible. Reprenez-la.']);
+        ok: false,
+        problemes: ['Photo illisible. Reprenez-la.'],
+      );
     }
-    final problemes = _problemesBase(m,
-        minCote: 720, nettete: _netteteDocument, minLum: 70, maxLum: 220);
+    final problemes = _problemesBase(
+      m,
+      minCote: 720,
+      nettete: _netteteDocument,
+      minLum: 70,
+      maxLum: 220,
+    );
     if (m['glare']! > _reflet) {
-      problemes.add('Reflet sur le document. Inclinez légèrement le document '
-          'ou changez d\'endroit.');
+      problemes.add(
+        'Reflet sur le document. Inclinez légèrement le document '
+        'ou changez d\'endroit.',
+      );
     }
     final metrics = _metrics(m);
     metrics['glare'] = double.parse(m['glare']!.toStringAsFixed(3));
@@ -230,7 +255,10 @@ class ImageQualityService {
       } catch (_) {}
     }
     return PhotoCheck(
-        ok: problemes.isEmpty, problemes: problemes, metrics: metrics);
+      ok: problemes.isEmpty,
+      problemes: problemes,
+      metrics: metrics,
+    );
   }
 
   /// Photo du garage : nette et correctement éclairée.
@@ -238,11 +266,21 @@ class ImageQualityService {
     final m = await compute(_mesures, bytes);
     if (m['ok'] != 1) {
       return const PhotoCheck(
-          ok: false, problemes: ['Photo illisible. Reprenez-la.']);
+        ok: false,
+        problemes: ['Photo illisible. Reprenez-la.'],
+      );
     }
-    final problemes = _problemesBase(m,
-        minCote: 600, nettete: _netteteLieu, minLum: 50, maxLum: 225);
+    final problemes = _problemesBase(
+      m,
+      minCote: 600,
+      nettete: _netteteLieu,
+      minLum: 50,
+      maxLum: 225,
+    );
     return PhotoCheck(
-        ok: problemes.isEmpty, problemes: problemes, metrics: _metrics(m));
+      ok: problemes.isEmpty,
+      problemes: problemes,
+      metrics: _metrics(m),
+    );
   }
 }

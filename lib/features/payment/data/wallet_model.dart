@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:montotem/core/utils/travel_fee.dart';
 import 'package:montotem/features/wallet/domain/devise.dart';
+
 /// "-2 500 FCFA" : TravelFee.fcfa ne gère pas les montants négatifs.
 String formaterFcfaSigne(int montant) =>
     '${montant < 0 ? '-' : ''}${TravelFee.fcfa(montant.abs())}';
@@ -39,19 +40,19 @@ class Wallet {
       Wallet(providerId: providerId, balanceFcfa: 0, blocked: false);
 
   factory Wallet.fromJson(Map<String, dynamic> j) => Wallet(
-        providerId: '${j['provider_id']}',
-        balanceFcfa: _entier(j['balance_fcfa']),
-        blocked: j['blocked'] == true,
-        deviseCode: j['devise_code'] == null
-            ? 'XOF'
-            : '${j['devise_code']}'.toUpperCase(),
-        payableBalance: _entier(j['payable_balance']),
-        cashCommissionDebt: _entier(j['cash_commission_debt']),
-        creditLimit: _entier(j['credit_limit']),
-        blockReason: j['block_reason'] as String?,
-        blockedAt: _date(j['blocked_at']),
-        updatedAt: _date(j['updated_at']),
-      );
+    providerId: '${j['provider_id']}',
+    balanceFcfa: _entier(j['balance_fcfa']),
+    blocked: j['blocked'] == true,
+    deviseCode: j['devise_code'] == null
+        ? 'XOF'
+        : '${j['devise_code']}'.toUpperCase(),
+    payableBalance: _entier(j['payable_balance']),
+    cashCommissionDebt: _entier(j['cash_commission_debt']),
+    creditLimit: _entier(j['credit_limit']),
+    blockReason: j['block_reason'] as String?,
+    blockedAt: _date(j['blocked_at']),
+    updatedAt: _date(j['updated_at']),
+  );
 
   final String providerId;
   final int balanceFcfa;
@@ -87,17 +88,17 @@ class Wallet {
       cashCommissionDebt >= plafondCash(cashCreditLimitGlobal);
 
   Map<String, dynamic> toJson() => {
-        'provider_id': providerId,
-        'balance_fcfa': balanceFcfa,
-        'blocked': blocked,
-        'devise_code': deviseCode,
-        'payable_balance': payableBalance,
-        'cash_commission_debt': cashCommissionDebt,
-        'credit_limit': creditLimit,
-        'block_reason': blockReason,
-        'blocked_at': blockedAt?.toUtc().toIso8601String(),
-        'updated_at': updatedAt?.toUtc().toIso8601String(),
-      };
+    'provider_id': providerId,
+    'balance_fcfa': balanceFcfa,
+    'blocked': blocked,
+    'devise_code': deviseCode,
+    'payable_balance': payableBalance,
+    'cash_commission_debt': cashCommissionDebt,
+    'credit_limit': creditLimit,
+    'block_reason': blockReason,
+    'blocked_at': blockedAt?.toUtc().toIso8601String(),
+    'updated_at': updatedAt?.toUtc().toIso8601String(),
+  };
 }
 
 @immutable
@@ -149,25 +150,25 @@ class WalletTransaction {
   bool get estCommissionCash => kind == 'commission_cash';
 
   String get libelle => switch (kind) {
-        'commission_cash' => 'Commission course cash',
-        'commission_momo' => 'Commission course Mobile Money',
-        'commission_travel' => 'Commission frais de déplacement',
-        'topup' => 'Recharge',
-        'adjustment' => 'Ajustement',
-        'refund' => 'Remboursement',
-        _ => 'Mouvement',
-      };
+    'commission_cash' => 'Commission course cash',
+    'commission_momo' => 'Commission course Mobile Money',
+    'commission_travel' => 'Commission frais de déplacement',
+    'topup' => 'Recharge',
+    'adjustment' => 'Ajustement',
+    'refund' => 'Remboursement',
+    _ => 'Mouvement',
+  };
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'kind': kind,
-        'amount_fcfa': amountFcfa,
-        'balance_after': balanceAfter,
-        'created_at': createdAt.toUtc().toIso8601String(),
-        'ride_id': rideId,
-        'reference': reference,
-        'note': note,
-      };
+    'id': id,
+    'kind': kind,
+    'amount_fcfa': amountFcfa,
+    'balance_after': balanceAfter,
+    'created_at': createdAt.toUtc().toIso8601String(),
+    'ride_id': rideId,
+    'reference': reference,
+    'note': note,
+  };
 }
 
 /// Résultat du calcul d'une commission : montant encaissé, part MonTotem,
@@ -300,8 +301,8 @@ class WalletConfig {
     required bool mobileMoney,
   }) {
     final p = commissionPourCourse(mobileMoney: mobileMoney).clamp(0, 100);
-    final montant =
-        Money.zero(devise).fromMinor(montantMinor < 0 ? 0 : montantMinor);
+    final montant = Money.zero(devise)
+        .fromMinor(montantMinor < 0 ? 0 : montantMinor);
     return CommissionDevise(
       devise: devise,
       montantMinor: montant.minorUnits,
@@ -312,8 +313,8 @@ class WalletConfig {
 
   CommissionDevise calculerTrajetEnDevise(int montantMinor, Devise devise) {
     final p = travelPctClamp;
-    final montant =
-        Money.zero(devise).fromMinor(montantMinor < 0 ? 0 : montantMinor);
+    final montant = Money.zero(devise)
+        .fromMinor(montantMinor < 0 ? 0 : montantMinor);
     return CommissionDevise(
       devise: devise,
       montantMinor: montant.minorUnits,
@@ -325,10 +326,10 @@ class WalletConfig {
   int get travelPctClamp => commissionTravelPct.clamp(0, 100);
 
   List<Map<String, dynamic>> toRows() => [
-        {'key': 'commission_cash_pct', 'value_int': commissionCashPct},
-        {'key': 'commission_momo_pct', 'value_int': commissionMomoPct},
-        {'key': 'commission_travel_pct', 'value_int': commissionTravelPct},
-        {'key': 'wallet_block_threshold_fcfa', 'value_int': seuilBlocageFcfa},
-        {'key': 'cash_credit_limit_fcfa', 'value_int': cashCreditLimitFcfa},
-      ];
+    {'key': 'commission_cash_pct', 'value_int': commissionCashPct},
+    {'key': 'commission_momo_pct', 'value_int': commissionMomoPct},
+    {'key': 'commission_travel_pct', 'value_int': commissionTravelPct},
+    {'key': 'wallet_block_threshold_fcfa', 'value_int': seuilBlocageFcfa},
+    {'key': 'cash_credit_limit_fcfa', 'value_int': cashCreditLimitFcfa},
+  ];
 }

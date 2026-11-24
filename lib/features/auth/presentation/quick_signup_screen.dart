@@ -1,4 +1,3 @@
-﻿
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -86,8 +85,10 @@ class _QuickSignupScreenState extends State<QuickSignupScreen> {
     try {
       await _service.sendOtp(phone);
       if (!mounted) return;
-      context.push(RegistrationRole.withRole('/register/quick/otp', _role),
-          extra: phone);
+      context.push(
+        RegistrationRole.withRole('/register/quick/otp', _role),
+        extra: phone,
+      );
     } on QuickAuthException catch (e) {
       if (mounted) setState(() => _error = e.message);
     } finally {
@@ -111,8 +112,8 @@ class _QuickSignupScreenState extends State<QuickSignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final muted =
-        Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7);
+    final muted = Theme.of(context).colorScheme.onSurface
+        .withValues(alpha: 0.7);
     final prestataire = _role == RegistrationRole.provider;
 
     return AuthShell(
@@ -120,13 +121,15 @@ class _QuickSignupScreenState extends State<QuickSignupScreen> {
       subtitle: prestataire
           ? 'Commencez avec votre numÃƒÂ©ro, on s\'occupe du reste'
           : 'MÃƒÂªme dÃƒÂ©marche pour les deux : votre numÃƒÂ©ro et un code SMS. '
-              'Pas de mot de passe ÃƒÂ  retenir.',
+                'Pas de mot de passe ÃƒÂ  retenir.',
       icon: prestataire ? Icons.build_circle_outlined : Icons.bolt_rounded,
       onBack: _loading ? null : () => context.go('/explore'),
       footer: TextButton(
         onPressed: _loading ? null : () => context.go('/explore'),
-        child: Text('Continuer sans compte',
-            style: TextStyle(color: muted, fontWeight: FontWeight.w700)),
+        child: Text(
+          'Continuer sans compte',
+          style: TextStyle(color: muted, fontWeight: FontWeight.w700),
+        ),
       ),
       child: Form(
         key: _formKey,
@@ -169,8 +172,9 @@ class _QuickSignupScreenState extends State<QuickSignupScreen> {
                 label: 'Continuer avec Google',
                 icon: Icons.g_mobiledata_rounded,
                 variant: AppButtonVariant.secondary,
-                onPressed:
-                    _loading ? null : () => _social(OAuthProvider.google),
+                onPressed: _loading
+                    ? null
+                    : () => _social(OAuthProvider.google),
               ),
             ],
             const SizedBox(height: 10),
@@ -178,8 +182,10 @@ class _QuickSignupScreenState extends State<QuickSignupScreen> {
               child: TextButton(
                 onPressed: _loading ? null : () => context.go('/login'),
                 style: TextButton.styleFrom(foregroundColor: muted),
-                child: const Text('Connexion avec mot de passe',
-                    style: TextStyle(fontWeight: FontWeight.w700)),
+                child: const Text(
+                  'Connexion avec mot de passe',
+                  style: TextStyle(fontWeight: FontWeight.w700),
+                ),
               ),
             ),
           ],

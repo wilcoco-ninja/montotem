@@ -74,8 +74,8 @@ class Prestataire {
 
   String get nomAffiche =>
       (businessName != null && businessName!.trim().isNotEmpty)
-          ? businessName!
-          : nom;
+      ? businessName!
+      : nom;
 
   int get points =>
       pointsBruts ?? ((noteMoyenne * 100).round() + (missionsCompletees * 5));

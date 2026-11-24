@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -59,8 +58,9 @@ class SpaceTheme {
   /// [platform] n'a d'effet que pour le client (clair ou sombre selon le
   /// systÃƒÂ¨me) ; le prestataire est toujours sombre, l'admin toujours clair.
   static ThemeData of(AppSpace space, Brightness platform) {
-    final key =
-        space == AppSpace.client ? 'client-${platform.name}' : space.name;
+    final key = space == AppSpace.client
+        ? 'client-${platform.name}'
+        : space.name;
     return _cache.putIfAbsent(key, () => _build(_palette(space, platform)));
   }
 
@@ -173,14 +173,15 @@ class SpaceTheme {
     );
 
     OutlineInputBorder border(Color c, [double w = 1.3]) => OutlineInputBorder(
-          borderRadius: BorderRadius.circular(p.radius),
-          borderSide: BorderSide(color: c, width: w),
-        );
+      borderRadius: BorderRadius.circular(p.radius),
+      borderSide: BorderSide(color: c, width: w),
+    );
 
-    final overlay = (p.brightness == Brightness.dark
-            ? SystemUiOverlayStyle.light
-            : SystemUiOverlayStyle.dark)
-        .copyWith(statusBarColor: Colors.transparent);
+    final overlay =
+        (p.brightness == Brightness.dark
+                ? SystemUiOverlayStyle.light
+                : SystemUiOverlayStyle.dark)
+            .copyWith(statusBarColor: Colors.transparent);
 
     final outlinedFg = p.brightness == Brightness.dark ? p.ink : p.primary;
 
@@ -214,16 +215,19 @@ class SpaceTheme {
           ),
           shape: WidgetStatePropertyAll(shape),
           elevation: const WidgetStatePropertyAll(0),
-          backgroundColor: WidgetStateProperty.resolveWith((s) =>
-              s.contains(WidgetState.disabled)
-                  ? p.primary.withValues(alpha: 0.35)
-                  : p.primary),
-          foregroundColor: WidgetStateProperty.resolveWith((s) =>
-              s.contains(WidgetState.disabled)
-                  ? p.onPrimary.withValues(alpha: 0.7)
-                  : p.onPrimary),
-          overlayColor:
-              WidgetStatePropertyAll(p.onPrimary.withValues(alpha: 0.12)),
+          backgroundColor: WidgetStateProperty.resolveWith(
+            (s) => s.contains(WidgetState.disabled)
+                ? p.primary.withValues(alpha: 0.35)
+                : p.primary,
+          ),
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (s) => s.contains(WidgetState.disabled)
+                ? p.onPrimary.withValues(alpha: 0.7)
+                : p.onPrimary,
+          ),
+          overlayColor: WidgetStatePropertyAll(
+            p.onPrimary.withValues(alpha: 0.12),
+          ),
           iconSize: const WidgetStatePropertyAll(22),
           textStyle: WidgetStatePropertyAll(label),
         ),
@@ -244,18 +248,22 @@ class SpaceTheme {
             EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           ),
           shape: WidgetStatePropertyAll(shape),
-          foregroundColor: WidgetStateProperty.resolveWith((s) =>
-              s.contains(WidgetState.disabled)
-                  ? p.ink.withValues(alpha: 0.38)
-                  : outlinedFg),
-          side: WidgetStateProperty.resolveWith((s) => BorderSide(
-                color: s.contains(WidgetState.disabled)
-                    ? p.line
-                    : p.primary.withValues(alpha: 0.75),
-                width: 1.5,
-              )),
-          overlayColor:
-              WidgetStatePropertyAll(p.primary.withValues(alpha: 0.10)),
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (s) => s.contains(WidgetState.disabled)
+                ? p.ink.withValues(alpha: 0.38)
+                : outlinedFg,
+          ),
+          side: WidgetStateProperty.resolveWith(
+            (s) => BorderSide(
+              color: s.contains(WidgetState.disabled)
+                  ? p.line
+                  : p.primary.withValues(alpha: 0.75),
+              width: 1.5,
+            ),
+          ),
+          overlayColor: WidgetStatePropertyAll(
+            p.primary.withValues(alpha: 0.10),
+          ),
           iconSize: const WidgetStatePropertyAll(22),
           textStyle: WidgetStatePropertyAll(label),
         ),
@@ -264,16 +272,20 @@ class SpaceTheme {
         style: ButtonStyle(
           minimumSize: const WidgetStatePropertyAll(Size(64, 48)),
           shape: WidgetStatePropertyAll(shape),
-          foregroundColor: WidgetStateProperty.resolveWith((s) =>
-              s.contains(WidgetState.disabled)
-                  ? p.ink.withValues(alpha: 0.38)
-                  : p.primary),
-          overlayColor:
-              WidgetStatePropertyAll(p.primary.withValues(alpha: 0.10)),
-          textStyle: WidgetStatePropertyAll(label.copyWith(
-            fontWeight: FontWeight.w700,
-            fontSize: p.dense ? 14 : 15,
-          )),
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (s) => s.contains(WidgetState.disabled)
+                ? p.ink.withValues(alpha: 0.38)
+                : p.primary,
+          ),
+          overlayColor: WidgetStatePropertyAll(
+            p.primary.withValues(alpha: 0.10),
+          ),
+          textStyle: WidgetStatePropertyAll(
+            label.copyWith(
+              fontWeight: FontWeight.w700,
+              fontSize: p.dense ? 14 : 15,
+            ),
+          ),
         ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -299,14 +311,16 @@ class SpaceTheme {
         focusedErrorBorder: border(p.danger, 2.2),
         disabledBorder: border(p.fieldLine.withValues(alpha: 0.4)),
         labelStyle: TextStyle(color: p.inkSoft, fontSize: 15),
-        floatingLabelStyle: WidgetStateTextStyle.resolveWith((s) => TextStyle(
-              color: s.contains(WidgetState.error)
-                  ? p.danger
-                  : s.contains(WidgetState.focused)
-                      ? p.primary
-                      : p.inkSoft,
-              fontWeight: FontWeight.w700,
-            )),
+        floatingLabelStyle: WidgetStateTextStyle.resolveWith(
+          (s) => TextStyle(
+            color: s.contains(WidgetState.error)
+                ? p.danger
+                : s.contains(WidgetState.focused)
+                ? p.primary
+                : p.inkSoft,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
         hintStyle: TextStyle(
           color: p.inkSoft.withValues(alpha: 0.8),
           fontSize: 15,
@@ -318,14 +332,16 @@ class SpaceTheme {
           fontWeight: FontWeight.w700,
         ),
         errorMaxLines: 3,
-        prefixIconColor:
-            WidgetStateColor.resolveWith((s) => s.contains(WidgetState.error)
-                ? p.danger
-                : s.contains(WidgetState.focused)
-                    ? p.primary
-                    : p.inkSoft),
+        prefixIconColor: WidgetStateColor.resolveWith(
+          (s) => s.contains(WidgetState.error)
+              ? p.danger
+              : s.contains(WidgetState.focused)
+              ? p.primary
+              : p.inkSoft,
+        ),
         suffixIconColor: WidgetStateColor.resolveWith(
-            (s) => s.contains(WidgetState.focused) ? p.primary : p.inkSoft),
+          (s) => s.contains(WidgetState.focused) ? p.primary : p.inkSoft,
+        ),
       ),
       chipTheme: ChipThemeData(
         backgroundColor: p.primary.withValues(alpha: 0.10),
@@ -348,8 +364,9 @@ class SpaceTheme {
           fontWeight: FontWeight.w700,
           fontSize: 15.5,
         ),
-        actionTextColor:
-            p.brightness == Brightness.dark ? p.primary : p.surface,
+        actionTextColor: p.brightness == Brightness.dark
+            ? p.primary
+            : p.surface,
       ),
       dialogTheme: DialogThemeData(
         backgroundColor: p.surface,
@@ -373,17 +390,21 @@ class SpaceTheme {
         backgroundColor: p.surface,
         surfaceTintColor: Colors.transparent,
         indicatorColor: p.primary.withValues(alpha: 0.2),
-        labelTextStyle: WidgetStateProperty.resolveWith((s) => TextStyle(
-              fontSize: 13.5,
-              fontWeight: s.contains(WidgetState.selected)
-                  ? FontWeight.w800
-                  : FontWeight.w600,
-              color: s.contains(WidgetState.selected) ? p.ink : p.inkSoft,
-            )),
-        iconTheme: WidgetStateProperty.resolveWith((s) => IconThemeData(
-              size: 26,
-              color: s.contains(WidgetState.selected) ? p.ink : p.inkSoft,
-            )),
+        labelTextStyle: WidgetStateProperty.resolveWith(
+          (s) => TextStyle(
+            fontSize: 13.5,
+            fontWeight: s.contains(WidgetState.selected)
+                ? FontWeight.w800
+                : FontWeight.w600,
+            color: s.contains(WidgetState.selected) ? p.ink : p.inkSoft,
+          ),
+        ),
+        iconTheme: WidgetStateProperty.resolveWith(
+          (s) => IconThemeData(
+            size: 26,
+            color: s.contains(WidgetState.selected) ? p.ink : p.inkSoft,
+          ),
+        ),
       ),
     );
   }

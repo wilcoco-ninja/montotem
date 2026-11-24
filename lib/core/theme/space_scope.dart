@@ -30,11 +30,7 @@ Uri _currentUri(GoRouter router) {
 /// Applique le thème de l'espace correspondant à la route affichée.
 /// À placer autour du Navigator, dans `MaterialApp.router(builder: ...)`.
 class SpaceThemed extends StatelessWidget {
-  const SpaceThemed({
-    super.key,
-    required this.router,
-    required this.child,
-  });
+  const SpaceThemed({super.key, required this.router, required this.child});
 
   final GoRouter router;
   final Widget child;

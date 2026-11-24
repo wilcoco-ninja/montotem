@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -40,7 +39,7 @@ class TotemTheme {
     final fonted = s.bevel
         ? GoogleFonts.barlowTextTheme(base.textTheme as dynamic) as dynamic
         : GoogleFonts.plusJakartaSansTextTheme(base.textTheme as dynamic)
-            as dynamic;
+              as dynamic;
 
     final text = (fonted as dynamic).apply(
       fontSizeFactor: s.bevel ? 1.06 : 1.0,
@@ -52,25 +51,29 @@ class TotemTheme {
         ? BeveledRectangleBorder(borderRadius: BorderRadius.circular(s.radius))
         : const StadiumBorder();
 
-    final TextStyle btnText = (s.bevel
-            ? GoogleFonts.barlow(fontWeight: FontWeight.w800, fontSize: 19)
-            : GoogleFonts.plusJakartaSans(
-                fontWeight: FontWeight.w800, fontSize: 16.5))
-        .copyWith(letterSpacing: s.bevel ? 0.8 : 0);
+    final TextStyle btnText =
+        (s.bevel
+                ? GoogleFonts.barlow(fontWeight: FontWeight.w800, fontSize: 19)
+                : GoogleFonts.plusJakartaSans(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 16.5,
+                  ))
+            .copyWith(letterSpacing: s.bevel ? 0.8 : 0);
 
     OutlineInputBorder border(Color c, [double w = 1.4]) => OutlineInputBorder(
-          borderRadius: BorderRadius.circular(s.radius),
-          borderSide: BorderSide(color: c, width: w),
-        );
+      borderRadius: BorderRadius.circular(s.radius),
+      borderSide: BorderSide(color: c, width: w),
+    );
 
     final overlayStyle =
         (dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark)
             .copyWith(
-      statusBarColor: Colors.transparent,
-      systemNavigationBarColor: s.bg,
-      systemNavigationBarIconBrightness:
-          dark ? Brightness.light : Brightness.dark,
-    );
+              statusBarColor: Colors.transparent,
+              systemNavigationBarColor: s.bg,
+              systemNavigationBarIconBrightness: dark
+                  ? Brightness.light
+                  : Brightness.dark,
+            );
 
     WidgetStateProperty<Color?> overlay(Color c) =>
         WidgetStateProperty.resolveWith((st) {
@@ -102,9 +105,9 @@ class TotemTheme {
         systemOverlayStyle: overlayStyle,
         iconTheme: IconThemeData(color: s.ink, size: 26),
         titleTextStyle: (text as dynamic).titleLarge?.copyWith(
-              color: s.ink,
-              fontWeight: FontWeight.w800,
-            ),
+          color: s.ink,
+          fontWeight: FontWeight.w800,
+        ),
       ),
       cardTheme: CardThemeData(
         color: s.surface,
@@ -129,14 +132,16 @@ class TotemTheme {
           ),
           shape: WidgetStatePropertyAll(btnShape),
           elevation: const WidgetStatePropertyAll(0),
-          backgroundColor: WidgetStateProperty.resolveWith((st) =>
-              st.contains(WidgetState.disabled)
-                  ? s.primary.withValues(alpha: 0.30)
-                  : s.primary),
-          foregroundColor: WidgetStateProperty.resolveWith((st) =>
-              st.contains(WidgetState.disabled)
-                  ? s.onPrimary.withValues(alpha: 0.7)
-                  : s.onPrimary),
+          backgroundColor: WidgetStateProperty.resolveWith(
+            (st) => st.contains(WidgetState.disabled)
+                ? s.primary.withValues(alpha: 0.30)
+                : s.primary,
+          ),
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (st) => st.contains(WidgetState.disabled)
+                ? s.onPrimary.withValues(alpha: 0.7)
+                : s.onPrimary,
+          ),
           overlayColor: overlay(s.onPrimary),
           iconSize: const WidgetStatePropertyAll(24),
           textStyle: WidgetStatePropertyAll(btnText),
@@ -158,16 +163,19 @@ class TotemTheme {
             EdgeInsets.symmetric(horizontal: 26, vertical: 14),
           ),
           shape: WidgetStatePropertyAll(btnShape),
-          foregroundColor: WidgetStateProperty.resolveWith((st) =>
-              st.contains(WidgetState.disabled)
-                  ? s.ink.withValues(alpha: 0.38)
-                  : (dark ? s.ink : s.primary)),
-          side: WidgetStateProperty.resolveWith((st) => BorderSide(
-                color: st.contains(WidgetState.disabled)
-                    ? s.line
-                    : s.primary.withValues(alpha: 0.85),
-                width: 1.8,
-              )),
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (st) => st.contains(WidgetState.disabled)
+                ? s.ink.withValues(alpha: 0.38)
+                : (dark ? s.ink : s.primary),
+          ),
+          side: WidgetStateProperty.resolveWith(
+            (st) => BorderSide(
+              color: st.contains(WidgetState.disabled)
+                  ? s.line
+                  : s.primary.withValues(alpha: 0.85),
+              width: 1.8,
+            ),
+          ),
           overlayColor: overlay(s.primary),
           iconSize: const WidgetStatePropertyAll(24),
           textStyle: WidgetStatePropertyAll(btnText),
@@ -177,13 +185,15 @@ class TotemTheme {
         style: ButtonStyle(
           minimumSize: const WidgetStatePropertyAll(Size(64, 52)),
           shape: WidgetStatePropertyAll(btnShape),
-          foregroundColor: WidgetStateProperty.resolveWith((st) =>
-              st.contains(WidgetState.disabled)
-                  ? s.ink.withValues(alpha: 0.38)
-                  : s.primary),
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (st) => st.contains(WidgetState.disabled)
+                ? s.ink.withValues(alpha: 0.38)
+                : s.primary,
+          ),
           overlayColor: overlay(s.primary),
           textStyle: WidgetStatePropertyAll(
-              btnText.copyWith(fontSize: s.bevel ? 17 : 15.5)),
+            btnText.copyWith(fontSize: s.bevel ? 17 : 15.5),
+          ),
         ),
       ),
       iconButtonTheme: IconButtonThemeData(
@@ -201,8 +211,10 @@ class TotemTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: s.field,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 18,
+          vertical: 18,
+        ),
         border: border(s.fieldLine),
         enabledBorder: border(s.fieldLine),
         focusedBorder: border(s.primary, 2.6),
@@ -210,29 +222,39 @@ class TotemTheme {
         focusedErrorBorder: border(s.danger, 2.6),
         disabledBorder: border(s.line),
         labelStyle: TextStyle(color: s.inkSoft, fontSize: 16),
-        floatingLabelStyle: WidgetStateTextStyle.resolveWith((st) => TextStyle(
-              color: st.contains(WidgetState.error)
-                  ? s.danger
-                  : st.contains(WidgetState.focused)
-                      ? s.primary
-                      : s.inkSoft,
-              fontWeight: FontWeight.w800,
-            )),
+        floatingLabelStyle: WidgetStateTextStyle.resolveWith(
+          (st) => TextStyle(
+            color: st.contains(WidgetState.error)
+                ? s.danger
+                : st.contains(WidgetState.focused)
+                ? s.primary
+                : s.inkSoft,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
         hintStyle: TextStyle(color: s.inkSoft.withValues(alpha: 0.85)),
         helperStyle: TextStyle(color: s.inkSoft, fontSize: 13.5),
         errorStyle: TextStyle(
-            color: s.danger, fontSize: 14, fontWeight: FontWeight.w700),
+          color: s.danger,
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
+        ),
         errorMaxLines: 3,
         prefixIconColor: WidgetStateColor.resolveWith(
-            (st) => st.contains(WidgetState.focused) ? s.primary : s.inkSoft),
+          (st) => st.contains(WidgetState.focused) ? s.primary : s.inkSoft,
+        ),
         suffixIconColor: WidgetStateColor.resolveWith(
-            (st) => st.contains(WidgetState.focused) ? s.primary : s.inkSoft),
+          (st) => st.contains(WidgetState.focused) ? s.primary : s.inkSoft,
+        ),
       ),
       chipTheme: ChipThemeData(
         backgroundColor: s.primary.withValues(alpha: 0.10),
         selectedColor: s.primary.withValues(alpha: 0.28),
-        labelStyle:
-            TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: s.ink),
+        labelStyle: TextStyle(
+          fontWeight: FontWeight.w700,
+          fontSize: 15,
+          color: s.ink,
+        ),
         side: BorderSide(color: s.line),
         shape: const StadiumBorder(),
       ),
@@ -253,12 +275,15 @@ class TotemTheme {
         collapsedShape: const Border(),
       ),
       switchTheme: SwitchThemeData(
-        thumbColor: WidgetStateProperty.resolveWith((st) =>
-            st.contains(WidgetState.selected) ? s.onPrimary : s.inkSoft),
+        thumbColor: WidgetStateProperty.resolveWith(
+          (st) => st.contains(WidgetState.selected) ? s.onPrimary : s.inkSoft,
+        ),
         trackColor: WidgetStateProperty.resolveWith(
-            (st) => st.contains(WidgetState.selected) ? s.primary : s.field),
-        trackOutlineColor: WidgetStateProperty.resolveWith((st) =>
-            st.contains(WidgetState.selected) ? s.primary : s.fieldLine),
+          (st) => st.contains(WidgetState.selected) ? s.primary : s.field,
+        ),
+        trackOutlineColor: WidgetStateProperty.resolveWith(
+          (st) => st.contains(WidgetState.selected) ? s.primary : s.fieldLine,
+        ),
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(color: s.primary),
       snackBarTheme: SnackBarThemeData(
@@ -271,21 +296,24 @@ class TotemTheme {
         ),
         actionTextColor: dark ? s.primary : s.accent,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(s.radius)),
+          borderRadius: BorderRadius.circular(s.radius),
+        ),
       ),
       dialogTheme: DialogThemeData(
         backgroundColor: s.surface,
         surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(s.radius + 4)),
+          borderRadius: BorderRadius.circular(s.radius + 4),
+        ),
       ),
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: s.surface,
         surfaceTintColor: Colors.transparent,
         showDragHandle: true,
         shape: RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.vertical(top: Radius.circular(s.radius + 8)),
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(s.radius + 8),
+          ),
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
@@ -293,17 +321,21 @@ class TotemTheme {
         backgroundColor: s.surface,
         surfaceTintColor: Colors.transparent,
         indicatorColor: s.primary.withValues(alpha: 0.24),
-        labelTextStyle: WidgetStateProperty.resolveWith((st) => TextStyle(
-              fontSize: 14,
-              fontWeight: st.contains(WidgetState.selected)
-                  ? FontWeight.w800
-                  : FontWeight.w600,
-              color: st.contains(WidgetState.selected) ? s.ink : s.inkSoft,
-            )),
-        iconTheme: WidgetStateProperty.resolveWith((st) => IconThemeData(
-              size: 27,
-              color: st.contains(WidgetState.selected) ? s.ink : s.inkSoft,
-            )),
+        labelTextStyle: WidgetStateProperty.resolveWith(
+          (st) => TextStyle(
+            fontSize: 14,
+            fontWeight: st.contains(WidgetState.selected)
+                ? FontWeight.w800
+                : FontWeight.w600,
+            color: st.contains(WidgetState.selected) ? s.ink : s.inkSoft,
+          ),
+        ),
+        iconTheme: WidgetStateProperty.resolveWith(
+          (st) => IconThemeData(
+            size: 27,
+            color: st.contains(WidgetState.selected) ? s.ink : s.inkSoft,
+          ),
+        ),
       ),
     );
   }

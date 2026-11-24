@@ -58,13 +58,14 @@ class EarningsSummary {
     final serie = ((j['series'] as List?) ?? const [])
         .whereType<Map>()
         .map<EarningsDay>((e) {
-      final m = Map<String, dynamic>.from(e);
-      return EarningsDay(
-        date: DateTime.tryParse('${m['day']}') ?? DateTime.now(),
-        gross: (m['gross'] as num?)?.toInt() ?? 0,
-        commission: (m['commission'] as num?)?.toInt() ?? 0,
-      );
-    }).toList();
+          final m = Map<String, dynamic>.from(e);
+          return EarningsDay(
+            date: DateTime.tryParse('${m['day']}') ?? DateTime.now(),
+            gross: (m['gross'] as num?)?.toInt() ?? 0,
+            commission: (m['commission'] as num?)?.toInt() ?? 0,
+          );
+        })
+        .toList();
 
     return EarningsSummary(
       days: n('days'),
@@ -87,15 +88,20 @@ class ProviderEarningsService {
 
   Future<EarningsSummary> resume(int jours) async {
     try {
-      final data =
-          await _sb.rpc('provider_earnings_summary', params: {'p_days': jours});
+      final data = await _sb.rpc(
+        'provider_earnings_summary',
+        params: {'p_days': jours},
+      );
       if (data is! Map) {
         throw const EarningsException('Réponse invalide du serveur.');
       }
       return EarningsSummary.fromJson(Map<String, dynamic>.from(data));
     } on PostgrestException catch (e) {
-      developer.log('provider_earnings_summary',
-          error: e, name: 'ProviderEarningsService');
+      developer.log(
+        'provider_earnings_summary',
+        error: e,
+        name: 'ProviderEarningsService',
+      );
       final m = e.message;
       if (m.contains('NON_CONNECTE')) {
         throw const EarningsException('Session expirée. Reconnectez-vous.');
@@ -107,10 +113,14 @@ class ProviderEarningsService {
     } on EarningsException {
       rethrow;
     } catch (e) {
-      developer.log('provider_earnings_summary inattendu',
-          error: e, name: 'ProviderEarningsService');
+      developer.log(
+        'provider_earnings_summary inattendu',
+        error: e,
+        name: 'ProviderEarningsService',
+      );
       throw const EarningsException(
-          'Connexion impossible. Vérifiez votre réseau.');
+        'Connexion impossible. Vérifiez votre réseau.',
+      );
     }
   }
 }

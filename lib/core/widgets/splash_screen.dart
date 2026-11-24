@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 
 import 'package:montotem/core/flavor/app_flavor.dart';
@@ -15,26 +14,26 @@ class SplashScreen extends StatelessWidget {
     final flavor = AppFlavor.current;
     final (bg, fg, glyph, titre, sousTitre) = switch (flavor) {
       AppFlavor.client => (
-          SpaceColors.clientBg,
-          SpaceColors.clientPrimary,
-          TotemGlyph.mark,
-          'MonTotem',
-          'Un dÃƒÂ©panneur, pas loin de vous',
-        ),
+        SpaceColors.clientBg,
+        SpaceColors.clientPrimary,
+        TotemGlyph.mark,
+        'MonTotem',
+        'Un dÃƒÂ©panneur, pas loin de vous',
+      ),
       AppFlavor.driver => (
-          SpaceColors.driverBg,
-          SpaceColors.driverAccent,
-          TotemGlyph.zemidjan,
-          'MonTotem Driver',
-          'Vos courses, votre route',
-        ),
+        SpaceColors.driverBg,
+        SpaceColors.driverAccent,
+        TotemGlyph.zemidjan,
+        'MonTotem Driver',
+        'Vos courses, votre route',
+      ),
       AppFlavor.pro => (
-          SpaceColors.proBg,
-          SpaceColors.proAccent,
-          TotemGlyph.depannage,
-          'MonTotem Pro',
-          'Votre atelier, vos clients',
-        ),
+        SpaceColors.proBg,
+        SpaceColors.proAccent,
+        TotemGlyph.depannage,
+        'MonTotem Pro',
+        'Votre atelier, vos clients',
+      ),
     };
 
     return Scaffold(

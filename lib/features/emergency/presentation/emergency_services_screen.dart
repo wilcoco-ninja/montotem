@@ -1,4 +1,3 @@
-﻿
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -47,9 +46,9 @@ class _EmergencyServicesScreenState extends State<EmergencyServicesScreen> {
   StreamSubscription<bool>? _connSub;
 
   CountryNumbers get _pays => _numeros.resoudre(
-        lat: _positionReelle ? _centre.latitude : null,
-        lng: _positionReelle ? _centre.longitude : null,
-      );
+    lat: _positionReelle ? _centre.latitude : null,
+    lng: _positionReelle ? _centre.longitude : null,
+  );
 
   @override
   void initState() {
@@ -102,11 +101,15 @@ class _EmergencyServicesScreenState extends State<EmergencyServicesScreen> {
     unawaited(TileDiskCache.instance.prechargerAutour(_centre));
     if (!mounted) return;
     setState(() => _preparation = false);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(_lieux.vide
-          ? 'Aucune donnÃƒÂ©e reÃƒÂ§ue. VÃƒÂ©rifiez votre connexion et rÃƒÂ©essayez.'
-          : 'Zone prÃƒÂ©parÃƒÂ©e : disponible hors ligne.'),
-    ));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          _lieux.vide
+              ? 'Aucune donnÃƒÂ©e reÃƒÂ§ue. VÃƒÂ©rifiez votre connexion et rÃƒÂ©essayez.'
+              : 'Zone prÃƒÂ©parÃƒÂ©e : disponible hors ligne.',
+        ),
+      ),
+    );
   }
 
   @override
@@ -145,10 +148,7 @@ class _EmergencyServicesScreenState extends State<EmergencyServicesScreen> {
                   Expanded(
                     child: ListView(
                       padding: EdgeInsets.fromLTRB(gutter / 2, 4, gutter, 32),
-                      children: [
-                        ..._blocCarte(hauteur: 340),
-                        ..._blocListe(),
-                      ],
+                      children: [..._blocCarte(hauteur: 340), ..._blocListe()],
                     ),
                   ),
                 ],
@@ -197,21 +197,24 @@ class _EmergencyServicesScreenState extends State<EmergencyServicesScreen> {
   List<Widget> _blocNumeros(CountryNumbers pays) {
     return [
       if (_horsLigne) _banniereHorsLigne(),
-      Text('NumÃƒÂ©ros d\'urgence : ${pays.nom}',
-          style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w800)),
+      Text(
+        'NumÃƒÂ©ros d\'urgence : ${pays.nom}',
+        style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w800),
+      ),
       if (pays.confiance != Confiance.officiel)
         Padding(
           padding: const EdgeInsets.only(top: 4),
           child: Text(
             pays.confiance == Confiance.recoupe
                 ? 'NumÃƒÂ©ros recoupÃƒÂ©s entre plusieurs sources publiques, pas '
-                    'encore confirmÃƒÂ©s par l\'autoritÃƒÂ© nationale.'
+                      'encore confirmÃƒÂ©s par l\'autoritÃƒÂ© nationale.'
                 : 'NumÃƒÂ©ros ÃƒÂ  confirmer pour ce pays. Si l\'appel n\'aboutit '
-                    'pas, essayez le 112.',
+                      'pas, essayez le 112.',
             style: TextStyle(
-                fontSize: 14.5,
-                height: 1.35,
-                color: context.readable(AppTheme.warningColor)),
+              fontSize: 14.5,
+              height: 1.35,
+              color: context.readable(AppTheme.warningColor),
+            ),
           ),
         ),
       const SizedBox(height: 10),
@@ -255,41 +258,48 @@ class _EmergencyServicesScreenState extends State<EmergencyServicesScreen> {
                 userAgentPackageName: 'bj.totem.app',
                 tileProvider: _tuiles,
               ),
-              MarkerLayer(markers: [
-                if (_positionReelle)
-                  Marker(
-                    point: _centre,
-                    width: 30,
-                    height: 30,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 3),
-                      ),
-                    ),
-                  ),
-                for (final p in proches)
-                  Marker(
-                    point: p.lieu.position,
-                    width: 46,
-                    height: 46,
-                    child: GestureDetector(
-                      onTap: () =>
-                          context.push('/emergency/route', extra: p.lieu),
+              MarkerLayer(
+                markers: [
+                  if (_positionReelle)
+                    Marker(
+                      point: _centre,
+                      width: 30,
+                      height: 30,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Colors.blue,
                           shape: BoxShape.circle,
-                          border:
-                              Border.all(color: p.lieu.kind.couleur, width: 3),
+                          border: Border.all(color: Colors.white, width: 3),
                         ),
-                        child: Icon(p.lieu.kind.icone,
-                            color: p.lieu.kind.couleur, size: 24),
                       ),
                     ),
-                  ),
-              ]),
+                  for (final p in proches)
+                    Marker(
+                      point: p.lieu.position,
+                      width: 46,
+                      height: 46,
+                      child: GestureDetector(
+                        onTap: () =>
+                            context.push('/emergency/route', extra: p.lieu),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: p.lieu.kind.couleur,
+                              width: 3,
+                            ),
+                          ),
+                          child: Icon(
+                            p.lieu.kind.icone,
+                            color: p.lieu.kind.couleur,
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
               const RichAttributionWidget(
                 attributions: [
                   TextSourceAttribution('Ã‚Â© OpenStreetMap contributors'),
@@ -331,7 +341,8 @@ class _EmergencyServicesScreenState extends State<EmergencyServicesScreen> {
         const EmptyState(
           icon: Icons.cloud_download_outlined,
           title: 'Aucun ÃƒÂ©tablissement enregistrÃƒÂ©',
-          message: 'Avec internet, prÃƒÂ©parez votre zone une fois : la liste, '
+          message:
+              'Avec internet, prÃƒÂ©parez votre zone une fois : la liste, '
               'les itinÃƒÂ©raires et la carte restent ensuite disponibles hors ligne.',
         ),
         const SizedBox(height: 14),
@@ -359,23 +370,32 @@ class _EmergencyServicesScreenState extends State<EmergencyServicesScreen> {
                         color: p.lieu.kind.couleur.withValues(alpha: 0.14),
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      child: Icon(p.lieu.kind.icone,
-                          color: p.lieu.kind.couleur, size: 28),
+                      child: Icon(
+                        p.lieu.kind.icone,
+                        color: p.lieu.kind.couleur,
+                        size: 28,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(p.lieu.nom,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                  fontSize: 16.5, fontWeight: FontWeight.w800)),
+                          Text(
+                            p.lieu.nom,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 16.5,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
                           Text(
                             '${p.km.toStringAsFixed(1)} km ÃƒÂ  vol d\'oiseau',
                             style: TextStyle(
-                                fontSize: 14.5, color: context.textSecondary),
+                              fontSize: 14.5,
+                              color: context.textSecondary,
+                            ),
                           ),
                         ],
                       ),
@@ -438,17 +458,23 @@ class _BoutonAppel extends StatelessWidget {
                 Icon(kind.icone, color: Colors.white, size: 34),
                 const SizedBox(width: 14),
                 Expanded(
-                  child: Text(kind.libelle,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 19,
-                          fontWeight: FontWeight.w800)),
-                ),
-                Text(numero,
+                  child: Text(
+                    kind.libelle,
                     style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.w800)),
+                      color: Colors.white,
+                      fontSize: 19,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+                Text(
+                  numero,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 28,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
                 const SizedBox(width: 8),
                 const Icon(Icons.call_rounded, color: Colors.white, size: 28),
               ],

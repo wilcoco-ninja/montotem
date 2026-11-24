@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -59,9 +58,8 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
       await _charger();
     } on AdminNotificationException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message)),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message)));
     }
   }
 
@@ -95,25 +93,26 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
   }
 
   ({IconData icon, Color color}) _style(
-          ColorScheme scheme, AdminNotificationType type) =>
-      switch (type) {
-        AdminNotificationType.providerRegistration => (
-            icon: Icons.person_add_alt_1_outlined,
-            color: scheme.primary,
-          ),
-        AdminNotificationType.paymentSucceeded => (
-            icon: Icons.payments_outlined,
-            color: scheme.secondary,
-          ),
-        AdminNotificationType.paymentAnomaly => (
-            icon: Icons.warning_amber_rounded,
-            color: scheme.error,
-          ),
-        AdminNotificationType.other => (
-            icon: Icons.notifications_outlined,
-            color: scheme.outline,
-          ),
-      };
+    ColorScheme scheme,
+    AdminNotificationType type,
+  ) => switch (type) {
+    AdminNotificationType.providerRegistration => (
+      icon: Icons.person_add_alt_1_outlined,
+      color: scheme.primary,
+    ),
+    AdminNotificationType.paymentSucceeded => (
+      icon: Icons.payments_outlined,
+      color: scheme.secondary,
+    ),
+    AdminNotificationType.paymentAnomaly => (
+      icon: Icons.warning_amber_rounded,
+      color: scheme.error,
+    ),
+    AdminNotificationType.other => (
+      icon: Icons.notifications_outlined,
+      color: scheme.outline,
+    ),
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -188,8 +187,7 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
               title: _nonLuesSeulement
                   ? 'Aucune notification non lue'
                   : 'Aucune notification',
-              message:
-                  'Les nouveaux dossiers prestataires et les paiements apparaÃƒÂ®tront ici.',
+              message: 'Les nouveaux dossiers prestataires et les paiements apparaÃƒÂ®tront ici.',
             ),
           ],
         ),

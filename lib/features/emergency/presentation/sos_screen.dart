@@ -1,4 +1,3 @@
-﻿
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -163,20 +162,23 @@ class _SosScreenState extends State<SosScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Appeler le $numero ?',
-                style:
-                    const TextStyle(fontSize: 26, fontWeight: FontWeight.w800)),
+            Text(
+              'Appeler le $numero ?',
+              style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
+            ),
             const SizedBox(height: 4),
             Text(libelle, style: const TextStyle(fontSize: 18)),
             for (final a in attention)
               Padding(
                 padding: const EdgeInsets.only(top: 10),
-                child: Text(a,
-                    style: TextStyle(
-                        fontSize: 15.5,
-                        height: 1.35,
-                        color:
-                            ctx.readable(Theme.of(ctx).colorScheme.tertiary))),
+                child: Text(
+                  a,
+                  style: TextStyle(
+                    fontSize: 15.5,
+                    height: 1.35,
+                    color: ctx.readable(Theme.of(ctx).colorScheme.tertiary),
+                  ),
+                ),
               ),
           ],
         ),
@@ -197,9 +199,11 @@ class _SosScreenState extends State<SosScreen> {
 
     final lance = await appelerNumero(numero);
     if (!mounted) return;
-    setState(() => _appelLance = lance
-        ? 'Appel du $numero lancÃƒÂ©. Si la communication est coupÃƒÂ©e, rappelez.'
-        : null);
+    setState(
+      () => _appelLance = lance
+          ? 'Appel du $numero lancÃƒÂ©. Si la communication est coupÃƒÂ©e, rappelez.'
+          : null,
+    );
     if (!lance) {
       _msg('Impossible de lancer l\'appel. Composez le $numero ÃƒÂ  la main.');
     }
@@ -225,8 +229,9 @@ class _SosScreenState extends State<SosScreen> {
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: const Text('Annuler')),
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Annuler'),
+          ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, c.text.trim()),
             child: const Text('Enregistrer'),
@@ -255,15 +260,21 @@ class _SosScreenState extends State<SosScreen> {
   Future<void> _copier() async {
     final p = _pos;
     if (p == null) return;
-    await Clipboard.setData(ClipboardData(
+    await Clipboard.setData(
+      ClipboardData(
         text:
-            '${p.latitude.toStringAsFixed(5)}, ${p.longitude.toStringAsFixed(5)}'));
+            '${p.latitude.toStringAsFixed(5)}, ${p.longitude.toStringAsFixed(5)}',
+      ),
+    );
     if (mounted) _msg('CoordonnÃƒÂ©es copiÃƒÂ©es.');
   }
 
   Future<void> _confirmerPays(CountryNumbers c) async {
-    await _numeros.choisirPays(c.code,
-        lat: _pos?.latitude, lng: _pos?.longitude);
+    await _numeros.choisirPays(
+      c.code,
+      lat: _pos?.latitude,
+      lng: _pos?.longitude,
+    );
     if (mounted) setState(() {});
   }
 
@@ -277,11 +288,17 @@ class _SosScreenState extends State<SosScreen> {
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
         shrinkWrap: true,
         children: [
-          const Text('Pays des secours',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800)),
+          const Text(
+            'Pays des secours',
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+          ),
           const SizedBox(height: 12),
           _ligneChoixPays(
-              ctx, null, 'DÃƒÂ©tection automatique', 'Selon votre position GPS'),
+            ctx,
+            null,
+            'DÃƒÂ©tection automatique',
+            'Selon votre position GPS',
+          ),
           for (final p in _numeros.pays)
             _ligneChoixPays(
               ctx,
@@ -290,22 +307,33 @@ class _SosScreenState extends State<SosScreen> {
               'Police ${p.police} Ã‚Â· Pompiers ${p.fire} Ã‚Â· Urgences ${p.ambulance}'
               '${p.confiance == Confiance.officiel ? '' : ' Ã‚Â· ÃƒÂ  confirmer'}',
             ),
-          _ligneChoixPays(ctx, '--', 'NumÃƒÂ©ro international',
-              'Appel du 112 (fonctionne sur de nombreux rÃƒÂ©seaux)'),
+          _ligneChoixPays(
+            ctx,
+            '--',
+            'NumÃƒÂ©ro international',
+            'Appel du 112 (fonctionne sur de nombreux rÃƒÂ©seaux)',
+          ),
         ],
       ),
     );
   }
 
   Widget _ligneChoixPays(
-      BuildContext ctx, String? code, String titre, String sous) {
+    BuildContext ctx,
+    String? code,
+    String titre,
+    String sous,
+  ) {
     final actif = _numeros.choixManuel == code;
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: SoftCard(
         onTap: () async {
-          await _numeros.choisirPays(code,
-              lat: _pos?.latitude, lng: _pos?.longitude);
+          await _numeros.choisirPays(
+            code,
+            lat: _pos?.latitude,
+            lng: _pos?.longitude,
+          );
           if (ctx.mounted) Navigator.pop(ctx);
           if (mounted) setState(() {});
         },
@@ -315,18 +343,28 @@ class _SosScreenState extends State<SosScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(titre,
-                      style: const TextStyle(
-                          fontSize: 17, fontWeight: FontWeight.w800)),
-                  Text(sous,
-                      style: TextStyle(
-                          fontSize: 14.5, color: context.textSecondary)),
+                  Text(
+                    titre,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  Text(
+                    sous,
+                    style: TextStyle(
+                      fontSize: 14.5,
+                      color: context.textSecondary,
+                    ),
+                  ),
                 ],
               ),
             ),
-            Icon(actif
-                ? Icons.check_circle_rounded
-                : Icons.radio_button_unchecked_rounded),
+            Icon(
+              actif
+                  ? Icons.check_circle_rounded
+                  : Icons.radio_button_unchecked_rounded,
+            ),
           ],
         ),
       ),
@@ -357,8 +395,12 @@ class _SosScreenState extends State<SosScreen> {
           child: ContentWidth(
             maxWidth: 960,
             child: ListView(
-              padding:
-                  EdgeInsets.fromLTRB(context.gutter, 4, context.gutter, 32),
+              padding: EdgeInsets.fromLTRB(
+                context.gutter,
+                4,
+                context.gutter,
+                32,
+              ),
               children: [
                 if (_horsLigne) _banniereHorsLigne(),
                 _lignePays(res),
@@ -397,15 +439,21 @@ class _SosScreenState extends State<SosScreen> {
       ),
       child: Row(
         children: [
-          Icon(Icons.cloud_off_rounded,
-              color: context.readable(scheme.tertiary), size: 28),
+          Icon(
+            Icons.cloud_off_rounded,
+            color: context.readable(scheme.tertiary),
+            size: 28,
+          ),
           const SizedBox(width: 10),
           const Expanded(
             child: Text(
               'Hors ligne : le SOS fonctionne quand mÃƒÂªme. Les appels passent '
               'par le rÃƒÂ©seau tÃƒÂ©lÃƒÂ©phonique.',
               style: TextStyle(
-                  fontSize: 15.5, fontWeight: FontWeight.w700, height: 1.35),
+                fontSize: 15.5,
+                fontWeight: FontWeight.w700,
+                height: 1.35,
+              ),
             ),
           ),
         ],
@@ -425,19 +473,30 @@ class _SosScreenState extends State<SosScreen> {
         children: [
           Row(
             children: [
-              Icon(Icons.public_rounded,
-                  size: 28, color: Theme.of(context).colorScheme.primary),
+              Icon(
+                Icons.public_rounded,
+                size: 28,
+                color: Theme.of(context).colorScheme.primary,
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Pays des secours',
-                        style: TextStyle(
-                            fontSize: 14, color: context.textSecondary)),
-                    Text(pays.nom,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w800)),
+                    Text(
+                      'Pays des secours',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: context.textSecondary,
+                      ),
+                    ),
+                    Text(
+                      pays.nom,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -446,11 +505,14 @@ class _SosScreenState extends State<SosScreen> {
           ),
           if (res.ambigu && !res.choisi) ...[
             const SizedBox(height: 8),
-            Text('Vous ÃƒÂªtes prÃƒÂ¨s d\'une frontiÃƒÂ¨re : confirmez votre pays.',
-                style: TextStyle(
-                    fontSize: 15.5,
-                    fontWeight: FontWeight.w800,
-                    color: avertissement)),
+            Text(
+              'Vous ÃƒÂªtes prÃƒÂ¨s d\'une frontiÃƒÂ¨re : confirmez votre pays.',
+              style: TextStyle(
+                fontSize: 15.5,
+                fontWeight: FontWeight.w800,
+                color: avertissement,
+              ),
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -469,23 +531,26 @@ class _SosScreenState extends State<SosScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 6),
               child: Text(
-                  'Pays non reconnu : choisissez-le pour appeler le bon service.',
-                  style: TextStyle(fontSize: 14.5, color: avertissement)),
+                'Pays non reconnu : choisissez-le pour appeler le bon service.',
+                style: TextStyle(fontSize: 14.5, color: avertissement),
+              ),
             )
           else if (pays.confiance == Confiance.recoupe)
             Padding(
               padding: const EdgeInsets.only(top: 6),
               child: Text(
-                  'NumÃƒÂ©ros recoupÃƒÂ©s entre plusieurs sources publiques, pas encore '
-                  'confirmÃƒÂ©s par l\'autoritÃƒÂ© nationale.',
-                  style: TextStyle(fontSize: 14, color: context.textSecondary)),
+                'NumÃƒÂ©ros recoupÃƒÂ©s entre plusieurs sources publiques, pas encore '
+                'confirmÃƒÂ©s par l\'autoritÃƒÂ© nationale.',
+                style: TextStyle(fontSize: 14, color: context.textSecondary),
+              ),
             )
           else if (pays.confiance == Confiance.aConfirmer)
             Padding(
               padding: const EdgeInsets.only(top: 6),
               child: Text(
-                  'NumÃƒÂ©ros ÃƒÂ  confirmer pour ce pays : vÃƒÂ©rifiez avant d\'appeler.',
-                  style: TextStyle(fontSize: 14.5, color: avertissement)),
+                'NumÃƒÂ©ros ÃƒÂ  confirmer pour ce pays : vÃƒÂ©rifiez avant d\'appeler.',
+                style: TextStyle(fontSize: 14.5, color: avertissement),
+              ),
             ),
         ],
       ),
@@ -496,8 +561,10 @@ class _SosScreenState extends State<SosScreen> {
     return [
       const Padding(
         padding: EdgeInsets.only(top: 8, bottom: 6),
-        child: Text('Quelle est votre urgence ?',
-            style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800)),
+        child: Text(
+          'Quelle est votre urgence ?',
+          style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
+        ),
       ),
       Padding(
         padding: const EdgeInsets.only(bottom: 14),
@@ -505,7 +572,10 @@ class _SosScreenState extends State<SosScreen> {
           'RÃƒÂ©pondez ÃƒÂ  quelques questions, puis vous choisirez qui appeler. '
           'Rien n\'est appelÃƒÂ© sans votre confirmation.',
           style: TextStyle(
-              fontSize: 16, height: 1.4, color: context.textSecondary),
+            fontSize: 16,
+            height: 1.4,
+            color: context.textSecondary,
+          ),
         ),
       ),
       AdaptiveGrid(
@@ -537,7 +607,10 @@ class _SosScreenState extends State<SosScreen> {
         'Ce bouton prÃƒÂ©pare l\'appel au service de secours officiel de votre '
         'pays. MONTOTEM n\'est pas un service de secours.',
         style: TextStyle(
-            fontSize: 14.5, height: 1.4, color: context.textSecondary),
+          fontSize: 14.5,
+          height: 1.4,
+          color: context.textSecondary,
+        ),
       ),
     ];
   }
@@ -555,15 +628,18 @@ class _SosScreenState extends State<SosScreen> {
           Icon(type.icone, color: type.couleur, size: 30),
           const SizedBox(width: 10),
           Expanded(
-            child: Text(type.libelle,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+            child: Text(
+              type.libelle,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+            ),
           ),
         ],
       ),
       const SizedBox(height: 10),
-      Text('Question ${_index + 1} sur ${qs.length}',
-          style: TextStyle(fontSize: 15.5, color: context.textSecondary)),
+      Text(
+        'Question ${_index + 1} sur ${qs.length}',
+        style: TextStyle(fontSize: 15.5, color: context.textSecondary),
+      ),
       const SizedBox(height: 6),
       ClipRRect(
         borderRadius: BorderRadius.circular(6),
@@ -574,9 +650,14 @@ class _SosScreenState extends State<SosScreen> {
         ),
       ),
       const SizedBox(height: 22),
-      Text(q.texte,
-          style: const TextStyle(
-              fontSize: 26, fontWeight: FontWeight.w800, height: 1.25)),
+      Text(
+        q.texte,
+        style: const TextStyle(
+          fontSize: 26,
+          fontWeight: FontWeight.w800,
+          height: 1.25,
+        ),
+      ),
       const SizedBox(height: 24),
       AppButton(
         label: 'Oui',
@@ -611,14 +692,16 @@ class _SosScreenState extends State<SosScreen> {
   Widget? _avertissementNumeros(ResolutionPays res) {
     if (res.ambigu && !res.choisi) {
       return _carteConsigne(
-          'Vous ÃƒÂªtes prÃƒÂ¨s d\'une frontiÃƒÂ¨re : confirmez votre pays en haut de '
-          'l\'ÃƒÂ©cran avant d\'appeler.');
+        'Vous ÃƒÂªtes prÃƒÂ¨s d\'une frontiÃƒÂ¨re : confirmez votre pays en haut de '
+        'l\'ÃƒÂ©cran avant d\'appeler.',
+      );
     }
     if (res.pays.confiance == Confiance.aConfirmer && res.pays.code != '--') {
       return _carteConsigne(
-          'NumÃƒÂ©ros ÃƒÂ  confirmer pour ${res.pays.nom}. VÃƒÂ©rifiez le numÃƒÂ©ro avant '
-          'd\'appeler. Si l\'appel n\'aboutit pas, essayez le numÃƒÂ©ro gÃƒÂ©nÃƒÂ©ral '
-          'ou le 112.');
+        'NumÃƒÂ©ros ÃƒÂ  confirmer pour ${res.pays.nom}. VÃƒÂ©rifiez le numÃƒÂ©ro avant '
+        'd\'appeler. Si l\'appel n\'aboutit pas, essayez le numÃƒÂ©ro gÃƒÂ©nÃƒÂ©ral '
+        'ou le 112.',
+      );
     }
     return null;
   }
@@ -633,13 +716,18 @@ class _SosScreenState extends State<SosScreen> {
     return [
       const Padding(
         padding: EdgeInsets.only(top: 8, bottom: 6),
-        child: Text('Que voulez-vous faire ?',
-            style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800)),
+        child: Text(
+          'Que voulez-vous faire ?',
+          style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
+        ),
       ),
       Text(
         'C\'est vous qui dÃƒÂ©cidez. Rien n\'est appelÃƒÂ© sans votre confirmation.',
         style: TextStyle(
-            fontSize: 16.5, height: 1.4, color: context.textSecondary),
+          fontSize: 16.5,
+          height: 1.4,
+          color: context.textSecondary,
+        ),
       ),
       const SizedBox(height: 14),
       if (avert != null) ...[avert, const SizedBox(height: 12)],
@@ -653,15 +741,21 @@ class _SosScreenState extends State<SosScreen> {
           ),
           child: Row(
             children: [
-              Icon(Icons.check_circle_rounded,
-                  color: context.readable(scheme.secondary), size: 28),
+              Icon(
+                Icons.check_circle_rounded,
+                color: context.readable(scheme.secondary),
+                size: 28,
+              ),
               const SizedBox(width: 10),
               Expanded(
-                child: Text(_appelLance!,
-                    style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        height: 1.35)),
+                child: Text(
+                  _appelLance!,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    height: 1.35,
+                  ),
+                ),
               ),
             ],
           ),
@@ -690,12 +784,11 @@ class _SosScreenState extends State<SosScreen> {
             label: 'Essayer le numÃƒÂ©ro gÃƒÂ©nÃƒÂ©ral : $general',
             icon: Icons.call_rounded,
             variant: AppButtonVariant.secondary,
-            onPressed: () => _confirmerEtAppeler('NumÃƒÂ©ro gÃƒÂ©nÃƒÂ©ral', general),
+            onPressed: () =>
+                _confirmerEtAppeler('NumÃƒÂ©ro gÃƒÂ©nÃƒÂ©ral', general),
           ),
         ),
-      if (plan.consigne != null) ...[
-        _carteConsigne(plan.consigne!),
-      ],
+      if (plan.consigne != null) ...[_carteConsigne(plan.consigne!)],
       const SectionTitle('Ce que vous pouvez dire ÃƒÂ  l\'opÃƒÂ©rateur'),
       SoftCard(
         child: Column(
@@ -740,8 +833,10 @@ class _SosScreenState extends State<SosScreen> {
             child: Icon(Icons.chevron_right_rounded, size: 22),
           ),
           Expanded(
-            child:
-                Text(texte, style: const TextStyle(fontSize: 17, height: 1.35)),
+            child: Text(
+              texte,
+              style: const TextStyle(fontSize: 17, height: 1.35),
+            ),
           ),
         ],
       ),
@@ -760,13 +855,21 @@ class _SosScreenState extends State<SosScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.info_outline_rounded,
-              color: context.readable(scheme.primary), size: 28),
+          Icon(
+            Icons.info_outline_rounded,
+            color: context.readable(scheme.primary),
+            size: 28,
+          ),
           const SizedBox(width: 10),
           Expanded(
-            child: Text(texte,
-                style: const TextStyle(
-                    fontSize: 16.5, fontWeight: FontWeight.w700, height: 1.4)),
+            child: Text(
+              texte,
+              style: const TextStyle(
+                fontSize: 16.5,
+                fontWeight: FontWeight.w700,
+                height: 1.4,
+              ),
+            ),
           ),
         ],
       ),
@@ -780,28 +883,40 @@ class _SosScreenState extends State<SosScreen> {
           ? const Row(
               children: [
                 SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(strokeWidth: 3)),
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(strokeWidth: 3),
+                ),
                 SizedBox(width: 12),
                 Expanded(
-                  child: Text('Recherche de votre position GPSÃ¢â‚¬Â¦',
-                      style: TextStyle(fontSize: 16.5)),
+                  child: Text(
+                    'Recherche de votre position GPSÃ¢â‚¬Â¦',
+                    style: TextStyle(fontSize: 16.5),
+                  ),
                 ),
               ],
             )
           : Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('Latitude : ${p.latitude.toStringAsFixed(5)}',
-                    style: const TextStyle(
-                        fontSize: 21, fontWeight: FontWeight.w800)),
-                Text('Longitude : ${p.longitude.toStringAsFixed(5)}',
-                    style: const TextStyle(
-                        fontSize: 21, fontWeight: FontWeight.w800)),
-                Text('PrÃƒÂ©cision : environ ${p.accuracy.round()} m',
-                    style:
-                        TextStyle(fontSize: 15, color: context.textSecondary)),
+                Text(
+                  'Latitude : ${p.latitude.toStringAsFixed(5)}',
+                  style: const TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                Text(
+                  'Longitude : ${p.longitude.toStringAsFixed(5)}',
+                  style: const TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                Text(
+                  'PrÃƒÂ©cision : environ ${p.accuracy.round()} m',
+                  style: TextStyle(fontSize: 15, color: context.textSecondary),
+                ),
                 const SizedBox(height: 12),
                 Row(
                   children: [
@@ -843,15 +958,19 @@ class _SosScreenState extends State<SosScreen> {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                  '${kind.libelleLieu} : disponible dÃƒÂ¨s que votre position est trouvÃƒÂ©e.',
-                  style: const TextStyle(fontSize: 15.5)),
+                '${kind.libelleLieu} : disponible dÃƒÂ¨s que votre position est trouvÃƒÂ©e.',
+                style: const TextStyle(fontSize: 15.5),
+              ),
             ),
           ],
         ),
       );
     }
-    final res = _lieux.plusProches(LatLng(p.latitude, p.longitude),
-        kind: kind, limite: 1);
+    final res = _lieux.plusProches(
+      LatLng(p.latitude, p.longitude),
+      kind: kind,
+      limite: 1,
+    );
     if (res.isEmpty) {
       return SoftCard(
         onTap: () => context.push('/emergency'),
@@ -882,15 +1001,19 @@ class _SosScreenState extends State<SosScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(r.lieu.nom,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                        fontSize: 17, fontWeight: FontWeight.w800)),
                 Text(
-                    '${r.km.toStringAsFixed(1)} km ÃƒÂ  vol d\'oiseau Ã‚Â· ItinÃƒÂ©raire',
-                    style:
-                        TextStyle(fontSize: 15, color: context.textSecondary)),
+                  r.lieu.nom,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                Text(
+                  '${r.km.toStringAsFixed(1)} km ÃƒÂ  vol d\'oiseau Ã‚Â· ItinÃƒÂ©raire',
+                  style: TextStyle(fontSize: 15, color: context.textSecondary),
+                ),
               ],
             ),
           ),
@@ -929,22 +1052,31 @@ class _TuileUrgence extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(type.libelle,
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 21,
-                              fontWeight: FontWeight.w800)),
+                      Text(
+                        type.libelle,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 21,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
                       const SizedBox(height: 2),
-                      Text(type.description,
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 15.5,
-                              height: 1.3)),
+                      Text(
+                        type.description,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.5,
+                          height: 1.3,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                const Icon(Icons.chevron_right_rounded,
-                    color: Colors.white, size: 32),
+                const Icon(
+                  Icons.chevron_right_rounded,
+                  color: Colors.white,
+                  size: 32,
+                ),
               ],
             ),
           ),
@@ -990,14 +1122,21 @@ class _CarteService extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(kind.libelle,
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w800)),
-                    Text('NumÃƒÂ©ro : $numero',
-                        style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700,
-                            color: context.textSecondary)),
+                    Text(
+                      kind.libelle,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    Text(
+                      'NumÃƒÂ©ro : $numero',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: context.textSecondary,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -1024,8 +1163,10 @@ class _CarteService extends StatelessWidget {
               backgroundColor: kind.couleur,
               foregroundColor: Colors.white,
               minimumSize: const Size.fromHeight(58),
-              textStyle:
-                  const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+              textStyle: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+              ),
             ),
           ),
         ],

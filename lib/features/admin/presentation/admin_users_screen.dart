@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 
 import 'package:montotem/core/models/app_user.dart';
@@ -78,10 +77,10 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
   }
 
   String _libelleRole(UserRole role) => switch (role) {
-        UserRole.admin => 'Admin',
-        UserRole.provider => 'Prestataire',
-        UserRole.client => 'Client',
-      };
+    UserRole.admin => 'Admin',
+    UserRole.provider => 'Prestataire',
+    UserRole.client => 'Client',
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -109,9 +108,12 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                   hintText: 'Rechercher par nom, tÃƒÂ©lÃƒÂ©phone ou rÃƒÂ´le...',
                   prefixIcon: const Icon(Icons.search_rounded),
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14)),
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                 ),
               ),
             ),
@@ -140,7 +142,9 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
       return Center(
         child: SingleChildScrollView(
           child: ErrorState(
-              message: _errorMessage!, onRetry: () => _chargerUtilisateurs()),
+            message: _errorMessage!,
+            onRetry: () => _chargerUtilisateurs(),
+          ),
         ),
       );
     }
@@ -188,8 +192,10 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                 final initiale = nom.isNotEmpty ? nom[0].toUpperCase() : '?';
 
                 return SoftCard(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   child: Row(
                     children: [
                       CircleAvatar(
@@ -198,7 +204,9 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                         child: Text(
                           initiale,
                           style: TextStyle(
-                              fontWeight: FontWeight.w800, color: couleur),
+                            fontWeight: FontWeight.w800,
+                            color: couleur,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 14),
@@ -211,21 +219,22 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w700),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                             const SizedBox(height: 2),
                             Text(
                               u.phone,
                               style: TextStyle(
-                                  fontSize: 13, color: Colors.grey.shade600),
+                                fontSize: 13,
+                                color: Colors.grey.shade600,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      StatusPill(
-                        label: _libelleRole(u.role),
-                        color: couleur,
-                      ),
+                      StatusPill(label: _libelleRole(u.role), color: couleur),
                     ],
                   ),
                 );

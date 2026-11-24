@@ -16,10 +16,10 @@ class StarEntry {
   final DateTime date;
 
   String get libelle => switch (raison) {
-        'avis' => 'Avis donné',
-        'avis_detaille' => 'Avis détaillé (bonus)',
-        _ => 'Points d\'étoiles',
-      };
+    'avis' => 'Avis donné',
+    'avis_detaille' => 'Avis détaillé (bonus)',
+    _ => 'Points d\'étoiles',
+  };
 }
 
 class ClientProfile {
@@ -50,7 +50,8 @@ class ClientProfileService {
       final row = await _sb
           .from('profiles')
           .select(
-              'first_name, last_name, phone, email, photo_profil_url, star_points')
+            'first_name, last_name, phone, email, photo_profil_url, star_points',
+          )
           .eq('id', uid)
           .maybeSingle();
       if (row == null) return null;
@@ -74,12 +75,15 @@ class ClientProfileService {
         photoUrl: row['photo_profil_url'] as String?,
         starPoints: (row['star_points'] as num?)?.toInt() ?? 0,
         historique: hist
-            .map<StarEntry>((r) => StarEntry(
-                  delta: (r['delta'] as num?)?.toInt() ?? 0,
-                  raison: '${r['reason']}',
-                  date: DateTime.tryParse('${r['created_at']}')?.toLocal() ??
-                      DateTime.now(),
-                ))
+            .map<StarEntry>(
+              (r) => StarEntry(
+                delta: (r['delta'] as num?)?.toInt() ?? 0,
+                raison: '${r['reason']}',
+                date:
+                    DateTime.tryParse('${r['created_at']}')?.toLocal() ??
+                    DateTime.now(),
+              ),
+            )
             .toList(),
       );
     } on PostgrestException catch (e) {

@@ -51,7 +51,7 @@ class MontotemMap extends StatefulWidget {
   /// Appelée ~0,4 s après la fin de chaque déplacement/zoom : c'est ici qu'on
   /// charge les prestataires de la zone visible.
   final void Function(LatLngBounds visible, double zoom, LatLng center)?
-      onViewportIdle;
+  onViewportIdle;
 
   final LatLng? initialCenter;
   final double? initialZoom;
@@ -74,7 +74,8 @@ class _MontotemMapState extends State<MontotemMap> {
   void initState() {
     super.initState();
     MapConfig.warmUp();
-    _zoom = widget.initialZoom ??
+    _zoom =
+        widget.initialZoom ??
         (widget.user != null ? MapConfig.cityZoom : MapConfig.worldZoom);
   }
 
@@ -88,8 +89,10 @@ class _MontotemMapState extends State<MontotemMap> {
   void _onReady() {
     _events = widget.controller.mapEventStream.listen((e) {
       _idle?.cancel();
-      _idle =
-          Timer(const Duration(milliseconds: 400), () => _emitIdle(e.camera));
+      _idle = Timer(
+        const Duration(milliseconds: 400),
+        () => _emitIdle(e.camera),
+      );
     });
     // Premier chargement sans attendre un geste.
     _emitIdle(widget.controller.camera);
@@ -97,7 +100,8 @@ class _MontotemMapState extends State<MontotemMap> {
 
   void _emitIdle(MapCamera cam) {
     if (!mounted) return;
-    final moved = _viewCenter == null ||
+    final moved =
+        _viewCenter == null ||
         (_viewCenter!.latitude - cam.center.latitude).abs() > 0.02 ||
         (_viewCenter!.longitude - cam.center.longitude).abs() > 0.02 ||
         (_zoom - cam.zoom).abs() > 0.5;
@@ -171,7 +175,8 @@ class _MontotemMapState extends State<MontotemMap> {
     final user = widget.user;
     final center = widget.initialCenter ?? user ?? MapConfig.worldCenter;
     final weatherAt = user ?? _viewCenter;
-    final weatherOk = widget.showWeather &&
+    final weatherOk =
+        widget.showWeather &&
         weatherAt != null &&
         (user != null || _zoom >= 6); // inutile à l'échelle du monde
 
@@ -267,33 +272,33 @@ class _UserDot extends StatelessWidget {
     final rotationDeg = MapCamera.of(context).rotation;
 
     Widget dot(double? heading) => Stack(
-          alignment: Alignment.center,
-          children: [
-            if (heading != null)
-              Transform.rotate(
-                angle: (heading + rotationDeg) * math.pi / 180,
-                child: CustomPaint(
-                  size: const Size(76, 76),
-                  painter: _BeamPainter(),
-                ),
-              ),
-            Container(
-              width: 22,
-              height: 22,
-              decoration: BoxDecoration(
-                color: scheme.primary,
-                shape: BoxShape.circle,
-                border: Border.all(color: scheme.surface, width: 3),
-                boxShadow: [
-                  BoxShadow(
-                    color: scheme.primary.withValues(alpha: 0.45),
-                    blurRadius: 10,
-                  ),
-                ],
-              ),
+      alignment: Alignment.center,
+      children: [
+        if (heading != null)
+          Transform.rotate(
+            angle: (heading + rotationDeg) * math.pi / 180,
+            child: CustomPaint(
+              size: const Size(76, 76),
+              painter: _BeamPainter(),
             ),
-          ],
-        );
+          ),
+        Container(
+          width: 22,
+          height: 22,
+          decoration: BoxDecoration(
+            color: scheme.primary,
+            shape: BoxShape.circle,
+            border: Border.all(color: scheme.surface, width: 3),
+            boxShadow: [
+              BoxShadow(
+                color: scheme.primary.withValues(alpha: 0.45),
+                blurRadius: 10,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
 
     if (stream == null) return dot(null);
     return StreamBuilder<double>(

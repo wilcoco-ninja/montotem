@@ -65,7 +65,8 @@ class _TotemIconState extends State<TotemIcon>
     super.didChangeDependencies();
     // Le phare SOS ne pulse que si les animations sont autorisées
     // (désactivées en mode éco-batterie et dans les réglages d'accessibilité).
-    final animer = widget.glyph == TotemGlyph.sos &&
+    final animer =
+        widget.glyph == TotemGlyph.sos &&
         !MediaQuery.disableAnimationsOf(context);
     if (animer && !_pulse.isAnimating) {
       _pulse.repeat();
@@ -82,10 +83,12 @@ class _TotemIconState extends State<TotemIcon>
 
   @override
   Widget build(BuildContext context) {
-    final color = widget.color ??
+    final color =
+        widget.color ??
         IconTheme.of(context).color ??
         Theme.of(context).colorScheme.onSurface;
-    final accent = widget.accent ??
+    final accent =
+        widget.accent ??
         (widget.glyph == TotemGlyph.sos ? Totem.urgence : Totem.safran);
 
     return Semantics(
@@ -154,7 +157,10 @@ class _TotemPainter extends CustomPainter {
         canvas.drawLine(const Offset(25, 16), const Offset(33, 16), trait);
         // Selle
         canvas.drawLine(
-            const Offset(13, 23), const Offset(23, 23), _trait(color, 4.5));
+          const Offset(13, 23),
+          const Offset(23, 23),
+          _trait(color, 4.5),
+        );
         // Pilote : casque safran + buste
         canvas.drawCircle(const Offset(18, 11.5), 4.8, _plein(accent));
         canvas.drawLine(const Offset(18, 17), const Offset(21, 23), trait);
@@ -196,13 +202,22 @@ class _TotemPainter extends CustomPainter {
         final tete = Rect.fromCircle(center: const Offset(32, 16), radius: 8);
         canvas.drawArc(tete, -0.285, 6.283 - 1.1, false, _trait(color, 4));
         canvas.drawLine(
-            const Offset(26, 22), const Offset(10, 38), _trait(color, 5.5));
+          const Offset(26, 22),
+          const Offset(10, 38),
+          _trait(color, 5.5),
+        );
         canvas.drawCircle(const Offset(9, 39), 2.6, _plein(accent));
         // Petite étincelle d'intervention
         canvas.drawLine(
-            const Offset(38, 36), const Offset(44, 36), _trait(accent, 3));
+          const Offset(38, 36),
+          const Offset(44, 36),
+          _trait(accent, 3),
+        );
         canvas.drawLine(
-            const Offset(41, 33), const Offset(41, 39), _trait(accent, 3));
+          const Offset(41, 33),
+          const Offset(41, 39),
+          _trait(accent, 3),
+        );
         break;
 
       case TotemGlyph.panne:
@@ -213,7 +228,10 @@ class _TotemPainter extends CustomPainter {
           ..close();
         canvas.drawPath(tri, _trait(color, 3.2));
         canvas.drawLine(
-            const Offset(24, 18), const Offset(24, 29), _trait(accent, 4));
+          const Offset(24, 18),
+          const Offset(24, 29),
+          _trait(accent, 4),
+        );
         canvas.drawCircle(const Offset(24, 34.5), 2.3, _plein(accent));
         break;
 
@@ -265,7 +283,10 @@ class _TotemPainter extends CustomPainter {
           canvas.drawLine(Offset(x, 39), Offset(x, 39 - h), _trait(color, 4.4));
         }
         canvas.drawLine(
-            const Offset(5, 7), const Offset(43, 43), _trait(accent, 3.6));
+          const Offset(5, 7),
+          const Offset(43, 43),
+          _trait(accent, 3.6),
+        );
         break;
 
       case TotemGlyph.remorquage:
@@ -288,9 +309,15 @@ class _TotemPainter extends CustomPainter {
         canvas.drawRRect(plateau, _plein(accent.withValues(alpha: 0.38)));
         canvas.drawRRect(plateau, trait);
         canvas.drawLine(
-            const Offset(33, 26), const Offset(40, 11), _trait(color, 3.4));
+          const Offset(33, 26),
+          const Offset(40, 11),
+          _trait(color, 3.4),
+        );
         canvas.drawLine(
-            const Offset(40, 11), const Offset(40, 19), _trait(accent, 2.6));
+          const Offset(40, 11),
+          const Offset(40, 19),
+          _trait(accent, 2.6),
+        );
         canvas.drawCircle(const Offset(40, 22), 2.6, _trait(accent, 2.4));
         break;
 

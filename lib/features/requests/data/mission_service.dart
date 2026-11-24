@@ -28,36 +28,38 @@ class MissionService {
       rethrow;
     } catch (_) {
       throw const MissionException(
-          'Connexion impossible. Vérifiez votre réseau et réessayez.');
+        'Connexion impossible. Vérifiez votre réseau et réessayez.',
+      );
     }
   }
 
   Future<List<Mission>> mesMissions() => _run(() async {
-        final data = await _sb.rpc('my_missions');
-        return (data as List)
-            .whereType<Map>()
-            .map((e) => Mission.fromJson(Map<String, dynamic>.from(e)))
-            .toList();
-      });
+    final data = await _sb.rpc('my_missions');
+    return (data as List)
+        .whereType<Map>()
+        .map((e) => Mission.fromJson(Map<String, dynamic>.from(e)))
+        .toList();
+  });
 
   Future<Mission> obtenir(String id) => _run(() async {
-        final data = await _sb.rpc('mission_to_json', params: {'p_id': id});
-        if (data is! Map) throw const MissionException('Demande introuvable.');
-        return Mission.fromJson(Map<String, dynamic>.from(data));
-      });
+    final data = await _sb.rpc('mission_to_json', params: {'p_id': id});
+    if (data is! Map) throw const MissionException('Demande introuvable.');
+    return Mission.fromJson(Map<String, dynamic>.from(data));
+  });
 
   /// Prestations commandées (prix figés). Visible du client et du prestataire.
   Future<List<MissionItem>> prestations(String missionId) => _run(() async {
-        final rows = await _sb
-            .from('mission_items')
-            .select('id, nom, prix_fcfa')
-            .eq('mission_id', missionId)
-            .order('created_at');
-        return rows
-            .map<MissionItem>(
-                (r) => MissionItem.fromJson(Map<String, dynamic>.from(r)))
-            .toList();
-      });
+    final rows = await _sb
+        .from('mission_items')
+        .select('id, nom, prix_fcfa')
+        .eq('mission_id', missionId)
+        .order('created_at');
+    return rows
+        .map<MissionItem>(
+          (r) => MissionItem.fromJson(Map<String, dynamic>.from(r)),
+        )
+        .toList();
+  });
 
   /// Crée une demande à partir de prestations du catalogue du prestataire.
   /// [prestationIds] : ids de `provider_catalog_items`. Les montants sont
@@ -88,8 +90,9 @@ class MissionService {
         },
       );
       throw const MissionException(
-          'Hors ligne : votre demande est enregistrée. Elle sera envoyée '
-          'automatiquement dès que le réseau revient.');
+        'Hors ligne : votre demande est enregistrée. Elle sera envoyée '
+        'automatiquement dès que le réseau revient.',
+      );
     }
     return _creerDirecte(
       providerId: providerId,
@@ -110,34 +113,39 @@ class MissionService {
     required double lng,
     String? description,
     String? adresse,
-  }) =>
-      _run(() async {
-        final id = await _sb.rpc('create_mission', params: {
-          'p_provider': providerId,
-          'p_vehicle': vehicle,
-          'p_items': prestationIds,
-          'p_description': description,
-          'p_lat': lat,
-          'p_lng': lng,
-          'p_address': adresse,
-        });
-        return '$id';
-      });
+  }) => _run(() async {
+    final id = await _sb.rpc(
+      'create_mission',
+      params: {
+        'p_provider': providerId,
+        'p_vehicle': vehicle,
+        'p_items': prestationIds,
+        'p_description': description,
+        'p_lat': lat,
+        'p_lng': lng,
+        'p_address': adresse,
+      },
+    );
+    return '$id';
+  });
 
   /// Rejoue une demande de depannage mise en file hors ligne.
   /// true : demande creee. false : refus metier definitif (la tache est
   /// retiree). Exception : echec reseau transitoire (reessai).
   Future<bool> rejouerCreation(Map<String, dynamic> p) async {
     try {
-      await _sb.rpc('create_mission', params: {
-        'p_provider': p['providerId'],
-        'p_vehicle': p['vehicle'],
-        'p_items': (p['prestationIds'] as List).cast<String>(),
-        'p_description': p['description'],
-        'p_lat': (p['lat'] as num).toDouble(),
-        'p_lng': (p['lng'] as num).toDouble(),
-        'p_address': p['adresse'],
-      });
+      await _sb.rpc(
+        'create_mission',
+        params: {
+          'p_provider': p['providerId'],
+          'p_vehicle': p['vehicle'],
+          'p_items': (p['prestationIds'] as List).cast<String>(),
+          'p_description': p['description'],
+          'p_lat': (p['lat'] as num).toDouble(),
+          'p_lng': (p['lng'] as num).toDouble(),
+          'p_address': p['adresse'],
+        },
+      );
       return true;
     } on PostgrestException {
       return false;
@@ -146,25 +154,34 @@ class MissionService {
 
   /// action : accept | refuse | arrived | start_work | end_work
   /// Aucun montant : le prix de la réparation est celui des prestations.
-  Future<void> agir(String id, String action) =>
-      _run(() => _sb.rpc('mission_provider_action', params: {
-            'p_mission': id,
-            'p_action': action,
-          }));
+  Future<void> agir(String id, String action) => _run(
+    () => _sb.rpc(
+      'mission_provider_action',
+      params: {'p_mission': id, 'p_action': action},
+    ),
+  );
 
   /// Retourne le statut courant (« arrived » si l'arrivée vient d'être détectée).
   Future<String> envoyerPosition(String id, double lat, double lng) =>
       _run(() async {
-        final s = await _sb.rpc('update_provider_position',
-            params: {'p_mission': id, 'p_lat': lat, 'p_lng': lng});
+        final s = await _sb.rpc(
+          'update_provider_position',
+          params: {'p_mission': id, 'p_lat': lat, 'p_lng': lng},
+        );
         return '$s';
       });
 
-  Future<void> annuler(String id, {String? motif}) => _run(() =>
-      _sb.rpc('cancel_mission', params: {'p_mission': id, 'p_reason': motif}));
+  Future<void> annuler(String id, {String? motif}) => _run(
+    () =>
+        _sb.rpc('cancel_mission', params: {'p_mission': id, 'p_reason': motif}),
+  );
 
-  Future<void> envoyerMessage(String id, String texte) => _run(() => _sb
-      .rpc('send_mission_message', params: {'p_mission': id, 'p_body': texte}));
+  Future<void> envoyerMessage(String id, String texte) => _run(
+    () => _sb.rpc(
+      'send_mission_message',
+      params: {'p_mission': id, 'p_body': texte},
+    ),
+  );
 
   Stream<List<Map<String, dynamic>>> messages(String id) => _sb
       .from('mission_messages')
@@ -173,41 +190,46 @@ class MissionService {
       .order('created_at');
 
   /// Retourne les points d'étoiles gagnés.
-  Future<int> laisserAvis(String id, int etoiles, String? commentaire) =>
-      _run(() async {
-        final r = await _sb.rpc('submit_review', params: {
-          'p_mission': id,
-          'p_stars': etoiles,
-          'p_comment': commentaire,
-        });
-        return (r is Map ? (r['points'] as num?)?.toInt() : null) ?? 0;
-      });
+  Future<int> laisserAvis(String id, int etoiles, String? commentaire) => _run(
+    () async {
+      final r = await _sb.rpc(
+        'submit_review',
+        params: {'p_mission': id, 'p_stars': etoiles, 'p_comment': commentaire},
+      );
+      return (r is Map ? (r['points'] as num?)?.toInt() : null) ?? 0;
+    },
+  );
 
   Future<void> signaler({
     required String providerId,
     required String motif,
     String? missionId,
     String? details,
-  }) =>
-      _run(() => _sb.rpc('submit_provider_report', params: {
-            'p_provider': providerId,
-            'p_mission': missionId,
-            'p_motif': motif,
-            'p_details': details,
-          }));
+  }) => _run(
+    () => _sb.rpc(
+      'submit_provider_report',
+      params: {
+        'p_provider': providerId,
+        'p_mission': missionId,
+        'p_motif': motif,
+        'p_details': details,
+      },
+    ),
+  );
 
   // ── Paiements de mission ──────────────────────────────────────────────
   Future<List<MissionPayment>> paiements(String missionId) => _run(() async {
-        final rows = await _sb
-            .from('mission_payments')
-            .select()
-            .eq('mission_id', missionId)
-            .order('created_at');
-        return rows
-            .map<MissionPayment>(
-                (r) => MissionPayment.fromJson(Map<String, dynamic>.from(r)))
-            .toList();
-      });
+    final rows = await _sb
+        .from('mission_payments')
+        .select()
+        .eq('mission_id', missionId)
+        .order('created_at');
+    return rows
+        .map<MissionPayment>(
+          (r) => MissionPayment.fromJson(Map<String, dynamic>.from(r)),
+        )
+        .toList();
+  });
 
   /// Le montant est calculé par le serveur. [kind] : trajet | reparation.
   Future<void> declarerPaiement({
@@ -216,21 +238,29 @@ class MissionService {
     required PayMethod methode,
     String? phone,
     String? reference,
-  }) =>
-      _run(() => _sb.rpc('declare_mission_payment', params: {
-            'p_mission': missionId,
-            'p_kind': kind,
-            'p_operateur': methode.code,
-            'p_phone': phone,
-            'p_ref': reference,
-          }));
+  }) => _run(
+    () => _sb.rpc(
+      'declare_mission_payment',
+      params: {
+        'p_mission': missionId,
+        'p_kind': kind,
+        'p_operateur': methode.code,
+        'p_phone': phone,
+        'p_ref': reference,
+      },
+    ),
+  );
 
-  Future<void> confirmerPaiement(String paymentId) => _run(() =>
-      _sb.rpc('confirm_mission_payment', params: {'p_payment': paymentId}));
+  Future<void> confirmerPaiement(String paymentId) => _run(
+    () => _sb.rpc('confirm_mission_payment', params: {'p_payment': paymentId}),
+  );
 
-  Future<void> refuserPaiement(String paymentId, String motif) =>
-      _run(() => _sb.rpc('reject_mission_payment',
-          params: {'p_payment': paymentId, 'p_reason': motif}));
+  Future<void> refuserPaiement(String paymentId, String motif) => _run(
+    () => _sb.rpc(
+      'reject_mission_payment',
+      params: {'p_payment': paymentId, 'p_reason': motif},
+    ),
+  );
 
   RealtimeChannel ecouterPaiements(String missionId, void Function() onChange) {
     final canal = _sb.channel('mission-pay-$missionId');
@@ -252,61 +282,66 @@ class MissionService {
 
   // ── Compte de réception du prestataire ────────────────────────────────
   Future<MomoAccount?> monMomo() => _run(() async {
-        final uid = currentUserId;
-        if (uid == null) return null;
-        final row = await _sb
-            .from('providers')
-            .select('momo_operateur, momo_numero, momo_titulaire')
-            .eq('id', uid)
-            .maybeSingle();
-        if (row == null || row['momo_numero'] == null) return null;
-        return MomoAccount.fromJson({
-          'operateur': row['momo_operateur'],
-          'numero': row['momo_numero'],
-          'titulaire': row['momo_titulaire'],
-        });
-      });
+    final uid = currentUserId;
+    if (uid == null) return null;
+    final row = await _sb
+        .from('providers')
+        .select('momo_operateur, momo_numero, momo_titulaire')
+        .eq('id', uid)
+        .maybeSingle();
+    if (row == null || row['momo_numero'] == null) return null;
+    return MomoAccount.fromJson({
+      'operateur': row['momo_operateur'],
+      'numero': row['momo_numero'],
+      'titulaire': row['momo_titulaire'],
+    });
+  });
 
   /// Indicateurs du prestataire connecté (note, missions, disponibilité).
   Future<Map<String, dynamic>?> maStats() => _run(() async {
-        final uid = currentUserId;
-        if (uid == null) return null;
-        final row = await _sb
-            .from('providers')
-            .select(
-                'disponible, note_moyenne, missions_completees, clients_satisfaits, clients_insatisfaits, statut_validation')
-            .eq('id', uid)
-            .maybeSingle();
-        return row == null ? null : Map<String, dynamic>.from(row);
-      });
+    final uid = currentUserId;
+    if (uid == null) return null;
+    final row = await _sb
+        .from('providers')
+        .select(
+          'disponible, note_moyenne, missions_completees, clients_satisfaits, clients_insatisfaits, statut_validation',
+        )
+        .eq('id', uid)
+        .maybeSingle();
+    return row == null ? null : Map<String, dynamic>.from(row);
+  });
 
   Future<void> definirMomo({
     required String operateur,
     required String numero,
     String? titulaire,
-  }) =>
-      _run(() => _sb.rpc('set_provider_momo', params: {
-            'p_operateur': operateur,
-            'p_numero': numero,
-            'p_titulaire': titulaire,
-          }));
+  }) => _run(
+    () => _sb.rpc(
+      'set_provider_momo',
+      params: {
+        'p_operateur': operateur,
+        'p_numero': numero,
+        'p_titulaire': titulaire,
+      },
+    ),
+  );
 
   Future<bool> disponible() => _run(() async {
-        final uid = currentUserId;
-        if (uid == null) return false;
-        final row = await _sb
-            .from('providers')
-            .select('disponible')
-            .eq('id', uid)
-            .maybeSingle();
-        return row?['disponible'] == true;
-      });
+    final uid = currentUserId;
+    if (uid == null) return false;
+    final row = await _sb
+        .from('providers')
+        .select('disponible')
+        .eq('id', uid)
+        .maybeSingle();
+    return row?['disponible'] == true;
+  });
 
   Future<void> definirDisponibilite(bool value) => _run(() async {
-        final uid = currentUserId;
-        if (uid == null) return;
-        await _sb.from('providers').update({'disponible': value}).eq('id', uid);
-      });
+    final uid = currentUserId;
+    if (uid == null) return;
+    await _sb.from('providers').update({'disponible': value}).eq('id', uid);
+  });
 
   RealtimeChannel ecouterMission(String id, void Function() onChange) {
     final canal = _sb.channel('mission-$id');

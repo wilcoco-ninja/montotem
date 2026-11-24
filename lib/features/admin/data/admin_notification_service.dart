@@ -71,8 +71,10 @@ class AdminNotificationService {
     int limite = 50,
   }) {
     return _run('lister', () async {
-      var requete =
-          _sb.from('notifications').select(_colonnes).eq('admins_only', true);
+      var requete = _sb
+          .from('notifications')
+          .select(_colonnes)
+          .eq('admins_only', true);
       if (nonLuesSeulement) {
         requete = requete.isFilter('read_at', null);
       }
@@ -86,10 +88,7 @@ class AdminNotificationService {
           .whereType<Map>()
           .map((e) => AdminNotification.fromJson(Map<String, dynamic>.from(e)))
           .toList();
-      return AdminNotificationsPage(
-        items: items,
-        nonLues: resultats[1] as int,
-      );
+      return AdminNotificationsPage(items: items, nonLues: resultats[1] as int);
     });
   }
 

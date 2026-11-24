@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -87,8 +86,7 @@ class _Bandeau extends StatelessWidget {
       detail = 'Envoyez votre position par SMS avant l\'extinction.';
     } else if (bas && hors) {
       titre = 'Batterie ${power.niveau} % Ã‚Â· sans internet';
-      detail =
-          'Ãƒâ€°conomie d\'ÃƒÂ©nergie activÃƒÂ©e. SMS et appels restent possibles.';
+      detail = 'Ãƒâ€°conomie d\'ÃƒÂ©nergie activÃƒÂ©e. SMS et appels restent possibles.';
     } else if (bas) {
       titre = 'Batterie faible : ${power.niveau} %';
       detail = power.ecoActive
@@ -100,8 +98,12 @@ class _Bandeau extends StatelessWidget {
     }
 
     final Widget icone = hors && !critique && !bas
-        ? TotemIcon(TotemGlyph.horsLigne,
-            size: 30, color: texte, accent: AppColors.brandYellow)
+        ? TotemIcon(
+            TotemGlyph.horsLigne,
+            size: 30,
+            color: texte,
+            accent: AppColors.brandYellow,
+          )
         : TotemIcon(
             TotemGlyph.batterie,
             size: 34,

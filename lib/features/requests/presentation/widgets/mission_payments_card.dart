@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show RealtimeChannel;
 import 'package:montotem/core/widgets/app_button.dart';
@@ -108,18 +107,20 @@ class _MissionPaymentsCardState extends State<MissionPaymentsCard> {
         content: Text(
           p.methode.mobileMoney
               ? 'VÃƒÂ©rifiez dans votre application ${p.methode.libelle} que '
-                  '${TravelFee.fcfa(p.amountFcfa)} sont bien arrivÃƒÂ©s '
-                  '(rÃƒÂ©fÃƒÂ©rence ${p.reference ?? '-'}).'
+                    '${TravelFee.fcfa(p.amountFcfa)} sont bien arrivÃƒÂ©s '
+                    '(rÃƒÂ©fÃƒÂ©rence ${p.reference ?? '-'}).'
               : 'Confirmez que vous avez reÃƒÂ§u ${TravelFee.fcfa(p.amountFcfa)} en espÃƒÂ¨ces.',
           style: const TextStyle(fontSize: 16, height: 1.4),
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Pas encore')),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Pas encore'),
+          ),
           FilledButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Oui, confirmer')),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Oui, confirmer'),
+          ),
         ],
       ),
     );
@@ -145,8 +146,9 @@ class _MissionPaymentsCardState extends State<MissionPaymentsCard> {
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: const Text('Annuler')),
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Annuler'),
+          ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, controller.text.trim()),
             child: const Text('Envoyer'),
@@ -183,15 +185,30 @@ class _MissionPaymentsCardState extends State<MissionPaymentsCard> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _ligneTotal('Total', m.totalFcfa),
-          _ligneTotal('DÃƒÂ©jÃƒÂ  payÃƒÂ©', m.paidFcfa, couleur: scheme.secondary),
-          _ligneTotal('Reste ÃƒÂ  payer', m.resteFcfa,
-              couleur: m.resteFcfa > 0 ? scheme.tertiary : null),
+          _ligneTotal(
+            'DÃƒÂ©jÃƒÂ  payÃƒÂ©',
+            m.paidFcfa,
+            couleur: scheme.secondary,
+          ),
+          _ligneTotal(
+            'Reste ÃƒÂ  payer',
+            m.resteFcfa,
+            couleur: m.resteFcfa > 0 ? scheme.tertiary : null,
+          ),
           Divider(height: 24, color: scheme.onSurface.withValues(alpha: 0.12)),
-          _bloc('trajet', 'Frais de dÃƒÂ©placement', m.travelFeeFcfa,
-              eligible: true),
+          _bloc(
+            'trajet',
+            'Frais de dÃƒÂ©placement',
+            m.travelFeeFcfa,
+            eligible: true,
+          ),
           if (m.repairFeeFcfa > 0 || m.status == MissionStatus.completed)
-            _bloc('reparation', 'RÃƒÂ©paration', m.repairFeeFcfa,
-                eligible: m.status == MissionStatus.completed),
+            _bloc(
+              'reparation',
+              'RÃƒÂ©paration',
+              m.repairFeeFcfa,
+              eligible: m.status == MissionStatus.completed,
+            ),
         ],
       ),
     );
@@ -203,21 +220,32 @@ class _MissionPaymentsCardState extends State<MissionPaymentsCard> {
       child: Row(
         children: [
           Expanded(child: Text(label, style: const TextStyle(fontSize: 16))),
-          Text(TravelFee.fcfa(montant),
-              style: TextStyle(
-                  fontSize: 17, fontWeight: FontWeight.w800, color: couleur)),
+          Text(
+            TravelFee.fcfa(montant),
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.w800,
+              color: couleur,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _bloc(String kind, String titre, int montant,
-      {required bool eligible}) {
+  Widget _bloc(
+    String kind,
+    String titre,
+    int montant, {
+    required bool eligible,
+  }) {
     if (montant <= 0) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Text('$titre : prix non indiquÃƒÂ© par le prestataire.',
-            style: const TextStyle(fontSize: 15)),
+        child: Text(
+          '$titre : prix non indiquÃƒÂ© par le prestataire.',
+          style: const TextStyle(fontSize: 15),
+        ),
       );
     }
     final scheme = Theme.of(context).colorScheme;
@@ -228,78 +256,104 @@ class _MissionPaymentsCardState extends State<MissionPaymentsCard> {
       Row(
         children: [
           Expanded(
-            child: Text(titre,
-                style: const TextStyle(
-                    fontSize: 16.5, fontWeight: FontWeight.w800)),
+            child: Text(
+              titre,
+              style: const TextStyle(
+                fontSize: 16.5,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
           ),
-          Text(TravelFee.fcfa(montant),
-              style:
-                  const TextStyle(fontSize: 16.5, fontWeight: FontWeight.w800)),
+          Text(
+            TravelFee.fcfa(montant),
+            style: const TextStyle(fontSize: 16.5, fontWeight: FontWeight.w800),
+          ),
         ],
       ),
     ];
 
     if (actif == null) {
       if (refus != null) {
-        enfants.add(Text(
-          'Paiement refusÃƒÂ© : ${refus.rejectReason ?? 'non reÃƒÂ§u'}',
-          style: TextStyle(
-              fontSize: 14.5, fontWeight: FontWeight.w700, color: scheme.error),
-        ));
+        enfants.add(
+          Text(
+            'Paiement refusÃƒÂ© : ${refus.rejectReason ?? 'non reÃƒÂ§u'}',
+            style: TextStyle(
+              fontSize: 14.5,
+              fontWeight: FontWeight.w700,
+              color: scheme.error,
+            ),
+          ),
+        );
       }
       if (!eligible) {
-        enfants.add(Text('Disponible ÃƒÂ  la fin du travail.',
-            style: TextStyle(fontSize: 15, color: muted)));
+        enfants.add(
+          Text(
+            'Disponible ÃƒÂ  la fin du travail.',
+            style: TextStyle(fontSize: 15, color: muted),
+          ),
+        );
       } else if (widget.asClient) {
-        enfants.add(AppButton(
-          label: 'Payer ${TravelFee.fcfa(montant)}',
-          icon: Icons.payments_rounded,
-          onPressed: () => _payer(kind, montant),
-        ));
+        enfants.add(
+          AppButton(
+            label: 'Payer ${TravelFee.fcfa(montant)}',
+            icon: Icons.payments_rounded,
+            onPressed: () => _payer(kind, montant),
+          ),
+        );
       } else {
-        enfants.add(Text('En attente du paiement du client.',
-            style: TextStyle(fontSize: 15, color: muted)));
+        enfants.add(
+          Text(
+            'En attente du paiement du client.',
+            style: TextStyle(fontSize: 15, color: muted),
+          ),
+        );
       }
     } else {
       final detail = actif.methode.mobileMoney
           ? '${actif.methode.libelle} Ã‚Â· ${actif.payerPhone} Ã‚Â· rÃƒÂ©f. ${actif.reference ?? '-'}'
           : actif.methode.libelle;
-      enfants.add(Align(
-        alignment: Alignment.centerLeft,
-        child: actif.status == PaymentStatus.confirme
-            ? StatusPill(
-                label: 'ConfirmÃƒÂ©',
-                color: scheme.secondary,
-                icon: Icons.check_circle_rounded)
-            : StatusPill(
-                label: 'En attente de confirmation',
-                color: scheme.tertiary,
-                icon: Icons.hourglass_top_rounded),
-      ));
+      enfants.add(
+        Align(
+          alignment: Alignment.centerLeft,
+          child: actif.status == PaymentStatus.confirme
+              ? StatusPill(
+                  label: 'ConfirmÃƒÂ©',
+                  color: scheme.secondary,
+                  icon: Icons.check_circle_rounded,
+                )
+              : StatusPill(
+                  label: 'En attente de confirmation',
+                  color: scheme.tertiary,
+                  icon: Icons.hourglass_top_rounded,
+                ),
+        ),
+      );
       enfants.add(Text(detail, style: TextStyle(fontSize: 14.5, color: muted)));
 
       if (actif.status == PaymentStatus.enAttente && !widget.asClient) {
-        enfants.add(_busyId == actif.id
-            ? const Center(child: CircularProgressIndicator())
-            : Row(
-                children: [
-                  Expanded(
-                    child: AppButton(
-                      label: 'Non reÃƒÂ§u',
-                      variant: AppButtonVariant.secondary,
-                      onPressed: () => _refuser(actif),
+        enfants.add(
+          _busyId == actif.id
+              ? const Center(child: CircularProgressIndicator())
+              : Row(
+                  children: [
+                    Expanded(
+                      child: AppButton(
+                        label: 'Non reÃƒÂ§u',
+                        variant: AppButtonVariant.secondary,
+                        onPressed: () => _refuser(actif),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: AppButton(
-                      label: 'J\'ai reÃƒÂ§u',
-                      icon: Icons.check_rounded,
-                      onPressed: () => _confirmer(actif),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: AppButton(
+                        label: 'J\'ai reÃƒÂ§u',
+                        icon: Icons.check_rounded,
+                        onPressed: () => _confirmer(actif),
+                      ),
                     ),
-                  ),
-                ],
-              ));
+                  ],
+                ),
+        );
       }
     }
 

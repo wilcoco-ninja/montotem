@@ -15,14 +15,14 @@ class PaymentResult {
     required this.transactionId,
     this.reference,
     this.amount,
-  })  : success = true,
-        errorMessage = null;
+  }) : success = true,
+       errorMessage = null;
 
   const PaymentResult.failure(this.errorMessage)
-      : success = false,
-        transactionId = null,
-        reference = null,
-        amount = null;
+    : success = false,
+      transactionId = null,
+      reference = null,
+      amount = null;
 }
 
 class PaymentValidationException implements Exception {

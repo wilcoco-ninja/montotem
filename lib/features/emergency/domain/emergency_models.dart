@@ -7,20 +7,32 @@ enum Confiance {
   aConfirmer;
 
   static Confiance fromCode(String? c) => switch (c) {
-        'officiel' => Confiance.officiel,
-        'recoupe' => Confiance.recoupe,
-        _ => Confiance.aConfirmer,
-      };
+    'officiel' => Confiance.officiel,
+    'recoupe' => Confiance.recoupe,
+    _ => Confiance.aConfirmer,
+  };
 }
 
 /// Service de secours joignable par téléphone.
 enum ServiceKind {
-  police('Police secours', 'Commissariat / Police', Icons.local_police_rounded,
-      Color(0xFF1565C0)),
-  fire('Sapeurs-pompiers', 'Caserne de sapeurs-pompiers',
-      Icons.local_fire_department_rounded, Color(0xFFBF360C)),
-  ambulance('Urgences / Ambulance', 'Hôpital / Clinique',
-      Icons.medical_services_rounded, Color(0xFF2E7D32));
+  police(
+    'Police secours',
+    'Commissariat / Police',
+    Icons.local_police_rounded,
+    Color(0xFF1565C0),
+  ),
+  fire(
+    'Sapeurs-pompiers',
+    'Caserne de sapeurs-pompiers',
+    Icons.local_fire_department_rounded,
+    Color(0xFFBF360C),
+  ),
+  ambulance(
+    'Urgences / Ambulance',
+    'Hôpital / Clinique',
+    Icons.medical_services_rounded,
+    Color(0xFF2E7D32),
+  );
 
   const ServiceKind(this.libelle, this.libelleLieu, this.icone, this.couleur);
 
@@ -40,16 +52,29 @@ enum ServiceKind {
 /// Situations proposées par le bouton SOS.
 enum EmergencyType {
   accident(
-      'Accident de la route',
-      'Collision, véhicule renversé, blessés sur la route',
-      Icons.car_crash_rounded,
-      Color(0xFFC62828)),
-  fire('Sapeurs-pompiers', 'Incendie, fumée, fuite de gaz',
-      Icons.local_fire_department_rounded, Color(0xFFBF360C)),
-  police('Police secours', 'Agression, vol, menace, danger',
-      Icons.local_police_rounded, Color(0xFF1565C0)),
-  ambulance('Urgences médicales', 'Malaise, blessure, ambulance, hôpital',
-      Icons.medical_services_rounded, Color(0xFF2E7D32));
+    'Accident de la route',
+    'Collision, véhicule renversé, blessés sur la route',
+    Icons.car_crash_rounded,
+    Color(0xFFC62828),
+  ),
+  fire(
+    'Sapeurs-pompiers',
+    'Incendie, fumée, fuite de gaz',
+    Icons.local_fire_department_rounded,
+    Color(0xFFBF360C),
+  ),
+  police(
+    'Police secours',
+    'Agression, vol, menace, danger',
+    Icons.local_police_rounded,
+    Color(0xFF1565C0),
+  ),
+  ambulance(
+    'Urgences médicales',
+    'Malaise, blessure, ambulance, hôpital',
+    Icons.medical_services_rounded,
+    Color(0xFF2E7D32),
+  );
 
   const EmergencyType(this.libelle, this.description, this.icone, this.couleur);
 
@@ -60,11 +85,11 @@ enum EmergencyType {
 
   /// Service appelé quand l'utilisateur ne répond à aucune question.
   ServiceKind get serviceParDefaut => switch (this) {
-        EmergencyType.accident => ServiceKind.ambulance,
-        EmergencyType.fire => ServiceKind.fire,
-        EmergencyType.police => ServiceKind.police,
-        EmergencyType.ambulance => ServiceKind.ambulance,
-      };
+    EmergencyType.accident => ServiceKind.ambulance,
+    EmergencyType.fire => ServiceKind.fire,
+    EmergencyType.police => ServiceKind.police,
+    EmergencyType.ambulance => ServiceKind.ambulance,
+  };
 }
 
 /// Numéros d'urgence d'un pays.
@@ -111,24 +136,24 @@ class CountryNumbers {
   bool get appelAutomatique => confiance != Confiance.aConfirmer;
 
   CountryNumbers avecConfiance(Confiance c) => CountryNumbers(
-        code: code,
-        nom: nom,
-        police: police,
-        fire: fire,
-        ambulance: ambulance,
-        general: general,
-        minLat: minLat,
-        maxLat: maxLat,
-        minLng: minLng,
-        maxLng: maxLng,
-        confiance: c,
-      );
+    code: code,
+    nom: nom,
+    police: police,
+    fire: fire,
+    ambulance: ambulance,
+    general: general,
+    minLat: minLat,
+    maxLat: maxLat,
+    minLng: minLng,
+    maxLng: maxLng,
+    confiance: c,
+  );
 
   String numero(ServiceKind k) => switch (k) {
-        ServiceKind.police => police,
-        ServiceKind.fire => fire,
-        ServiceKind.ambulance => ambulance,
-      };
+    ServiceKind.police => police,
+    ServiceKind.fire => fire,
+    ServiceKind.ambulance => ambulance,
+  };
 
   bool contient(double lat, double lng) =>
       minLat != null &&
@@ -142,22 +167,22 @@ class CountryNumbers {
 
   double get surface =>
       (minLat == null || maxLat == null || minLng == null || maxLng == null)
-          ? double.infinity
-          : (maxLat! - minLat!) * (maxLng! - minLng!);
+      ? double.infinity
+      : (maxLat! - minLat!) * (maxLng! - minLng!);
 
   factory CountryNumbers.fromJson(Map<String, dynamic> j) => CountryNumbers(
-        code: '${j['country_code'] ?? ''}'.toUpperCase(),
-        nom: '${j['country_name'] ?? ''}',
-        police: '${j['police'] ?? '112'}',
-        fire: '${j['fire'] ?? '112'}',
-        ambulance: '${j['ambulance'] ?? '112'}',
-        general: j['general'] as String?,
-        minLat: (j['min_lat'] as num?)?.toDouble(),
-        maxLat: (j['max_lat'] as num?)?.toDouble(),
-        minLng: (j['min_lng'] as num?)?.toDouble(),
-        maxLng: (j['max_lng'] as num?)?.toDouble(),
-        confiance: Confiance.fromCode(j['confidence'] as String?),
-      );
+    code: '${j['country_code'] ?? ''}'.toUpperCase(),
+    nom: '${j['country_name'] ?? ''}',
+    police: '${j['police'] ?? '112'}',
+    fire: '${j['fire'] ?? '112'}',
+    ambulance: '${j['ambulance'] ?? '112'}',
+    general: j['general'] as String?,
+    minLat: (j['min_lat'] as num?)?.toDouble(),
+    maxLat: (j['max_lat'] as num?)?.toDouble(),
+    minLng: (j['min_lng'] as num?)?.toDouble(),
+    maxLng: (j['max_lng'] as num?)?.toDouble(),
+    confiance: Confiance.fromCode(j['confidence'] as String?),
+  );
 }
 
 /// Pays retenu pour les secours. [candidats] contient plusieurs pays quand la
@@ -193,41 +218,74 @@ class SosQuestion {
 
 const Map<EmergencyType, List<SosQuestion>> kQuestions = {
   EmergencyType.accident: [
-    SosQuestion('blesses', 'Y a-t-il des blessés ?',
-        phraseOui: 'Il y a des blessés.',
-        phraseNon: 'Il n\'y a pas de blessés.'),
-    SosQuestion('feu', 'Y a-t-il du feu ou de la fumée ?',
-        phraseOui: 'Il y a du feu ou de la fumée.'),
-    SosQuestion('danger',
-        'La route est-elle bloquée, ou y a-t-il un danger (carburant répandu, circulation) ?',
-        phraseOui: 'La route est bloquée ou dangereuse.'),
+    SosQuestion(
+      'blesses',
+      'Y a-t-il des blessés ?',
+      phraseOui: 'Il y a des blessés.',
+      phraseNon: 'Il n\'y a pas de blessés.',
+    ),
+    SosQuestion(
+      'feu',
+      'Y a-t-il du feu ou de la fumée ?',
+      phraseOui: 'Il y a du feu ou de la fumée.',
+    ),
+    SosQuestion(
+      'danger',
+      'La route est-elle bloquée, ou y a-t-il un danger (carburant répandu, circulation) ?',
+      phraseOui: 'La route est bloquée ou dangereuse.',
+    ),
   ],
   EmergencyType.fire: [
-    SosQuestion('personnes', 'Des personnes sont-elles en danger ou bloquées ?',
-        phraseOui: 'Des personnes sont en danger ou bloquées.'),
     SosQuestion(
-        'gaz', 'Sentez-vous du gaz, ou y a-t-il un risque d\'explosion ?',
-        phraseOui: 'Il y a une odeur de gaz ou un risque d\'explosion.'),
-    SosQuestion('blesses', 'Y a-t-il des blessés ou des brûlés ?',
-        phraseOui: 'Il y a des blessés ou des brûlés.'),
+      'personnes',
+      'Des personnes sont-elles en danger ou bloquées ?',
+      phraseOui: 'Des personnes sont en danger ou bloquées.',
+    ),
+    SosQuestion(
+      'gaz',
+      'Sentez-vous du gaz, ou y a-t-il un risque d\'explosion ?',
+      phraseOui: 'Il y a une odeur de gaz ou un risque d\'explosion.',
+    ),
+    SosQuestion(
+      'blesses',
+      'Y a-t-il des blessés ou des brûlés ?',
+      phraseOui: 'Il y a des blessés ou des brûlés.',
+    ),
   ],
   EmergencyType.police: [
-    SosQuestion('danger', 'Êtes-vous en danger immédiat ?',
-        phraseOui: 'Je suis en danger immédiat.'),
-    SosQuestion('present', 'L\'auteur est-il encore sur place ?',
-        phraseOui: 'L\'auteur est encore sur place.',
-        phraseNon: 'L\'auteur est parti.'),
-    SosQuestion('blesses', 'Y a-t-il des blessés ?',
-        phraseOui: 'Il y a des blessés.'),
+    SosQuestion(
+      'danger',
+      'Êtes-vous en danger immédiat ?',
+      phraseOui: 'Je suis en danger immédiat.',
+    ),
+    SosQuestion(
+      'present',
+      'L\'auteur est-il encore sur place ?',
+      phraseOui: 'L\'auteur est encore sur place.',
+      phraseNon: 'L\'auteur est parti.',
+    ),
+    SosQuestion(
+      'blesses',
+      'Y a-t-il des blessés ?',
+      phraseOui: 'Il y a des blessés.',
+    ),
   ],
   EmergencyType.ambulance: [
-    SosQuestion('respire', 'La personne respire-t-elle ?',
-        phraseNon: 'La personne ne respire pas.'),
-    SosQuestion('consciente',
-        'La personne est-elle consciente (répond-elle quand on lui parle) ?',
-        phraseNon: 'La personne est inconsciente.'),
-    SosQuestion('saigne', 'Y a-t-il un saignement important ?',
-        phraseOui: 'Il y a un saignement important.'),
+    SosQuestion(
+      'respire',
+      'La personne respire-t-elle ?',
+      phraseNon: 'La personne ne respire pas.',
+    ),
+    SosQuestion(
+      'consciente',
+      'La personne est-elle consciente (répond-elle quand on lui parle) ?',
+      phraseNon: 'La personne est inconsciente.',
+    ),
+    SosQuestion(
+      'saigne',
+      'Y a-t-il un saignement important ?',
+      phraseOui: 'Il y a un saignement important.',
+    ),
   ],
 };
 
@@ -270,7 +328,8 @@ SosPlan evaluer(EmergencyType type, Map<String, Reponse> r) {
       } else {
         principal = ServiceKind.police;
       }
-      consigne = 'Mettez-vous à l\'écart de la circulation si vous le pouvez. '
+      consigne =
+          'Mettez-vous à l\'écart de la circulation si vous le pouvez. '
           'Ne déplacez pas les blessés sauf danger immédiat.';
     case EmergencyType.fire:
       principal = ServiceKind.fire;
@@ -282,14 +341,15 @@ SosPlan evaluer(EmergencyType type, Map<String, Reponse> r) {
       principal = ServiceKind.police;
       if (oui('blesses')) secondaires.add(ServiceKind.ambulance);
       if (oui('danger')) {
-        consigne = 'Mettez-vous en sécurité si possible et restez en ligne '
+        consigne =
+            'Mettez-vous en sécurité si possible et restez en ligne '
             'avec la police.';
       }
     case EmergencyType.ambulance:
       principal = ServiceKind.ambulance;
       consigne = non('respire')
           ? 'Dites tout de suite à l\'opérateur que la personne ne respire pas : '
-              'il vous guidera.'
+                'il vous guidera.'
           : 'Restez auprès de la personne et gardez la ligne ouverte.';
   }
 

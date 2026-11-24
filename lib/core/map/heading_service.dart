@@ -17,10 +17,7 @@ class HeadingService {
   static const double _minChange = 1.5; // degrés avant d'émettre
 
   late final StreamController<double> _ctrl =
-      StreamController<double>.broadcast(
-    onListen: _start,
-    onCancel: _stop,
-  );
+      StreamController<double>.broadcast(onListen: _start, onCancel: _stop);
   StreamSubscription<CompassEvent>? _sub;
   double? _smooth;
   double? _emitted;

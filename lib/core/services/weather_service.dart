@@ -145,8 +145,12 @@ class WeatherService {
         DateTime.now().difference(hit.at) < _ttl) {
       return Future.value(hit.data);
     }
-    return _inFlight[key] ??= _fetch(latitude, longitude, key, units)
-        .whenComplete(() => _inFlight.remove(key));
+    return _inFlight[key] ??= _fetch(
+      latitude,
+      longitude,
+      key,
+      units,
+    ).whenComplete(() => _inFlight.remove(key));
   }
 
   /// Variante qui ne lève jamais : renvoie null si rien n'est disponible.
@@ -176,7 +180,8 @@ class WeatherService {
     final uri = Uri.https(_host, '/v1/forecast', {
       'latitude': lat.toStringAsFixed(4),
       'longitude': lon.toStringAsFixed(4),
-      'current': 'temperature_2m,relative_humidity_2m,apparent_temperature,'
+      'current':
+          'temperature_2m,relative_humidity_2m,apparent_temperature,'
           'is_day,precipitation,weather_code,wind_speed_10m,wind_direction_10m',
       'wind_speed_unit': 'kmh',
       'temperature_unit': fahrenheit ? 'fahrenheit' : 'celsius',
@@ -315,7 +320,8 @@ class WeatherService {
     double rad(double d) => d * math.pi / 180;
     final dLat = rad(lat2 - lat1);
     final dLon = rad(lon2 - lon1);
-    final a = math.pow(math.sin(dLat / 2), 2) +
+    final a =
+        math.pow(math.sin(dLat / 2), 2) +
         math.cos(rad(lat1)) *
             math.cos(rad(lat2)) *
             math.pow(math.sin(dLon / 2), 2);

@@ -1,4 +1,3 @@
-﻿
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -90,7 +89,8 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
           _CarteProfil(
             icone: Icons.person_search_rounded,
             titre: 'Client',
-            texte: 'Je suis en panne : je cherche un dÃƒÂ©panneur prÃƒÂ¨s de moi.',
+            texte:
+                'Je suis en panne : je cherche un dÃƒÂ©panneur prÃƒÂ¨s de moi.',
             choisi: _choix == _Profil.client,
             onTap: () => setState(() => _choix = _Profil.client),
           ),
@@ -98,7 +98,8 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
           _CarteProfil(
             icone: Icons.build_circle_outlined,
             titre: 'Prestataire',
-            texte: 'MÃƒÂ©canicien, vulcanisateur, ÃƒÂ©lectricien, garage ou '
+            texte:
+                'MÃƒÂ©canicien, vulcanisateur, ÃƒÂ©lectricien, garage ou '
                 'station : je reÃƒÂ§ois des demandes.',
             choisi: _choix == _Profil.prestataire,
             onTap: () => setState(() => _choix = _Profil.prestataire),
