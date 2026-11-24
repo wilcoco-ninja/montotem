@@ -13,7 +13,7 @@ import 'package:montotem/features/auth/data/auth_service.dart' show AuthService;
 import 'package:montotem/features/auth/data/quick_auth_service.dart';
 import 'package:montotem/features/auth/presentation/registration_flow.dart';
 
-/// Ãƒâ€°cran 1/3 Ã¢â‚¬â€ inscription ou connexion en une saisie : le numÃƒÂ©ro.
+/// Écran 1/3 — inscription ou connexion en une saisie : le numéro.
 /// Route : /register/quick?role=client|provider
 class QuickSignupScreen extends StatefulWidget {
   const QuickSignupScreen({super.key, this.role});
@@ -68,9 +68,9 @@ class _QuickSignupScreenState extends State<QuickSignupScreen> {
   }
 
   String? _valider(String? v) {
-    if (v == null || v.trim().isEmpty) return 'Entrez votre numÃƒÂ©ro';
+    if (v == null || v.trim().isEmpty) return 'Entrez votre numéro';
     if (!AuthService.isValidPhone(AuthService.normalizePhone(v))) {
-      return 'NumÃƒÂ©ro invalide. Exemple : 01 97 00 00 00';
+      return 'Numéro invalide. Exemple : 01 97 00 00 00';
     }
     return null;
   }
@@ -119,9 +119,9 @@ class _QuickSignupScreenState extends State<QuickSignupScreen> {
     return AuthShell(
       title: prestataire ? 'Devenez prestataire' : 'Connexion ou inscription',
       subtitle: prestataire
-          ? 'Commencez avec votre numÃƒÂ©ro, on s\'occupe du reste'
-          : 'MÃƒÂªme dÃƒÂ©marche pour les deux : votre numÃƒÂ©ro et un code SMS. '
-                'Pas de mot de passe ÃƒÂ  retenir.',
+          ? 'Commencez avec votre numéro, on s\'occupe du reste'
+          : 'Même démarche pour les deux : votre numéro et un code SMS. '
+                'Pas de mot de passe à retenir.',
       icon: prestataire ? Icons.build_circle_outlined : Icons.bolt_rounded,
       onBack: _loading ? null : () => context.go('/explore'),
       footer: TextButton(
@@ -137,7 +137,7 @@ class _QuickSignupScreenState extends State<QuickSignupScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             AppTextField(
-              label: 'NumÃƒÂ©ro de tÃƒÂ©lÃƒÂ©phone',
+              label: 'Numéro de téléphone',
               hint: '01 97 00 00 00',
               helper: 'Vous recevrez un code par SMS',
               icon: Icons.phone_outlined,

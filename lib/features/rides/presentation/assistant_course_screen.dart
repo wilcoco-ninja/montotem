@@ -13,7 +13,7 @@ import 'package:montotem/features/sos/data/providers_nearest_service.dart';
 import 'package:montotem/features/tracking/domain/prestataire_model.dart'
     show Prestataire, iconePourMetier;
 
-/// Assistant Course : choisir ZÃƒÂ©midjan / Cloboto / Kloboto,
+/// Assistant Course : choisir Zémidjan / Cloboto / Kloboto,
 /// puis voir les conducteurs proches.
 class AssistantCourseScreen extends StatefulWidget {
   const AssistantCourseScreen({super.key});
@@ -44,7 +44,7 @@ class _AssistantCourseScreenState extends State<AssistantCourseScreen> {
       if (_me != null) {
         pos = _me!;
       } else {
-        // Ã¢Å¡Â Ã¯Â¸Â Typage explicite : `getCurrentLocation()` retourne `Position`.
+        // ⚠️ Typage explicite : `getCurrentLocation()` retourne `Position`.
         final Position p = await _location.getCurrentLocation();
         pos = LatLng(p.latitude, p.longitude);
       }
@@ -81,7 +81,7 @@ class _AssistantCourseScreenState extends State<AssistantCourseScreen> {
     } catch (_) {
       if (!mounted) return;
       setState(() {
-        _erreur = 'Recherche indisponible. VÃƒÂ©rifiez votre connexion.';
+        _erreur = 'Recherche indisponible. Vérifiez votre connexion.';
         _prestatairesList = const [];
         _chargement = false;
       });
@@ -164,14 +164,14 @@ class _AssistantCourseScreenState extends State<AssistantCourseScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Choisissez le vÃƒÂ©hicule qui correspond ÃƒÂ  votre besoin.',
+            'Choisissez le véhicule qui correspond à votre besoin.',
             style: TextStyle(fontSize: 15, color: colorScheme.onSurfaceVariant),
           ),
           const SizedBox(height: 24),
           _CarteKind(
             kind: 'zemidjan',
-            titre: 'ZÃƒÂ©midjan',
-            sousTitre: 'Moto-taxi Ã‚Â· 1 passager',
+            titre: 'Zémidjan',
+            sousTitre: 'Moto-taxi · 1 passager',
             icon: Icons.two_wheeler_rounded,
             couleur: const Color(0xFFFFC400),
             onTap: () => _choisir('zemidjan'),
@@ -180,7 +180,7 @@ class _AssistantCourseScreenState extends State<AssistantCourseScreen> {
           _CarteKind(
             kind: 'tricycle_passenger',
             titre: 'Cloboto',
-            sousTitre: 'Tricycle Ã‚Â· 2 ÃƒÂ  3 passagers',
+            sousTitre: 'Tricycle · 2 à 3 passagers',
             icon: Icons.electric_rickshaw_rounded,
             couleur: const Color(0xFFFFC400),
             onTap: () => _choisir('tricycle_passenger'),
@@ -189,7 +189,7 @@ class _AssistantCourseScreenState extends State<AssistantCourseScreen> {
           _CarteKind(
             kind: 'tricycle_fret',
             titre: 'Kloboto',
-            sousTitre: 'Tricycle Ã‚Â· bagages, colis, marchandises',
+            sousTitre: 'Tricycle · bagages, colis, marchandises',
             icon: Icons.inventory_2_rounded,
             couleur: const Color(0xFF2E7D32),
             onTap: () => _choisir('tricycle_fret'),
@@ -207,7 +207,7 @@ class _AssistantCourseScreenState extends State<AssistantCourseScreen> {
           children: [
             CircularProgressIndicator(),
             SizedBox(height: 16),
-            Text('Recherche des conducteurs prochesÃ¢â‚¬Â¦'),
+            Text('Recherche des conducteurs proches…'),
           ],
         ),
       );
@@ -222,7 +222,7 @@ class _AssistantCourseScreenState extends State<AssistantCourseScreen> {
               const Icon(Icons.search_off_rounded, size: 64),
               const SizedBox(height: 16),
               const Text(
-                'Aucun conducteur ÃƒÂ  proximitÃƒÂ©.',
+                'Aucun conducteur à proximité.',
                 style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 24),
@@ -385,8 +385,8 @@ class _CarteConducteur extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${conducteur.metier} Ã‚Â· '
-                  '${conducteur.noteMoyenne.toStringAsFixed(1)} Ã¢Ëœâ€¦',
+                  '${conducteur.metier} · '
+                  '${conducteur.noteMoyenne.toStringAsFixed(1)} ★',
                   style: TextStyle(
                     fontSize: 14,
                     color: theme.colorScheme.onSurfaceVariant,

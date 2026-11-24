@@ -15,7 +15,7 @@ import 'package:montotem/core/widgets/app_ui.dart';
 import 'package:montotem/features/rides/domain/ride_model.dart';
 import 'package:montotem/features/admin/data/admin_ride_service.dart';
 
-/// Ãƒâ€°cran de production de supervision et gestion des courses (ZÃƒÂ©midjan / Tricycle Fret).
+/// Écran de production de supervision et gestion des courses (Zémidjan / Tricycle Fret).
 class AdminRidesScreen extends StatefulWidget {
   const AdminRidesScreen({super.key});
 
@@ -25,7 +25,7 @@ class AdminRidesScreen extends StatefulWidget {
 
 class _AdminRidesScreenState extends State<AdminRidesScreen> {
   final AdminRideService _service = AdminRideService();
-  final DateFormat _format = DateFormat('dd/MM/yyyy ÃƒÂ  HH:mm');
+  final DateFormat _format = DateFormat('dd/MM/yyyy à HH:mm');
 
   RealtimeChannel? _canal;
   Timer? _antiRebond;
@@ -152,7 +152,7 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
             style: FilledButton.styleFrom(
               backgroundColor: Theme.of(ctx).colorScheme.error,
             ),
-            child: const Text('Confirmer lÃ¢â‚¬â„¢annulation'),
+            child: const Text('Confirmer l’annulation'),
           ),
         ],
       ),
@@ -168,9 +168,7 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
     setState(() => _busyId = r.id);
     try {
       await _service.annuler(r.id, motif);
-      _afficherMessage(
-        'Course annulÃƒÂ©e avec succÃƒÂ¨s. Participants notifiÃƒÂ©s.',
-      );
+      _afficherMessage('Course annulée avec succès. Participants notifiés.');
       await _chargerDonnees(silencieux: true);
     } on AdminRideException catch (e) {
       _afficherMessage(e.message, erreur: true);
@@ -181,12 +179,12 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
 
   void _ouvrirDetailCourse(Ride r) {
     final chronologie = <(String, DateTime?)>[
-      ('CrÃƒÂ©ation de la demande', r.createdAt),
-      ('AcceptÃƒÂ©e par le conducteur', r.acceptedAt),
-      ('Conducteur arrivÃƒÂ© au point', r.arrivedAt),
+      ('Création de la demande', r.createdAt),
+      ('Acceptée par le conducteur', r.acceptedAt),
+      ('Conducteur arrivé au point', r.arrivedAt),
       ('Course en route', r.startedAt),
-      ('Course terminÃƒÂ©e', r.completedAt),
-      ('AnnulÃƒÂ©e', r.cancelledAt),
+      ('Course terminée', r.completedAt),
+      ('Annulée', r.cancelledAt),
     ].where((e) => e.$2 != null).toList();
 
     showModalBottomSheet<void>(
@@ -205,7 +203,7 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    '${r.kind.libelle} Ã¢â‚¬Â¢ ${TravelFee.fcfa(r.prixFcfa)}',
+                    '${r.kind.libelle} • ${TravelFee.fcfa(r.prixFcfa)}',
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w800,
@@ -238,7 +236,7 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
             InfoRow(
               icon: Icons.two_wheeler_rounded,
               label: 'Conducteur',
-              value: r.providerName ?? 'En cours dÃ¢â‚¬â„¢attribution',
+              value: r.providerName ?? 'En cours d’attribution',
               trailing: (r.providerPhone ?? '').isEmpty
                   ? null
                   : IconButton.filledTonal(
@@ -248,7 +246,7 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
             ),
             InfoRow(
               icon: Icons.trip_origin_rounded,
-              label: 'Point de dÃƒÂ©part',
+              label: 'Point de départ',
               value: (r.pickupAddress ?? '').isEmpty
                   ? '${r.pickup.latitude.toStringAsFixed(5)}, ${r.pickup.longitude.toStringAsFixed(5)}'
                   : r.pickupAddress!,
@@ -262,7 +260,7 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
             ),
             InfoRow(
               icon: Icons.route_rounded,
-              label: 'Distance estimÃƒÂ©e',
+              label: 'Distance estimée',
               value: r.distanceLibelle,
             ),
             InfoRow(
@@ -281,10 +279,10 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
             if ((r.cancelReason ?? '').isNotEmpty)
               InfoRow(
                 icon: Icons.cancel_outlined,
-                label: 'Motif dÃ¢â‚¬â„¢annulation',
+                label: 'Motif d’annulation',
                 value: r.cancelReason!,
               ),
-            const SectionTitle('Chronologie de lÃ¢â‚¬â„¢ÃƒÂ©vÃƒÂ©nement'),
+            const SectionTitle('Chronologie de l’événement'),
             for (final e in chronologie)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
@@ -294,7 +292,7 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        '${_format.format(e.$2!)} Ã¢â‚¬â€ ${e.$1}',
+                        '${_format.format(e.$2!)} — ${e.$1}',
                         style: const TextStyle(fontSize: 14.5),
                       ),
                     ),
@@ -383,7 +381,7 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
                     child: EmptyState(
                       icon: Icons.two_wheeler_rounded,
                       title: 'Aucune course correspondante',
-                      message: 'Les courses en temps rÃƒÂ©el apparaÃƒÂ®tront ici instantanÃƒÂ©ment.',
+                      message: 'Les courses en temps réel apparaîtront ici instantanément.',
                     ),
                   )
                 : RefreshIndicator(
@@ -416,7 +414,7 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  '${r.kind.libelle} Ã¢â‚¬Â¢ ${TravelFee.fcfa(r.prixFcfa)}',
+                  '${r.kind.libelle} • ${TravelFee.fcfa(r.prixFcfa)}',
                   style: const TextStyle(
                     fontSize: 16.5,
                     fontWeight: FontWeight.w800,
@@ -439,12 +437,12 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            '${r.clientName}  Ã¢â€ â€™  ${r.providerName ?? 'En attente de conducteur'}',
+            '${r.clientName}  →  ${r.providerName ?? 'En attente de conducteur'}',
             style: const TextStyle(fontSize: 14.5, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 3),
           Text(
-            '${_format.format(r.createdAt)} Ã¢â‚¬Â¢ ${r.distanceLibelle} Ã¢â‚¬Â¢ ${r.payment.libelle}',
+            '${_format.format(r.createdAt)} • ${r.distanceLibelle} • ${r.payment.libelle}',
             style: TextStyle(fontSize: 13, color: context.textSecondary),
           ),
         ],
@@ -524,7 +522,7 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
             MarkerLayer(markers: markers),
             const RichAttributionWidget(
               attributions: [
-                TextSourceAttribution('Ã‚Â© OpenStreetMap contributors'),
+                TextSourceAttribution('© OpenStreetMap contributors'),
               ],
             ),
           ],

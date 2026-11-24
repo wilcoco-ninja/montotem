@@ -5,8 +5,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-/// SÃƒÂ©lecteur de photo Ã¢â‚¬â€ le parent est la source de vÃƒÂ©ritÃƒÂ© via [bytes].
-/// Le widget ne conserve en interne que l'ÃƒÂ©tat "en cours de sÃƒÂ©lection".
+/// Sélecteur de photo — le parent est la source de vérité via [bytes].
+/// Le widget ne conserve en interne que l'état "en cours de sélection".
 class PhotoPickerField extends StatefulWidget {
   const PhotoPickerField({
     super.key,
@@ -59,7 +59,7 @@ class _PhotoPickerFieldState extends State<PhotoPickerField> {
                 iconColor: colorScheme.primary,
                 title: 'Prendre une photo',
                 subtitle: kIsWeb
-                    ? 'Utiliser la camÃƒÂ©ra du navigateur'
+                    ? 'Utiliser la caméra du navigateur'
                     : 'Prendre une nouvelle photo',
                 onTap: () => Navigator.pop(context, ImageSource.camera),
               ),
@@ -69,7 +69,7 @@ class _PhotoPickerFieldState extends State<PhotoPickerField> {
                 iconColor: colorScheme.secondary,
                 title: 'Choisir dans la galerie',
                 subtitle: kIsWeb
-                    ? 'SÃƒÂ©lectionner un fichier'
+                    ? 'Sélectionner un fichier'
                     : 'Choisir une photo existante',
                 onTap: () => Navigator.pop(context, ImageSource.gallery),
               ),
@@ -145,7 +145,7 @@ class _PhotoPickerFieldState extends State<PhotoPickerField> {
       setState(() => _isPicking = false);
 
       developer.log(
-        '${widget.label} Ã¢â€ â€™ ${bytes.length} bytes',
+        '${widget.label} → ${bytes.length} bytes',
         name: 'PhotoPickerField',
       );
       widget.onChanged(bytes);
@@ -154,7 +154,7 @@ class _PhotoPickerFieldState extends State<PhotoPickerField> {
       setState(() => _isPicking = false);
 
       developer.log(
-        'Erreur lors de la sÃƒÂ©lection/lecture de la photo',
+        'Erreur lors de la sélection/lecture de la photo',
         name: 'PhotoPickerField',
         error: e,
         stackTrace: stackTrace,
@@ -162,9 +162,7 @@ class _PhotoPickerFieldState extends State<PhotoPickerField> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-            'Impossible de charger la photo. Veuillez rÃƒÂ©essayer.',
-          ),
+          content: Text('Impossible de charger la photo. Veuillez réessayer.'),
           duration: Duration(seconds: 4),
         ),
       );
