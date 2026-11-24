@@ -405,7 +405,7 @@ class _LiveTabState extends State<_LiveTab> {
                     physics: const AlwaysScrollableScrollPhysics(),
                     padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
                     itemCount: liste.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 8),
+                    separatorBuilder: (_, _) => const SizedBox(height: 8),
                     itemBuilder: (context, i) {
                       final m = liste[i];
                       return _MissionTile(
@@ -1167,7 +1167,7 @@ class _ReportsTabState extends State<_ReportsTab>
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         itemCount: _items.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 8),
+        separatorBuilder: (_, _) => const SizedBox(height: 8),
         itemBuilder: (context, i) {
           final r = _items[i];
           final statut = '${r['status']}';

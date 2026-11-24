@@ -240,7 +240,7 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
         itemCount: _providers.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 10),
+        separatorBuilder: (_, _) => const SizedBox(height: 10),
         itemBuilder: (context, index) =>
             _construireCartePrestataire(_providers[index]),
       ),
@@ -261,14 +261,14 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
             ? CachedNetworkImage(
                 imageUrl: url,
                 fit: BoxFit.cover,
-                placeholder: (_, __) => const Center(
+                placeholder: (_, _) => const Center(
                   child: SizedBox(
                     width: 20,
                     height: 20,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   ),
                 ),
-                errorWidget: (_, __, ___) => placeholder,
+                errorWidget: (_, _, _) => placeholder,
               )
             : placeholder,
       ),
@@ -386,11 +386,11 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
         height: height,
         width: double.infinity,
         fit: BoxFit.cover,
-        placeholder: (_, __) => SizedBox(
+        placeholder: (_, _) => SizedBox(
           height: height,
           child: const Center(child: CircularProgressIndicator()),
         ),
-        errorWidget: (_, __, ___) => SizedBox(
+        errorWidget: (_, _, _) => SizedBox(
           height: height,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

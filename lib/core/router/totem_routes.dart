@@ -16,15 +16,15 @@ import '../../features/transport/presentation/transport_register_screen.dart';
 final List<RouteBase> totemRoutes = [
   GoRoute(
     path: '/register/provider',
-    builder: (_, __) => const ProviderKindChoiceScreen(),
+    builder: (_, _) => const ProviderKindChoiceScreen(),
   ),
   GoRoute(
     path: '/register/provider/depannage',
-    builder: (_, __) => const ProviderOnboardingScreen(),
+    builder: (_, _) => const ProviderOnboardingScreen(),
   ),
   GoRoute(
     path: '/register/transport',
-    builder: (_, __) => const TransportRegisterScreen(),
+    builder: (_, _) => const TransportRegisterScreen(),
   ),
-  GoRoute(path: '/survie', builder: (_, __) => const SurvivalKitScreen()),
+  GoRoute(path: '/survie', builder: (_, _) => const SurvivalKitScreen()),
 ];

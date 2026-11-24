@@ -184,7 +184,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
               itemCount: liste.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 10),
+              separatorBuilder: (_, _) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
                 final u = liste[index];
                 final couleur = _couleurRole(u.role);

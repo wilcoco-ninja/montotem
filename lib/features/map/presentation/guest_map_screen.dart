@@ -522,7 +522,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
                           padding: const EdgeInsets.symmetric(vertical: 4),
                           clipBehavior: Clip.none,
                           itemCount: chips.length,
-                          separatorBuilder: (_, __) => const SizedBox(width: 8),
+                          separatorBuilder: (_, _) => const SizedBox(width: 8),
                           itemBuilder: (_, i) => chips[i],
                         ),
                       ),
@@ -697,7 +697,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
               controller: _liste,
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               itemCount: _visibles.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
+              separatorBuilder: (_, _) => const SizedBox(height: 12),
               itemBuilder: (context, i) {
                 final p = _visibles[i];
                 return SizedBox(
@@ -728,7 +728,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             itemCount: _visibles.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            separatorBuilder: (_, _) => const SizedBox(width: 12),
             itemBuilder: (context, i) {
               final p = _visibles[i];
               return SizedBox(

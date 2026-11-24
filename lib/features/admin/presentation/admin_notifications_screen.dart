@@ -203,7 +203,7 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
         itemCount: _items.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 10),
+        separatorBuilder: (_, _) => const SizedBox(height: 10),
         itemBuilder: (context, index) {
           final n = _items[index];
           final style = _style(scheme, n.type);

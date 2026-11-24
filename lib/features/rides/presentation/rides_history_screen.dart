@@ -109,7 +109,7 @@ class _RidesHistoryScreenState extends State<RidesHistoryScreen> {
           physics: const AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.fromLTRB(gutter, 8, gutter, 96),
           itemCount: _courses.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 10),
+          separatorBuilder: (_, _) => const SizedBox(height: 10),
           itemBuilder: (context, i) => _carte(_courses[i]),
         ),
       ),

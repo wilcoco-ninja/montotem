@@ -215,7 +215,7 @@ class _PhotoPickerFieldState extends State<PhotoPickerField> {
                       bytes,
                       fit: BoxFit.cover,
                       gaplessPlayback: true,
-                      errorBuilder: (_, __, ___) => const Center(
+                      errorBuilder: (_, _, _) => const Center(
                         child: Icon(Icons.broken_image, size: 36),
                       ),
                     ),

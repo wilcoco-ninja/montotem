@@ -91,7 +91,7 @@ class _AdminLeaderboardScreenState extends State<AdminLeaderboardScreen> {
           physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
           itemCount: _prestataires.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 10),
+          separatorBuilder: (_, _) => const SizedBox(height: 10),
           itemBuilder: (context, index) =>
               _LeaderboardTile(rang: index + 1, p: _prestataires[index]),
         ),

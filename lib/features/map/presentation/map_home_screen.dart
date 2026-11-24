@@ -72,8 +72,9 @@ _Genre _genreDe(Prestataire p) {
     return _Genre.depanneur;
   }
   final m = p.metier.toLowerCase();
-  if (m.contains('zÃƒÂ©midjan') || m.contains('zemidjan'))
+  if (m.contains('zÃƒÂ©midjan') || m.contains('zemidjan')) {
     return _Genre.zemidjan;
+  }
   if (m.contains('kloboto') || m.contains('klobot')) return _Genre.kloboto;
   return _Genre.depanneur;
 }
@@ -578,7 +579,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
             controller: controller,
             padding: const EdgeInsets.fromLTRB(12, 0, 12, 24),
             itemCount: _visibles.length,
-            separatorBuilder: (_, __) => const Divider(height: 1),
+            separatorBuilder: (_, _) => const Divider(height: 1),
             itemBuilder: (ctx, i) {
               final p = _visibles[i];
               final g = _genreDe(p);
@@ -730,7 +731,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
             _mapController.move(_userPosition, AppConstants.defaultZoom);
           }
         },
-        onTap: (_, __) {
+        onTap: (_, _) {
           if (_selectedId != null) setState(() => _selectedId = null);
         },
       ),

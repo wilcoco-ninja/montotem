@@ -174,7 +174,7 @@ class McPanel extends StatelessWidget {
                       style: AdminStyle.label(10, letterSpacing: 1.6),
                     ),
                   ),
-                  if (trailing != null) trailing!,
+                  ?trailing,
                 ],
               ),
             ),
@@ -291,7 +291,7 @@ class _McPulseDotState extends State<McPulseDot>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _c,
-      builder: (_, __) {
+      builder: (_, _) {
         final t = _c.value;
         return Container(
           width: widget.size,

@@ -215,41 +215,41 @@ class AppRouter {
     errorBuilder: (context, state) =>
         _PageIntrouvable(chemin: state.uri.toString()),
     routes: [
-      GoRoute(path: '/', builder: (_, __) => const MapHomeScreen()),
-      GoRoute(path: '/explore', redirect: (_, __) => '/'),
-      GoRoute(path: '/welcome', redirect: (_, __) => '/login'),
-      GoRoute(path: '/login', builder: (_, __) => const ClientAuthScreen()),
+      GoRoute(path: '/', builder: (_, _) => const MapHomeScreen()),
+      GoRoute(path: '/explore', redirect: (_, _) => '/'),
+      GoRoute(path: '/welcome', redirect: (_, _) => '/login'),
+      GoRoute(path: '/login', builder: (_, _) => const ClientAuthScreen()),
 
-      GoRoute(path: '/pro', redirect: (_, __) => '/pro/login'),
-      GoRoute(path: '/pro/login', builder: (_, __) => const ProLoginScreen()),
+      GoRoute(path: '/pro', redirect: (_, _) => '/pro/login'),
+      GoRoute(path: '/pro/login', builder: (_, _) => const ProLoginScreen()),
       GoRoute(
         path: '/pro/register',
-        redirect: (_, __) => '/register/signup?role=provider',
+        redirect: (_, _) => '/register/signup?role=provider',
       ),
       GoRoute(
         path: '/forgot-password',
-        builder: (_, __) => const PasswordSetupScreen(isReset: true),
+        builder: (_, _) => const PasswordSetupScreen(isReset: true),
       ),
       // Ecran debug : uniquement en development, absent des builds release.
       if (!kReleaseMode)
-        GoRoute(path: '/debug', builder: (_, __) => const DebugLoginScreen()),
+        GoRoute(path: '/debug', builder: (_, _) => const DebugLoginScreen()),
       GoRoute(
         path: '/admin/login',
-        builder: (_, __) => const AdminLoginScreen(),
+        builder: (_, _) => const AdminLoginScreen(),
       ),
 
-      GoRoute(path: '/join', builder: (_, __) => const RoleSelectionScreen()),
+      GoRoute(path: '/join', builder: (_, _) => const RoleSelectionScreen()),
       GoRoute(
         path: '/register/role',
-        builder: (_, __) => const RoleSelectionScreen(),
+        builder: (_, _) => const RoleSelectionScreen(),
       ),
       GoRoute(
         path: '/register/quick',
-        builder: (_, __) => const ClientAuthScreen(),
+        builder: (_, _) => const ClientAuthScreen(),
       ),
       GoRoute(
         path: '/register/quick/name',
-        builder: (_, __) => const QuickNameScreen(),
+        builder: (_, _) => const QuickNameScreen(),
       ),
       GoRoute(
         path: '/register/phone',
@@ -271,11 +271,11 @@ class AppRouter {
       ),
       GoRoute(
         path: '/register/password',
-        builder: (_, __) => const PasswordSetupScreen(),
+        builder: (_, _) => const PasswordSetupScreen(),
       ),
       GoRoute(
         path: '/register/client',
-        builder: (_, __) => const ClientRegistrationScreen(),
+        builder: (_, _) => const ClientRegistrationScreen(),
       ),
 
       // ── Routes personnalisées / étendues (totemRoutes) ───────────────
@@ -283,7 +283,7 @@ class AppRouter {
 
       GoRoute(
         path: '/register/provider/classic',
-        builder: (_, __) => const ProviderRegistrationScreen(),
+        builder: (_, _) => const ProviderRegistrationScreen(),
       ),
 
       GoRoute(
@@ -298,7 +298,7 @@ class AppRouter {
       ),
       GoRoute(
         path: '/emergency',
-        builder: (_, __) => const EmergencyServicesScreen(),
+        builder: (_, _) => const EmergencyServicesScreen(),
       ),
       GoRoute(
         path: '/emergency/route',
@@ -310,12 +310,9 @@ class AppRouter {
       ),
 
       // Après connexion, le client revient sur la carte.
-      GoRoute(path: '/home', redirect: (_, __) => '/'),
-      GoRoute(
-        path: '/account',
-        builder: (_, __) => const ClientProfileScreen(),
-      ),
-      GoRoute(path: '/matching', builder: (_, __) => const MatchingScreen()),
+      GoRoute(path: '/home', redirect: (_, _) => '/'),
+      GoRoute(path: '/account', builder: (_, _) => const ClientProfileScreen()),
+      GoRoute(path: '/matching', builder: (_, _) => const MatchingScreen()),
       GoRoute(
         path: '/ride/new',
         builder: (_, s) => RideRequestScreen(
@@ -334,34 +331,31 @@ class AppRouter {
       ),
       GoRoute(
         path: '/mes-demandes',
-        builder: (_, __) => const MesDemandesScreen(),
+        builder: (_, _) => const MesDemandesScreen(),
       ),
       GoRoute(
         path: '/mes-demandes/:id',
         builder: (_, s) =>
             ClientRequestDetailScreen(requestId: s.pathParameters['id']!),
       ),
-      GoRoute(path: '/payment', builder: (_, __) => const PaymentScreen()),
+      GoRoute(path: '/payment', builder: (_, _) => const PaymentScreen()),
 
-      GoRoute(
-        path: '/provider/home',
-        builder: (_, __) => const ProviderShell(),
-      ),
+      GoRoute(path: '/provider/home', builder: (_, _) => const ProviderShell()),
       GoRoute(
         path: '/provider/earnings',
-        builder: (_, __) => const ProviderShell(initialTab: 1),
+        builder: (_, _) => const ProviderShell(initialTab: 1),
       ),
       GoRoute(
         path: '/provider/catalog',
-        builder: (_, __) => const ProviderCatalogScreen(),
+        builder: (_, _) => const ProviderCatalogScreen(),
       ),
       GoRoute(
         path: '/provider/profile',
-        builder: (_, __) => const ProviderShell(initialTab: 2),
+        builder: (_, _) => const ProviderShell(initialTab: 2),
       ),
       GoRoute(
         path: '/provider/identity',
-        builder: (_, __) => const ProviderIdentityScreen(),
+        builder: (_, _) => const ProviderIdentityScreen(),
       ),
       GoRoute(
         path: '/provider/mission/:id',
@@ -370,15 +364,15 @@ class AppRouter {
       ),
       GoRoute(
         path: '/provider/competences',
-        builder: (_, __) => const ProviderSkillsScreen(),
+        builder: (_, _) => const ProviderSkillsScreen(),
       ),
       GoRoute(
         path: '/provider/wallet',
-        builder: (_, __) => const ProviderWalletScreen(),
+        builder: (_, _) => const ProviderWalletScreen(),
       ),
       GoRoute(
         path: '/provider/rides',
-        builder: (_, __) => const ProviderRidesScreen(),
+        builder: (_, _) => const ProviderRidesScreen(),
       ),
       GoRoute(
         path: '/provider/rides/:id',
@@ -388,7 +382,7 @@ class AppRouter {
       // ── Routes Administrateur ────────────────────────────────────────
       GoRoute(
         path: '/admin/dashboard',
-        builder: (_, __) => const AdminDashboardScreen(),
+        builder: (_, _) => const AdminDashboardScreen(),
       ),
       GoRoute(
         path: '/admin/control',
@@ -398,51 +392,51 @@ class AppRouter {
       ),
       GoRoute(
         path: '/admin/users',
-        builder: (_, __) => const AdminUsersScreen(),
+        builder: (_, _) => const AdminUsersScreen(),
       ),
       GoRoute(
         path: '/admin/providers',
-        builder: (_, __) => const AdminProvidersScreen(),
+        builder: (_, _) => const AdminProvidersScreen(),
       ),
       GoRoute(
         path: '/admin/revenue',
-        builder: (_, __) => const AdminRevenueScreen(),
+        builder: (_, _) => const AdminRevenueScreen(),
       ),
       GoRoute(
         path: '/admin/tracking',
-        builder: (_, __) => const AdminTrackingScreen(),
+        builder: (_, _) => const AdminTrackingScreen(),
       ),
       GoRoute(
         path: '/admin/leaderboard',
-        builder: (_, __) => const AdminLeaderboardScreen(),
+        builder: (_, _) => const AdminLeaderboardScreen(),
       ),
       GoRoute(
         path: '/admin/notifications',
-        builder: (_, __) => const AdminNotificationsScreen(),
+        builder: (_, _) => const AdminNotificationsScreen(),
       ),
       GoRoute(
         path: '/admin/settings',
-        builder: (_, __) => const AdminSettingsScreen(),
+        builder: (_, _) => const AdminSettingsScreen(),
       ),
       GoRoute(
         path: '/admin/reports',
-        builder: (_, __) => const AdminReportsScreen(),
+        builder: (_, _) => const AdminReportsScreen(),
       ),
       GoRoute(
         path: '/admin/rides',
-        builder: (_, __) => const AdminRidesScreen(),
+        builder: (_, _) => const AdminRidesScreen(),
       ),
       GoRoute(
         path: '/admin/roles',
-        builder: (_, __) => const AdminRolesScreen(),
+        builder: (_, _) => const AdminRolesScreen(),
       ),
       GoRoute(
         path: '/admin/topups',
-        builder: (_, __) => const AdminTopupsScreen(),
+        builder: (_, _) => const AdminTopupsScreen(),
       ),
       GoRoute(
         path: '/admin/finance',
-        builder: (_, __) => const AdminFinanceScreen(),
+        builder: (_, _) => const AdminFinanceScreen(),
       ),
     ],
   );

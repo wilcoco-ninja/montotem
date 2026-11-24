@@ -15,11 +15,11 @@ class AdminNotificationException implements Exception {
 /// La sécurité repose sur la RLS : seul un admin voit les lignes `admins_only`
 /// et il ne peut modifier que `read_at`.
 class AdminNotificationService {
-  AdminNotificationService({SupabaseClient? client}) : _client = client;
+  AdminNotificationService({this.client});
 
-  final SupabaseClient? _client;
+  final SupabaseClient? client;
 
-  SupabaseClient get _sb => _client ?? Supabase.instance.client;
+  SupabaseClient get _sb => client ?? Supabase.instance.client;
 
   static const String _colonnes =
       'id, type, title, body, payload, read_at, created_at';

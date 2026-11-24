@@ -194,7 +194,7 @@ class SosExpressBar extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: _gouttiere),
             itemCount: n,
-            separatorBuilder: (_, __) => const SizedBox(width: _ecart),
+            separatorBuilder: (_, _) => const SizedBox(width: _ecart),
             itemBuilder: (_, i) => case_(kSosMetiers[i]),
           );
         },

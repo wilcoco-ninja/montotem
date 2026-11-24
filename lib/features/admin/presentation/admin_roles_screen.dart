@@ -415,7 +415,7 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 80),
         itemCount: _admins.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 10),
+        separatorBuilder: (_, _) => const SizedBox(height: 10),
         itemBuilder: (context, index) => _carteAdmin(_admins[index]),
       ),
     );

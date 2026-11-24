@@ -429,7 +429,7 @@ class _PulseDotState extends State<PulseDot>
     if (!widget.animate) return _dot(color, 1.0);
     return AnimatedBuilder(
       animation: _c,
-      builder: (_, __) {
+      builder: (_, _) {
         final t = _c.value;
         final scale = 1 + (t * 2.2);
         final opacity = (1 - t).clamp(0.0, 1.0);

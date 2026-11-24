@@ -348,7 +348,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: _proches.length,
-                        separatorBuilder: (_, __) => const SizedBox(height: 8),
+                        separatorBuilder: (_, _) => const SizedBox(height: 8),
                         itemBuilder: (_, i) => _carteProche(_proches[i]),
                       ),
                     ),

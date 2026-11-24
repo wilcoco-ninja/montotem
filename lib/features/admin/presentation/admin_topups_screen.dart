@@ -300,7 +300,7 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
         itemCount: _demandes.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 10),
+        separatorBuilder: (_, _) => const SizedBox(height: 10),
         itemBuilder: (context, i) => _carte(_demandes[i]),
       ),
     );

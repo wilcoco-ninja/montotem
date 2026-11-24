@@ -128,7 +128,7 @@ class _MatchingScreenState extends State<MatchingScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               scrollDirection: Axis.horizontal,
               itemCount: _categories.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 8),
+              separatorBuilder: (_, _) => const SizedBox(width: 8),
               itemBuilder: (context, index) {
                 final cat = _categories[index];
                 return ChoiceChip(
@@ -182,7 +182,7 @@ class _MatchingScreenState extends State<MatchingScreen> {
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
       itemCount: resultats.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      separatorBuilder: (_, _) => const SizedBox(height: 12),
       itemBuilder: (context, index) => _buildCarte(resultats[index]),
     );
   }
