@@ -85,7 +85,8 @@ class AppRouter {
     '/pro/login',
     '/pro/register',
     '/forgot-password',
-    '/debug',
+    // Route debug reservee au build development (jamais en release).
+    if (!kReleaseMode) '/debug',
     '/admin/login',
     '/sos',
     '/emergency',
@@ -230,7 +231,9 @@ class AppRouter {
         path: '/forgot-password',
         builder: (_, __) => const PasswordSetupScreen(isReset: true),
       ),
-      GoRoute(path: '/debug', builder: (_, __) => const DebugLoginScreen()),
+      // Ecran debug : uniquement en development, absent des builds release.
+      if (!kReleaseMode)
+        GoRoute(path: '/debug', builder: (_, __) => const DebugLoginScreen()),
       GoRoute(
           path: '/admin/login', builder: (_, __) => const AdminLoginScreen()),
 
