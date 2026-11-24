@@ -177,7 +177,7 @@ class AdminFinanceService {
           await _sb.from('app_config').upsert({
             'key': cle,
             'value_int': valeur,
-            if (note != null) 'note': note,
+            ?'note': note,
             'updated_at': DateTime.now().toUtc().toIso8601String(),
           });
         } on PostgrestException catch (e2) {

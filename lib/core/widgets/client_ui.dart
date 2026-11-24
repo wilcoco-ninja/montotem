@@ -136,7 +136,7 @@ class ClientPageTitle extends StatelessWidget {
               ),
             ),
           ),
-          if (trailing != null) trailing!,
+          ?trailing,
         ],
       ),
     );

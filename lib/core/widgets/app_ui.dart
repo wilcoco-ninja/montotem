@@ -56,7 +56,7 @@ class SectionTitle extends StatelessWidget {
           Expanded(
             child: Semantics(header: true, child: Text(text, style: style)),
           ),
-          if (trailing != null) trailing!,
+          ?trailing,
         ],
       ),
     );
@@ -776,7 +776,7 @@ class InfoRow extends StatelessWidget {
               ],
             ),
           ),
-          if (trailing != null) trailing!,
+          ?trailing,
         ],
       ),
     );
