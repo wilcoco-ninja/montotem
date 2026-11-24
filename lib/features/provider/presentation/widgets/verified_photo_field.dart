@@ -7,7 +7,7 @@ import 'package:montotem/core/widgets/app_button.dart';
 import 'package:montotem/core/widgets/app_ui.dart';
 import 'package:montotem/features/provider/data/image_quality_service.dart';
 
-/// Photo avec contrÃƒÂ´le de qualitÃƒÂ© immÃƒÂ©diat et consignes en gros caractÃƒÂ¨res.
+/// Photo avec contrôle de qualité immédiat et consignes en gros caractères.
 class VerifiedPhotoField extends StatefulWidget {
   const VerifiedPhotoField({
     super.key,
@@ -28,7 +28,7 @@ class VerifiedPhotoField extends StatefulWidget {
   final Future<PhotoCheck> Function(Uint8List bytes) analyser;
   final ValueChanged<VerifiedPhoto?> onChanged;
 
-  /// Pas de galerie (photo du visage) : ÃƒÂ©vite l'envoi d'une photo d'un tiers.
+  /// Pas de galerie (photo du visage) : évite l'envoi d'une photo d'un tiers.
   final bool cameraOnly;
   final bool frontCamera;
 
@@ -60,7 +60,7 @@ class _VerifiedPhotoFieldState extends State<VerifiedPhotoField> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Impossible de charger la photo. RÃƒÂ©essayez.'),
+            content: Text('Impossible de charger la photo. Réessayez.'),
           ),
         );
       }
@@ -112,7 +112,7 @@ class _VerifiedPhotoFieldState extends State<VerifiedPhotoField> {
                         CircularProgressIndicator(),
                         SizedBox(height: 12),
                         Text(
-                          'Analyse de la photoÃ¢â‚¬Â¦',
+                          'Analyse de la photo…',
                           style: TextStyle(fontSize: 16),
                         ),
                       ],
@@ -187,7 +187,7 @@ class _VerifiedPhotoFieldState extends State<VerifiedPhotoField> {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  'Photo de bonne qualitÃƒÂ©',
+                  'Photo de bonne qualité',
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w800,
@@ -201,7 +201,7 @@ class _VerifiedPhotoFieldState extends State<VerifiedPhotoField> {
             const Padding(
               padding: EdgeInsets.only(top: 6),
               child: Text(
-                'Le visage sera contrÃƒÂ´lÃƒÂ© par notre ÃƒÂ©quipe.',
+                'Le visage sera contrôlé par notre équipe.',
                 style: TextStyle(fontSize: 15),
               ),
             ),
@@ -219,7 +219,7 @@ class _VerifiedPhotoFieldState extends State<VerifiedPhotoField> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Photo ÃƒÂ  refaire',
+            'Photo à refaire',
             style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.w800,

@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import '../theme/app_colors.dart';
 import '../theme/totem_icons.dart';
 
-/// Barre de services MonTotem ÃƒÂ  poser sur l'accueil client (au-dessus ou
-/// sous la carte) : ZÃƒÂ©midjan, Kloboto, DÃƒÂ©pannage, Remorquage, SOS.
+/// Barre de services MonTotem à poser sur l'accueil client (au-dessus ou
+/// sous la carte) : Zémidjan, Kloboto, Dépannage, Remorquage, SOS.
 ///
 /// Exemple dans `home_screen.dart` :
 /// ```dart
@@ -17,7 +17,7 @@ import '../theme/totem_icons.dart';
 ///   onSos: () => context.push('/sos'),
 /// )
 /// ```
-/// Adaptez les chemins ÃƒÂ  vos routes de courses.
+/// Adaptez les chemins à vos routes de courses.
 class TotemServiceDock extends StatelessWidget {
   const TotemServiceDock({
     super.key,
@@ -48,7 +48,7 @@ class TotemServiceDock extends StatelessWidget {
           children: [
             _Tuile(
               glyphe: TotemGlyph.zemidjan,
-              libelle: 'ZÃƒÂ©midjan',
+              libelle: 'Zémidjan',
               accent: scheme.secondary,
               onTap: onZemidjan,
             ),
@@ -60,7 +60,7 @@ class TotemServiceDock extends StatelessWidget {
             ),
             _Tuile(
               glyphe: TotemGlyph.depannage,
-              libelle: 'DÃƒÂ©pannage',
+              libelle: 'Dépannage',
               accent: scheme.secondary,
               onTap: onDepannage,
             ),

@@ -18,9 +18,9 @@ import 'package:montotem/features/emergency/data/emergency_places_repository.dar
 import 'package:montotem/features/emergency/data/emergency_tile_provider.dart';
 import 'package:montotem/features/emergency/domain/emergency_models.dart';
 
-/// Aller vers un ÃƒÂ©tablissement de secours.
-/// Avec internet : itinÃƒÂ©raire routier. Hors ligne : itinÃƒÂ©raire enregistrÃƒÂ© s'il
-/// existe, sinon direction, cap et distance en temps rÃƒÂ©el (le GPS suffit).
+/// Aller vers un établissement de secours.
+/// Avec internet : itinéraire routier. Hors ligne : itinéraire enregistré s'il
+/// existe, sinon direction, cap et distance en temps réel (le GPS suffit).
 class EmergencyRouteScreen extends StatefulWidget {
   const EmergencyRouteScreen({super.key, required this.lieu});
 
@@ -127,7 +127,7 @@ class _EmergencyRouteScreenState extends State<EmergencyRouteScreen> {
         origin: origine,
         destination: _lieu.position,
       );
-      // Le service renvoie une ligne droite en cas d'ÃƒÂ©chec : on ne l'affiche pas comme route.
+      // Le service renvoie une ligne droite en cas d'échec : on ne l'affiche pas comme route.
       if (!mounted || r.summary.contains('oiseau')) return;
       setState(() {
         _route = r.geometry;
@@ -270,9 +270,7 @@ class _EmergencyRouteScreenState extends State<EmergencyRouteScreen> {
           ],
         ),
         const RichAttributionWidget(
-          attributions: [
-            TextSourceAttribution('Ã‚Â© OpenStreetMap contributors'),
-          ],
+          attributions: [TextSourceAttribution('© OpenStreetMap contributors')],
         ),
       ],
     );
@@ -333,7 +331,7 @@ class _EmergencyRouteScreenState extends State<EmergencyRouteScreen> {
               const SizedBox(height: 12),
               if (distM == null)
                 Text(
-                  'Recherche de votre position GPSÃ¢â‚¬Â¦',
+                  'Recherche de votre position GPS…',
                   style: TextStyle(
                     fontSize: 16.5,
                     color: context.textSecondary,
@@ -363,7 +361,7 @@ class _EmergencyRouteScreenState extends State<EmergencyRouteScreen> {
                             ),
                           ),
                           Text(
-                            'Direction : ${_points[(((cap! + 22.5) % 360) ~/ 45)]} (${cap.round()}Ã‚Â°)',
+                            'Direction : ${_points[(((cap! + 22.5) % 360) ~/ 45)]} (${cap.round()}°)',
                             style: const TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w700,
@@ -371,8 +369,8 @@ class _EmergencyRouteScreenState extends State<EmergencyRouteScreen> {
                           ),
                           Text(
                             enMouvement
-                                ? 'La flÃƒÂ¨che indique oÃƒÂ¹ tourner par rapport ÃƒÂ  votre dÃƒÂ©placement.'
-                                : 'La flÃƒÂ¨che pointe vers le lieu, le nord ÃƒÂ©tant en haut.',
+                                ? 'La flèche indique où tourner par rapport à votre déplacement.'
+                                : 'La flèche pointe vers le lieu, le nord étant en haut.',
                             style: TextStyle(
                               fontSize: 14,
                               height: 1.3,
@@ -387,11 +385,11 @@ class _EmergencyRouteScreenState extends State<EmergencyRouteScreen> {
               const SizedBox(height: 10),
               Text(
                 _routeReelle
-                    ? 'ItinÃƒÂ©raire routier affichÃƒÂ© (${_horsLigne ? 'enregistrÃƒÂ© sur ce tÃƒÂ©lÃƒÂ©phone' : 'en ligne'}).'
+                    ? 'Itinéraire routier affiché (${_horsLigne ? 'enregistré sur ce téléphone' : 'en ligne'}).'
                     : (_horsLigne
-                          ? 'Hors ligne : distance et direction ÃƒÂ  vol d\'oiseau. '
+                          ? 'Hors ligne : distance et direction à vol d\'oiseau. '
                                 'La route exacte n\'est pas disponible ici.'
-                          : 'Recherche de l\'itinÃƒÂ©raire routierÃ¢â‚¬Â¦'),
+                          : 'Recherche de l\'itinéraire routier…'),
                 style: TextStyle(
                   fontSize: 15,
                   height: 1.35,
@@ -412,7 +410,7 @@ class _EmergencyRouteScreenState extends State<EmergencyRouteScreen> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
-                          'Aucune application de navigation trouvÃƒÂ©e.',
+                          'Aucune application de navigation trouvée.',
                         ),
                       ),
                     );
@@ -422,7 +420,7 @@ class _EmergencyRouteScreenState extends State<EmergencyRouteScreen> {
               if (_lieu.telephone != null) ...[
                 const SizedBox(height: 10),
                 AppButton(
-                  label: 'Appeler cet ÃƒÂ©tablissement',
+                  label: 'Appeler cet établissement',
                   icon: Icons.call_rounded,
                   variant: AppButtonVariant.secondary,
                   onPressed: () => appelerNumero(_lieu.telephone!),

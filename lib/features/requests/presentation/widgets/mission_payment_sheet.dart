@@ -10,7 +10,7 @@ import 'package:montotem/features/requests/data/mission_service.dart';
 import 'package:montotem/features/requests/domain/mission_model.dart';
 import 'package:montotem/features/requests/domain/mission_payment_model.dart';
 
-/// Retourne true si le paiement a ÃƒÂ©tÃƒÂ© dÃƒÂ©clarÃƒÂ©.
+/// Retourne true si le paiement a été déclaré.
 Future<bool?> showMissionPaymentSheet(
   BuildContext context, {
   required Mission mission,
@@ -76,19 +76,19 @@ class _PaymentSheetState extends State<_PaymentSheet> {
     await Clipboard.setData(ClipboardData(text: texte));
     if (!mounted) return;
     ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('NumÃƒÂ©ro copiÃƒÂ©.')));
+        .showSnackBar(const SnackBar(content: Text('Numéro copié.')));
   }
 
   String? _validerPhone(String? v) {
     if (v == null || v.trim().isEmpty) return 'Champ obligatoire';
     if (!AuthService.isValidPhone(AuthService.normalizePhone(v))) {
-      return 'NumÃƒÂ©ro invalide. Exemple : 01 97 00 00 00';
+      return 'Numéro invalide. Exemple : 01 97 00 00 00';
     }
     return null;
   }
 
   String? _validerRef(String? v) => (v == null || v.trim().length < 4)
-      ? 'Saisissez la rÃƒÂ©fÃƒÂ©rence reÃƒÂ§ue par SMS'
+      ? 'Saisissez la référence reçue par SMS'
       : null;
 
   Future<void> _envoyer() async {
@@ -111,9 +111,7 @@ class _PaymentSheetState extends State<_PaymentSheet> {
       Navigator.pop(context, true);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-            'Paiement dÃƒÂ©clarÃƒÂ©. Le dÃƒÂ©panneur va le confirmer.',
-          ),
+          content: Text('Paiement déclaré. Le dépanneur va le confirmer.'),
           duration: Duration(seconds: 6),
         ),
       );
@@ -140,8 +138,8 @@ class _PaymentSheetState extends State<_PaymentSheet> {
           children: [
             Text(
               widget.kind == 'trajet'
-                  ? 'Payer le dÃƒÂ©placement'
-                  : 'Payer la rÃƒÂ©paration',
+                  ? 'Payer le déplacement'
+                  : 'Payer la réparation',
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
             ),
             const SizedBox(height: 4),
@@ -162,8 +160,8 @@ class _PaymentSheetState extends State<_PaymentSheet> {
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: const Text(
-                  'Ce dÃƒÂ©panneur n\'a pas encore indiquÃƒÂ© de numÃƒÂ©ro Mobile Money. '
-                  'Le paiement se fait en espÃƒÂ¨ces.',
+                  'Ce dépanneur n\'a pas encore indiqué de numéro Mobile Money. '
+                  'Le paiement se fait en espèces.',
                   style: TextStyle(fontSize: 16, height: 1.4),
                 ),
               ),
@@ -231,7 +229,7 @@ class _PaymentSheetState extends State<_PaymentSheet> {
                     ),
                     IconButton(
                       iconSize: 28,
-                      tooltip: 'Copier le numÃƒÂ©ro',
+                      tooltip: 'Copier le numéro',
                       icon: const Icon(Icons.copy_rounded),
                       onPressed: () => _copier(_momo!.numero),
                     ),
@@ -245,7 +243,7 @@ class _PaymentSheetState extends State<_PaymentSheet> {
               ),
               const SizedBox(height: 10),
               AppTextField(
-                label: 'NumÃƒÂ©ro avec lequel vous avez payÃƒÂ©',
+                label: 'Numéro avec lequel vous avez payé',
                 hint: '01 97 00 00 00',
                 icon: Icons.phone_outlined,
                 controller: _phone,
@@ -256,8 +254,8 @@ class _PaymentSheetState extends State<_PaymentSheet> {
               ),
               const SizedBox(height: 14),
               AppTextField(
-                label: 'RÃƒÂ©fÃƒÂ©rence de la transaction',
-                helper: 'ReÃƒÂ§ue par SMS aprÃƒÂ¨s le paiement',
+                label: 'Référence de la transaction',
+                helper: 'Reçue par SMS après le paiement',
                 icon: Icons.receipt_long_outlined,
                 controller: _ref,
                 enabled: !_envoi,
@@ -267,14 +265,14 @@ class _PaymentSheetState extends State<_PaymentSheet> {
               ),
             ] else
               Text(
-                'Remettez $somme en espÃƒÂ¨ces au dÃƒÂ©panneur, puis appuyez sur le '
-                'bouton ci-dessous. Il confirmera la rÃƒÂ©ception.',
+                'Remettez $somme en espèces au dépanneur, puis appuyez sur le '
+                'bouton ci-dessous. Il confirmera la réception.',
                 style: TextStyle(fontSize: 17, height: 1.45, color: muted),
               ),
             const SizedBox(height: 20),
             AppButton(
               label: _methode.mobileMoney
-                  ? 'J\'ai payÃƒÂ© : dÃƒÂ©clarer'
+                  ? 'J\'ai payé : déclarer'
                   : 'J\'ai remis l\'argent',
               icon: Icons.check_rounded,
               loading: _envoi,

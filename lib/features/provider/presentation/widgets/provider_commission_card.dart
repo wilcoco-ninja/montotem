@@ -7,8 +7,8 @@ import '../../../../core/widgets/app_ui.dart';
 import '../../../wallet/data/wallet_service.dart';
 import '../../../wallet/domain/wallet_model.dart';
 
-/// Explique le modÃƒÂ¨le ÃƒÂ©conomique : pas d'abonnement, une commission prÃƒÂ©levÃƒÂ©e
-/// sur chaque intervention payÃƒÂ©e via l'application et dÃƒÂ©duite du portefeuille.
+/// Explique le modèle économique : pas d'abonnement, une commission prélevée
+/// sur chaque intervention payée via l'application et déduite du portefeuille.
 class ProviderCommissionCard extends StatefulWidget {
   const ProviderCommissionCard({super.key, required this.onVoirPortefeuille});
 
@@ -75,20 +75,21 @@ class _ProviderCommissionCardState extends State<ProviderCommissionCard> {
               _Point(
                 icone: Icons.payments_outlined,
                 texte:
-                    'Commission : ${c.commissionCashPct} % (espÃƒÂ¨ces), '
+                    'Commission : ${c.commissionCashPct} % (espèces), '
                     '${c.commissionMomoPct} % (Mobile Money), '
-                    '${c.commissionTravelPct} % sur les frais de dÃƒÂ©placement.',
+                    '${c.commissionTravelPct} % sur les frais de déplacement.',
               ),
               const _Point(
                 icone: Icons.account_balance_wallet_outlined,
-                texte: 'Elle est dÃƒÂ©duite automatiquement de votre portefeuille.',
+                texte:
+                    'Elle est déduite automatiquement de votre portefeuille.',
               ),
               _Point(
                 icone: Icons.add_card_rounded,
                 texte:
                     'Rechargez par Mobile Money. Sous '
                     '${formaterFcfaSigne(c.seuilBlocageFcfa)}, votre compte est '
-                    'mis en pause jusqu\'ÃƒÂ  la recharge.',
+                    'mis en pause jusqu\'à la recharge.',
               ),
               const SizedBox(height: 14),
               AppButton(

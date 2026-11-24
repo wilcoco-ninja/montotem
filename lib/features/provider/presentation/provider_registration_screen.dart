@@ -172,14 +172,12 @@ class _ProviderRegistrationScreenState
     if (texte.isEmpty) return;
     if (texte.length < kCompetenceMin || texte.length > kCompetenceMax) {
       _afficherMessage(
-        'Une compÃƒÂ©tence doit faire entre $kCompetenceMin et $kCompetenceMax caractÃƒÂ¨res.',
+        'Une compétence doit faire entre $kCompetenceMin et $kCompetenceMax caractères.',
       );
       return;
     }
     if (_competences.length >= kCompetencesMaxParPrestataire) {
-      _afficherMessage(
-        'Maximum $kCompetencesMaxParPrestataire compÃƒÂ©tences.',
-      );
+      _afficherMessage('Maximum $kCompetencesMaxParPrestataire compétences.');
       return;
     }
     if (_competences.any((c) => c.toLowerCase() == texte.toLowerCase())) {
@@ -242,7 +240,7 @@ class _ProviderRegistrationScreenState
       }
     } catch (e, stackTrace) {
       developer.log(
-        'Erreur de gÃƒÂ©ocodage inverse',
+        'Erreur de géocodage inverse',
         error: e,
         stackTrace: stackTrace,
         name: 'ProviderRegistrationScreen',
@@ -253,9 +251,9 @@ class _ProviderRegistrationScreenState
   }
 
   String? _verifierLogique() {
-    if (_metier == null) return 'Choisissez votre corps de mÃƒÂ©tier.';
+    if (_metier == null) return 'Choisissez votre corps de métier.';
     if (!_transport && _vehicules.isEmpty) {
-      return 'Choisissez au moins un type de vÃƒÂ©hicule.';
+      return 'Choisissez au moins un type de véhicule.';
     }
     if (_latitude == null || _longitude == null) {
       return 'Placez votre position sur la carte.';
@@ -267,10 +265,10 @@ class _ProviderRegistrationScreenState
           return 'Chaque prestation doit avoir un nom.';
         }
         if (!_vehicules.contains(s.categorie)) {
-          return 'Ã‚Â« ${s.nom} Ã‚Â» : type de vÃƒÂ©hicule non pris en charge.';
+          return '« ${s.nom} » : type de véhicule non pris en charge.';
         }
         if (s.fixe && (s.prix == null || s.prix! <= 0)) {
-          return 'Ã‚Â« ${s.nom} Ã‚Â» : indiquez un prix fixe supÃƒÂ©rieur ÃƒÂ  0.';
+          return '« ${s.nom} » : indiquez un prix fixe supérieur à 0.';
         }
       }
     }
@@ -283,9 +281,7 @@ class _ProviderRegistrationScreenState
 
     if (_photoProfil == null || _photoCni == null) {
       setState(() => _photosManquantesSignalees = true);
-      _afficherMessage(
-        'Photo de profil et piÃƒÂ¨ce d\'identitÃƒÂ© obligatoires.',
-      );
+      _afficherMessage('Photo de profil et pièce d\'identité obligatoires.');
       return;
     }
     final erreur = _verifierLogique();
@@ -356,7 +352,7 @@ class _ProviderRegistrationScreenState
       if (!mounted) return;
       if (echecs > 0) {
         _afficherMessage(
-          '$echecs compÃƒÂ©tence(s) non enregistrÃƒÂ©e(s). Ajoutez-les depuis votre profil.',
+          '$echecs compétence(s) non enregistrée(s). Ajoutez-les depuis votre profil.',
         );
       }
       context.go('/provider/identity');
@@ -372,7 +368,7 @@ class _ProviderRegistrationScreenState
         name: 'ProviderRegistrationScreen',
       );
       if (mounted) {
-        _afficherMessage('Erreur inattendue ou rÃƒÂ©seau. RÃƒÂ©essayez.');
+        _afficherMessage('Erreur inattendue ou réseau. Réessayez.');
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -386,13 +382,13 @@ class _ProviderRegistrationScreenState
 
     return AuthShell(
       title: 'Devenez prestataire',
-      subtitle: 'Recevez des demandes de dÃƒÂ©pannage prÃƒÂ¨s de chez vous',
+      subtitle: 'Recevez des demandes de dépannage près de chez vous',
       icon: Icons.build_circle_outlined,
       onBack: _isLoading ? null : () => context.go('/welcome'),
       footer: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('DÃƒÂ©jÃƒÂ  un compte ?', style: TextStyle(color: muted)),
+          Text('Déjà un compte ?', style: TextStyle(color: muted)),
           TextButton(
             onPressed: _isLoading ? null : () => context.go('/login'),
             child: const Text(
@@ -410,10 +406,10 @@ class _ProviderRegistrationScreenState
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const AuthInfoBanner(
-                title: 'Compte sÃƒÂ©curisÃƒÂ©',
+                title: 'Compte sécurisé',
                 message:
-                    'TÃƒÂ©lÃƒÂ©phone dÃƒÂ©jÃƒÂ  vÃƒÂ©rifiÃƒÂ©. ComplÃƒÂ©tez votre profil : l\'ÃƒÂ©tape suivante '
-                    'est la vÃƒÂ©rification d\'identitÃƒÂ©.',
+                    'Téléphone déjà vérifié. Complétez votre profil : l\'étape suivante '
+                    'est la vérification d\'identité.',
               ),
               const SizedBox(height: 22),
               ..._blocIdentite(),
@@ -458,7 +454,7 @@ class _ProviderRegistrationScreenState
     ),
     const SizedBox(height: 14),
     AppTextField(
-      label: 'PrÃƒÂ©nom',
+      label: 'Prénom',
       icon: Icons.person_outline,
       controller: _prenomController,
       textInputAction: TextInputAction.next,
@@ -467,15 +463,15 @@ class _ProviderRegistrationScreenState
     const SizedBox(height: 14),
     AppTextField(
       label: 'Email du compte',
-      helper: 'Modifiable depuis les paramÃƒÂ¨tres du compte',
+      helper: 'Modifiable depuis les paramètres du compte',
       icon: Icons.email_outlined,
       controller: _emailController,
       readOnly: true,
     ),
     const SizedBox(height: 14),
     AppTextField(
-      label: 'TÃƒÂ©lÃƒÂ©phone vÃƒÂ©rifiÃƒÂ©',
-      helper: 'NumÃƒÂ©ro validÃƒÂ© par SMS',
+      label: 'Téléphone vérifié',
+      helper: 'Numéro validé par SMS',
       icon: Icons.phone_outlined,
       controller: _phoneController,
       readOnly: true,
@@ -522,15 +518,15 @@ class _ProviderRegistrationScreenState
     return [
       const AuthSectionHeader(
         icon: Icons.storefront_outlined,
-        title: 'Votre activitÃƒÂ©',
-        subtitle: 'MÃƒÂ©tier, vÃƒÂ©hicules et position',
+        title: 'Votre activité',
+        subtitle: 'Métier, véhicules et position',
       ),
       const SizedBox(height: 16),
       AppTextField(
         label: _transport
-            ? 'Nom affichÃƒÂ© (facultatif)'
+            ? 'Nom affiché (facultatif)'
             : 'Nom du garage / atelier',
-        hint: _transport ? 'Par dÃƒÂ©faut : prÃƒÂ©nom et nom' : null,
+        hint: _transport ? 'Par défaut : prénom et nom' : null,
         icon: Icons.store_outlined,
         controller: _garageController,
         textInputAction: TextInputAction.next,
@@ -538,7 +534,7 @@ class _ProviderRegistrationScreenState
       ),
       const SizedBox(height: 14),
       AppTextField(
-        label: _transport ? 'NumÃƒÂ©ro IFU (facultatif)' : 'NumÃƒÂ©ro IFU',
+        label: _transport ? 'Numéro IFU (facultatif)' : 'Numéro IFU',
         icon: Icons.badge_outlined,
         controller: _ifuController,
         textInputAction: TextInputAction.next,
@@ -547,7 +543,7 @@ class _ProviderRegistrationScreenState
       const SizedBox(height: 14),
       AppTextField(
         label: 'WhatsApp (optionnel)',
-        helper: 'Jamais affichÃƒÂ© publiquement',
+        helper: 'Jamais affiché publiquement',
         icon: Icons.chat_outlined,
         controller: _whatsappController,
         keyboardType: TextInputType.phone,
@@ -556,12 +552,12 @@ class _ProviderRegistrationScreenState
         ],
         maxLength: 20,
       ),
-      const SectionTitle('Corps de mÃƒÂ©tier'),
-      groupeMetiers('DÃƒÂ©pannage', kMetiersDepannage),
+      const SectionTitle('Corps de métier'),
+      groupeMetiers('Dépannage', kMetiersDepannage),
       const SizedBox(height: 14),
       groupeMetiers('Transport (courses)', kMetiersTransport),
       if (!_transport) ...[
-        const SectionTitle('VÃƒÂ©hicules pris en charge'),
+        const SectionTitle('Véhicules pris en charge'),
         Wrap(
           spacing: 10,
           runSpacing: 10,
@@ -593,9 +589,9 @@ class _ProviderRegistrationScreenState
             Expanded(
               child: Text(
                 hasPosition
-                    ? 'Position dÃƒÂ©finie\n'
+                    ? 'Position définie\n'
                           '${_latitude!.toStringAsFixed(5)}, ${_longitude!.toStringAsFixed(5)}'
-                    : 'Obligatoire : oÃƒÂ¹ vous serez localisÃƒÂ©',
+                    : 'Obligatoire : où vous serez localisé',
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
@@ -625,7 +621,7 @@ class _ProviderRegistrationScreenState
       if (_adresseController.text.trim().isNotEmpty) ...[
         const SizedBox(height: 14),
         AppTextField(
-          label: 'Adresse dÃƒÂ©tectÃƒÂ©e',
+          label: 'Adresse détectée',
           icon: Icons.location_city_outlined,
           controller: _adresseController,
           maxLines: 2,
@@ -644,7 +640,7 @@ class _ProviderRegistrationScreenState
     return [
       AuthSectionHeader(
         icon: Icons.psychology_alt_outlined,
-        title: 'CompÃƒÂ©tences',
+        title: 'Compétences',
         subtitle:
             'Visibles par les clients (${_competences.length}/$kCompetencesMaxParPrestataire)',
       ),
@@ -664,7 +660,7 @@ class _ProviderRegistrationScreenState
         ),
       if (_competences.isNotEmpty) const SizedBox(height: 12),
       AppTextField(
-        label: 'Ajouter une compÃƒÂ©tence',
+        label: 'Ajouter une compétence',
         hint: 'Ex. : Climatisation auto',
         icon: Icons.edit_outlined,
         controller: _competenceController,
@@ -706,7 +702,7 @@ class _ProviderRegistrationScreenState
       const SizedBox(height: 14),
       if (_vehicules.isEmpty)
         StatusPill(
-          label: 'Choisissez d\'abord vos vÃƒÂ©hicules',
+          label: 'Choisissez d\'abord vos véhicules',
           color: scheme.tertiary,
           icon: Icons.info_outline_rounded,
         )
@@ -814,12 +810,12 @@ class _ProviderRegistrationScreenState
     return [
       const AuthSectionHeader(
         icon: Icons.route_outlined,
-        title: 'Frais de dÃƒÂ©placement',
-        subtitle: 'CalculÃƒÂ©s selon la distance jusqu\'au client',
+        title: 'Frais de déplacement',
+        subtitle: 'Calculés selon la distance jusqu\'au client',
       ),
       const SizedBox(height: 16),
       AppTextField(
-        label: 'Tarif par kilomÃƒÂ¨tre (FCFA)',
+        label: 'Tarif par kilomètre (FCFA)',
         icon: Icons.route_outlined,
         controller: _tarifKmController,
         keyboardType: TextInputType.number,
@@ -828,12 +824,12 @@ class _ProviderRegistrationScreenState
         onChanged: (_) => setState(() {}),
         validator: (v) {
           final n = int.tryParse(v ?? '');
-          return (n == null || n > 5000) ? '0 ÃƒÂ  5000 FCFA/km' : null;
+          return (n == null || n > 5000) ? '0 à 5000 FCFA/km' : null;
         },
       ),
       const SizedBox(height: 14),
       AppTextField(
-        label: 'Frais minimum de dÃƒÂ©placement (FCFA)',
+        label: 'Frais minimum de déplacement (FCFA)',
         icon: Icons.payments_outlined,
         controller: _fraisMinController,
         keyboardType: TextInputType.number,
@@ -858,7 +854,7 @@ class _ProviderRegistrationScreenState
         }),
       ),
       Text(
-        'Jusqu\'ÃƒÂ  ${_rayon.round()} km',
+        'Jusqu\'à ${_rayon.round()} km',
         style: const TextStyle(fontSize: 15),
       ),
       const SizedBox(height: 14),
@@ -866,7 +862,7 @@ class _ProviderRegistrationScreenState
         child: Column(
           children: [
             Text(
-              'Simulation : client ÃƒÂ  ${_simuKm.round()} km',
+              'Simulation : client à ${_simuKm.round()} km',
               style: const TextStyle(fontWeight: FontWeight.w700),
             ),
             Slider(
@@ -884,7 +880,7 @@ class _ProviderRegistrationScreenState
               ),
             ),
             const SizedBox(height: 2),
-            const Text('DÃƒÂ©placement estimÃƒÂ© affichÃƒÂ© au client'),
+            const Text('Déplacement estimé affiché au client'),
           ],
         ),
       ),
@@ -917,7 +913,7 @@ class _ProviderRegistrationScreenState
     const AuthSectionHeader(
       icon: Icons.photo_camera_outlined,
       title: 'Photos',
-      subtitle: 'Requis pour la sÃƒÂ©curitÃƒÂ© de vos futurs clients',
+      subtitle: 'Requis pour la sécurité de vos futurs clients',
     ),
     const SizedBox(height: 16),
     LayoutBuilder(
@@ -940,7 +936,7 @@ class _ProviderRegistrationScreenState
               ),
               const SizedBox(height: 12),
               _photo(
-                label: 'PiÃƒÂ¨ce d\'identitÃƒÂ©',
+                label: 'Pièce d\'identité',
                 icon: Icons.badge_outlined,
                 bytes: _photoCni,
                 onChanged: (b) => setState(() {
@@ -974,7 +970,7 @@ class _ProviderRegistrationScreenState
             const SizedBox(width: 12),
             Expanded(
               child: _photo(
-                label: 'PiÃƒÂ¨ce d\'identitÃƒÂ©',
+                label: 'Pièce d\'identité',
                 icon: Icons.badge_outlined,
                 bytes: _photoCni,
                 onChanged: (b) => setState(() {

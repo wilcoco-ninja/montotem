@@ -114,8 +114,8 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
           maxLines: 3,
           style: const TextStyle(fontSize: 15),
           decoration: const InputDecoration(
-            labelText: 'Note dÃ¢â‚¬â„¢instruction interne (optionnel)',
-            hintText: 'Ex. : Ãƒâ€°change tÃƒÂ©lÃƒÂ©phonique effectuÃƒÂ©, avertissement ÃƒÂ©mis',
+            labelText: 'Note d’instruction interne (optionnel)',
+            hintText: 'Ex. : Échange téléphonique effectué, avertissement émis',
             border: OutlineInputBorder(),
           ),
         ),
@@ -132,9 +132,7 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
                   : Theme.of(ctx).colorScheme.primary,
             ),
             child: Text(
-              suspendre
-                  ? 'Confirmer la suspension'
-                  : 'Valider lÃ¢â‚¬â„¢arbitrage',
+              suspendre ? 'Confirmer la suspension' : 'Valider l’arbitrage',
             ),
           ),
         ],
@@ -155,8 +153,8 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
       );
       _afficherMessage(
         suspendre
-            ? 'Prestataire suspendu et dossier clÃƒÂ´turÃƒÂ©.'
-            : 'Statut du signalement mis ÃƒÂ  jour.',
+            ? 'Prestataire suspendu et dossier clôturé.'
+            : 'Statut du signalement mis à jour.',
       );
       await _chargerDonnees(silencieux: true);
     } catch (e) {
@@ -179,7 +177,7 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
     final d = DateTime.tryParse('$iso')?.toLocal();
     if (d == null) return '';
     String pad(int n) => n.toString().padLeft(2, '0');
-    return '${pad(d.day)}/${pad(d.month)}/${d.year} ÃƒÂ  ${pad(d.hour)}:${pad(d.minute)}';
+    return '${pad(d.day)}/${pad(d.month)}/${d.year} à ${pad(d.hour)}:${pad(d.minute)}';
   }
 
   @override
@@ -227,7 +225,7 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
             const EmptyState(
               icon: Icons.flag_outlined,
               title: 'Aucun signalement en cours',
-              message: 'Les litiges ou plaintes signalÃƒÂ©s par les clients apparaÃƒÂ®tront ici.',
+              message: 'Les litiges ou plaintes signalés par les clients apparaîtront ici.',
             ),
           ],
         ),
@@ -251,8 +249,8 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
     final statut = '${r['status']}';
     final ouvert = statut == 'open' || statut == 'reviewing';
     final (couleur, libelle) = switch (statut) {
-      'resolved' => (scheme.secondary, 'RÃƒÂ©solu / TraitÃƒÂ©'),
-      'dismissed' => (Colors.grey, 'ClassÃƒÂ© sans suite'),
+      'resolved' => (scheme.secondary, 'Résolu / Traité'),
+      'dismissed' => (Colors.grey, 'Classé sans suite'),
       'reviewing' => (scheme.tertiary, 'En examen'),
       _ => (scheme.error, 'Nouveau signalement'),
     };
@@ -285,7 +283,7 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
           ),
           const SizedBox(height: 2),
           Text(
-            'SignalÃƒÂ© par : ${_nomClient(r['reporter'])} Ã¢â‚¬Â¢ ${_dateFormatee(r['created_at'])}',
+            'Signalé par : ${_nomClient(r['reporter'])} • ${_dateFormatee(r['created_at'])}',
             style: TextStyle(fontSize: 13.5, color: Colors.grey.shade600),
           ),
           if ('${r['details'] ?? ''}'.isNotEmpty) ...[
@@ -306,7 +304,7 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
           if ('${r['admin_note'] ?? ''}'.isNotEmpty) ...[
             const SizedBox(height: 8),
             Text(
-              'Note interne dÃ¢â‚¬â„¢instruction : ${r['admin_note']}',
+              'Note interne d’instruction : ${r['admin_note']}',
               style: const TextStyle(
                 fontSize: 13.5,
                 fontStyle: FontStyle.italic,
@@ -333,7 +331,7 @@ class _AdminReportsScreenState extends State<AdminReportsScreen>
                   ),
                   FilledButton(
                     onPressed: () => _traiterSignalement(r, 'resolved'),
-                    child: const Text('Marquer rÃƒÂ©solu'),
+                    child: const Text('Marquer résolu'),
                   ),
                   FilledButton.icon(
                     icon: const Icon(Icons.block_rounded, size: 18),

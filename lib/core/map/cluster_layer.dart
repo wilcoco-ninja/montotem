@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
-/// Marqueurs regroupÃƒÂ©s (clusters) rapides, pour des milliers de points.
+/// Marqueurs regroupés (clusters) rapides, pour des milliers de points.
 ///
-/// Par rapport ÃƒÂ  l'ancienne MarkerClusterLayer :
-///  - regroupement par grille : O(n) au lieu de O(nÃ‚Â²) ;
-///  - calculÃƒÂ© une seule fois par niveau de zoom entier (le panoramique ne
+/// Par rapport à l'ancienne MarkerClusterLayer :
+///  - regroupement par grille : O(n) au lieu de O(n²) ;
+///  - calculé une seule fois par niveau de zoom entier (le panoramique ne
 ///    recalcule rien) ;
-///  - seuls les marqueurs visibles ÃƒÂ  l'ÃƒÂ©cran (+ marge) sont construits ;
+///  - seuls les marqueurs visibles à l'écran (+ marge) sont construits ;
 ///  - toucher un groupe zoome pour montrer exactement ses membres.
 ///
-/// Ãƒâ‚¬ placer dans les `children` du FlutterMap.
+/// À placer dans les `children` du FlutterMap.
 class ClusterLayer<T> extends StatefulWidget {
   const ClusterLayer({
     super.key,
@@ -24,12 +24,12 @@ class ClusterLayer<T> extends StatefulWidget {
     this.noClusterFromZoom = 16,
   });
 
-  /// Passez une NOUVELLE liste quand les donnÃƒÂ©es changent (comparaison par
-  /// identitÃƒÂ©) ; gardez la mÃƒÂªme instance sinon.
+  /// Passez une NOUVELLE liste quand les données changent (comparaison par
+  /// identité) ; gardez la même instance sinon.
   final List<T> items;
   final LatLng Function(T item) pointOf;
 
-  /// Marqueur d'un point isolÃƒÂ© (mettez `rotate: true` pour qu'il reste droit).
+  /// Marqueur d'un point isolé (mettez `rotate: true` pour qu'il reste droit).
   final Marker Function(T item) markerBuilder;
 
   final double radiusPx;
@@ -105,7 +105,7 @@ class _ClusterLayerState<T> extends State<ClusterLayer<T>> {
     final camera = MapCamera.of(context);
     _rebuildIfNeeded(camera.zoom.floor());
 
-    // Zone visible agrandie de 25 % : pas de marqueur qui Ã‚Â« apparaÃƒÂ®t Ã‚Â» au bord.
+    // Zone visible agrandie de 25 % : pas de marqueur qui « apparaît » au bord.
     final b = camera.visibleBounds;
     final padLat = (b.north - b.south) * 0.25;
     final padLng = (b.east - b.west) * 0.25;

@@ -108,7 +108,7 @@ class _MissionChatState extends State<_MissionChat> {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              'Aucun message. Ãƒâ€°crivez le premier.',
+                              'Aucun message. Écrivez le premier.',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: scheme.onSurfaceVariant,

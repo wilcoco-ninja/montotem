@@ -44,19 +44,19 @@ class _Palette {
   final bool dense;
 }
 
-/// ThÃƒÂ¨me Material de chaque espace. Part du thÃƒÂ¨me commun [AppTheme]
-/// (police, accessibilitÃƒÂ©, tailles tactiles) et change l'identitÃƒÂ© :
+/// Thème Material de chaque espace. Part du thème commun [AppTheme]
+/// (police, accessibilité, tailles tactiles) et change l'identité :
 /// couleurs, rayons, boutons, champs.
 ///
-/// Palette Ã‚Â« Totem Ã‚Â» (voir totem_palette.dart) : tous les couples
-/// texte / fond sont ÃƒÂ  7:1 minimum (AAA).
+/// Palette « Totem » (voir totem_palette.dart) : tous les couples
+/// texte / fond sont à 7:1 minimum (AAA).
 class SpaceTheme {
   SpaceTheme._();
 
   static final Map<String, ThemeData> _cache = {};
 
   /// [platform] n'a d'effet que pour le client (clair ou sombre selon le
-  /// systÃƒÂ¨me) ; le prestataire est toujours sombre, l'admin toujours clair.
+  /// système) ; le prestataire est toujours sombre, l'admin toujours clair.
   static ThemeData of(AppSpace space, Brightness platform) {
     final key = space == AppSpace.client
         ? 'client-${platform.name}'

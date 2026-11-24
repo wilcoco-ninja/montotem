@@ -65,7 +65,7 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
 
   Future<void> _ouvrir(AdminNotification n) async {
     if (!n.lue) {
-      // Mise ÃƒÂ  jour optimiste : l'UI rÃƒÂ©agit sans attendre le rÃƒÂ©seau.
+      // Mise à jour optimiste : l'UI réagit sans attendre le réseau.
       setState(() {
         _items = _items
             .map((e) => e.id == n.id ? e.copyWith(readAt: DateTime.now()) : e)
@@ -86,7 +86,7 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
 
   String _formaterDate(DateTime date) {
     final diff = DateTime.now().difference(date);
-    if (diff.inMinutes < 1) return 'Ãƒâ‚¬ l\'instant';
+    if (diff.inMinutes < 1) return 'À l\'instant';
     if (diff.inMinutes < 60) return 'Il y a ${diff.inMinutes} min';
     if (diff.inHours < 24) return 'Il y a ${diff.inHours} h';
     return DateFormat('dd/MM/yyyy HH:mm').format(date);
@@ -187,7 +187,7 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
               title: _nonLuesSeulement
                   ? 'Aucune notification non lue'
                   : 'Aucune notification',
-              message: 'Les nouveaux dossiers prestataires et les paiements apparaÃƒÂ®tront ici.',
+              message: 'Les nouveaux dossiers prestataires et les paiements apparaîtront ici.',
             ),
           ],
         ),

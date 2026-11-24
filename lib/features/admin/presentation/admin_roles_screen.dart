@@ -57,8 +57,7 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _errorMessage =
-            'Erreur lors du chargement de lÃ¢â‚¬â„¢ÃƒÂ©quipe admin : $e';
+        _errorMessage = 'Erreur lors du chargement de l’équipe admin : $e';
         _isLoading = false;
         _isRefreshing = false;
       });
@@ -109,8 +108,8 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
       'support': 'Support & Signalements (Client/Prestataire)',
       'finance': 'Finances & Validation Mobile Money',
       'validator': 'Validation des Dossiers Prestataires',
-      'supervisor': 'Superviseur GÃƒÂ©nÃƒÂ©ral (Tour de contrÃƒÂ´le)',
-      'super_admin': 'Administrateur Principal (AccÃƒÂ¨s total)',
+      'supervisor': 'Superviseur Général (Tour de contrôle)',
+      'super_admin': 'Administrateur Principal (Accès total)',
     };
 
     final resultat = await showDialog<bool>(
@@ -121,9 +120,7 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
             borderRadius: BorderRadius.circular(20),
           ),
           title: Text(
-            isNew
-                ? 'CrÃƒÂ©er un nouveau poste admin'
-                : 'Modifier le rÃƒÂ´le admin',
+            isNew ? 'Créer un nouveau poste admin' : 'Modifier le rôle admin',
             style: const TextStyle(fontWeight: FontWeight.w800),
           ),
           content: SingleChildScrollView(
@@ -142,7 +139,7 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
                     ),
                     const SizedBox(height: 12),
                     AppTextField(
-                      label: 'Mot de passe initial (8+ caractÃƒÂ¨res)',
+                      label: 'Mot de passe initial (8+ caractères)',
                       icon: Icons.lock_outline,
                       obscure: true,
                       controller: passwordController,
@@ -154,7 +151,7 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
                     children: [
                       Expanded(
                         child: AppTextField(
-                          label: 'PrÃƒÂ©nom',
+                          label: 'Prénom',
                           icon: Icons.person_outline,
                           controller: prenomController,
                           textInputAction: TextInputAction.next,
@@ -173,14 +170,14 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
                   ),
                   const SizedBox(height: 12),
                   AppTextField(
-                    label: 'TÃƒÂ©lÃƒÂ©phone (optionnel)',
+                    label: 'Téléphone (optionnel)',
                     icon: Icons.phone_outlined,
                     controller: telController,
                     textInputAction: TextInputAction.done,
                   ),
                   const SizedBox(height: 16),
                   const Text(
-                    'RÃƒÂ´le et permissions de lÃ¢â‚¬â„¢ÃƒÂ©quipe :',
+                    'Rôle et permissions de l’équipe :',
                     style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
                   ),
                   const SizedBox(height: 8),
@@ -250,9 +247,7 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
                       },
                     );
                     if (authRes.user == null) {
-                      throw Exception(
-                        'Ãƒâ€°chec de crÃƒÂ©ation du compte auth.',
-                      );
+                      throw Exception('Échec de création du compte auth.');
                     }
                   } else if (idAdmin != null) {
                     await _sb
@@ -272,8 +267,8 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
                   await _chargerAdmins(silencieux: true);
                   _afficherMessage(
                     isNew
-                        ? 'Compte admin crÃƒÂ©ÃƒÂ© avec succÃƒÂ¨s.'
-                        : 'RÃƒÂ´le mis ÃƒÂ  jour.',
+                        ? 'Compte admin créé avec succès.'
+                        : 'Rôle mis à jour.',
                   );
                 } catch (e) {
                   _afficherMessage('Erreur : $e', erreur: true);
@@ -304,7 +299,7 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text(
-          'RÃƒÂ©voquer les accÃƒÂ¨s de $nomComplet ?',
+          'Révoquer les accès de $nomComplet ?',
           style: const TextStyle(fontWeight: FontWeight.w800),
         ),
         content: const Text(
@@ -321,7 +316,7 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
             style: FilledButton.styleFrom(
               backgroundColor: Theme.of(ctx).colorScheme.error,
             ),
-            child: const Text('RÃƒÂ©voquer lÃ¢â‚¬â„¢accÃƒÂ¨s'),
+            child: const Text('Révoquer l’accès'),
           ),
         ],
       ),
@@ -339,10 +334,10 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
           })
           .eq('id', admin['id'] as Object);
 
-      _afficherMessage('AccÃƒÂ¨s admin rÃƒÂ©voquÃƒÂ© pour $nomComplet.');
+      _afficherMessage('Accès admin révoqué pour $nomComplet.');
       await _chargerAdmins(silencieux: true);
     } catch (e) {
-      _afficherMessage('Erreur lors de la rÃƒÂ©vocation : $e', erreur: true);
+      _afficherMessage('Erreur lors de la révocation : $e', erreur: true);
     }
   }
 
@@ -350,11 +345,11 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ãƒâ€°quipe Administrative & Postes'),
+        title: const Text('Équipe Administrative & Postes'),
         actions: [
           IconButton(
             icon: const Icon(Icons.person_add_alt_1_rounded),
-            tooltip: 'CrÃƒÂ©er un nouveau poste admin',
+            tooltip: 'Créer un nouveau poste admin',
             onPressed: () => _creerOuModifierAdmin(),
           ),
           IconButton(
@@ -407,7 +402,7 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
             EmptyState(
               icon: Icons.admin_panel_settings_outlined,
               title: 'Aucun administrateur secondaire',
-              message: 'CrÃƒÂ©ez des postes administratifs pour dÃƒÂ©lÃƒÂ©guer la gestion de MonTotem.',
+              message: 'Créez des postes administratifs pour déléguer la gestion de MonTotem.',
             ),
           ],
         ),
@@ -437,7 +432,7 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
     final libelleRole = switch (role) {
       'finance' => 'Finances & MoMo',
       'validator' => 'Validation Prestataires',
-      'supervisor' => 'Superviseur Tour de ContrÃƒÂ´le',
+      'supervisor' => 'Superviseur Tour de Contrôle',
       'super_admin' => 'Administrateur Principal',
       _ => 'Support Client & Signalements',
     };
@@ -514,7 +509,7 @@ class _AdminRolesScreenState extends State<AdminRolesScreen> {
                 PopupMenuItem(
                   value: 'revoke',
                   child: Text(
-                    'RÃƒÂ©voquer lÃ¢â‚¬â„¢accÃƒÂ¨s',
+                    'Révoquer l’accès',
                     style: TextStyle(color: scheme.error),
                   ),
                 ),

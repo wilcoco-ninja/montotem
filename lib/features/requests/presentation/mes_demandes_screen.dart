@@ -9,10 +9,10 @@ import '../../../core/widgets/client_ui.dart';
 import '../data/mission_service.dart';
 import '../domain/mission_model.dart';
 
-/// ActivitÃƒÂ© du client : ses demandes de dÃƒÂ©pannage (et l'accÃƒÂ¨s ÃƒÂ  ses courses).
+/// Activité du client : ses demandes de dépannage (et l'accès à ses courses).
 ///
 /// [embedded] = onglet de l'espace client (grand titre, sans barre d'app) ;
-/// sinon ÃƒÂ©cran ouvert seul (route /mes-demandes) avec flÃƒÂ¨che de retour.
+/// sinon écran ouvert seul (route /mes-demandes) avec flèche de retour.
 class MesDemandesScreen extends StatefulWidget {
   const MesDemandesScreen({super.key, this.embedded = false});
 
@@ -103,25 +103,24 @@ class _MesDemandesScreenState extends State<MesDemandesScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  if (widget.embedded) const ClientPageTitle('ActivitÃƒÂ©'),
+                  if (widget.embedded) const ClientPageTitle('Activité'),
                   if (widget.embedded) const SizedBox(height: 8),
                   ClientGroup(
                     children: [
                       ClientListRow(
                         icon: Icons.two_wheeler_rounded,
                         title: 'Mes courses',
-                        subtitle: 'ZÃƒÂ©midjan et Tricycle Fret',
+                        subtitle: 'Zémidjan et Tricycle Fret',
                         onTap: () => context.push('/rides'),
                       ),
                     ],
                   ),
-                  const ClientSectionTitle('DÃƒÂ©pannages'),
+                  const ClientSectionTitle('Dépannages'),
                   if (_missions.isEmpty)
                     const EmptyState(
                       icon: Icons.receipt_long_outlined,
                       title: 'Aucune demande pour le moment',
-                      message:
-                          'Vos demandes de dÃƒÂ©pannage apparaÃƒÂ®tront ici.',
+                      message: 'Vos demandes de dépannage apparaîtront ici.',
                     )
                   else
                     for (var i = 0; i < _missions.length; i++) ...[

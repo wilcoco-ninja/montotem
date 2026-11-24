@@ -14,8 +14,8 @@ const _libellesVehicules = {
   'camion': 'Camion',
 };
 
-/// Fiche dÃƒÂ©tail d'un prestataire (visiteurs inclus) : services, grille
-/// tarifaire, frais de dÃƒÂ©placement estimÃƒÂ©s, itinÃƒÂ©raire. Contacter / Appeler /
+/// Fiche détail d'un prestataire (visiteurs inclus) : services, grille
+/// tarifaire, frais de déplacement estimés, itinéraire. Contacter / Appeler /
 /// Prendre RDV passent par [requireAuth].
 class ProviderDetailSheet extends StatefulWidget {
   const ProviderDetailSheet({
@@ -27,7 +27,7 @@ class ProviderDetailSheet extends StatefulWidget {
 
   final Prestataire prestataire;
 
-  /// Distance ÃƒÂ  vol d'oiseau entre le client et le prestataire.
+  /// Distance à vol d'oiseau entre le client et le prestataire.
   final double distanceKm;
   final VoidCallback onItineraire;
 
@@ -134,7 +134,7 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
                     color: _p.disponible ? scheme.secondary : Colors.grey,
                   ),
                   StatusPill(
-                    label: 'Ã¢â€°Ë† ${widget.distanceKm.toStringAsFixed(1)} km',
+                    label: '≈ ${widget.distanceKm.toStringAsFixed(1)} km',
                     color: scheme.primary,
                     icon: Icons.near_me_rounded,
                   ),
@@ -166,7 +166,7 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
                             ),
                             TextButton(
                               onPressed: _recharger,
-                              child: const Text('RÃƒÂ©essayer'),
+                              child: const Text('Réessayer'),
                             ),
                           ],
                         ),
@@ -178,7 +178,7 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
               ),
               const SizedBox(height: 18),
               AppButton(
-                label: 'Voir l\'itinÃƒÂ©raire',
+                label: 'Voir l\'itinéraire',
                 icon: Icons.directions_outlined,
                 onPressed: () {
                   Navigator.pop(context);
@@ -241,7 +241,7 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (f.vehicleTypes.isNotEmpty) ...[
-          const SectionTitle('VÃƒÂ©hicules pris en charge'),
+          const SectionTitle('Véhicules pris en charge'),
           Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -256,7 +256,7 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
           ),
         ],
         if (aFrais) ...[
-          const SectionTitle('DÃƒÂ©placement'),
+          const SectionTitle('Déplacement'),
           SoftCard(
             child: Row(
               children: [
@@ -275,8 +275,8 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        '${TravelFee.fcfa(f.tarifKmFcfa)}/km Ã‚Â· minimum '
-                        '${TravelFee.fcfa(f.fraisMinFcfa)} Ã‚Â· estimation pour '
+                        '${TravelFee.fcfa(f.tarifKmFcfa)}/km · minimum '
+                        '${TravelFee.fcfa(f.fraisMinFcfa)} · estimation pour '
                         '${kmRoute.toStringAsFixed(1)} km',
                         style: TextStyle(
                           fontSize: 12.5,
@@ -287,7 +287,7 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
                         Padding(
                           padding: const EdgeInsets.only(top: 4),
                           child: Text(
-                            'Au-delÃƒÂ  de son rayon habituel (${f.rayonMaxKm} km).',
+                            'Au-delà de son rayon habituel (${f.rayonMaxKm} km).',
                             style: TextStyle(
                               fontSize: 12.5,
                               color: scheme.tertiary,
@@ -305,7 +305,7 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
         const SectionTitle('Prestations et tarifs'),
         if (f.services.isEmpty)
           Text(
-            'Ce prestataire n\'a pas encore publiÃƒÂ© ses tarifs.',
+            'Ce prestataire n\'a pas encore publié ses tarifs.',
             style: TextStyle(color: onSurface.withValues(alpha: 0.65)),
           )
         else

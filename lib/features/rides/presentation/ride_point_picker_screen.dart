@@ -7,7 +7,7 @@ import 'package:montotem/core/theme/app_theme.dart';
 import 'package:montotem/core/widgets/app_button.dart';
 import 'package:montotem/features/auth/data/location_service.dart';
 
-/// Choix d'un point sur la carte (dÃƒÂ©part ou destination d'une course).
+/// Choix d'un point sur la carte (départ ou destination d'une course).
 /// Retourne la position choisie (LatLng).
 class RidePointPickerScreen extends StatefulWidget {
   const RidePointPickerScreen({
@@ -65,7 +65,7 @@ class _RidePointPickerScreenState extends State<RidePointPickerScreen> {
       if (mounted && !silencieux) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Impossible de rÃƒÂ©cupÃƒÂ©rer votre position GPS.'),
+            content: Text('Impossible de récupérer votre position GPS.'),
           ),
         );
       }
@@ -122,7 +122,7 @@ class _RidePointPickerScreenState extends State<RidePointPickerScreen> {
               ),
               const RichAttributionWidget(
                 attributions: [
-                  TextSourceAttribution('Ã‚Â© OpenStreetMap contributors'),
+                  TextSourceAttribution('© OpenStreetMap contributors'),
                 ],
               ),
             ],
@@ -177,7 +177,7 @@ class _RidePointPickerScreenState extends State<RidePointPickerScreen> {
                 const SizedBox(height: 8),
                 FloatingActionButton.small(
                   heroTag: 'rpp_moins',
-                  tooltip: 'Zoom arriÃƒÂ¨re',
+                  tooltip: 'Zoom arrière',
                   onPressed: () => _zoom(-1),
                   child: const Icon(Icons.remove),
                 ),

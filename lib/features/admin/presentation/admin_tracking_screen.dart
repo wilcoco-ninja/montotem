@@ -29,7 +29,7 @@ class _AdminTrackingScreenState extends State<AdminTrackingScreen>
   RealtimeChannel? _canalPrestataires;
   Timer? _antiRebond;
 
-  // Lu au moment du toucher : jamais de version pÃƒÂ©rimÃƒÂ©e dans les marqueurs.
+  // Lu au moment du toucher : jamais de version périmée dans les marqueurs.
   Map<String, Prestataire> _prestataires = {};
   Map<String, MissionStatus> _etats = {};
   Map<String, LatLng> _positionsLive = {};
@@ -70,13 +70,13 @@ class _AdminTrackingScreenState extends State<AdminTrackingScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // Au retour au premier plan, on se resynchronise (la connexion
-    // Realtime a pu ÃƒÂªtre suspendue par le systÃƒÂ¨me).
+    // Realtime a pu être suspendue par le système).
     if (state == AppLifecycleState.resumed) {
       _charger(silencieux: true);
     }
   }
 
-  /// Regroupe les rafales d'ÃƒÂ©vÃƒÂ¨nements (une position toutes les 8 s par
+  /// Regroupe les rafales d'évènements (une position toutes les 8 s par
   /// mission active) en un seul rechargement.
   void _planifierRecharge() {
     _antiRebond?.cancel();
@@ -175,7 +175,7 @@ class _AdminTrackingScreenState extends State<AdminTrackingScreen>
       return switch (etat) {
         MissionStatus.accepted => 'En route vers le client',
         MissionStatus.arrived => 'Sur place chez le client',
-        MissionStatus.working => 'RÃƒÂ©paration en cours',
+        MissionStatus.working => 'Réparation en cours',
         _ => p.disponible ? 'Disponible' : 'Hors ligne',
       };
     }
@@ -215,7 +215,7 @@ class _AdminTrackingScreenState extends State<AdminTrackingScreen>
               MarkerLayer(markers: _markers),
               const RichAttributionWidget(
                 attributions: [
-                  TextSourceAttribution('Ã‚Â© OpenStreetMap contributors'),
+                  TextSourceAttribution('© OpenStreetMap contributors'),
                 ],
               ),
             ],
@@ -232,8 +232,8 @@ class _AdminTrackingScreenState extends State<AdminTrackingScreen>
             left: 12,
             child: StatusPillOnMap(
               label:
-                  '${_prestataires.length} prestataire(s) Ã‚Â· '
-                  '${_etats.length} en mission Ã‚Â· '
+                  '${_prestataires.length} prestataire(s) · '
+                  '${_etats.length} en mission · '
                   '${_positionsLive.length} suivi(s) en direct',
             ),
           ),
@@ -291,7 +291,7 @@ class _AdminTrackingScreenState extends State<AdminTrackingScreen>
                     ),
                   ),
                   StatusPill(
-                    label: p.verifie ? 'VÃƒÂ©rifiÃƒÂ©' : 'Non vÃƒÂ©rifiÃƒÂ©',
+                    label: p.verifie ? 'Vérifié' : 'Non vérifié',
                     color: p.verifie ? scheme.secondary : scheme.tertiary,
                     icon: p.verifie
                         ? Icons.verified_rounded

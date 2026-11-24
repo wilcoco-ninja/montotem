@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'totem_palette.dart';
 
-/// Construit un thÃƒÂ¨me Material 3 complet ÃƒÂ  partir d'une [TotemSkin].
+/// Construit un thème Material 3 complet à partir d'une [TotemSkin].
 class TotemTheme {
   TotemTheme._();
 
@@ -35,7 +35,7 @@ class TotemTheme {
 
     final base = ThemeData(brightness: s.brightness, useMaterial3: true);
 
-    // Utilisation de 'as dynamic' pour ÃƒÂ©viter le conflit de type TextTheme avec material_ui
+    // Utilisation de 'as dynamic' pour éviter le conflit de type TextTheme avec material_ui
     final fonted = s.bevel
         ? GoogleFonts.barlowTextTheme(base.textTheme as dynamic) as dynamic
         : GoogleFonts.plusJakartaSansTextTheme(base.textTheme as dynamic)

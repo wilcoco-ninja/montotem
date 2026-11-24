@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:montotem/core/services/routing_service.dart';
 import 'package:montotem/core/theme/app_theme.dart';
 
-/// SÃƒÂ©lection d'itinÃƒÂ©raire avec alternatives (affichÃƒÂ© dans un bottom sheet).
+/// Sélection d'itinéraire avec alternatives (affiché dans un bottom sheet).
 class RouteSelectionOverlay extends StatelessWidget {
   const RouteSelectionOverlay({
     super.key,
@@ -59,14 +59,14 @@ class RouteSelectionOverlay extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'ItinÃƒÂ©raires disponibles',
+                          'Itinéraires disponibles',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w800,
                           ),
                         ),
                         Text(
-                          '$originName Ã¢â€ â€™ $destinationName',
+                          '$originName → $destinationName',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -130,7 +130,7 @@ class RouteSelectionOverlay extends StatelessWidget {
                       value: RouteResult.formatDuration(
                         selectedRoute.motorcycleTime,
                       ),
-                      label: 'Moto (estimÃƒÂ©)',
+                      label: 'Moto (estimé)',
                     ),
                   ],
                 ),

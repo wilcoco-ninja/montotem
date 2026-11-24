@@ -5,7 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/app_button.dart';
 
-/// Les actions qui nÃƒÂ©cessitent un compte.
+/// Les actions qui nécessitent un compte.
 enum GatedAction {
   contacter,
   appeler,
@@ -14,26 +14,26 @@ enum GatedAction {
   /// Voir les infos d'un prestataire ou d'un service prestataire.
   voirInfos,
 
-  /// Commander une course en zÃƒÂ©midjan ou en kloboto.
+  /// Commander une course en zémidjan ou en kloboto.
   course,
 
-  /// Demander un dÃƒÂ©pannage express.
+  /// Demander un dépannage express.
   depannage,
 }
 
 extension on GatedAction {
   String get titre => switch (this) {
-    GatedAction.contacter => 'Pour contacter ce rÃƒÂ©parateur',
-    GatedAction.appeler => 'Pour appeler ce rÃƒÂ©parateur',
+    GatedAction.contacter => 'Pour contacter ce réparateur',
+    GatedAction.appeler => 'Pour appeler ce réparateur',
     GatedAction.rendezVous => 'Pour prendre rendez-vous',
     GatedAction.voirInfos => 'Pour voir les infos du prestataire',
     GatedAction.course => 'Pour commander votre course',
-    GatedAction.depannage => 'Pour demander un dÃƒÂ©pannage',
+    GatedAction.depannage => 'Pour demander un dépannage',
   };
 }
 
-/// ExÃƒÂ©cute [onAllowed] si l'utilisateur est connectÃƒÂ© ; sinon ouvre la
-/// bottom sheet d'inscription rapide (le visiteur garde sa carte en arriÃƒÂ¨re-plan).
+/// Exécute [onAllowed] si l'utilisateur est connecté ; sinon ouvre la
+/// bottom sheet d'inscription rapide (le visiteur garde sa carte en arrière-plan).
 Future<void> requireAuth(
   BuildContext context, {
   required GatedAction action,
@@ -113,8 +113,8 @@ class AuthGateSheet extends StatelessWidget {
             ],
             const SizedBox(height: 10),
             Text(
-              'Connectez-vous ou crÃƒÂ©ez votre compte en 30 secondes : un numÃƒÂ©ro '
-              'de tÃƒÂ©lÃƒÂ©phone et un code SMS, rien de plus.',
+              'Connectez-vous ou créez votre compte en 30 secondes : un numéro '
+              'de téléphone et un code SMS, rien de plus.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
@@ -124,7 +124,7 @@ class AuthGateSheet extends StatelessWidget {
             ),
             const SizedBox(height: 22),
             AppButton(
-              label: 'Continuer avec mon numÃƒÂ©ro',
+              label: 'Continuer avec mon numéro',
               icon: Icons.phone_iphone_rounded,
               onPressed: () => _aller(context, '/register/quick?role=client'),
             ),
@@ -135,7 +135,7 @@ class AuthGateSheet extends StatelessWidget {
               onPressed: () => _aller(context, '/login'),
             ),
             AppButton(
-              label: 'Continuer ÃƒÂ  explorer',
+              label: 'Continuer à explorer',
               variant: AppButtonVariant.text,
               onPressed: () => Navigator.pop(context),
             ),

@@ -6,15 +6,15 @@ import '../services/distress_service.dart';
 import '../theme/totem_icons.dart';
 import '../theme/app_colors.dart';
 
-/// Enveloppe de TOUTE l'application (placÃƒÂ©e dans `MaterialApp.builder`).
+/// Enveloppe de TOUTE l'application (placée dans `MaterialApp.builder`).
 ///
-/// Quand le tÃƒÂ©lÃƒÂ©phone est hors ligne ou que la batterie est faible, un
-/// bandeau reste collÃƒÂ© en haut de chaque ÃƒÂ©cran, avec deux actions qui
+/// Quand le téléphone est hors ligne ou que la batterie est faible, un
+/// bandeau reste collé en haut de chaque écran, avec deux actions qui
 /// marchent SANS internet :
-///   1. Ã‚Â« SMS position Ã‚Â» : GPS + batterie dans un SMS prÃƒÂªt ÃƒÂ  envoyer ;
-///   2. Ã‚Â« Kit Ã‚Â» : conseils de survie en panne (ÃƒÂ©cran 100 % hors ligne).
+///   1. « SMS position » : GPS + batterie dans un SMS prêt à envoyer ;
+///   2. « Kit » : conseils de survie en panne (écran 100 % hors ligne).
 ///
-/// Le bandeau n'apparaÃƒÂ®t que s'il y a quelque chose ÃƒÂ  dire : en temps
+/// Le bandeau n'apparaît que s'il y a quelque chose à dire : en temps
 /// normal, l'application est exactement comme avant.
 class SurvivalShell extends StatelessWidget {
   const SurvivalShell({
@@ -26,7 +26,7 @@ class SurvivalShell extends StatelessWidget {
   final Widget child;
 
   /// Ex. `() => AppRouter.router.push('/survie')` (le bandeau est au-dessus
-  /// du Navigator : il n'a pas accÃƒÂ¨s au contexte GoRouter).
+  /// du Navigator : il n'a pas accès au contexte GoRouter).
   final VoidCallback onOpenKit;
 
   @override
@@ -40,7 +40,7 @@ class SurvivalShell extends StatelessWidget {
         Expanded(
           child: MediaQuery.removePadding(
             context: context,
-            // Le bandeau gÃƒÂ¨re dÃƒÂ©jÃƒÂ  l'encoche : on ÃƒÂ©vite le double dÃƒÂ©calage.
+            // Le bandeau gère déjà l'encoche : on évite le double décalage.
             removeTop: visible,
             child: child,
           ),
@@ -62,7 +62,7 @@ class _Bandeau extends StatelessWidget {
     final bas = power.alerte == PowerLevel.low;
     final hors = power.horsLigne;
 
-    // Couleurs : toutes Ã¢â€°Â¥ 7:1 (texte).
+    // Couleurs : toutes ≥ 7:1 (texte).
     final Color fond;
     final Color texte;
     if (critique) {
@@ -79,19 +79,19 @@ class _Bandeau extends StatelessWidget {
     final String titre;
     final String detail;
     if (critique && hors) {
-      titre = 'Batterie ${power.niveau} % Ã‚Â· sans internet';
+      titre = 'Batterie ${power.niveau} % · sans internet';
       detail = 'Envoyez votre position par SMS maintenant.';
     } else if (critique) {
       titre = 'Batterie critique : ${power.niveau} %';
       detail = 'Envoyez votre position par SMS avant l\'extinction.';
     } else if (bas && hors) {
-      titre = 'Batterie ${power.niveau} % Ã‚Â· sans internet';
-      detail = 'Ãƒâ€°conomie d\'ÃƒÂ©nergie activÃƒÂ©e. SMS et appels restent possibles.';
+      titre = 'Batterie ${power.niveau} % · sans internet';
+      detail = 'Économie d\'énergie activée. SMS et appels restent possibles.';
     } else if (bas) {
       titre = 'Batterie faible : ${power.niveau} %';
       detail = power.ecoActive
-          ? 'Ãƒâ€°conomie d\'ÃƒÂ©nergie activÃƒÂ©e : ÃƒÂ©cran noir, animations coupÃƒÂ©es.'
-          : 'Pensez ÃƒÂ  envoyer votre position si vous ÃƒÂªtes en difficultÃƒÂ©.';
+          ? 'Économie d\'énergie activée : écran noir, animations coupées.'
+          : 'Pensez à envoyer votre position si vous êtes en difficulté.';
     } else {
       titre = 'Pas d\'internet';
       detail = 'SMS et appels fonctionnent encore. Ouvrez le kit de survie.';

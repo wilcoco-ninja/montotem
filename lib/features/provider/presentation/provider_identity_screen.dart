@@ -14,8 +14,8 @@ import 'package:montotem/features/provider/data/image_quality_service.dart';
 import 'package:montotem/features/provider/data/provider_identity_service.dart';
 import 'package:montotem/features/provider/presentation/widgets/verified_photo_field.dart';
 
-/// VÃƒÂ©rification d'identitÃƒÂ© : type de piÃƒÂ¨ce, numÃƒÂ©ro, photos contrÃƒÂ´lÃƒÂ©es,
-/// visage entier et garage (dÃƒÂ©panneur) ou vÃƒÂ©hicule (ZÃƒÂ©midjan, Tricycle Fret)[cite: 29].
+/// Vérification d'identité : type de pièce, numéro, photos contrôlées,
+/// visage entier et garage (dépanneur) ou véhicule (Zémidjan, Tricycle Fret)[cite: 29].
 class ProviderIdentityScreen extends StatefulWidget {
   const ProviderIdentityScreen({super.key});
 
@@ -96,14 +96,14 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
         description: _description.text,
       );
       if (!mounted) return;
-      _msg('Dossier envoyÃƒÂ©. Vous serez prÃƒÂ©venu dÃƒÂ¨s sa validation.');
+      _msg('Dossier envoyé. Vous serez prévenu dès sa validation.');
       context.go('/provider/profile');
     } on IdentityException catch (e) {
       if (mounted) _msg(e.message);
     } on UploadException catch (e) {
       if (mounted) _msg(e.message);
     } catch (_) {
-      if (mounted) _msg('Erreur rÃƒÂ©seau. RÃƒÂ©essayez.');
+      if (mounted) _msg('Erreur réseau. Réessayez.');
     } finally {
       if (mounted) setState(() => _envoi = false);
     }
@@ -119,7 +119,7 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
         (_statut?.motifRefus ?? '').isNotEmpty;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('VÃƒÂ©rification d\'identitÃƒÂ©')),
+      appBar: AppBar(title: const Text('Vérification d\'identité')),
       body: _chargement
           ? const Center(child: CircularProgressIndicator())
           : SafeArea(
@@ -133,22 +133,22 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
                         ScrollViewKeyboardDismissBehavior.onDrag,
                     children: [
                       const AuthInfoBanner(
-                        title: 'Pourquoi cette ÃƒÂ©tape ?',
+                        title: 'Pourquoi cette étape ?',
                         message:
-                            'Les clients veulent ÃƒÂªtre sÃƒÂ»rs que vous ÃƒÂªtes un vrai '
-                            'professionnel. Votre dossier est vÃƒÂ©rifiÃƒÂ© par notre ÃƒÂ©quipe.',
+                            'Les clients veulent être sûrs que vous êtes un vrai '
+                            'professionnel. Votre dossier est vérifié par notre équipe.',
                         icon: Icons.verified_user_outlined,
                         color: AppTheme.primaryColor,
                       ),
                       if (refuse) ...[
                         const SizedBox(height: 12),
                         AuthErrorBanner(
-                          message: 'Dossier refusÃƒÂ© : ${_statut!.motifRefus}',
+                          message: 'Dossier refusé : ${_statut!.motifRefus}',
                         ),
                       ],
                       const SizedBox(height: 16),
                       Text(
-                        '$faites sur ${etapes.length} ÃƒÂ©tapes terminÃƒÂ©es',
+                        '$faites sur ${etapes.length} étapes terminées',
                         style: const TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w800,
@@ -165,7 +165,7 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
                           ),
                         ),
                       ),
-                      const SectionTitle('1. Votre piÃƒÂ¨ce d\'identitÃƒÂ©'),
+                      const SectionTitle('1. Votre pièce d\'identité'),
                       AdaptiveGrid(
                         minItemWidth: 280,
                         maxColumns: 2,
@@ -184,14 +184,14 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
                       ),
                       const SizedBox(height: 14),
                       AppTextField(
-                        label: 'NumÃƒÂ©ro du document',
-                        hint: 'Tel qu\'il est ÃƒÂ©crit sur la piÃƒÂ¨ce',
+                        label: 'Numéro du document',
+                        hint: 'Tel qu\'il est écrit sur la pièce',
                         icon: Icons.pin_outlined,
                         controller: _numero,
                         maxLength: 30,
                         textInputAction: TextInputAction.done,
                       ),
-                      const SectionTitle('2. Photos de la piÃƒÂ¨ce'),
+                      const SectionTitle('2. Photos de la pièce'),
                       AdaptiveGrid(
                         minItemWidth: 320,
                         maxColumns: 2,
@@ -202,9 +202,9 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
                                 ? 'Passeport : page avec la photo'
                                 : 'Document : recto (face avec la photo)',
                             consigne:
-                                'Posez le document ÃƒÂ  plat sur une table claire, en '
-                                'pleine lumiÃƒÂ¨re, sans reflet. Tout le document doit '
-                                'ÃƒÂªtre visible et le texte lisible.',
+                                'Posez le document à plat sur une table claire, en '
+                                'pleine lumière, sans reflet. Tout le document doit '
+                                'être visible et le texte lisible.',
                             icon: Icons.badge_outlined,
                             photo: _recto,
                             analyser: (b) =>
@@ -213,10 +213,10 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
                           ),
                           if (_type?.avecVerso ?? false)
                             VerifiedPhotoField(
-                              label: 'Document : verso (face arriÃƒÂ¨re)',
+                              label: 'Document : verso (face arrière)',
                               consigne:
                                   'Retournez le document et prenez-le en '
-                                  'photo de la mÃƒÂªme faÃƒÂ§on.',
+                                  'photo de la même façon.',
                               icon: Icons.flip_rounded,
                               photo: _verso,
                               analyser: (b) =>
@@ -229,9 +229,9 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
                       VerifiedPhotoField(
                         label: 'Photo de votre visage',
                         consigne:
-                            'Tenez le tÃƒÂ©lÃƒÂ©phone ÃƒÂ  hauteur des yeux. Visage entier '
+                            'Tenez le téléphone à hauteur des yeux. Visage entier '
                             'visible, de face, sans lunettes de soleil ni casquette, '
-                            'face ÃƒÂ  la lumiÃƒÂ¨re. Vous seul sur la photo.',
+                            'face à la lumière. Vous seul sur la photo.',
                         icon: Icons.face_rounded,
                         photo: _selfie,
                         cameraOnly: true,
@@ -240,17 +240,17 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
                         onChanged: (p) => setState(() => _selfie = p),
                       ),
                       SectionTitle(
-                        _transport ? '4. Votre vÃƒÂ©hicule' : '4. Votre garage',
+                        _transport ? '4. Votre véhicule' : '4. Votre garage',
                       ),
                       VerifiedPhotoField(
                         label: _transport
                             ? 'Photo de votre moto ou tricycle'
                             : 'Photo de votre garage ou atelier',
                         consigne: _transport
-                            ? 'Photographiez votre vÃƒÂ©hicule en entier, de cÃƒÂ´tÃƒÂ©, '
-                                  'en pleine lumiÃƒÂ¨re. La plaque doit ÃƒÂªtre visible si '
+                            ? 'Photographiez votre véhicule en entier, de côté, '
+                                  'en pleine lumière. La plaque doit être visible si '
                                   'possible.'
-                            : 'Prenez la faÃƒÂ§ade ou l\'intÃƒÂ©rieur de votre '
+                            : 'Prenez la façade ou l\'intérieur de votre '
                                   'atelier, avec l\'enseigne si possible.',
                         icon: _transport
                             ? Icons.two_wheeler_rounded
@@ -262,11 +262,11 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
                       const SizedBox(height: 14),
                       AppTextField(
                         label: _transport
-                            ? 'PrÃƒÂ©sentation (facultatif)'
-                            : 'PrÃƒÂ©sentation du garage (facultatif)',
+                            ? 'Présentation (facultatif)'
+                            : 'Présentation du garage (facultatif)',
                         hint: _transport
-                            ? 'Zone de travail, expÃƒÂ©rienceÃ¢â‚¬Â¦'
-                            : 'Services, horaires, expÃƒÂ©rienceÃ¢â‚¬Â¦',
+                            ? 'Zone de travail, expérience…'
+                            : 'Services, horaires, expérience…',
                         icon: Icons.notes_outlined,
                         controller: _description,
                         maxLines: 4,
@@ -283,7 +283,7 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
                         const Padding(
                           padding: EdgeInsets.only(top: 8),
                           child: Text(
-                            'Le bouton s\'active quand les ÃƒÂ©tapes ci-dessus sont terminÃƒÂ©es.',
+                            'Le bouton s\'active quand les étapes ci-dessus sont terminées.',
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 14),
                           ),

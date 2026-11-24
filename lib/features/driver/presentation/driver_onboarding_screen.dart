@@ -14,9 +14,9 @@ import 'package:montotem/features/auth/data/auth_service.dart';
 import 'package:montotem/features/auth/presentation/widgets/photo_picker_field.dart';
 import 'package:montotem/features/onboarding/presentation/widgets/position_picker_screen.dart';
 
-/// Inscription conducteur en 2 ÃƒÂ©tapes :
-///  1. IdentitÃƒÂ© (type de conduite + nom + photos)
-///  2. ActivitÃƒÂ© (nom affichÃƒÂ© + ville + zone de travail)
+/// Inscription conducteur en 2 étapes :
+///  1. Identité (type de conduite + nom + photos)
+///  2. Activité (nom affiché + ville + zone de travail)
 class DriverOnboardingScreen extends StatefulWidget {
   const DriverOnboardingScreen({super.key, this.kindInitial});
 
@@ -30,18 +30,18 @@ class DriverOnboardingScreen extends StatefulWidget {
 class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
   static const _types = {
     'zemidjan': (
-      'ZÃƒÂ©midjan',
-      'Moto-taxi Ã‚Â· 1 passager',
+      'Zémidjan',
+      'Moto-taxi · 1 passager',
       Icons.two_wheeler_rounded,
     ),
     'tricycle_passenger': (
       'Cloboto',
-      'Tricycle Ã‚Â· 2 ÃƒÂ  3 passagers',
+      'Tricycle · 2 à 3 passagers',
       Icons.electric_rickshaw_rounded,
     ),
     'tricycle_fret': (
       'Kloboto',
-      'Tricycle Ã‚Â· bagages et colis',
+      'Tricycle · bagages et colis',
       Icons.inventory_2_rounded,
     ),
   };
@@ -96,7 +96,7 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
       }
       if (_photoProfil == null || _photoCni == null) {
         setState(() => _photosSignalees = true);
-        _msg('Photo de profil et piÃƒÂ¨ce d\'identitÃƒÂ© obligatoires');
+        _msg('Photo de profil et pièce d\'identité obligatoires');
         return false;
       }
     } else if (_etape == 1) {
@@ -181,8 +181,8 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
       final m = e.message;
       if (m.contains('ROLE_IMMUABLE')) {
         _msg(
-          'Ce compte est dÃƒÂ©jÃƒÂ  inscrit comme client. '
-          'Contactez le support pour changer de rÃƒÂ´le.',
+          'Ce compte est déjà inscrit comme client. '
+          'Contactez le support pour changer de rôle.',
         );
       } else if (m.contains('KIND_INVALIDE')) {
         _msg('Type de conduite invalide.');
@@ -190,7 +190,7 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
         _msg('Erreur : ${e.message}');
       }
     } catch (e) {
-      if (mounted) _msg('Erreur inattendue. RÃƒÂ©essayez.');
+      if (mounted) _msg('Erreur inattendue. Réessayez.');
     } finally {
       if (mounted) setState(() => _envoi = false);
     }
@@ -198,7 +198,7 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final titres = ['IdentitÃƒÂ©', 'ActivitÃƒÂ©'];
+    final titres = ['Identité', 'Activité'];
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
@@ -210,7 +210,7 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
             icon: const Icon(Icons.arrow_back_rounded),
             onPressed: _envoi ? null : _retour,
           ),
-          title: Text('Ãƒâ€°tape ${_etape + 1}/2 Ã‚Â· ${titres[_etape]}'),
+          title: Text('Étape ${_etape + 1}/2 · ${titres[_etape]}'),
         ),
         body: SafeArea(
           child: ContentWidth(
@@ -237,7 +237,7 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
                     child: AppButton(
                       label: _etape < 1
                           ? 'Continuer'
-                          : 'CrÃƒÂ©er mon compte conducteur',
+                          : 'Créer mon compte conducteur',
                       icon: _etape < 1
                           ? Icons.arrow_forward_rounded
                           : Icons.check_rounded,
@@ -344,14 +344,14 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
         ),
         const SizedBox(height: 14),
         AppTextField(
-          label: 'PrÃƒÂ©nom',
+          label: 'Prénom',
           icon: Icons.person_outline,
           controller: _prenom,
           textInputAction: TextInputAction.next,
           validator: (v) => (v == null || v.trim().isEmpty) ? 'Requis' : null,
         ),
         const SizedBox(height: 22),
-        const SectionTitle('VÃƒÂ©rification'),
+        const SectionTitle('Vérification'),
         Row(
           children: [
             Expanded(
@@ -365,7 +365,7 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
             const SizedBox(width: 12),
             Expanded(
               child: _photo(
-                'PiÃƒÂ¨ce d\'identitÃƒÂ©',
+                'Pièce d\'identité',
                 Icons.badge_outlined,
                 _photoCni,
                 (b) => setState(() => _photoCni = b),
@@ -387,14 +387,14 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
           title: _types[_kind]?.$1 ?? 'Conducteur',
           message:
               'Vous recevrez des courses autour de vous. '
-              'Passez en ligne pour commencer ÃƒÂ  recevoir.',
+              'Passez en ligne pour commencer à recevoir.',
           icon: _types[_kind]?.$3 ?? Icons.two_wheeler_rounded,
           color: scheme.primary,
         ),
         const SizedBox(height: 18),
         AppTextField(
-          label: 'Nom affichÃƒÂ© (facultatif)',
-          hint: 'Ex: Jean ZÃƒÂ©midjan Pro',
+          label: 'Nom affiché (facultatif)',
+          hint: 'Ex: Jean Zémidjan Pro',
           icon: Icons.badge_outlined,
           controller: _nomAffiche,
           textInputAction: TextInputAction.next,
@@ -402,7 +402,7 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
         const SizedBox(height: 14),
         AppTextField(
           label: 'Ville (facultatif)',
-          hint: 'Cotonou, Porto-NovoÃ¢â‚¬Â¦',
+          hint: 'Cotonou, Porto-Novo…',
           icon: Icons.location_city_outlined,
           controller: _ville,
           textInputAction: TextInputAction.done,
@@ -420,7 +420,7 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
               Expanded(
                 child: Text(
                   aPos
-                      ? 'Position dÃƒÂ©finie (${_lat!.toStringAsFixed(4)}, ${_lng!.toStringAsFixed(4)})'
+                      ? 'Position définie (${_lat!.toStringAsFixed(4)}, ${_lng!.toStringAsFixed(4)})'
                       : 'Placer votre zone sur la carte',
                   style: const TextStyle(fontWeight: FontWeight.w700),
                 ),

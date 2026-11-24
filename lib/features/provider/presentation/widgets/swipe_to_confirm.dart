@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 
 import '../../../../core/theme/app_colors.dart';
 
-/// GlissiÃƒÂ¨re Ã‚Â« Glisser pour confirmer Ã‚Â» (style Uber Driver).
+/// Glissière « Glisser pour confirmer » (style Uber Driver).
 ///
-/// Le geste ÃƒÂ©vite les appuis accidentels pendant un dÃƒÂ©placement. Pour les
-/// lecteurs d'ÃƒÂ©cran, un simple double-appui dÃƒÂ©clenche l'action.
+/// Le geste évite les appuis accidentels pendant un déplacement. Pour les
+/// lecteurs d'écran, un simple double-appui déclenche l'action.
 class SwipeToConfirm extends StatefulWidget {
   const SwipeToConfirm({
     super.key,
@@ -26,7 +26,7 @@ class SwipeToConfirm extends StatefulWidget {
   final bool enabled;
   final bool loading;
 
-  /// Texte affichÃƒÂ© quand la glissiÃƒÂ¨re est dÃƒÂ©sactivÃƒÂ©e.
+  /// Texte affiché quand la glissière est désactivée.
   final String? disabledLabel;
 
   @override

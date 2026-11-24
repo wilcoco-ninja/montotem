@@ -8,7 +8,7 @@ import 'package:montotem/core/widgets/app_button.dart';
 import 'package:montotem/core/widgets/app_ui.dart';
 import 'package:montotem/features/driver/data/driver_service.dart';
 
-/// Profil conducteur : infos, indicateurs, wallet, dÃƒÂ©connexion.
+/// Profil conducteur : infos, indicateurs, wallet, déconnexion.
 class DriverProfileScreen extends StatefulWidget {
   const DriverProfileScreen({super.key});
 
@@ -44,8 +44,8 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Se dÃƒÂ©connecter ?'),
-        content: const Text('Vous pourrez vous reconnecter ÃƒÂ  tout moment.'),
+        title: const Text('Se déconnecter ?'),
+        content: const Text('Vous pourrez vous reconnecter à tout moment.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
@@ -56,7 +56,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(ctx).colorScheme.error,
             ),
-            child: const Text('Se dÃƒÂ©connecter'),
+            child: const Text('Se déconnecter'),
           ),
         ],
       ),
@@ -134,13 +134,13 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                 ),
                 InfoRow(
                   icon: Icons.task_alt_rounded,
-                  label: 'Courses terminÃƒÂ©es',
+                  label: 'Courses terminées',
                   value: '${info.missionsCompletees}',
                 ),
                 InfoRow(
                   icon: Icons.verified_rounded,
                   label: 'Statut',
-                  value: info.valide ? 'ValidÃƒÂ©' : info.statutValidation,
+                  value: info.valide ? 'Validé' : info.statutValidation,
                 ),
               ],
             ),
@@ -171,7 +171,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                       ),
                       Text(
                         blocked
-                            ? 'Portefeuille bloquÃƒÂ© Ã‚Â· Rechargez-le'
+                            ? 'Portefeuille bloqué · Rechargez-le'
                             : 'Mon solde',
                         style: TextStyle(
                           fontSize: 14,
@@ -187,7 +187,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
           ),
           const SizedBox(height: 24),
           AppButton(
-            label: 'Se dÃƒÂ©connecter',
+            label: 'Se déconnecter',
             icon: Icons.logout_rounded,
             variant: AppButtonVariant.secondary,
             onPressed: _deconnecter,

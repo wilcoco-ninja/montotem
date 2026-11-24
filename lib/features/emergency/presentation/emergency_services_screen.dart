@@ -105,8 +105,8 @@ class _EmergencyServicesScreenState extends State<EmergencyServicesScreen> {
       SnackBar(
         content: Text(
           _lieux.vide
-              ? 'Aucune donnÃƒÂ©e reÃƒÂ§ue. VÃƒÂ©rifiez votre connexion et rÃƒÂ©essayez.'
-              : 'Zone prÃƒÂ©parÃƒÂ©e : disponible hors ligne.',
+              ? 'Aucune donnée reçue. Vérifiez votre connexion et réessayez.'
+              : 'Zone préparée : disponible hors ligne.',
         ),
       ),
     );
@@ -126,7 +126,7 @@ class _EmergencyServicesScreenState extends State<EmergencyServicesScreen> {
           ),
           IconButton(
             icon: const Icon(Icons.refresh_rounded),
-            tooltip: 'PrÃƒÂ©parer ma zone',
+            tooltip: 'Préparer ma zone',
             onPressed: (_horsLigne || _preparation) ? null : _preparer,
           ),
         ],
@@ -185,7 +185,7 @@ class _EmergencyServicesScreenState extends State<EmergencyServicesScreen> {
           SizedBox(width: 10),
           Expanded(
             child: Text(
-              'Hors ligne : les donnÃƒÂ©es enregistrÃƒÂ©es sur ce tÃƒÂ©lÃƒÂ©phone sont utilisÃƒÂ©es.',
+              'Hors ligne : les données enregistrées sur ce téléphone sont utilisées.',
               style: TextStyle(fontSize: 15.5, fontWeight: FontWeight.w700),
             ),
           ),
@@ -198,7 +198,7 @@ class _EmergencyServicesScreenState extends State<EmergencyServicesScreen> {
     return [
       if (_horsLigne) _banniereHorsLigne(),
       Text(
-        'NumÃƒÂ©ros d\'urgence : ${pays.nom}',
+        'Numéros d\'urgence : ${pays.nom}',
         style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w800),
       ),
       if (pays.confiance != Confiance.officiel)
@@ -206,9 +206,9 @@ class _EmergencyServicesScreenState extends State<EmergencyServicesScreen> {
           padding: const EdgeInsets.only(top: 4),
           child: Text(
             pays.confiance == Confiance.recoupe
-                ? 'NumÃƒÂ©ros recoupÃƒÂ©s entre plusieurs sources publiques, pas '
-                      'encore confirmÃƒÂ©s par l\'autoritÃƒÂ© nationale.'
-                : 'NumÃƒÂ©ros ÃƒÂ  confirmer pour ce pays. Si l\'appel n\'aboutit '
+                ? 'Numéros recoupés entre plusieurs sources publiques, pas '
+                      'encore confirmés par l\'autorité nationale.'
+                : 'Numéros à confirmer pour ce pays. Si l\'appel n\'aboutit '
                       'pas, essayez le 112.',
             style: TextStyle(
               fontSize: 14.5,
@@ -302,7 +302,7 @@ class _EmergencyServicesScreenState extends State<EmergencyServicesScreen> {
               ),
               const RichAttributionWidget(
                 attributions: [
-                  TextSourceAttribution('Ã‚Â© OpenStreetMap contributors'),
+                  TextSourceAttribution('© OpenStreetMap contributors'),
                 ],
               ),
             ],
@@ -340,14 +340,14 @@ class _EmergencyServicesScreenState extends State<EmergencyServicesScreen> {
       if (_lieux.vide) ...[
         const EmptyState(
           icon: Icons.cloud_download_outlined,
-          title: 'Aucun ÃƒÂ©tablissement enregistrÃƒÂ©',
+          title: 'Aucun établissement enregistré',
           message:
-              'Avec internet, prÃƒÂ©parez votre zone une fois : la liste, '
-              'les itinÃƒÂ©raires et la carte restent ensuite disponibles hors ligne.',
+              'Avec internet, préparez votre zone une fois : la liste, '
+              'les itinéraires et la carte restent ensuite disponibles hors ligne.',
         ),
         const SizedBox(height: 14),
         AppButton(
-          label: _preparation ? 'PrÃƒÂ©parationÃ¢â‚¬Â¦' : 'PrÃƒÂ©parer ma zone',
+          label: _preparation ? 'Préparation…' : 'Préparer ma zone',
           icon: Icons.download_rounded,
           loading: _preparation,
           onPressed: _horsLigne ? null : _preparer,
@@ -391,7 +391,7 @@ class _EmergencyServicesScreenState extends State<EmergencyServicesScreen> {
                             ),
                           ),
                           Text(
-                            '${p.km.toStringAsFixed(1)} km ÃƒÂ  vol d\'oiseau',
+                            '${p.km.toStringAsFixed(1)} km à vol d\'oiseau',
                             style: TextStyle(
                               fontSize: 14.5,
                               color: context.textSecondary,
@@ -417,7 +417,7 @@ class _EmergencyServicesScreenState extends State<EmergencyServicesScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Text(
-              'DonnÃƒÂ©es enregistrÃƒÂ©es le ${_lieux.dateMiseAJour!.day.toString().padLeft(2, '0')}/'
+              'Données enregistrées le ${_lieux.dateMiseAJour!.day.toString().padLeft(2, '0')}/'
               '${_lieux.dateMiseAJour!.month.toString().padLeft(2, '0')}/'
               '${_lieux.dateMiseAJour!.year}.',
               style: TextStyle(fontSize: 14, color: context.textTertiary),
@@ -444,7 +444,7 @@ class _BoutonAppel extends StatelessWidget {
     final radius = BorderRadius.circular(18);
     return Semantics(
       button: true,
-      label: 'Appeler ${kind.libelle}, numÃƒÂ©ro $numero',
+      label: 'Appeler ${kind.libelle}, numéro $numero',
       child: Material(
         color: kind.couleur,
         borderRadius: radius,

@@ -18,9 +18,9 @@ import 'package:montotem/features/provider/data/provider_catalog_service.dart';
 import 'package:montotem/features/provider/domain/provider_trades.dart';
 import 'package:montotem/features/onboarding/presentation/widgets/position_picker_screen.dart';
 
-/// Onboarding prestataire optimisÃƒÂ© et ultra-visuel.
-///  - DÃƒÂ©pannage (4 ÃƒÂ©tapes) : IdentitÃƒÂ© Ã‚Â· Atelier Ã‚Â· Prestations Ã‚Â· DÃƒÂ©placement[cite: 26].
-///  - Transport, ZÃƒÂ©midjan / Tricycle Fret (2 ÃƒÂ©tapes) : IdentitÃƒÂ© Ã‚Â· ActivitÃƒÂ©[cite: 26].
+/// Onboarding prestataire optimisé et ultra-visuel.
+///  - Dépannage (4 étapes) : Identité · Atelier · Prestations · Déplacement[cite: 26].
+///  - Transport, Zémidjan / Tricycle Fret (2 étapes) : Identité · Activité[cite: 26].
 class ProviderOnboardingScreen extends StatefulWidget {
   const ProviderOnboardingScreen({super.key});
 
@@ -45,34 +45,34 @@ const _vehicules = {
 
 const _suggestions = [
   'Crevaison / pneu',
-  'Batterie / dÃƒÂ©marrage',
+  'Batterie / démarrage',
   'Remorquage',
   'Panne d\'essence',
-  'Diagnostic ÃƒÂ©lectrique',
-  'RÃƒÂ©paration sur place',
+  'Diagnostic électrique',
+  'Réparation sur place',
 ];
 
 class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
   static const _titresDepannage = [
-    'IdentitÃƒÂ©',
+    'Identité',
     'Atelier',
     'Prestations',
-    'DÃƒÂ©placement',
+    'Déplacement',
   ];
-  static const _titresTransport = ['IdentitÃƒÂ©', 'ActivitÃƒÂ©'];
+  static const _titresTransport = ['Identité', 'Activité'];
 
   final _auth = AuthService();
   final _catalogue = ProviderCatalogService();
   final _quick = QuickAuthService();
 
-  // ClÃƒÂ©s de formulaire adaptÃƒÂ©es dynamiquement au nombre d'ÃƒÂ©tapes
+  // Clés de formulaire adaptées dynamiquement au nombre d'étapes
   List<GlobalKey<FormState>> get _keys =>
       List.generate(_titres.length, (_) => GlobalKey<FormState>());
 
   int _etape = 0;
   bool _envoi = false;
 
-  // Ãƒâ€°tape 1
+  // Étape 1
   String? _metier;
   final _nom = TextEditingController();
   final _prenom = TextEditingController();
@@ -81,7 +81,7 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
   Uint8List? _photoCni;
   bool _photosSignalees = false;
 
-  // Ãƒâ€°tape 2
+  // Étape 2
   final _garage = TextEditingController();
   final _whatsapp = TextEditingController();
   final _adresse = TextEditingController();
@@ -89,10 +89,10 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
   double? _lat;
   double? _lng;
 
-  // Ãƒâ€°tape 3 (dÃƒÂ©pannage)
+  // Étape 3 (dépannage)
   final List<_Svc> _services = [];
 
-  // Ãƒâ€°tape 4 (dÃƒÂ©pannage)
+  // Étape 4 (dépannage)
   final _tarifKm = TextEditingController(text: '150');
   final _fraisMin = TextEditingController(text: '500');
   double _rayon = 15;
@@ -155,19 +155,19 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
       (v == null || v.trim().isEmpty) ? 'Requis' : null;
 
   bool _valider() {
-    // SÃƒÂ©curitÃƒÂ© si l'index dÃƒÂ©passe par suite d'un changement de mÃƒÂ©tier
+    // Sécurité si l'index dépasse par suite d'un changement de métier
     if (_etape > _dernier) _etape = _dernier;
     if (!(_keys[_etape].currentState?.validate() ?? true)) return false;
 
     switch (_etape) {
       case 0:
         if (_metier == null) {
-          _msg('Choisissez votre activitÃƒÂ©');
+          _msg('Choisissez votre activité');
           return false;
         }
         if (_photoProfil == null || _photoCni == null) {
           setState(() => _photosSignalees = true);
-          _msg('Photo de profil et piÃƒÂ¨ce d\'identitÃƒÂ© obligatoires');
+          _msg('Photo de profil et pièce d\'identité obligatoires');
           return false;
         }
         break;
@@ -179,7 +179,7 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
           }
         } else {
           if (_vehicleTypes.isEmpty) {
-            _msg('Choisissez au moins un type de vÃƒÂ©hicule');
+            _msg('Choisissez au moins un type de véhicule');
             return false;
           }
           if (_lat == null || _lng == null) {
@@ -199,13 +199,11 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
             return false;
           }
           if (!_vehicleTypes.contains(s.categorie)) {
-            _msg('Ã‚Â« ${s.nom} Ã‚Â» : type de vÃƒÂ©hicule non pris en charge');
+            _msg('« ${s.nom} » : type de véhicule non pris en charge');
             return false;
           }
           if (s.fixe && (s.prix == null || s.prix! <= 0)) {
-            _msg(
-              'Ã‚Â« ${s.nom} Ã‚Â» : indiquez un prix ou passez en Ã‚Â« Sur devis Ã‚Â»',
-            );
+            _msg('« ${s.nom} » : indiquez un prix ou passez en « Sur devis »');
             return false;
           }
         }
@@ -306,7 +304,7 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
     } on QuickAuthException catch (e) {
       if (mounted) _msg(e.message);
     } catch (e) {
-      if (mounted) _msg('Erreur inattendue ou rÃƒÂ©seau. RÃƒÂ©essayez.');
+      if (mounted) _msg('Erreur inattendue ou réseau. Réessayez.');
     } finally {
       if (mounted) setState(() => _envoi = false);
     }
@@ -329,7 +327,7 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
             onPressed: _envoi ? null : _retour,
           ),
           title: Text(
-            'Ãƒâ€°tape ${_etape + 1}/${titres.length} Ã‚Â· ${titres[_etape]}',
+            'Étape ${_etape + 1}/${titres.length} · ${titres[_etape]}',
           ),
         ),
         body: SafeArea(
@@ -423,7 +421,7 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
     );
   }
 
-  /// SÃƒÂ©lection de l'activitÃƒÂ© avec un design moderne en cartes tactiles pleines (supÃƒÂ©rieur ÃƒÂ  Gozem)
+  /// Sélection de l'activité avec un design moderne en cartes tactiles pleines (supérieur à Gozem)
   Widget _choixActivite() {
     Widget carteMetier(String nomMetier, String description, IconData icone) {
       final selected = _metier == nomMetier;
@@ -508,8 +506,8 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
         ),
         const SizedBox(height: 8),
         carteMetier(
-          'ZÃƒÂ©midjan',
-          'Transport rapide de passagers ÃƒÂ  moto',
+          'Zémidjan',
+          'Transport rapide de passagers à moto',
           Icons.two_wheeler_rounded,
         ),
         carteMetier(
@@ -519,7 +517,7 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
         ),
         const SizedBox(height: 14),
         Text(
-          'DÃƒÂ©pannage & Garage',
+          'Dépannage & Garage',
           style: TextStyle(
             fontSize: 14.5,
             fontWeight: FontWeight.w700,
@@ -530,7 +528,7 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
         for (final m in kMetiersDepannage)
           carteMetier(
             m,
-            'Assistance et rÃƒÂ©paration technique',
+            'Assistance et réparation technique',
             kIconesMetier[m] ?? Icons.build_outlined,
           ),
       ],
@@ -541,11 +539,11 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       _intro(
-        'Qui ÃƒÂªtes-vous ?',
-        'VÃƒÂ©rifiÃƒÂ©e une seule fois, votre identitÃƒÂ© rassure les clients.',
+        'Qui êtes-vous ?',
+        'Vérifiée une seule fois, votre identité rassure les clients.',
       ),
       const Text(
-        'Votre activitÃƒÂ©',
+        'Votre activité',
         style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
       ),
       const SizedBox(height: 10),
@@ -560,7 +558,7 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
       ),
       const SizedBox(height: 14),
       AppTextField(
-        label: 'PrÃƒÂ©nom',
+        label: 'Prénom',
         icon: Icons.person_outline,
         controller: _prenom,
         textInputAction: TextInputAction.next,
@@ -568,22 +566,20 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
       ),
       const SizedBox(height: 14),
       AppTextField(
-        label: _phone.isNotEmpty
-            ? 'TÃƒÂ©lÃƒÂ©phone vÃƒÂ©rifiÃƒÂ©'
-            : 'Email du compte',
+        label: _phone.isNotEmpty ? 'Téléphone vérifié' : 'Email du compte',
         icon: _phone.isNotEmpty ? Icons.phone_outlined : Icons.email_outlined,
         controller: _contact,
         readOnly: true,
       ),
       const SizedBox(height: 14),
       AppTextField(
-        label: _transport ? 'NumÃƒÂ©ro IFU (facultatif)' : 'NumÃƒÂ©ro IFU',
+        label: _transport ? 'Numéro IFU (facultatif)' : 'Numéro IFU',
         icon: Icons.badge_outlined,
         controller: _ifu,
         validator: _transport ? null : _requis,
       ),
       const SizedBox(height: 22),
-      const SectionTitle('VÃƒÂ©rification'),
+      const SectionTitle('Vérification'),
       Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -598,7 +594,7 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
           const SizedBox(width: 12),
           Expanded(
             child: _photo(
-              'PiÃƒÂ¨ce d\'identitÃƒÂ©',
+              'Pièce d\'identité',
               Icons.badge_outlined,
               _photoCni,
               (b) => setState(() => _photoCni = b),
@@ -630,7 +626,7 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
               Expanded(
                 child: Text(
                   aPos
-                      ? 'Position dÃƒÂ©finie (${_lat!.toStringAsFixed(4)}, ${_lng!.toStringAsFixed(4)})'
+                      ? 'Position définie (${_lat!.toStringAsFixed(4)}, ${_lng!.toStringAsFixed(4)})'
                       : vide,
                   style: const TextStyle(fontWeight: FontWeight.w700),
                 ),
@@ -649,14 +645,14 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _intro(
-          'Votre zone d\'activitÃƒÂ©',
-          'DÃƒÂ©finissez votre secteur pour recevoir les courses instantanÃƒÂ©ment.',
+          'Votre zone d\'activité',
+          'Définissez votre secteur pour recevoir les courses instantanément.',
         ),
         AuthInfoBanner(
           title: _metier ?? 'Transport',
           message:
-              'Vous recevez les courses autour de vous en temps rÃƒÂ©el. '
-              'Les paiements en espÃƒÂ¨ces impliquent une commission sur votre wallet, '
+              'Vous recevez les courses autour de vous en temps réel. '
+              'Les paiements en espèces impliquent une commission sur votre wallet, '
               'tandis que les paiements Mobile Money sont sans commission.',
           icon: _metier == 'Tricycle Fret'
               ? Icons.local_shipping_rounded
@@ -665,8 +661,8 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
         ),
         const SizedBox(height: 18),
         AppTextField(
-          label: 'Nom affichÃƒÂ© (facultatif)',
-          hint: 'Ex: Jean ZÃƒÂ©midjan Pro',
+          label: 'Nom affiché (facultatif)',
+          hint: 'Ex: Jean Zémidjan Pro',
           icon: Icons.badge_outlined,
           controller: _garage,
           textInputAction: TextInputAction.done,
@@ -686,7 +682,7 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
       children: [
         _intro(
           'Votre atelier',
-          'Dites aux clients ce que vous rÃƒÂ©parez et oÃƒÂ¹ vous trouver.',
+          'Dites aux clients ce que vous réparez et où vous trouver.',
         ),
         AppTextField(
           label: 'Nom de l\'atelier / garage',
@@ -695,7 +691,7 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
           textInputAction: TextInputAction.next,
           validator: _requis,
         ),
-        const SectionTitle('VÃƒÂ©hicules pris en charge'),
+        const SectionTitle('Véhicules pris en charge'),
         Wrap(
           spacing: 10,
           runSpacing: 10,
@@ -717,7 +713,7 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
         const SizedBox(height: 18),
         AppTextField(
           label: 'WhatsApp (optionnel)',
-          helper: 'Jamais affichÃƒÂ© publiquement',
+          helper: 'Jamais affiché publiquement',
           icon: Icons.chat_outlined,
           controller: _whatsapp,
           keyboardType: TextInputType.phone,
@@ -868,11 +864,11 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _intro(
-          'Frais de dÃƒÂ©placement',
-          'CalculÃƒÂ©s automatiquement selon la distance entre vous et le client en panne.',
+          'Frais de déplacement',
+          'Calculés automatiquement selon la distance entre vous et le client en panne.',
         ),
         AppTextField(
-          label: 'Tarif par kilomÃƒÂ¨tre',
+          label: 'Tarif par kilomètre',
           icon: Icons.route_outlined,
           controller: _tarifKm,
           keyboardType: TextInputType.number,
@@ -881,12 +877,12 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
           onChanged: (_) => setState(() {}),
           validator: (v) {
             final n = int.tryParse(v ?? '');
-            return (n == null || n > 5000) ? '0 ÃƒÂ  5000 FCFA/km' : null;
+            return (n == null || n > 5000) ? '0 à 5000 FCFA/km' : null;
           },
         ),
         const SizedBox(height: 14),
         AppTextField(
-          label: 'Frais minimum de dÃƒÂ©placement',
+          label: 'Frais minimum de déplacement',
           icon: Icons.payments_outlined,
           controller: _fraisMin,
           keyboardType: TextInputType.number,
@@ -907,13 +903,13 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
           label: '${_rayon.round()} km',
           onChanged: (v) => setState(() => _rayon = v),
         ),
-        Text('Jusqu\'ÃƒÂ  ${_rayon.round()} km de votre atelier'),
+        Text('Jusqu\'à ${_rayon.round()} km de votre atelier'),
         const SectionTitle('Simulateur'),
         SoftCard(
           child: Column(
             children: [
               Text(
-                'Client ÃƒÂ  ${_simuKm.round()} km',
+                'Client à ${_simuKm.round()} km',
                 style: const TextStyle(fontWeight: FontWeight.w700),
               ),
               Slider(
@@ -931,7 +927,7 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
                 ),
               ),
               const SizedBox(height: 2),
-              const Text('DÃƒÂ©placement estimÃƒÂ© affichÃƒÂ© au client'),
+              const Text('Déplacement estimé affiché au client'),
             ],
           ),
         ),

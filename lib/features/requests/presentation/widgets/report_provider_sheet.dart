@@ -60,7 +60,7 @@ class _ReportSheetState extends State<_ReportSheet> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            'Signalement envoyÃƒÂ©. L\'ÃƒÂ©quipe MONTOTEM va l\'examiner.',
+            'Signalement envoyé. L\'équipe MONTOTEM va l\'examiner.',
           ),
           duration: Duration(seconds: 6),
         ),
@@ -162,7 +162,7 @@ class _ReportSheetState extends State<_ReportSheet> {
             maxLength: 1000,
             style: const TextStyle(fontSize: 16),
             decoration: const InputDecoration(
-              labelText: 'Que s\'est-il passÃƒÂ© ? (facultatif)',
+              labelText: 'Que s\'est-il passé ? (facultatif)',
               alignLabelWithHint: true,
             ),
           ),

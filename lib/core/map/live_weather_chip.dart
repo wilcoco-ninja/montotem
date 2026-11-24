@@ -6,12 +6,12 @@ import 'package:latlong2/latlong.dart';
 import 'package:montotem/core/services/weather_service.dart';
 import 'package:montotem/core/theme/app_colors.dart';
 
-/// MÃƒÂ©tÃƒÂ©o rÃƒÂ©elle (Open-Meteo) pour un point du globe, en pastille repliable.
+/// Météo réelle (Open-Meteo) pour un point du globe, en pastille repliable.
 ///
-/// Se met ÃƒÂ  jour toute seule : quand [position] s'ÃƒÂ©loigne de plus de 3 km,
-/// puis toutes les 10 minutes. Jamais de valeur inventÃƒÂ©e : sans rÃƒÂ©seau ni
-/// donnÃƒÂ©e rÃƒÂ©cente, la pastille affiche Ã‚Â« MÃƒÂ©tÃƒÂ©o indisponible Ã‚Â» et un bouton
-/// pour rÃƒÂ©essayer.
+/// Se met à jour toute seule : quand [position] s'éloigne de plus de 3 km,
+/// puis toutes les 10 minutes. Jamais de valeur inventée : sans réseau ni
+/// donnée récente, la pastille affiche « Météo indisponible » et un bouton
+/// pour réessayer.
 class LiveWeatherChip extends StatefulWidget {
   const LiveWeatherChip({super.key, required this.position});
 
@@ -125,7 +125,7 @@ class _LiveWeatherChipState extends State<LiveWeatherChip> {
       children: [
         const Icon(Icons.cloud_off_rounded, size: 18),
         const SizedBox(width: 6),
-        const Text('MÃƒÂ©tÃƒÂ©o indisponible', style: TextStyle(fontSize: 12)),
+        const Text('Météo indisponible', style: TextStyle(fontSize: 12)),
         const SizedBox(width: 4),
         Icon(Icons.refresh_rounded, size: 16, color: theme.colorScheme.primary),
       ],
@@ -182,12 +182,12 @@ class _LiveWeatherChipState extends State<LiveWeatherChip> {
         const SizedBox(height: 8),
         _line(
           Icons.thermostat_rounded,
-          'Ressenti ${w.feelsLike.round()}Ã‚Â°C',
+          'Ressenti ${w.feelsLike.round()}°C',
           AppColors.amber,
         ),
         _line(
           Icons.water_drop_outlined,
-          'HumiditÃƒÂ© ${w.humidity} %',
+          'Humidité ${w.humidity} %',
           AppColors.navy,
         ),
         _line(
@@ -205,7 +205,7 @@ class _LiveWeatherChipState extends State<LiveWeatherChip> {
           Padding(
             padding: const EdgeInsets.only(top: 6),
             child: Text(
-              'ChaussÃƒÂ©e glissante : prudence.',
+              'Chaussée glissante : prudence.',
               style: TextStyle(
                 fontSize: 11.5,
                 fontWeight: FontWeight.w700,

@@ -7,8 +7,8 @@ import 'package:montotem/features/requests/data/mission_service.dart';
 import 'package:montotem/features/requests/domain/mission_item_model.dart';
 import 'package:montotem/features/requests/domain/mission_model.dart';
 
-/// DÃƒÂ©tail de la commande, identique pour le client et le prestataire :
-/// chaque prestation avec son prix fixe, le dÃƒÂ©placement, puis le total.
+/// Détail de la commande, identique pour le client et le prestataire :
+/// chaque prestation avec son prix fixe, le déplacement, puis le total.
 class MissionItemsCard extends StatefulWidget {
   const MissionItemsCard({super.key, required this.mission});
   final Mission mission;
@@ -33,7 +33,7 @@ class _MissionItemsCardState extends State<MissionItemsCard> {
       final data = await _service.prestations(widget.mission.id);
       if (mounted) setState(() => _items = data);
     } on MissionException {
-      // Le rÃƒÂ©capitulatif reste affichÃƒÂ© sans le dÃƒÂ©tail.
+      // Le récapitulatif reste affiché sans le détail.
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -90,7 +90,7 @@ class _MissionItemsCardState extends State<MissionItemsCard> {
               ligne(i.nom, i.prixFcfa, icone: Icons.build_outlined),
           Divider(height: 18, color: scheme.onSurface.withValues(alpha: 0.12)),
           ligne(
-            'DÃƒÂ©placement',
+            'Déplacement',
             m.travelFeeFcfa,
             icone: Icons.local_shipping_outlined,
           ),

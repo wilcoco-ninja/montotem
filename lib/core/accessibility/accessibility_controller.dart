@@ -5,18 +5,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 enum TextSizeLevel {
   normal(1.0, 'Normal'),
   grand(1.25, 'Grand'),
-  tresGrand(1.5, 'TrÃƒÂ¨s grand');
+  tresGrand(1.5, 'Très grand');
 
   const TextSizeLevel(this.factor, this.libelle);
   final double factor;
   final String libelle;
 }
 
-/// Taille du texte choisie par l'utilisateur, appliquÃƒÂ©e globalement dans
-/// MonTotemApp (en plus de la taille de police du systÃƒÂ¨me).
+/// Taille du texte choisie par l'utilisateur, appliquée globalement dans
+/// MonTotemApp (en plus de la taille de police du système).
 ///
-/// Ã‚Â« Normal Ã‚Â» par dÃƒÂ©faut : l'interface client n'a plus de bouton de taille
-/// du texte, elle suit simplement le rÃƒÂ©glage du tÃƒÂ©lÃƒÂ©phone.
+/// « Normal » par défaut : l'interface client n'a plus de bouton de taille
+/// du texte, elle suit simplement le réglage du téléphone.
 class AccessibilityController extends ChangeNotifier {
   static const String _key = 'a11y_text_level';
 
@@ -128,7 +128,7 @@ class _LevelTile extends StatelessWidget {
                 data: MediaQuery.of(context)
                     .copyWith(textScaler: TextScaler.linear(level.factor)),
                 child: Text(
-                  '${level.libelle} : Appeler le dÃƒÂ©panneur',
+                  '${level.libelle} : Appeler le dépanneur',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,

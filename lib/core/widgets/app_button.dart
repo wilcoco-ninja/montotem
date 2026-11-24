@@ -4,7 +4,7 @@ import 'package:montotem/core/theme/app_colors.dart';
 
 enum AppButtonVariant { primary, secondary, danger, text }
 
-/// Bouton unifiÃƒÂ© MONTOTEM : icÃƒÂ´ne, ÃƒÂ©tat de chargement, variantes.
+/// Bouton unifié MONTOTEM : icône, état de chargement, variantes.
 class AppButton extends StatelessWidget {
   const AppButton({
     super.key,
@@ -71,8 +71,8 @@ class AppButton extends StatelessWidget {
         child: child,
       ),
       AppButtonVariant.text => TextButton(onPressed: action, child: child),
-      // Ã¢Å“â€¦ Contraste AAA dans les 3 espaces (clair/sombre) :
-      //    on utilise scheme.error qui suit le thÃƒÂ¨me de l'espace.
+      // ✅ Contraste AAA dans les 3 espaces (clair/sombre) :
+      //    on utilise scheme.error qui suit le thème de l'espace.
       AppButtonVariant.danger => FilledButton(
         onPressed: action,
         style: FilledButton.styleFrom(

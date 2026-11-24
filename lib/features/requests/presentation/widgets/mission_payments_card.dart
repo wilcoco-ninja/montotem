@@ -8,8 +8,8 @@ import 'package:montotem/features/requests/domain/mission_model.dart';
 import 'package:montotem/features/requests/domain/mission_payment_model.dart';
 import 'package:montotem/features/requests/presentation/widgets/mission_payment_sheet.dart';
 
-/// Paiements d'une mission. Le client dÃƒÂ©clare, le prestataire confirme ou refuse.
-/// Se met ÃƒÂ  jour en direct.
+/// Paiements d'une mission. Le client déclare, le prestataire confirme ou refuse.
+/// Se met à jour en direct.
 class MissionPaymentsCard extends StatefulWidget {
   const MissionPaymentsCard({
     super.key,
@@ -52,7 +52,7 @@ class _MissionPaymentsCardState extends State<MissionPaymentsCard> {
       final data = await _service.paiements(widget.mission.id);
       if (mounted) setState(() => _paiements = data);
     } on MissionException {
-      // Affichage conservÃƒÂ© : la prochaine mise ÃƒÂ  jour rÃƒÂ©essaiera.
+      // Affichage conservé : la prochaine mise à jour réessaiera.
     } finally {
       if (mounted && !silencieux) setState(() => _loading = false);
       if (mounted && silencieux) setState(() => _loading = false);
@@ -103,13 +103,13 @@ class _MissionPaymentsCardState extends State<MissionPaymentsCard> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Argent bien reÃƒÂ§u ?'),
+        title: const Text('Argent bien reçu ?'),
         content: Text(
           p.methode.mobileMoney
-              ? 'VÃƒÂ©rifiez dans votre application ${p.methode.libelle} que '
-                    '${TravelFee.fcfa(p.amountFcfa)} sont bien arrivÃƒÂ©s '
-                    '(rÃƒÂ©fÃƒÂ©rence ${p.reference ?? '-'}).'
-              : 'Confirmez que vous avez reÃƒÂ§u ${TravelFee.fcfa(p.amountFcfa)} en espÃƒÂ¨ces.',
+              ? 'Vérifiez dans votre application ${p.methode.libelle} que '
+                    '${TravelFee.fcfa(p.amountFcfa)} sont bien arrivés '
+                    '(référence ${p.reference ?? '-'}).'
+              : 'Confirmez que vous avez reçu ${TravelFee.fcfa(p.amountFcfa)} en espèces.',
           style: const TextStyle(fontSize: 16, height: 1.4),
         ),
         actions: [
@@ -133,15 +133,15 @@ class _MissionPaymentsCardState extends State<MissionPaymentsCard> {
     final motif = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Paiement non reÃƒÂ§u'),
+        title: const Text('Paiement non reçu'),
         content: TextField(
           controller: controller,
           autofocus: true,
           maxLines: 2,
           style: const TextStyle(fontSize: 16),
           decoration: const InputDecoration(
-            labelText: 'Motif (envoyÃƒÂ© au client)',
-            hintText: 'Ex. : montant non arrivÃƒÂ©',
+            labelText: 'Motif (envoyé au client)',
+            hintText: 'Ex. : montant non arrivé',
           ),
         ),
         actions: [
@@ -185,27 +185,23 @@ class _MissionPaymentsCardState extends State<MissionPaymentsCard> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _ligneTotal('Total', m.totalFcfa),
+          _ligneTotal('Déjà payé', m.paidFcfa, couleur: scheme.secondary),
           _ligneTotal(
-            'DÃƒÂ©jÃƒÂ  payÃƒÂ©',
-            m.paidFcfa,
-            couleur: scheme.secondary,
-          ),
-          _ligneTotal(
-            'Reste ÃƒÂ  payer',
+            'Reste à payer',
             m.resteFcfa,
             couleur: m.resteFcfa > 0 ? scheme.tertiary : null,
           ),
           Divider(height: 24, color: scheme.onSurface.withValues(alpha: 0.12)),
           _bloc(
             'trajet',
-            'Frais de dÃƒÂ©placement',
+            'Frais de déplacement',
             m.travelFeeFcfa,
             eligible: true,
           ),
           if (m.repairFeeFcfa > 0 || m.status == MissionStatus.completed)
             _bloc(
               'reparation',
-              'RÃƒÂ©paration',
+              'Réparation',
               m.repairFeeFcfa,
               eligible: m.status == MissionStatus.completed,
             ),
@@ -243,7 +239,7 @@ class _MissionPaymentsCardState extends State<MissionPaymentsCard> {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Text(
-          '$titre : prix non indiquÃƒÂ© par le prestataire.',
+          '$titre : prix non indiqué par le prestataire.',
           style: const TextStyle(fontSize: 15),
         ),
       );
@@ -276,7 +272,7 @@ class _MissionPaymentsCardState extends State<MissionPaymentsCard> {
       if (refus != null) {
         enfants.add(
           Text(
-            'Paiement refusÃƒÂ© : ${refus.rejectReason ?? 'non reÃƒÂ§u'}',
+            'Paiement refusé : ${refus.rejectReason ?? 'non reçu'}',
             style: TextStyle(
               fontSize: 14.5,
               fontWeight: FontWeight.w700,
@@ -288,7 +284,7 @@ class _MissionPaymentsCardState extends State<MissionPaymentsCard> {
       if (!eligible) {
         enfants.add(
           Text(
-            'Disponible ÃƒÂ  la fin du travail.',
+            'Disponible à la fin du travail.',
             style: TextStyle(fontSize: 15, color: muted),
           ),
         );
@@ -310,14 +306,14 @@ class _MissionPaymentsCardState extends State<MissionPaymentsCard> {
       }
     } else {
       final detail = actif.methode.mobileMoney
-          ? '${actif.methode.libelle} Ã‚Â· ${actif.payerPhone} Ã‚Â· rÃƒÂ©f. ${actif.reference ?? '-'}'
+          ? '${actif.methode.libelle} · ${actif.payerPhone} · réf. ${actif.reference ?? '-'}'
           : actif.methode.libelle;
       enfants.add(
         Align(
           alignment: Alignment.centerLeft,
           child: actif.status == PaymentStatus.confirme
               ? StatusPill(
-                  label: 'ConfirmÃƒÂ©',
+                  label: 'Confirmé',
                   color: scheme.secondary,
                   icon: Icons.check_circle_rounded,
                 )
@@ -338,7 +334,7 @@ class _MissionPaymentsCardState extends State<MissionPaymentsCard> {
                   children: [
                     Expanded(
                       child: AppButton(
-                        label: 'Non reÃƒÂ§u',
+                        label: 'Non reçu',
                         variant: AppButtonVariant.secondary,
                         onPressed: () => _refuser(actif),
                       ),
@@ -346,7 +342,7 @@ class _MissionPaymentsCardState extends State<MissionPaymentsCard> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: AppButton(
-                        label: 'J\'ai reÃƒÂ§u',
+                        label: 'J\'ai reçu',
                         icon: Icons.check_rounded,
                         onPressed: () => _confirmer(actif),
                       ),

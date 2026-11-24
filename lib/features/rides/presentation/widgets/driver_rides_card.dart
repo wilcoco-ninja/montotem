@@ -12,8 +12,8 @@ import 'package:montotem/features/wallet/data/wallet_service.dart';
 import 'package:montotem/features/rides/data/ride_driver_service.dart';
 import 'package:montotem/features/rides/data/ride_service.dart';
 
-/// Carte de l'accueil prestataire pour les ZÃƒÂ©midjan et Tricycle Fret :
-/// courses ÃƒÂ  proximitÃƒÂ©, et mise ÃƒÂ  jour de la position tant que le conducteur
+/// Carte de l'accueil prestataire pour les Zémidjan et Tricycle Fret :
+/// courses à proximité, et mise à jour de la position tant que le conducteur
 /// est en ligne. Invisible pour les autres prestataires.
 class DriverRidesCard extends StatefulWidget {
   const DriverRidesCard({super.key});
@@ -85,7 +85,7 @@ class _DriverRidesCardState extends State<DriverRidesCard> {
       _surPosition(p);
       _gps = _location.watchPosition().listen(_surPosition, onError: (_) {});
     } catch (_) {
-      // Permission refusÃƒÂ©e ou GPS coupÃƒÂ© : l'ÃƒÂ©cran Ã‚Â« Mes courses Ã‚Â» l'expliquera.
+      // Permission refusée ou GPS coupé : l'écran « Mes courses » l'expliquera.
     } finally {
       _gpsEnCours = false;
     }
@@ -123,7 +123,7 @@ class _DriverRidesCardState extends State<DriverRidesCard> {
       final liste = await _rides.proches(lat: pos.latitude, lng: pos.longitude);
       if (mounted) setState(() => _courses = liste.length);
     } on RideException {
-      // Compteur indisponible : l'ÃƒÂ©cran Ã‚Â« Mes courses Ã‚Â» affichera l'erreur.
+      // Compteur indisponible : l'écran « Mes courses » affichera l'erreur.
     }
   }
 
@@ -137,31 +137,31 @@ class _DriverRidesCardState extends State<DriverRidesCard> {
     final String detail;
     final Color couleur;
     if (_bloque) {
-      titre = 'Wallet bloquÃƒÂ©';
+      titre = 'Wallet bloqué';
       detail = 'Rechargez votre wallet pour recevoir des courses.';
       couleur = scheme.error;
     } else if (!info.valide || !info.abonnementActif) {
       titre = 'Courses';
       detail = !info.valide
-          ? 'Disponible dÃƒÂ¨s que votre dossier est validÃƒÂ©.'
-          : 'Un abonnement actif est nÃƒÂ©cessaire pour recevoir des courses.';
+          ? 'Disponible dès que votre dossier est validé.'
+          : 'Un abonnement actif est nécessaire pour recevoir des courses.';
       couleur = scheme.tertiary;
     } else if (!info.disponible) {
       titre = 'Courses';
       detail = 'Passez en ligne pour recevoir des courses.';
       couleur = Colors.grey;
     } else if (_courses == null) {
-      titre = 'Courses ÃƒÂ  proximitÃƒÂ©';
-      detail = 'Recherche de votre positionÃ¢â‚¬Â¦';
+      titre = 'Courses à proximité';
+      detail = 'Recherche de votre position…';
       couleur = scheme.primary;
     } else if (_courses == 0) {
-      titre = 'Courses ÃƒÂ  proximitÃƒÂ©';
+      titre = 'Courses à proximité';
       detail = 'Aucune course pour le moment. Restez en ligne.';
       couleur = scheme.primary;
     } else {
       final n = _courses!;
-      titre = 'Courses ÃƒÂ  proximitÃƒÂ©';
-      detail = '$n course${n > 1 ? 's' : ''} ÃƒÂ  moins de 5 km.';
+      titre = 'Courses à proximité';
+      detail = '$n course${n > 1 ? 's' : ''} à moins de 5 km.';
       couleur = scheme.secondary;
     }
 

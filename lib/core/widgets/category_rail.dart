@@ -11,29 +11,25 @@ class Categorie {
 
 const kCategories = [
   Categorie(null, 'Tous', Icons.apps_rounded),
-  Categorie('zemidjan', 'ZÃƒÂ©midjan', Icons.two_wheeler_rounded),
-  Categorie('mecanicien', 'MÃƒÂ©canicien', Icons.build_rounded),
+  Categorie('zemidjan', 'Zémidjan', Icons.two_wheeler_rounded),
+  Categorie('mecanicien', 'Mécanicien', Icons.build_rounded),
   Categorie('vulcanisateur', 'Pneus', Icons.tire_repair_rounded),
-  Categorie(
-    'electricien',
-    'Ãƒâ€°lectricien',
-    Icons.electrical_services_rounded,
-  ),
+  Categorie('electricien', 'Électricien', Icons.electrical_services_rounded),
   Categorie('station', 'Essence', Icons.local_gas_station_rounded),
   Categorie('garage', 'Garage', Icons.garage_rounded),
 ];
 
-/// MÃƒÂªme logique que MatchingScreen : dÃƒÂ©duit la catÃƒÂ©gorie du texte du mÃƒÂ©tier.
+/// Même logique que MatchingScreen : déduit la catégorie du texte du métier.
 bool metierCorrespond(String metier, String? cle) {
   if (cle == null) return true;
   final m = metier.toLowerCase();
   return switch (cle) {
-    'zemidjan' => m.contains('zemidjan') || m.contains('zÃƒÂ©midjan'),
+    'zemidjan' => m.contains('zemidjan') || m.contains('zémidjan'),
     'vulcanisateur' => m.contains('vulcanis') || m.contains('pneu'),
-    'electricien' => m.contains('ÃƒÂ©lectric') || m.contains('electric'),
+    'electricien' => m.contains('électric') || m.contains('electric'),
     'station' => m.contains('essence') || m.contains('station'),
     'garage' => m.contains('garage'),
-    _ => m.contains('mÃƒÂ©canic') || m.contains('mecanic'),
+    _ => m.contains('mécanic') || m.contains('mecanic'),
   };
 }
 
@@ -54,7 +50,7 @@ class CategoryRail extends StatelessWidget {
     final accent = AppColors.brandYellow;
     // Texte sur jaune : navy (AAA 11,2:1).
     final onAccent = AppColors.navy;
-    // Fond et texte "off" : dÃƒÂ©rivÃƒÂ©s du thÃƒÂ¨me de l'espace.
+    // Fond et texte "off" : dérivés du thème de l'espace.
     final offBg = scheme.surfaceContainerHighest.withValues(alpha: 0.5);
     final offFg = scheme.onSurface;
     final radius = theme.cardTheme.shape is RoundedRectangleBorder

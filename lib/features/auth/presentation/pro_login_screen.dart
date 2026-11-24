@@ -8,11 +8,11 @@ import 'package:montotem/core/widgets/auth_layout.dart';
 import 'package:montotem/features/auth/data/auth_service.dart' show AuthService;
 import 'package:montotem/features/auth/data/door_service.dart';
 
-/// Porte PRESTATAIRE : e-mail ou tÃƒÂ©lÃƒÂ©phone + mot de passe.
+/// Porte PRESTATAIRE : e-mail ou téléphone + mot de passe.
 ///
-/// DiffÃƒÂ©rente de la porte client (SMS) : le prestataire a un dossier vÃƒÂ©rifiÃƒÂ©,
+/// Différente de la porte client (SMS) : le prestataire a un dossier vérifié,
 /// un compte professionnel, et se reconnecte avec des identifiants. Un compte
-/// client ou admin est refusÃƒÂ© ici et orientÃƒÂ© vers sa propre porte.
+/// client ou admin est refusé ici et orienté vers sa propre porte.
 ///
 /// Route : /pro/login
 class ProLoginScreen extends StatefulWidget {
@@ -46,7 +46,7 @@ class _ProLoginScreenState extends State<ProLoginScreen> {
 
   String? _validerIdentifiant(String? v) {
     final s = v?.trim() ?? '';
-    if (s.isEmpty) return 'Entrez votre e-mail ou votre numÃƒÂ©ro';
+    if (s.isEmpty) return 'Entrez votre e-mail ou votre numéro';
     if (s.contains('@')) {
       return RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(s)
           ? null
@@ -54,7 +54,7 @@ class _ProLoginScreenState extends State<ProLoginScreen> {
     }
     return AuthService.isValidPhone(AuthService.normalizePhone(s))
         ? null
-        : 'NumÃƒÂ©ro invalide. Exemple : 01 97 00 00 00';
+        : 'Numéro invalide. Exemple : 01 97 00 00 00';
   }
 
   Future<void> _seConnecter() async {
@@ -103,7 +103,7 @@ class _ProLoginScreenState extends State<ProLoginScreen> {
     return AuthShell(
       title: 'Espace prestataire',
       subtitle:
-          'Connectez-vous pour recevoir vos missions et gÃƒÂ©rer '
+          'Connectez-vous pour recevoir vos missions et gérer '
           'vos prestations et vos prix.',
       icon: Icons.handyman_outlined,
       onBack: _loading ? null : () => context.go('/explore'),
@@ -119,7 +119,7 @@ class _ProLoginScreenState extends State<ProLoginScreen> {
                     ? null
                     : () => context.push('/register/signup?role=provider'),
                 child: const Text(
-                  'DÃƒÂ©poser mon dossier',
+                  'Déposer mon dossier',
                   style: TextStyle(fontWeight: FontWeight.w800),
                 ),
               ),
@@ -129,7 +129,7 @@ class _ProLoginScreenState extends State<ProLoginScreen> {
             onPressed: _loading ? null : () => context.go('/login'),
             style: TextButton.styleFrom(foregroundColor: muted),
             child: const Text(
-              'Je cherche un dÃƒÂ©panneur Ã‚Â· espace client',
+              'Je cherche un dépanneur · espace client',
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
           ),
@@ -149,7 +149,7 @@ class _ProLoginScreenState extends State<ProLoginScreen> {
                 const SizedBox(height: 16),
               ],
               AppTextField(
-                label: 'E-mail ou tÃƒÂ©lÃƒÂ©phone',
+                label: 'E-mail ou téléphone',
                 hint: 'atelier@exemple.com ou 01 97 00 00 00',
                 icon: Icons.person_outline_rounded,
                 controller: _identifiant,
@@ -183,7 +183,7 @@ class _ProLoginScreenState extends State<ProLoginScreen> {
                   onPressed: _loading
                       ? null
                       : () => context.push('/forgot-password?space=provider'),
-                  child: const Text('Mot de passe oubliÃƒÂ© ?'),
+                  child: const Text('Mot de passe oublié ?'),
                 ),
               ),
               if (_error != null) ...[
@@ -192,7 +192,7 @@ class _ProLoginScreenState extends State<ProLoginScreen> {
               ],
               const SizedBox(height: 14),
               AppButton(
-                label: 'AccÃƒÂ©der ÃƒÂ  mon espace',
+                label: 'Accéder à mon espace',
                 icon: Icons.login_rounded,
                 loading: _loading,
                 onPressed: _seConnecter,

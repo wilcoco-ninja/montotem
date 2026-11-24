@@ -65,7 +65,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
 
     final code = _otpController.text.trim();
     if (code.length < 6) {
-      setState(() => _errorMessage = 'Entrez le code complet ÃƒÂ  6 chiffres.');
+      setState(() => _errorMessage = 'Entrez le code complet à 6 chiffres.');
       return;
     }
 
@@ -79,7 +79,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
       if (!mounted) return;
 
       if (!ok) {
-        setState(() => _errorMessage = 'Code invalide ou expirÃƒÂ©.');
+        setState(() => _errorMessage = 'Code invalide ou expiré.');
         return;
       }
 
@@ -109,7 +109,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
       if (!mounted) return;
       _demarrerCooldown();
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Nouveau code envoyÃƒÂ© par SMS.')),
+        const SnackBar(content: Text('Nouveau code envoyé par SMS.')),
       );
     } on ApiException catch (e) {
       if (!mounted) return;
@@ -135,8 +135,8 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
     final onSurface = Theme.of(context).colorScheme.onSurface;
 
     return AuthShell(
-      title: 'VÃƒÂ©rifiez votre numÃƒÂ©ro',
-      subtitle: 'Code ÃƒÂ  6 chiffres envoyÃƒÂ© au\n${widget.phone}',
+      title: 'Vérifiez votre numéro',
+      subtitle: 'Code à 6 chiffres envoyé au\n${widget.phone}',
       icon: Icons.sms_outlined,
       onBack: _isLoading ? null : _annuler,
       footer: TextButton.icon(
@@ -169,7 +169,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
               if (val.trim().length == 6 && !_isLoading) _verifier();
             },
             decoration: const InputDecoration(
-              hintText: 'Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢',
+              hintText: '••••••',
               counterText: '',
               contentPadding: EdgeInsets.symmetric(vertical: 20),
             ),
@@ -180,7 +180,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
           ],
           const SizedBox(height: 22),
           AppButton(
-            label: 'VÃƒÂ©rifier le code',
+            label: 'Vérifier le code',
             icon: Icons.verified_outlined,
             loading: _isLoading,
             onPressed: _verifier,

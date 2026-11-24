@@ -22,9 +22,9 @@ class _MatchingScreenState extends State<MatchingScreen> {
 
   static const List<String> _categories = [
     'Tous',
-    'MÃƒÂ©canicien',
+    'Mécanicien',
     'Vulcanisateur',
-    'Ãƒâ€°lectricien',
+    'Électricien',
     'Station essence',
     'Garage',
   ];
@@ -69,12 +69,12 @@ class _MatchingScreenState extends State<MatchingScreen> {
     if (categorie == 'Tous') return true;
     final m = p.metier.toLowerCase();
     switch (categorie) {
-      case 'MÃƒÂ©canicien':
-        return m.contains('mÃƒÂ©canic') || m.contains('mecanic');
+      case 'Mécanicien':
+        return m.contains('mécanic') || m.contains('mecanic');
       case 'Vulcanisateur':
         return m.contains('vulcanis') || m.contains('pneu');
-      case 'Ãƒâ€°lectricien':
-        return m.contains('ÃƒÂ©lectric') || m.contains('electric');
+      case 'Électricien':
+        return m.contains('électric') || m.contains('electric');
       case 'Station essence':
         return m.contains('essence') || m.contains('station');
       case 'Garage':
@@ -91,7 +91,7 @@ class _MatchingScreenState extends State<MatchingScreen> {
   Future<void> _appeler(Prestataire p) async {
     if (p.telephone == null || p.telephone!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('NumÃƒÂ©ro du prestataire indisponible')),
+        const SnackBar(content: Text('Numéro du prestataire indisponible')),
       );
       return;
     }
@@ -110,9 +110,7 @@ class _MatchingScreenState extends State<MatchingScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-            'Aucune application tÃƒÂ©lÃƒÂ©phonique n\'a ÃƒÂ©tÃƒÂ© trouvÃƒÂ©e',
-          ),
+          content: Text('Aucune application téléphonique n\'a été trouvée'),
         ),
       );
     }
@@ -172,8 +170,8 @@ class _MatchingScreenState extends State<MatchingScreen> {
         child: SingleChildScrollView(
           child: EmptyState(
             icon: Icons.search_off_rounded,
-            title: 'Aucun prestataire trouvÃƒÂ©',
-            message: 'Essayez une autre catÃƒÂ©gorie ou relancez la recherche.',
+            title: 'Aucun prestataire trouvé',
+            message: 'Essayez une autre catégorie ou relancez la recherche.',
             actionLabel: 'Rechercher',
             onAction: _rechercher,
           ),
@@ -246,7 +244,7 @@ class _MatchingScreenState extends State<MatchingScreen> {
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      '${p.metier} Ã¢â‚¬Â¢ ${p.noteMoyenne.toStringAsFixed(1)} Ã¢Ëœâ€¦',
+                      '${p.metier} • ${p.noteMoyenne.toStringAsFixed(1)} ★',
                       style: TextStyle(
                         fontSize: 13,
                         color: onSurface.withValues(alpha: 0.7),

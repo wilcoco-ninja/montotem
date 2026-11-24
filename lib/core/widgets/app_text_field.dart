@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-/// Champ de saisie unifiÃƒÂ© MONTOTEM.
+/// Champ de saisie unifié MONTOTEM.
 ///
-/// GÃƒÂ¨re : icÃƒÂ´ne de prÃƒÂ©fixe, bascule afficher/masquer pour les mots de passe,
-/// suffixe personnalisÃƒÂ©, texte d'aide, erreurs, mode lecture seule.
-/// Le style (bordures, focus colorÃƒÂ©, erreurs) vient du thÃƒÂ¨me.
+/// Gère : icône de préfixe, bascule afficher/masquer pour les mots de passe,
+/// suffixe personnalisé, texte d'aide, erreurs, mode lecture seule.
+/// Le style (bordures, focus coloré, erreurs) vient du thème.
 class AppTextField extends StatefulWidget {
   const AppTextField({
     super.key,
@@ -84,7 +84,7 @@ class _AppTextFieldState extends State<AppTextField> {
       keyboardType: widget.keyboardType,
       textInputAction: widget.textInputAction,
       textAlign: widget.textAlign,
-      // Un champ masquÃƒÂ© ne peut avoir qu'une seule ligne (sinon exception).
+      // Un champ masqué ne peut avoir qu'une seule ligne (sinon exception).
       maxLines: widget.obscure ? 1 : widget.maxLines,
       maxLength: widget.maxLength,
       autofillHints: widget.autofillHints,

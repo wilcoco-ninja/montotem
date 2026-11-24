@@ -31,7 +31,7 @@ class SosAppBarButton extends StatelessWidget {
   }
 }
 
-/// Grande banniÃƒÂ¨re SOS pour les pages d'accueil.
+/// Grande bannière SOS pour les pages d'accueil.
 class SosBanner extends StatelessWidget {
   const SosBanner({super.key});
 
@@ -91,7 +91,7 @@ class SosBanner extends StatelessWidget {
   }
 }
 
-/// Lien discret pour les ÃƒÂ©crans de connexion et d'inscription.
+/// Lien discret pour les écrans de connexion et d'inscription.
 class SosLink extends StatelessWidget {
   const SosLink({super.key});
 

@@ -9,7 +9,7 @@ import 'package:montotem/features/provider/data/provider_identity_service.dart'
     show libelleDocument;
 import 'package:montotem/features/admin/data/admin_service.dart';
 
-/// Ãƒâ€°cran de production pour la validation et l'audit des dossiers prestataires.
+/// Écran de production pour la validation et l'audit des dossiers prestataires.
 class AdminProvidersScreen extends StatefulWidget {
   const AdminProvidersScreen({super.key});
 
@@ -58,7 +58,7 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _errorMessage = 'Ãƒâ€°chec du chargement des prestataires : $e';
+        _errorMessage = 'Échec du chargement des prestataires : $e';
         _isLoading = false;
         _isRefreshing = false;
       });
@@ -93,13 +93,10 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
     setState(() => _actionEnCoursId = id);
     try {
       await _adminService.approuverPrestataire(id);
-      _afficherMessage('Dossier de $nom approuvÃƒÂ© avec succÃƒÂ¨s.');
+      _afficherMessage('Dossier de $nom approuvé avec succès.');
       await _chargerDonnees(silencieux: true);
     } catch (e) {
-      _afficherMessage(
-        'Erreur lors de lÃ¢â‚¬â„¢approbation : $e',
-        erreur: true,
-      );
+      _afficherMessage('Erreur lors de l’approbation : $e', erreur: true);
     } finally {
       if (mounted) setState(() => _actionEnCoursId = null);
     }
@@ -116,7 +113,7 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
         ),
         content: const Text(
           'Le prestataire ne pourra pas recevoir de missions sur la plateforme MonTotem. '
-          'Vous pourrez rÃƒÂ©ÃƒÂ©valuer ou lÃ¢â‚¬â„¢approuver ultÃƒÂ©rieurement.',
+          'Vous pourrez réévaluer ou l’approuver ultérieurement.',
           style: TextStyle(fontSize: 15, height: 1.4),
         ),
         actions: [
@@ -140,7 +137,7 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
     setState(() => _actionEnCoursId = id);
     try {
       await _adminService.rejeterPrestataire(id);
-      _afficherMessage('Dossier de $nom rejetÃƒÂ©.', erreur: true);
+      _afficherMessage('Dossier de $nom rejeté.', erreur: true);
       await _chargerDonnees(silencieux: true);
     } catch (e) {
       _afficherMessage('Erreur : $e', erreur: true);
@@ -229,8 +226,8 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
               icon: Icons.verified_user_outlined,
               title: _pendingOnly
                   ? 'Aucun dossier en attente'
-                  : 'Aucun prestataire enregistrÃƒÂ©',
-              message: 'Les inscriptions de prestataires sÃ¢â‚¬â„¢afficheront ici en temps rÃƒÂ©el.',
+                  : 'Aucun prestataire enregistré',
+              message: 'Les inscriptions de prestataires s’afficheront ici en temps réel.',
             ),
           ],
         ),
@@ -322,7 +319,7 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  metier.isNotEmpty ? metier : 'MÃƒÂ©tier non spÃƒÂ©cifiÃƒÂ©',
+                  metier.isNotEmpty ? metier : 'Métier non spécifié',
                   style: TextStyle(
                     color: onSurface.withValues(alpha: 0.7),
                     fontSize: 13.5,
@@ -340,9 +337,7 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                   ),
                 const SizedBox(height: 8),
                 StatusPill(
-                  label: isApproved
-                      ? 'ApprouvÃƒÂ©'
-                      : 'En attente de validation',
+                  label: isApproved ? 'Approuvé' : 'En attente de validation',
                   color: isApproved ? scheme.secondary : scheme.error,
                   icon: isApproved
                       ? Icons.verified_rounded
@@ -418,8 +413,8 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
     if (checks is! Map || checks.isEmpty) return '';
     const noms = {
       'selfie': 'Visage',
-      'recto': 'PiÃƒÂ¨ce dÃ¢â‚¬â„¢identitÃƒÂ© (recto)',
-      'verso': 'PiÃƒÂ¨ce dÃ¢â‚¬â„¢identitÃƒÂ© (verso)',
+      'recto': 'Pièce d’identité (recto)',
+      'verso': 'Pièce d’identité (verso)',
       'garage': 'Garage / Atelier',
     };
     final lignes = <String>[];
@@ -428,8 +423,8 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
       if (c is! Map) continue;
       final visages = c['faces'] == null ? '' : ', visages : ${c['faces']}';
       lignes.add(
-        '${e.value} : nettetÃƒÂ© ${c['sharpness'] ?? '-'}, '
-        'luminositÃƒÂ© ${c['brightness'] ?? '-'}$visages',
+        '${e.value} : netteté ${c['sharpness'] ?? '-'}, '
+        'luminosité ${c['brightness'] ?? '-'}$visages',
       );
     }
     return lignes.join('\n');
@@ -492,7 +487,7 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: StatusPill(
-                    label: isApproved ? 'ApprouvÃƒÂ©' : 'En attente',
+                    label: isApproved ? 'Approuvé' : 'En attente',
                     color: isApproved ? scheme.secondary : scheme.error,
                     icon: isApproved
                         ? Icons.verified_rounded
@@ -501,12 +496,12 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                 ),
                 const SectionTitle('Photo de profil'),
                 _blocImage(photoProfil, 180, 'Impossible de charger la photo'),
-                const SectionTitle('PiÃƒÂ¨ce dÃ¢â‚¬â„¢identitÃƒÂ© officielle'),
+                const SectionTitle('Pièce d’identité officielle'),
                 if (!identiteComplete)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: Text(
-                      'Attention : Le dossier dÃ¢â‚¬â„¢identitÃƒÂ© nÃ¢â‚¬â„¢est pas complÃƒÂ¨tement soumis.',
+                      'Attention : Le dossier d’identité n’est pas complètement soumis.',
                       style: TextStyle(
                         fontSize: 14.5,
                         fontWeight: FontWeight.w700,
@@ -516,12 +511,12 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                   ),
                 InfoRow(
                   icon: Icons.badge_outlined,
-                  label: 'Type de piÃƒÂ¨ce',
+                  label: 'Type de pièce',
                   value: docType == null ? '' : libelleDocument(docType),
                 ),
                 InfoRow(
                   icon: Icons.pin_outlined,
-                  label: 'NumÃƒÂ©ro',
+                  label: 'Numéro',
                   value: docNumero,
                 ),
                 const SizedBox(height: 8),
@@ -544,7 +539,7 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                     style: const TextStyle(fontSize: 14, height: 1.45),
                   ),
                 ],
-                const SectionTitle('Informations gÃƒÂ©nÃƒÂ©rales'),
+                const SectionTitle('Informations générales'),
                 InfoRow(
                   icon: Icons.person_outline,
                   label: 'Nom complet',
@@ -552,7 +547,7 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                 ),
                 InfoRow(
                   icon: Icons.phone_outlined,
-                  label: 'TÃƒÂ©lÃƒÂ©phone',
+                  label: 'Téléphone',
                   value: phone,
                 ),
                 InfoRow(
@@ -562,7 +557,7 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                 ),
                 InfoRow(
                   icon: Icons.build_outlined,
-                  label: 'MÃƒÂ©tier',
+                  label: 'Métier',
                   value: metier,
                 ),
                 InfoRow(
@@ -577,13 +572,13 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                 ),
                 InfoRow(
                   icon: Icons.badge_outlined,
-                  label: 'NumÃƒÂ©ro IFU',
+                  label: 'Numéro IFU',
                   value: ifu,
                 ),
                 if (lat != null && lng != null)
                   InfoRow(
                     icon: Icons.place_outlined,
-                    label: 'CoordonnÃƒÂ©es GPS',
+                    label: 'Coordonnées GPS',
                     value:
                         '${lat.toStringAsFixed(5)}, ${lng.toStringAsFixed(5)}',
                   ),
@@ -617,7 +612,7 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                   )
                 else
                   AppButton(
-                    label: 'RÃƒÂ©voquer lÃ¢â‚¬â„¢approbation',
+                    label: 'Révoquer l’approbation',
                     icon: Icons.block_rounded,
                     variant: AppButtonVariant.danger,
                     onPressed: () async {
@@ -628,7 +623,7 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                 const SizedBox(height: 8),
                 AppButton(
                   label: phone.isEmpty
-                      ? 'TÃƒÂ©lÃƒÂ©phone indisponible'
+                      ? 'Téléphone indisponible'
                       : 'Appeler $phone',
                   icon: Icons.call_outlined,
                   variant: AppButtonVariant.text,

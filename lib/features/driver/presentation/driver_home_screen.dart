@@ -16,8 +16,8 @@ import 'package:montotem/features/driver/data/driver_service.dart';
 import 'package:montotem/features/rides/data/ride_service.dart';
 import 'package:montotem/features/rides/domain/ride_model.dart';
 
-/// Accueil conducteur (ZÃƒÂ©midjan / Cloboto / Kloboto) :
-/// carte plein ÃƒÂ©cran, statut en ligne/hors ligne, courses proches.
+/// Accueil conducteur (Zémidjan / Cloboto / Kloboto) :
+/// carte plein écran, statut en ligne/hors ligne, courses proches.
 class DriverHomeScreen extends StatefulWidget {
   const DriverHomeScreen({super.key});
 
@@ -165,7 +165,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                 ),
                 const SizedBox(height: 12),
                 const Text(
-                  'Inscrivez-vous comme ZÃƒÂ©midjan, Cloboto ou Kloboto pour '
+                  'Inscrivez-vous comme Zémidjan, Cloboto ou Kloboto pour '
                   'recevoir des courses.',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 15),
@@ -324,7 +324,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                 if (enLigne) ...[
                   Text(
                     '${_proches.length} course${_proches.length > 1 ? 's' : ''} '
-                    'ÃƒÂ  proximitÃƒÂ©',
+                    'à proximité',
                     style: TextStyle(
                       fontSize: 15,
                       color: context.textSecondary,
@@ -405,14 +405,14 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${n.kind.libelle} Ã‚Â· ${TravelFee.fcfa(n.fareFcfa)}',
+                  '${n.kind.libelle} · ${TravelFee.fcfa(n.fareFcfa)}',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
                 Text(
-                  'DÃƒÂ©part ÃƒÂ  ${formaterDistance(n.distanceToPickupM)} Ã‚Â· '
+                  'Départ à ${formaterDistance(n.distanceToPickupM)} · '
                   'Trajet ${formaterDistance(n.tripDistanceM)}',
                   style: TextStyle(
                     fontSize: 13.5,

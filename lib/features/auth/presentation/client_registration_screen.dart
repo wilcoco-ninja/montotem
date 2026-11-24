@@ -53,7 +53,7 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
     if (email.isNotEmpty) _emailController.text = email;
     _phoneController = TextEditingController(text: phone);
 
-    // Le tÃƒÂ©lÃƒÂ©phone doit ÃƒÂªtre vÃƒÂ©rifiÃƒÂ© avant de crÃƒÂ©er le profil.
+    // Le téléphone doit être vérifié avant de créer le profil.
     if (phone.isEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) context.go('/register/phone?role=client');
@@ -82,7 +82,7 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
     if (_selfie == null) {
       setState(() => _photoManquanteSignalee = true);
       _afficherMessage(
-        'Une photo est nÃƒÂ©cessaire pour finaliser l\'inscription',
+        'Une photo est nécessaire pour finaliser l\'inscription',
       );
       return;
     }
@@ -127,7 +127,7 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
     } catch (e) {
       if (!mounted) return;
       setState(() => _isLoading = false);
-      _afficherMessage('Erreur inattendue ou rÃƒÂ©seau : $e');
+      _afficherMessage('Erreur inattendue ou réseau : $e');
       return;
     }
 
@@ -135,7 +135,7 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
     setState(() => _isLoading = false);
 
     if (user == null) {
-      _afficherMessage('Impossible de crÃƒÂ©er votre profil. RÃƒÂ©essayez.');
+      _afficherMessage('Impossible de créer votre profil. Réessayez.');
       return;
     }
     context.go('/home');
@@ -149,13 +149,13 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
 
     return AuthShell(
       title: 'Votre profil client',
-      subtitle: 'DerniÃƒÂ¨re ÃƒÂ©tape avant de trouver un dÃƒÂ©panneur',
+      subtitle: 'Dernière étape avant de trouver un dépanneur',
       icon: Icons.person_outline_rounded,
       onBack: _isLoading ? null : () => context.go('/welcome'),
       footer: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('DÃƒÂ©jÃƒÂ  un compte ?', style: TextStyle(color: muted)),
+          Text('Déjà un compte ?', style: TextStyle(color: muted)),
           TextButton(
             onPressed: _isLoading ? null : () => context.go('/login'),
             child: const Text(
@@ -173,14 +173,14 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const AuthInfoBanner(
-                title: 'Compte sÃƒÂ©curisÃƒÂ©',
-                message: 'Mot de passe et tÃƒÂ©lÃƒÂ©phone dÃƒÂ©jÃƒÂ  configurÃƒÂ©s. ComplÃƒÂ©tez votre profil.',
+                title: 'Compte sécurisé',
+                message: 'Mot de passe et téléphone déjà configurés. Complétez votre profil.',
               ),
               const SizedBox(height: 22),
               const AuthSectionHeader(
                 icon: Icons.badge_outlined,
-                title: 'IdentitÃƒÂ©',
-                subtitle: 'Comment vous apparaÃƒÂ®trez aux prestataires',
+                title: 'Identité',
+                subtitle: 'Comment vous apparaîtrez aux prestataires',
               ),
               const SizedBox(height: 16),
               Row(
@@ -188,7 +188,7 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
                 children: [
                   Expanded(
                     child: AppTextField(
-                      label: 'PrÃƒÂ©nom',
+                      label: 'Prénom',
                       controller: _prenomController,
                       textInputAction: TextInputAction.next,
                       validator: (v) =>
@@ -210,15 +210,15 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
               const SizedBox(height: 14),
               AppTextField(
                 label: 'Email du compte',
-                helper: 'Modifiable depuis les paramÃƒÂ¨tres du compte',
+                helper: 'Modifiable depuis les paramètres du compte',
                 icon: Icons.email_outlined,
                 controller: _emailController,
                 readOnly: true,
               ),
               const SizedBox(height: 14),
               AppTextField(
-                label: 'TÃƒÂ©lÃƒÂ©phone vÃƒÂ©rifiÃƒÂ©',
-                helper: 'NumÃƒÂ©ro validÃƒÂ© par SMS',
+                label: 'Téléphone vérifié',
+                helper: 'Numéro validé par SMS',
                 icon: Icons.phone_outlined,
                 controller: _phoneController,
                 readOnly: true,
@@ -227,7 +227,7 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
               const AuthSectionHeader(
                 icon: Icons.camera_alt_outlined,
                 title: 'Votre photo',
-                subtitle: 'Obligatoire pour la sÃƒÂ©curitÃƒÂ© de tous',
+                subtitle: 'Obligatoire pour la sécurité de tous',
               ),
               const SizedBox(height: 14),
               Center(

@@ -19,8 +19,8 @@ class AdaptiveDestination {
 Widget _destinationIcon(IconData data, bool badge) =>
     badge ? Badge(smallSize: 10, child: Icon(data)) : Icon(data);
 
-/// TÃƒÂ©lÃƒÂ©phone : barre de navigation basse.
-/// Tablette : rail latÃƒÂ©ral (ÃƒÂ©tendu avec libellÃƒÂ©s dÃƒÂ¨s 1024 dp).
+/// Téléphone : barre de navigation basse.
+/// Tablette : rail latéral (étendu avec libellés dès 1024 dp).
 class AdaptiveScaffold extends StatelessWidget {
   const AdaptiveScaffold({
     super.key,

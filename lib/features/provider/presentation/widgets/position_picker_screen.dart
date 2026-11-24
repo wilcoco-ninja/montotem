@@ -55,7 +55,7 @@ class _PositionPickerScreenState extends State<PositionPickerScreen> {
       if (mounted && !silencieux) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Impossible de rÃƒÂ©cupÃƒÂ©rer votre position GPS.'),
+            content: Text('Impossible de récupérer votre position GPS.'),
           ),
         );
       }
@@ -112,7 +112,7 @@ class _PositionPickerScreenState extends State<PositionPickerScreen> {
               ),
               const RichAttributionWidget(
                 attributions: [
-                  TextSourceAttribution('Ã‚Â© OpenStreetMap contributors'),
+                  TextSourceAttribution('© OpenStreetMap contributors'),
                 ],
               ),
             ],
@@ -140,7 +140,7 @@ class _PositionPickerScreenState extends State<PositionPickerScreen> {
                     const SizedBox(width: 10),
                     const Expanded(
                       child: Text(
-                        'Touchez la carte ÃƒÂ  l\'endroit de votre garage',
+                        'Touchez la carte à l\'endroit de votre garage',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -167,7 +167,7 @@ class _PositionPickerScreenState extends State<PositionPickerScreen> {
                 const SizedBox(height: 8),
                 FloatingActionButton.small(
                   heroTag: 'pp_moins',
-                  tooltip: 'Zoom arriÃƒÂ¨re',
+                  tooltip: 'Zoom arrière',
                   onPressed: () => _zoom(-1),
                   child: const Icon(Icons.remove),
                 ),

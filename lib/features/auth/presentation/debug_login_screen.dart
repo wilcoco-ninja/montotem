@@ -9,7 +9,7 @@ import 'package:montotem/core/widgets/app_ui.dart';
 import 'package:montotem/core/widgets/auth_layout.dart';
 import 'package:montotem/features/auth/data/auth_service.dart';
 
-/// Ãƒâ€°cran de debug, neutralisÃƒÂ© hors mode debug.
+/// Écran de debug, neutralisé hors mode debug.
 class DebugLoginScreen extends StatelessWidget {
   const DebugLoginScreen({super.key});
 
@@ -28,7 +28,7 @@ class DebugLoginScreen extends StatelessWidget {
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Ãƒâ€°chec de la connexion debug : $e')),
+          SnackBar(content: Text('Échec de la connexion debug : $e')),
         );
       }
     }
@@ -38,20 +38,20 @@ class DebugLoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!kDebugMode) {
       return const Scaffold(
-        body: Center(child: Text('Ãƒâ€°cran dÃƒÂ©sactivÃƒÂ© en production.')),
+        body: Center(child: Text('Écran désactivé en production.')),
       );
     }
 
     return AuthShell(
       title: 'Navigation rapide',
-      subtitle: 'Mode dÃƒÂ©veloppement uniquement',
+      subtitle: 'Mode développement uniquement',
       icon: Icons.bug_report_outlined,
       onBack: () => context.go('/login'),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const AuthInfoBanner(
-            title: 'Mode dÃƒÂ©veloppement',
+            title: 'Mode développement',
             message: 'Connexion directe avec des comptes de test.',
             icon: Icons.warning_amber_rounded,
             color: AppTheme.errorColor,
@@ -91,7 +91,7 @@ class DebugLoginScreen extends StatelessWidget {
           ),
           const SizedBox(height: 22),
           AppButton(
-            label: 'RÃƒÂ©initialiser la session',
+            label: 'Réinitialiser la session',
             icon: Icons.logout_rounded,
             variant: AppButtonVariant.secondary,
             onPressed: () async {

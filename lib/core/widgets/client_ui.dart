@@ -4,15 +4,15 @@ import '../theme/app_colors.dart';
 
 /// Kit visuel de l'espace CLIENT MONTOTEM.
 ///
-/// Principes (inspirÃƒÂ©s des meilleures apps de mobilitÃƒÂ© et de livraison, sans
+/// Principes (inspirés des meilleures apps de mobilité et de livraison, sans
 /// les copier) :
-///  - fonds calmes, cartes ÃƒÂ  plat avec un simple filet (pas d'ombres lourdes) ;
-///  - un seul accent (la couleur primaire du thÃƒÂ¨me client) ;
-///  - gros titres francs, texte courant en 15 px, zones tactiles Ã¢â€°Â¥ 48 dp ;
-///  - la carte et les actions principales d'abord, le reste disparaÃƒÂ®t.
+///  - fonds calmes, cartes à plat avec un simple filet (pas d'ombres lourdes) ;
+///  - un seul accent (la couleur primaire du thème client) ;
+///  - gros titres francs, texte courant en 15 px, zones tactiles ≥ 48 dp ;
+///  - la carte et les actions principales d'abord, le reste disparaît.
 
 // ---------------------------------------------------------------------------
-// Carte ÃƒÂ  plat
+// Carte à plat
 // ---------------------------------------------------------------------------
 
 class ClientCard extends StatelessWidget {
@@ -109,7 +109,7 @@ class ClientSectionTitle extends StatelessWidget {
   }
 }
 
-/// Grand titre d'un onglet (Ã‚Â« ActivitÃƒÂ© Ã‚Â», Ã‚Â« Compte Ã‚Â»Ã¢â‚¬Â¦).
+/// Grand titre d'un onglet (« Activité », « Compte »…).
 class ClientPageTitle extends StatelessWidget {
   const ClientPageTitle(this.text, {super.key, this.trailing});
 
@@ -144,7 +144,7 @@ class ClientPageTitle extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// Barre de recherche Ã‚Â« OÃƒÂ¹ allez-vous ? Ã‚Â»
+// Barre de recherche « Où allez-vous ? »
 // ---------------------------------------------------------------------------
 
 class ClientSearchPill extends StatelessWidget {
@@ -310,7 +310,7 @@ class ClientServiceTile extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// Pastille de filtre (rail de catÃƒÂ©gories)
+// Pastille de filtre (rail de catégories)
 // ---------------------------------------------------------------------------
 
 class ClientChip extends StatelessWidget {
@@ -328,7 +328,7 @@ class ClientChip extends StatelessWidget {
   final bool selected;
   final VoidCallback onTap;
 
-  /// Ombre lÃƒÂ©gÃƒÂ¨re : pour les chips posÃƒÂ©es au-dessus de la carte.
+  /// Ombre légère : pour les chips posées au-dessus de la carte.
   final bool elevated;
 
   @override
@@ -395,7 +395,7 @@ class ClientChip extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// Bouton rond posÃƒÂ© sur la carte
+// Bouton rond posé sur la carte
 // ---------------------------------------------------------------------------
 
 class ClientRoundButton extends StatelessWidget {
@@ -500,7 +500,7 @@ class ClientAvatar extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// Ligne de liste (profil, rÃƒÂ©glages)
+// Ligne de liste (profil, réglages)
 // ---------------------------------------------------------------------------
 
 class ClientListRow extends StatelessWidget {
@@ -571,7 +571,7 @@ class ClientListRow extends StatelessWidget {
   }
 }
 
-/// Groupe de lignes dans une mÃƒÂªme carte, sÃƒÂ©parÃƒÂ©es par un filet.
+/// Groupe de lignes dans une même carte, séparées par un filet.
 class ClientGroup extends StatelessWidget {
   const ClientGroup({super.key, required this.children});
 
@@ -596,7 +596,7 @@ class ClientGroup extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// Navigation : barre basse (tÃƒÂ©lÃƒÂ©phone) / rail (tablette, ordinateur)
+// Navigation : barre basse (téléphone) / rail (tablette, ordinateur)
 // ---------------------------------------------------------------------------
 
 class ClientNavItem {

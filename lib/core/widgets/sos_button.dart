@@ -10,15 +10,15 @@ const double _sosMinTap = 52;
 RoundedRectangleBorder get _sosShape =>
     RoundedRectangleBorder(borderRadius: BorderRadius.circular(16));
 
-/// Bouton SOS pour les barres d'application (Ã¢â€°Â¥ 52 dp, texte 19 px gras :
-/// blanc sur #D32F2F = 4,98:1, AAA Ã‚Â« gros texte Ã‚Â»).
+/// Bouton SOS pour les barres d'application (≥ 52 dp, texte 19 px gras :
+/// blanc sur #D32F2F = 4,98:1, AAA « gros texte »).
 class SosAppBarButton extends StatelessWidget {
   const SosAppBarButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     // La barre d'application a une hauteur fixe : on borne l'agrandissement
-    // du texte de CE bouton pour qu'il ne dÃƒÂ©borde jamais.
+    // du texte de CE bouton pour qu'il ne déborde jamais.
     return MediaQuery.withClampedTextScaling(
       minScaleFactor: 1,
       maxScaleFactor: 1.2,
@@ -53,7 +53,7 @@ class SosAppBarButton extends StatelessWidget {
   }
 }
 
-/// Grande banniÃƒÂ¨re SOS pour les pages d'accueil.
+/// Grande bannière SOS pour les pages d'accueil.
 /// Fond rouge profond : tout le texte blanc atteint 7,85:1 (AAA).
 class SosBanner extends StatelessWidget {
   const SosBanner({super.key});
@@ -119,7 +119,7 @@ class SosBanner extends StatelessWidget {
   }
 }
 
-/// Lien SOS pour les ÃƒÂ©crans de connexion et d'inscription (Ã¢â€°Â¥ 52 dp,
+/// Lien SOS pour les écrans de connexion et d'inscription (≥ 52 dp,
 /// rouge profond AAA : 7,25:1 sur fond clair).
 class SosLink extends StatelessWidget {
   const SosLink({super.key});
@@ -142,14 +142,14 @@ class SosLink extends StatelessWidget {
   }
 }
 
-/// SOS OMNIPRÃƒâ€°SENT : pastille rouge flottante, visible sur TOUS les ÃƒÂ©crans
-/// (accueil, carte, connexion, profil, adminÃ¢â‚¬Â¦) et accessible en 1 seul geste.
+/// SOS OMNIPRÉSENT : pastille rouge flottante, visible sur TOUS les écrans
+/// (accueil, carte, connexion, profil, admin…) et accessible en 1 seul geste.
 ///
-/// - se masque toute seule sur /sos et /emergency (inutile d'y ÃƒÂªtre) ;
+/// - se masque toute seule sur /sos et /emergency (inutile d'y être) ;
 /// - se masque quand le clavier est ouvert ;
-/// - se dÃƒÂ©place verticalement au glisser (pour ne rien cacher d'important) ;
-/// - ne dÃƒÂ©pend PAS du contexte GoRouter (placÃƒÂ©e au-dessus du Navigator,
-///   dans `MaterialApp.router(builder: Ã¢â‚¬Â¦)`) : la navigation passe par [onSos].
+/// - se déplace verticalement au glisser (pour ne rien cacher d'important) ;
+/// - ne dépend PAS du contexte GoRouter (placée au-dessus du Navigator,
+///   dans `MaterialApp.router(builder: …)`) : la navigation passe par [onSos].
 class SosOverlay extends StatefulWidget {
   const SosOverlay({
     super.key,
@@ -162,7 +162,7 @@ class SosOverlay extends StatefulWidget {
 
   final Widget child;
 
-  /// Ex. `AppRouter.router.routerDelegate` (notifie ÃƒÂ  chaque navigation).
+  /// Ex. `AppRouter.router.routerDelegate` (notifie à chaque navigation).
   final Listenable routerListenable;
 
   /// Ex. `() => AppRouter.router.routerDelegate.currentConfiguration.uri.path`
@@ -178,7 +178,7 @@ class SosOverlay extends StatefulWidget {
 }
 
 class _SosOverlayState extends State<SosOverlay> {
-  /// Position verticale, en fraction de la hauteur de l'ÃƒÂ©cran.
+  /// Position verticale, en fraction de la hauteur de l'écran.
   double _pos = 0.42;
 
   static const double _size = 64;
@@ -247,7 +247,7 @@ class _SosFab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Taille de texte figÃƒÂ©e : le cercle de 64 dp doit toujours contenir Ã‚Â« SOS Ã‚Â».
+    // Taille de texte figée : le cercle de 64 dp doit toujours contenir « SOS ».
     return MediaQuery.withClampedTextScaling(
       minScaleFactor: 1,
       maxScaleFactor: 1,

@@ -6,7 +6,7 @@ import 'package:montotem/core/services/routing_service.dart';
 import 'package:montotem/core/theme/app_theme.dart';
 import 'package:montotem/core/widgets/app_ui.dart';
 
-/// Overlay d'itinÃƒÂ©raire simple utilisable directement sur la carte.
+/// Overlay d'itinéraire simple utilisable directement sur la carte.
 class RouteOverlay extends StatelessWidget {
   const RouteOverlay({
     super.key,
@@ -50,14 +50,14 @@ class RouteOverlay extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'ItinÃƒÂ©raire en cours',
+                        'Itinéraire en cours',
                         style: TextStyle(
                           fontSize: 12,
                           color: onSurface.withValues(alpha: 0.6),
                         ),
                       ),
                       Text(
-                        '$originName Ã¢â€ â€™ $destinationName',
+                        '$originName → $destinationName',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(

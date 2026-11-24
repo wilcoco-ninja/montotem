@@ -4,7 +4,7 @@ import 'package:montotem/core/flavor/app_flavor.dart';
 import 'package:montotem/core/theme/app_space.dart';
 import 'package:montotem/core/theme/totem_icons.dart';
 
-/// Ãƒâ€°cran d'accueil affichÃƒÂ© pendant le chargement initial.
+/// Écran d'accueil affiché pendant le chargement initial.
 /// Le design change selon l'app (client / driver / pro).
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -18,7 +18,7 @@ class SplashScreen extends StatelessWidget {
         SpaceColors.clientPrimary,
         TotemGlyph.mark,
         'MonTotem',
-        'Un dÃƒÂ©panneur, pas loin de vous',
+        'Un dépanneur, pas loin de vous',
       ),
       AppFlavor.driver => (
         SpaceColors.driverBg,

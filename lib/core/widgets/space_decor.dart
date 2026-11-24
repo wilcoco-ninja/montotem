@@ -39,7 +39,7 @@ class RipplePainter extends CustomPainter {
       old.stroke != stroke;
 }
 
-/// Quadrillage Ã‚Â« plan d'atelier Ã‚Â» : motif de l'espace prestataire.
+/// Quadrillage « plan d'atelier » : motif de l'espace prestataire.
 class GridPainter extends CustomPainter {
   const GridPainter({required this.color, this.step = 36});
 
@@ -63,7 +63,7 @@ class GridPainter extends CustomPainter {
   bool shouldRepaint(GridPainter old) => old.color != color || old.step != step;
 }
 
-/// Logotype Ã‚Â« montotem Ã‚Â» : Ã‚Â« mon Ã‚Â» lÃƒÂ©ger, Ã‚Â« totem Ã‚Â» en gras.
+/// Logotype « montotem » : « mon » léger, « totem » en gras.
 class Wordmark extends StatelessWidget {
   const Wordmark({super.key, required this.color, this.accent, this.size = 22});
 

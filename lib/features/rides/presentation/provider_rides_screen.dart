@@ -195,7 +195,7 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
 
   String _age(DateTime d) {
     final min = DateTime.now().difference(d).inMinutes;
-    return min < 1 ? 'Ãƒâ‚¬ l\'instant' : 'Il y a $min min';
+    return min < 1 ? 'À l\'instant' : 'Il y a $min min';
   }
 
   @override
@@ -337,10 +337,10 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
         _Bandeau(
           icone: Icons.info_outline_rounded,
           couleur: scheme.tertiary,
-          titre: 'Section rÃƒÂ©servÃƒÂ©e aux conducteurs',
+          titre: 'Section réservée aux conducteurs',
           texte:
-              'Votre activitÃƒÂ© n\'est pas un service de transport : les '
-              'courses ZÃƒÂ©midjan et Tricycle Fret ne vous sont pas proposÃƒÂ©es.',
+              'Votre activité n\'est pas un service de transport : les '
+              'courses Zémidjan et Tricycle Fret ne vous sont pas proposées.',
         ),
       );
       return liste;
@@ -352,7 +352,7 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
           icone: Icons.hourglass_top_rounded,
           couleur: scheme.primary,
           titre: 'Dossier en cours de validation',
-          texte: 'Vous recevrez des courses dÃƒÂ¨s que votre dossier est validÃƒÂ©.',
+          texte: 'Vous recevrez des courses dès que votre dossier est validé.',
           action: 'Voir mon dossier',
           onAction: () => context.push('/provider/identity'),
         ),
@@ -376,7 +376,7 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
         _Bandeau(
           icone: Icons.lock_outline_rounded,
           couleur: scheme.error,
-          titre: 'Wallet bloquÃƒÂ©',
+          titre: 'Wallet bloqué',
           texte:
               'Solde ${formaterFcfaSigne(w.balanceFcfa)}. Rechargez-le pour '
               'recevoir de nouvelles courses.',
@@ -393,7 +393,7 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
           couleur: scheme.tertiary,
           titre: 'Position GPS indisponible',
           texte: _erreurPosition!,
-          action: 'RÃƒÂ©essayer',
+          action: 'Réessayer',
           onAction: _demarrerPosition,
         ),
       );
@@ -406,8 +406,8 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
           couleur: scheme.primary,
           titre: 'Courses Mobile Money',
           texte:
-              'Enregistrez votre numÃƒÂ©ro de rÃƒÂ©ception pour pouvoir accepter '
-              'les courses payÃƒÂ©es par MTN, Moov ou Celtiis.',
+              'Enregistrez votre numéro de réception pour pouvoir accepter '
+              'les courses payées par MTN, Moov ou Celtiis.',
           action: 'Enregistrer',
           onAction: () => showProviderMomoSheet(context),
         ),
@@ -430,7 +430,7 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${r.kind.libelle} Ã‚Â· ${TravelFee.fcfa(r.prixFcfa)}',
+                  '${r.kind.libelle} · ${TravelFee.fcfa(r.prixFcfa)}',
                   style: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w800,
@@ -469,7 +469,7 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
       return const [
         EmptyState(
           icon: Icons.power_settings_new_rounded,
-          title: 'Vous ÃƒÂªtes hors ligne',
+          title: 'Vous êtes hors ligne',
           message: 'Passez en ligne pour voir les courses autour de vous.',
         ),
       ];
@@ -478,9 +478,8 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
       return const [
         EmptyState(
           icon: Icons.location_searching_rounded,
-          title: 'Recherche de votre positionÃ¢â‚¬Â¦',
-          message:
-              'Les courses s\'affichent dÃƒÂ¨s que votre GPS est trouvÃƒÂ©.',
+          title: 'Recherche de votre position…',
+          message: 'Les courses s\'affichent dès que votre GPS est trouvé.',
         ),
       ];
     }
@@ -490,7 +489,7 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
           icon: Icons.inbox_outlined,
           title: 'Aucune course pour le moment',
           message:
-              'Restez en ligne : les demandes ÃƒÂ  moins de 5 km arrivent '
+              'Restez en ligne : les demandes à moins de 5 km arrivent '
               'ici et par notification.',
         ),
       ];
@@ -545,7 +544,7 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
             runSpacing: 6,
             children: [
               StatusPill(
-                label: '${formaterDistance(n.distanceToPickupM)} du dÃƒÂ©part',
+                label: '${formaterDistance(n.distanceToPickupM)} du départ',
                 color: AppTheme.primaryColor,
                 icon: Icons.near_me_rounded,
               ),
@@ -559,20 +558,17 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
           if (depart.isNotEmpty || arrivee.isNotEmpty) ...[
             const SizedBox(height: 8),
             if (depart.isNotEmpty)
-              Text('DÃƒÂ©part : $depart', style: const TextStyle(fontSize: 15)),
+              Text('Départ : $depart', style: const TextStyle(fontSize: 15)),
             if (arrivee.isNotEmpty)
-              Text(
-                'ArrivÃƒÂ©e : $arrivee',
-                style: const TextStyle(fontSize: 15),
-              ),
+              Text('Arrivée : $arrivee', style: const TextStyle(fontSize: 15)),
           ],
           const SizedBox(height: 8),
           Text(
             'Commission ${calcul.pct} % : '
-            '-${TravelFee.fcfa(calcul.commissionFcfa)} Ã‚Â· Net '
+            '-${TravelFee.fcfa(calcul.commissionFcfa)} · Net '
             '${TravelFee.fcfa(calcul.netFcfa)}'
             '${cash ? '' : '\nLe client vous paie directement par '
-                      '${n.payment.libelle} ; la commission est dÃƒÂ©duite de votre '
+                      '${n.payment.libelle} ; la commission est déduite de votre '
                       'wallet.'}',
             style: TextStyle(
               fontSize: 14.5,
@@ -588,7 +584,7 @@ class _ProviderRidesScreenState extends State<ProviderRidesScreen> {
           AppButton(
             label: peut
                 ? 'Accepter cette course'
-                : 'NumÃƒÂ©ro ${n.payment.libelle} requis',
+                : 'Numéro ${n.payment.libelle} requis',
             icon: Icons.check_rounded,
             loading: busy,
             onPressed: peut ? () => _accepter(n) : null,

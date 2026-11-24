@@ -105,7 +105,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
               child: TextField(
                 onChanged: (v) => setState(() => _recherche = v),
                 decoration: InputDecoration(
-                  hintText: 'Rechercher par nom, tÃƒÂ©lÃƒÂ©phone ou rÃƒÂ´le...',
+                  hintText: 'Rechercher par nom, téléphone ou rôle...',
                   prefixIcon: const Icon(Icons.search_rounded),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -123,7 +123,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  '${_utilisateursFiltres.length} utilisateur(s) trouvÃƒÂ©(s)',
+                  '${_utilisateursFiltres.length} utilisateur(s) trouvé(s)',
                   style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
                 ),
               ),
@@ -158,7 +158,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
             SizedBox(height: 120),
             EmptyState(
               icon: Icons.people_outline_rounded,
-              title: 'Aucun utilisateur enregistrÃƒÂ©',
+              title: 'Aucun utilisateur enregistré',
             ),
           ],
         ),
@@ -176,7 +176,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                 SizedBox(height: 100),
                 EmptyState(
                   icon: Icons.search_off_rounded,
-                  title: 'Aucun rÃƒÂ©sultat pour cette recherche',
+                  title: 'Aucun résultat pour cette recherche',
                 ),
               ],
             )

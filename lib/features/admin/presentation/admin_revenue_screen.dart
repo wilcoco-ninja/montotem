@@ -8,7 +8,7 @@ import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_ui.dart';
 import '../data/admin_revenue_service.dart';
 
-/// Ãƒâ€°cran autonome Ã‚Â« Revenus MonTotem Ã‚Â» (route /admin/revenue).
+/// Écran autonome « Revenus MonTotem » (route /admin/revenue).
 class AdminRevenueScreen extends StatelessWidget {
   const AdminRevenueScreen({super.key});
 
@@ -21,8 +21,8 @@ class AdminRevenueScreen extends StatelessWidget {
   }
 }
 
-/// Contenu sans Scaffold : rÃƒÂ©utilisÃƒÂ© par l'onglet Ã‚Â« Finances Ã‚Â» de la tour de
-/// contrÃƒÂ´le.
+/// Contenu sans Scaffold : réutilisé par l'onglet « Finances » de la tour de
+/// contrôle.
 class AdminRevenuePanel extends StatefulWidget {
   const AdminRevenuePanel({super.key});
 
@@ -110,12 +110,12 @@ class _AdminRevenuePanelState extends State<AdminRevenuePanel>
             ),
             const SizedBox(height: 12),
             _hero(r),
-            const SectionTitle('RÃƒÂ©partition'),
+            const SectionTitle('Répartition'),
             SoftCard(
               child: Column(
                 children: [
                   _part(
-                    'Courses en espÃƒÂ¨ces',
+                    'Courses en espèces',
                     r.commissionCash,
                     r.commissionTotal,
                     AppColors.navy,
@@ -127,7 +127,7 @@ class _AdminRevenuePanelState extends State<AdminRevenuePanel>
                     AppTheme.successColor,
                   ),
                   _part(
-                    'Frais de dÃƒÂ©placement',
+                    'Frais de déplacement',
                     r.commissionTravel,
                     r.commissionTotal,
                     AppColors.amber,
@@ -137,18 +137,18 @@ class _AdminRevenuePanelState extends State<AdminRevenuePanel>
             ),
             const SectionTitle('Commissions par jour'),
             SoftCard(child: _BarresEmpilees(serie: r.series)),
-            const SectionTitle('Portefeuilles et activitÃƒÂ©'),
+            const SectionTitle('Portefeuilles et activité'),
             SoftCard(
               child: Column(
                 children: [
                   InfoRow(
                     icon: Icons.add_card_rounded,
-                    label: 'Recharges crÃƒÂ©ditÃƒÂ©es',
+                    label: 'Recharges créditées',
                     value: TravelFee.fcfa(r.topups),
                   ),
                   InfoRow(
                     icon: Icons.task_alt_rounded,
-                    label: 'Courses terminÃƒÂ©es',
+                    label: 'Courses terminées',
                     value: '${r.ridesCompleted}',
                   ),
                   InfoRow(
@@ -163,7 +163,7 @@ class _AdminRevenuePanelState extends State<AdminRevenuePanel>
                   ),
                   InfoRow(
                     icon: Icons.lock_outline_rounded,
-                    label: 'Prestataires bloquÃƒÂ©s',
+                    label: 'Prestataires bloqués',
                     value: '${r.providersBlocked}',
                   ),
                 ],
@@ -261,7 +261,7 @@ class _AdminRevenuePanelState extends State<AdminRevenuePanel>
                 ),
               ),
               Text(
-                '${TravelFee.fcfa(montant)} Ã‚Â· $pct %',
+                '${TravelFee.fcfa(montant)} · $pct %',
                 style: const TextStyle(
                   fontSize: 15.5,
                   fontWeight: FontWeight.w800,
@@ -286,7 +286,7 @@ class _AdminRevenuePanelState extends State<AdminRevenuePanel>
   }
 }
 
-/// Histogramme empilÃƒÂ© : dÃƒÂ©placement (haut), Mobile Money, espÃƒÂ¨ces (bas).
+/// Histogramme empilé : déplacement (haut), Mobile Money, espèces (bas).
 class _BarresEmpilees extends StatelessWidget {
   const _BarresEmpilees({required this.serie});
 
@@ -297,7 +297,7 @@ class _BarresEmpilees extends StatelessWidget {
     if (serie.isEmpty) {
       return const Padding(
         padding: EdgeInsets.all(12),
-        child: Text('Aucune donnÃƒÂ©e.', style: TextStyle(fontSize: 15)),
+        child: Text('Aucune donnée.', style: TextStyle(fontSize: 15)),
       );
     }
     final maxTotal = serie.fold<int>(1, (a, d) => d.total > a ? d.total : a);
@@ -367,9 +367,9 @@ class _BarresEmpilees extends StatelessWidget {
           spacing: 14,
           runSpacing: 6,
           children: [
-            _Legende(couleur: AppColors.navy, texte: 'EspÃƒÂ¨ces'),
+            _Legende(couleur: AppColors.navy, texte: 'Espèces'),
             _Legende(couleur: AppTheme.successColor, texte: 'Mobile Money'),
-            _Legende(couleur: AppColors.amber, texte: 'DÃƒÂ©placement'),
+            _Legende(couleur: AppColors.amber, texte: 'Déplacement'),
           ],
         ),
       ],

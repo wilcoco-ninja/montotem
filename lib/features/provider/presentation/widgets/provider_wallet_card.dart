@@ -7,11 +7,11 @@ import '../../../../core/widgets/app_ui.dart';
 import '../../../wallet/data/wallet_service.dart';
 import '../../../wallet/domain/wallet_model.dart';
 
-/// Message affichÃƒÂ© quand un prestataire bloquÃƒÂ© tente de passer en ligne.
+/// Message affiché quand un prestataire bloqué tente de passer en ligne.
 const String kMessageCompteBloque =
-    'Compte bloquÃƒÂ© : rechargez votre portefeuille pour recevoir des demandes.';
+    'Compte bloqué : rechargez votre portefeuille pour recevoir des demandes.';
 
-/// Carte portefeuille de l'accueil : solde, ÃƒÂ©tat, commission, recharge.
+/// Carte portefeuille de l'accueil : solde, état, commission, recharge.
 class ProviderWalletCard extends StatelessWidget {
   const ProviderWalletCard({
     super.key,
@@ -26,11 +26,11 @@ class ProviderWalletCard extends StatelessWidget {
     if (c.commissionCashPct == c.commissionMomoPct &&
         c.commissionMomoPct == c.commissionTravelPct) {
       return 'Commission MonTotem : ${c.commissionCashPct} % sur chaque '
-          'intervention payÃƒÂ©e via l\'application.';
+          'intervention payée via l\'application.';
     }
-    return 'Commission MonTotem : ${c.commissionCashPct} % (espÃƒÂ¨ces), '
+    return 'Commission MonTotem : ${c.commissionCashPct} % (espèces), '
         '${c.commissionMomoPct} % (Mobile Money), '
-        '${c.commissionTravelPct} % (dÃƒÂ©placement).';
+        '${c.commissionTravelPct} % (déplacement).';
   }
 
   @override
@@ -49,7 +49,7 @@ class ProviderWalletCard extends StatelessWidget {
             SizedBox(width: 14),
             Expanded(
               child: Text(
-                'Chargement du portefeuilleÃ¢â‚¬Â¦',
+                'Chargement du portefeuille…',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
               ),
             ),
@@ -69,8 +69,8 @@ class ProviderWalletCard extends StatelessWidget {
     final marge = w.balanceFcfa - cfg.seuilBlocageFcfa;
 
     final String detail = bloque
-        ? 'Les nouvelles demandes sont suspendues. Rechargez pour ÃƒÂªtre '
-              'dÃƒÂ©bloquÃƒÂ©.'
+        ? 'Les nouvelles demandes sont suspendues. Rechargez pour être '
+              'débloqué.'
         : (negatif
               ? 'Marge avant blocage : ${formaterFcfaSigne(marge)}.'
               : _commission(cfg));
@@ -133,7 +133,7 @@ class ProviderWalletCard extends StatelessWidget {
                   ),
                 ),
                 StatusPill(
-                  label: bloque ? 'BloquÃƒÂ©' : 'Actif',
+                  label: bloque ? 'Bloqué' : 'Actif',
                   color: couleur,
                   icon: bloque
                       ? Icons.lock_outline_rounded
@@ -187,7 +187,7 @@ class ProviderWalletCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Voir le dÃƒÂ©tail',
+                        'Voir le détail',
                         style: TextStyle(
                           fontSize: 14.5,
                           fontWeight: FontWeight.w800,

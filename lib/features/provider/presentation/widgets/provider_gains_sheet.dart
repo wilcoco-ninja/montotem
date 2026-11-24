@@ -7,8 +7,8 @@ import '../../../../core/widgets/app_ui.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../wallet/domain/wallet_model.dart';
 
-/// Feuille Ã‚Â« Mes gains Ã‚Â» : encaissÃƒÂ©, graphique 7 jours, commissions MonTotem
-/// et net estimÃƒÂ©.
+/// Feuille « Mes gains » : encaissé, graphique 7 jours, commissions MonTotem
+/// et net estimé.
 class ProviderGainsSheet extends StatelessWidget {
   const ProviderGainsSheet({
     super.key,
@@ -42,8 +42,8 @@ class ProviderGainsSheet extends StatelessWidget {
   }
 
   static String _taux(WalletConfig c) =>
-      'Taux : ${c.commissionCashPct} % (espÃƒÂ¨ces), ${c.commissionMomoPct} % '
-      '(Mobile Money), ${c.commissionTravelPct} % (dÃƒÂ©placement).';
+      'Taux : ${c.commissionCashPct} % (espèces), ${c.commissionMomoPct} % '
+      '(Mobile Money), ${c.commissionTravelPct} % (déplacement).';
 
   @override
   Widget build(BuildContext context) {
@@ -141,17 +141,17 @@ class ProviderGainsSheet extends StatelessWidget {
           const SizedBox(height: 14),
           InfoRow(
             icon: Icons.date_range_rounded,
-            label: 'EncaissÃƒÂ© cette semaine',
+            label: 'Encaissé cette semaine',
             value: TravelFee.fcfa(semaine),
           ),
           InfoRow(
             icon: Icons.calendar_month_rounded,
-            label: 'EncaissÃƒÂ© ce mois-ci',
+            label: 'Encaissé ce mois-ci',
             value: TravelFee.fcfa(mois),
           ),
           InfoRow(
             icon: Icons.task_alt_rounded,
-            label: 'Interventions terminÃƒÂ©es',
+            label: 'Interventions terminées',
             value: '$termineesMois',
           ),
           const SectionTitle('Commission MonTotem'),
@@ -171,12 +171,12 @@ class ProviderGainsSheet extends StatelessWidget {
                 ),
                 InfoRow(
                   icon: Icons.savings_rounded,
-                  label: 'Net estimÃƒÂ© sur 7 jours',
+                  label: 'Net estimé sur 7 jours',
                   value: TravelFee.fcfa(net),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Estimation d\'aprÃƒÂ¨s vos derniers mouvements de portefeuille.'
+                  'Estimation d\'après vos derniers mouvements de portefeuille.'
                   '${c == null ? '' : ' ${_taux(c)}'}',
                   style: TextStyle(
                     fontSize: 14,

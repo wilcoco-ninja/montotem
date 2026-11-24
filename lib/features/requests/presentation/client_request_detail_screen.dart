@@ -80,7 +80,7 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
   Future<void> _appeler(String? phone) async {
     final tel = phone?.replaceAll(RegExp(r'[^\d+]'), '');
     if (tel == null || tel.isEmpty) {
-      _msg('NumÃƒÂ©ro pas encore disponible.');
+      _msg('Numéro pas encore disponible.');
       return;
     }
     try {
@@ -96,7 +96,7 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
       builder: (ctx) => AlertDialog(
         title: const Text('Annuler la demande ?'),
         content: const Text(
-          'Le dÃƒÂ©panneur sera prÃƒÂ©venu.',
+          'Le dépanneur sera prévenu.',
           style: TextStyle(fontSize: 16),
         ),
         actions: [
@@ -116,10 +116,7 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
     );
     if (ok != true) return;
     try {
-      await _service.annuler(
-        widget.requestId,
-        motif: 'AnnulÃƒÂ©e par le client',
-      );
+      await _service.annuler(widget.requestId, motif: 'Annulée par le client');
       await _charger(silencieux: true);
     } on MissionException catch (e) {
       if (mounted) _msg(e.message);
@@ -144,7 +141,7 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
     }
   }
 
-  // Ã¢Å“â€¦ CORRECTION 1 : `final scheme` SUPPRIMÃƒâ€° (inutilisÃƒÂ© dans build())
+  // ✅ CORRECTION 1 : `final scheme` SUPPRIMÉ (inutilisé dans build())
   @override
   Widget build(BuildContext context) {
     final m = _m;
@@ -239,7 +236,7 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
                   ),
                   if (m.status == MissionStatus.accepted && eta != null)
                     Text(
-                      'ArrivÃƒÂ©e estimÃƒÂ©e : environ $eta min',
+                      'Arrivée estimée : environ $eta min',
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
@@ -315,33 +312,33 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
           ),
         ),
       ],
-      const SectionTitle('DÃƒÂ©roulement'),
+      const SectionTitle('Déroulement'),
       _Etapes(status: m.status),
     ];
   }
 
-  // Ã¢Å“â€¦ CORRECTION 2 : `final scheme` AJOUTÃƒâ€° en premiÃƒÂ¨re ligne
+  // ✅ CORRECTION 2 : `final scheme` AJOUTÉ en première ligne
   List<Widget> _blocActions(Mission m) {
     final scheme = Theme.of(context).colorScheme;
     return [
-      const SectionTitle('DÃƒÂ©tails'),
+      const SectionTitle('Détails'),
       SoftCard(
         child: Column(
           children: [
             InfoRow(
               icon: Icons.build_outlined,
-              label: 'ProblÃƒÂ¨me',
+              label: 'Problème',
               value: m.problem,
             ),
             InfoRow(
               icon: Icons.payments_outlined,
-              label: 'Frais de dÃƒÂ©placement',
+              label: 'Frais de déplacement',
               value: TravelFee.fcfa(m.travelFeeFcfa),
             ),
             if (m.status == MissionStatus.completed)
               InfoRow(
                 icon: Icons.receipt_long_outlined,
-                label: 'Total ÃƒÂ  rÃƒÂ©gler',
+                label: 'Total à régler',
                 value: TravelFee.fcfa(m.totalFcfa),
               ),
           ],
@@ -354,13 +351,13 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
       const SizedBox(height: 14),
       if (m.status.actif) ...[
         AppButton(
-          label: 'Appeler le dÃƒÂ©panneur',
+          label: 'Appeler le dépanneur',
           icon: Icons.call_rounded,
           onPressed: () => _appeler(m.providerPhone),
         ),
         const SizedBox(height: 8),
         AppButton(
-          label: 'Ãƒâ€°crire un message',
+          label: 'Écrire un message',
           icon: Icons.chat_bubble_outline_rounded,
           variant: AppButtonVariant.secondary,
           onPressed: () => showMissionChatSheet(context, m.id),
@@ -380,7 +377,7 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text(
-                'Donnez une note et gagnez des points d\'ÃƒÂ©toiles.',
+                'Donnez une note et gagnez des points d\'étoiles.',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16),
               ),
@@ -390,7 +387,7 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
                   final v = i + 1;
                   return IconButton(
                     iconSize: 44,
-                    tooltip: '$v ÃƒÂ©toile${v > 1 ? 's' : ''}',
+                    tooltip: '$v étoile${v > 1 ? 's' : ''}',
                     icon: Icon(
                       v <= _etoiles
                           ? Icons.star_rounded
@@ -402,7 +399,7 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
                 }),
               ),
               AppTextField(
-                label: 'Commentaire (20 caractÃƒÂ¨res = 5 points bonus)',
+                label: 'Commentaire (20 caractères = 5 points bonus)',
                 icon: Icons.chat_bubble_outline_rounded,
                 controller: _commentaire,
                 maxLines: 3,
@@ -426,8 +423,8 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
           child: Center(
             child: StatusPill(
               label: _pointsGagnes != null
-                  ? 'Merci ! +$_pointsGagnes points d\'ÃƒÂ©toiles'
-                  : 'Avis envoyÃƒÂ©, merci !',
+                  ? 'Merci ! +$_pointsGagnes points d\'étoiles'
+                  : 'Avis envoyé, merci !',
               color: scheme.secondary,
               icon: Icons.stars_rounded,
             ),
@@ -452,16 +449,16 @@ class _Etapes extends StatelessWidget {
   const _Etapes({required this.status});
   final MissionStatus status;
 
-  // Ã¢Å“â€¦ CORRECTION 3 : 2Ã¡Âµâ€° `final scheme` SUPPRIMÃƒâ€° (doublon)
+  // ✅ CORRECTION 3 : 2ᵉ `final scheme` SUPPRIMÉ (doublon)
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     const labels = [
-      'Demande envoyÃƒÂ©e',
-      'DÃƒÂ©panneur en route',
-      'DÃƒÂ©panneur arrivÃƒÂ©',
-      'RÃƒÂ©paration en cours',
-      'TerminÃƒÂ©',
+      'Demande envoyée',
+      'Dépanneur en route',
+      'Dépanneur arrivé',
+      'Réparation en cours',
+      'Terminé',
     ];
     final current = switch (status) {
       MissionStatus.pending => 0,

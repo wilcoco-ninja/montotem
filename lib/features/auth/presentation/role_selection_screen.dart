@@ -6,20 +6,20 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:montotem/core/widgets/app_button.dart';
 import 'package:montotem/core/widgets/auth_layout.dart';
 
-/// ClÃƒÂ© locale lue par l'inscription prestataire : un Ã‚Â« zem Ã‚Â» arrive avec le
-/// mÃƒÂ©tier Ã‚Â« ZÃƒÂ©midjan jaune Ã‚Â» dÃƒÂ©jÃƒÂ  choisi.
+/// Clé locale lue par l'inscription prestataire : un « zem » arrive avec le
+/// métier « Zémidjan jaune » déjà choisi.
 const String kSignupMetierKey = 'signup_metier';
 
 enum _Profil { client, prestataire, zem }
 
-/// Ã‚Â« Rejoindre MonTotem Ã‚Â» : le visiteur choisit ce qu'il veut devenir.
+/// « Rejoindre MonTotem » : le visiteur choisit ce qu'il veut devenir.
 ///
-///  - Client       : je cherche un dÃƒÂ©panneur ;
-///  - Prestataire  : mÃƒÂ©canicien, vulcanisateur, ÃƒÂ©lectricien, garage, station ;
-///  - Zem          : conducteur de moto-taxi (zÃƒÂ©midjan jaune).
+///  - Client       : je cherche un dépanneur ;
+///  - Prestataire  : mécanicien, vulcanisateur, électricien, garage, station ;
+///  - Zem          : conducteur de moto-taxi (zémidjan jaune).
 ///
-/// Servi par /join (visiteur) et /register/role (compte connectÃƒÂ© dont
-/// l'inscription n'est pas terminÃƒÂ©e).
+/// Servi par /join (visiteur) et /register/role (compte connecté dont
+/// l'inscription n'est pas terminée).
 class RoleSelectionScreen extends StatefulWidget {
   const RoleSelectionScreen({super.key});
 
@@ -40,12 +40,12 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
     try {
       final prefs = await SharedPreferences.getInstance();
       if (choix == _Profil.zem) {
-        await prefs.setString(kSignupMetierKey, 'ZÃƒÂ©midjan jaune');
+        await prefs.setString(kSignupMetierKey, 'Zémidjan jaune');
       } else {
         await prefs.remove(kSignupMetierKey);
       }
     } catch (_) {
-      // Sans stockage local, le zem choisira son mÃƒÂ©tier ÃƒÂ  l'ÃƒÂ©tape 2.
+      // Sans stockage local, le zem choisira son métier à l'étape 2.
     }
     if (!mounted) return;
     setState(() => _busy = false);
@@ -73,7 +73,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
           : Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('DÃƒÂ©jÃƒÂ  inscrit ?', style: TextStyle(color: muted)),
+                Text('Déjà inscrit ?', style: TextStyle(color: muted)),
                 TextButton(
                   onPressed: _busy ? null : () => context.go('/login'),
                   child: const Text(
@@ -89,8 +89,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
           _CarteProfil(
             icone: Icons.person_search_rounded,
             titre: 'Client',
-            texte:
-                'Je suis en panne : je cherche un dÃƒÂ©panneur prÃƒÂ¨s de moi.',
+            texte: 'Je suis en panne : je cherche un dépanneur près de moi.',
             choisi: _choix == _Profil.client,
             onTap: () => setState(() => _choix = _Profil.client),
           ),
@@ -99,8 +98,8 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
             icone: Icons.build_circle_outlined,
             titre: 'Prestataire',
             texte:
-                'MÃƒÂ©canicien, vulcanisateur, ÃƒÂ©lectricien, garage ou '
-                'station : je reÃƒÂ§ois des demandes.',
+                'Mécanicien, vulcanisateur, électricien, garage ou '
+                'station : je reçois des demandes.',
             choisi: _choix == _Profil.prestataire,
             onTap: () => setState(() => _choix = _Profil.prestataire),
           ),
@@ -108,7 +107,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
           _CarteProfil(
             icone: Icons.two_wheeler_rounded,
             titre: 'Zem',
-            texte: 'ZÃƒÂ©midjan jaune : je transporte les clients ÃƒÂ  moto.',
+            texte: 'Zémidjan jaune : je transporte les clients à moto.',
             choisi: _choix == _Profil.zem,
             onTap: () => setState(() => _choix = _Profil.zem),
           ),

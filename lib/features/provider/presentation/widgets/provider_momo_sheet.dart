@@ -63,7 +63,7 @@ class _MomoSheetState extends State<_MomoSheet> {
         });
       }
     } on MissionException {
-      // Formulaire vide : l'utilisateur peut quand mÃƒÂªme saisir.
+      // Formulaire vide : l'utilisateur peut quand même saisir.
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -75,7 +75,7 @@ class _MomoSheetState extends State<_MomoSheet> {
   String? _validerNumero(String? v) {
     if (v == null || v.trim().isEmpty) return 'Champ obligatoire';
     if (!AuthService.isValidPhone(AuthService.normalizePhone(v))) {
-      return 'NumÃƒÂ©ro invalide. Exemple : 01 97 00 00 00';
+      return 'Numéro invalide. Exemple : 01 97 00 00 00';
     }
     return null;
   }
@@ -84,7 +84,7 @@ class _MomoSheetState extends State<_MomoSheet> {
     FocusScope.of(context).unfocus();
     final op = _operateur;
     if (op == null) {
-      _msg('Choisissez votre opÃƒÂ©rateur.');
+      _msg('Choisissez votre opérateur.');
       return;
     }
     if (!(_formKey.currentState?.validate() ?? false)) return;
@@ -98,7 +98,7 @@ class _MomoSheetState extends State<_MomoSheet> {
       if (!mounted) return;
       Navigator.pop(context);
       _msg(
-        'NumÃƒÂ©ro enregistrÃƒÂ©. Vos clients peuvent vous payer par Mobile Money.',
+        'Numéro enregistré. Vos clients peuvent vous payer par Mobile Money.',
       );
     } on MissionException catch (e) {
       if (!mounted) return;
@@ -130,13 +130,13 @@ class _MomoSheetState extends State<_MomoSheet> {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Ce numÃƒÂ©ro est montrÃƒÂ© au client uniquement quand vous '
+                    'Ce numéro est montré au client uniquement quand vous '
                     'acceptez sa demande.',
                     style: TextStyle(fontSize: 16, height: 1.4, color: muted),
                   ),
                   const SizedBox(height: 16),
                   const Text(
-                    'Votre opÃƒÂ©rateur',
+                    'Votre opérateur',
                     style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(height: 8),
@@ -161,7 +161,7 @@ class _MomoSheetState extends State<_MomoSheet> {
                   ),
                   const SizedBox(height: 16),
                   AppTextField(
-                    label: 'NumÃƒÂ©ro Mobile Money',
+                    label: 'Numéro Mobile Money',
                     hint: '01 97 00 00 00',
                     icon: Icons.phone_outlined,
                     controller: _numero,
