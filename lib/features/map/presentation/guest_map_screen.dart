@@ -18,17 +18,17 @@ import '../../map/presentation/widgets/provider_detail_sheet.dart';
 import 'widgets/route_overlay.dart';
 import 'widgets/route_selection_overlay.dart';
 
-/// Types de vÃƒÂ©hicules : clÃƒÂ© = valeur stockÃƒÂ©e dans providers.vehicle_types.
+/// Types de véhicules : clé = valeur stockée dans providers.vehicle_types.
 const _filtres = <String, ({String label, IconData icon})>{
   'moto': (label: 'Moto', icon: Icons.two_wheeler_rounded),
   'voiture': (label: 'Auto', icon: Icons.directions_car_rounded),
   'camion': (label: 'Camion', icon: Icons.local_shipping_rounded),
 };
 
-/// Carte des dÃƒÂ©panneurs : carte plein ÃƒÂ©cran, filtres flottants, panneau bas
-/// avec les dÃƒÂ©panneurs triÃƒÂ©s par distance, fiche dÃƒÂ©taillÃƒÂ©e, itinÃƒÂ©raire.
-/// Utilisable sans compte (mode invitÃƒÂ©) comme onglet de l'espace client
-/// ([vehicleSignal] permet ÃƒÂ  l'accueil de choisir le vÃƒÂ©hicule).
+/// Carte des dépanneurs : carte plein écran, filtres flottants, panneau bas
+/// avec les dépanneurs triés par distance, fiche détaillée, itinéraire.
+/// Utilisable sans compte (mode invité) comme onglet de l'espace client
+/// ([vehicleSignal] permet à l'accueil de choisir le véhicule).
 class GuestMapScreen extends StatefulWidget {
   const GuestMapScreen({super.key, this.initialVehicle, this.vehicleSignal});
 
@@ -59,7 +59,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
   bool _routeEnCours = false;
   String? _errorMessage;
 
-  String? _filtre; // null = tous les vÃƒÂ©hicules
+  String? _filtre; // null = tous les véhicules
   bool _seulementDisponibles = false;
   String? _selectedId;
   double _largeurCarte = 290;
@@ -69,7 +69,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
   List<Prestataire> _visibles = [];
   List<LatLng> _routeGeometry = const [];
 
-  /// id prestataire -> types de vÃƒÂ©hicules (RPC publique provider_vehicle_map).
+  /// id prestataire -> types de véhicules (RPC publique provider_vehicle_map).
   Map<String, List<String>> _vehicules = const {};
 
   bool get _connecte => Supabase.instance.client.auth.currentSession != null;
@@ -101,7 +101,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
     });
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ DonnÃƒÂ©es Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Données ──────────────────────────────────────────────────────────────
 
   Future<void> _charger() async {
     setState(() {
@@ -125,14 +125,15 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
     } catch (_) {
       if (!mounted) return;
       setState(() {
-        _errorMessage = 'Impossible de charger les prestataires. VÃƒÂ©rifiez votre connexion.';
+        _errorMessage =
+            'Impossible de charger les prestataires. Vérifiez votre connexion.';
       });
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
   }
 
-  /// Ne lÃƒÂ¨ve jamais : sans cette table, les filtres montrent simplement tout.
+  /// Ne lève jamais : sans cette table, les filtres montrent simplement tout.
   Future<Map<String, List<String>>> _chargerVehicules() async {
     try {
       final data =
@@ -148,7 +149,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
     }
   }
 
-  /// Ne lÃƒÂ¨ve jamais : en cas d'ÃƒÂ©chec, on garde la position de repli.
+  /// Ne lève jamais : en cas d'échec, on garde la position de repli.
   Future<void> _localiser() async {
     try {
       final pos = await _locationService.getCurrentLocation();
@@ -162,11 +163,11 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
         _mapController.move(_userPosition, AppConstants.defaultZoom);
       }
     } catch (_) {
-      // Permission refusÃƒÂ©e / GPS coupÃƒÂ© : position de repli.
+      // Permission refusée / GPS coupé : position de repli.
     }
   }
 
-  /// Un prestataire sans type renseignÃƒÂ© (ancien dossier) reste visible
+  /// Un prestataire sans type renseigné (ancien dossier) reste visible
   /// sous tous les filtres.
   bool _correspond(Prestataire p, String? type) {
     if (_seulementDisponibles && !p.disponible) return false;
@@ -181,10 +182,10 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
 
   bool get _filtresActifs => _filtre != null || _seulementDisponibles;
 
-  /// RÃƒÂ©sultats triÃƒÂ©s par distance croissante.
+  /// Résultats triés par distance croissante.
   void _recalculer() {
-    // Filtre par rayon puis tri par distance croissante (sans dÃƒÂ©pendance
-    // ÃƒÂ  GeoqueryService).
+    // Filtre par rayon puis tri par distance croissante (sans dépendance
+    // à GeoqueryService).
     final avecDistance = <(Prestataire, double)>[
       for (final p in _tous)
         if (_km(p) <= _rayonKm) (p, _km(p)),
@@ -224,7 +225,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
     });
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Actions Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Actions ──────────────────────────────────────────────────────────────
 
   void _selectionner(Prestataire p) {
     setState(() => _selectedId = p.id);
@@ -261,7 +262,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
     if (_routeEnCours) return;
     setState(() => _routeEnCours = true);
     try {
-      // getRoutes ne lÃƒÂ¨ve pas : repli sur une ligne droite si OSRM ÃƒÂ©choue.
+      // getRoutes ne lève pas : repli sur une ligne droite si OSRM échoue.
       final routes = await _routingService.getRoutes(
         origin: _userPosition,
         destination: LatLng(p.latitude, p.longitude),
@@ -317,7 +318,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ UI Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── UI ───────────────────────────────────────────────────────────────────
 
   List<Marker> _markers() {
     return [
@@ -382,7 +383,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Filtres (chips) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Filtres (chips) ──────────────────────────────────────────────────────
 
   List<Widget> _chips({required bool elevated}) {
     return [
@@ -390,7 +391,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
         ClientChip(
           label: _isLoading
               ? e.value.label
-              : '${e.value.label} Ã‚Â· ${_compte(e.key)}',
+              : '${e.value.label} · ${_compte(e.key)}',
           icon: e.value.icon,
           selected: _filtre == e.key,
           elevated: elevated,
@@ -406,7 +407,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
     ];
   }
 
-  /// Bouton Ã‚Â« compte Ã‚Â» des invitÃƒÂ©s : connexion, mot de passe, devenir pro.
+  /// Bouton « compte » des invités : connexion, mot de passe, devenir pro.
   Widget _menuInvite() {
     final scheme = Theme.of(context).colorScheme;
     return DecoratedBox(
@@ -456,7 +457,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Carte plein ÃƒÂ©cran Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Carte plein écran ────────────────────────────────────────────────────
 
   Widget _carte(
     BuildContext context, {
@@ -489,7 +490,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
             const RichAttributionWidget(
               alignment: AttributionAlignment.bottomLeft,
               attributions: [
-                TextSourceAttribution('Ã‚Â© OpenStreetMap contributors'),
+                TextSourceAttribution('© OpenStreetMap contributors'),
               ],
             ),
           ],
@@ -502,7 +503,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
             child: LinearProgressIndicator(minHeight: 3),
           ),
 
-        // Filtres flottants (tÃƒÂ©lÃƒÂ©phone) / bouton compte des invitÃƒÂ©s.
+        // Filtres flottants (téléphone) / bouton compte des invités.
         if (!lateral)
           Positioned(
             top: 0,
@@ -537,7 +538,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
             ),
           ),
 
-        // Bas : localisation, itinÃƒÂ©raire, panneau des dÃƒÂ©panneurs.
+        // Bas : localisation, itinéraire, panneau des dépanneurs.
         Positioned(
           left: 0,
           right: 0,
@@ -557,7 +558,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
                         child: _routeGeometry.isEmpty
                             ? const SizedBox.shrink()
                             : ClientChip(
-                                label: 'Effacer l\'itinÃƒÂ©raire',
+                                label: 'Effacer l\'itinéraire',
                                 icon: Icons.close_rounded,
                                 elevated: true,
                                 onTap: () =>
@@ -611,7 +612,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
             children: [
               const Expanded(
                 child: Text(
-                  'DÃƒÂ©panneurs',
+                  'Dépanneurs',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w800,
@@ -637,9 +638,9 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
   }
 
   String get _titrePanneau {
-    final suffixe = _filtre == null ? '' : ' Ã‚Â· ${_filtres[_filtre]!.label}';
+    final suffixe = _filtre == null ? '' : ' · ${_filtres[_filtre]!.label}';
     final n = _visibles.length;
-    return '$n dÃƒÂ©panneur${n > 1 ? 's' : ''} ÃƒÂ  proximitÃƒÂ©$suffixe';
+    return '$n dépanneur${n > 1 ? 's' : ''} à proximité$suffixe';
   }
 
   Widget _panneauBas(
@@ -652,11 +653,11 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
         context,
         texte: _errorMessage!,
         erreur: true,
-        action: ('RÃƒÂ©essayer', _charger),
+        action: ('Réessayer', _charger),
       );
     }
     if (_isLoading) {
-      return _message(context, texte: 'Recherche des dÃƒÂ©panneursÃ¢â‚¬Â¦');
+      return _message(context, texte: 'Recherche des dépanneurs…');
     }
     if (_visibles.isEmpty) {
       final dispo = _seulementDisponibles ? ' disponible' : '';
@@ -664,7 +665,7 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
       return _message(
         context,
         texte:
-            'Aucun dÃƒÂ©panneur$dispo$suffixe ÃƒÂ  moins de ${_rayonKm.toInt()} km.',
+            'Aucun dépanneur$dispo$suffixe à moins de ${_rayonKm.toInt()} km.',
         action: _filtresActifs ? ('Voir tous', _reinitialiserFiltres) : null,
       );
     }
@@ -946,7 +947,7 @@ class _ProviderCard extends StatelessWidget {
                 ),
                 _Meta(
                   icon: Icons.near_me_rounded,
-                  texte: '${km.toStringAsFixed(1)} km Ã‚Â· $eta min',
+                  texte: '${km.toStringAsFixed(1)} km · $eta min',
                   color: context.textSecondary,
                 ),
                 _Meta(

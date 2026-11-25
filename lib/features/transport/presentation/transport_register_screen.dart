@@ -17,30 +17,30 @@ import '../../auth/data/quick_auth_service.dart';
 import '../../auth/presentation/widgets/photo_picker_field.dart';
 import '../../onboarding/presentation/widgets/position_picker_screen.dart';
 
-/// INSCRIPTION CONDUCTEUR Ã¢â‚¬â€ ZÃƒÂ©midjan (moto-taxi) et Tricycle Kloboto (fret).
+/// INSCRIPTION CONDUCTEUR — Zémidjan (moto-taxi) et Tricycle Kloboto (fret).
 ///
-/// Univers Ã‚Â« COCKPIT Ã‚Â» : asphalte noir, jaune safran (ou vert palme pour
-/// Kloboto), boutons biseautÃƒÂ©s comme un panneau routier, et une ROUTE qui
-/// sert de barre de progression : le vÃƒÂ©hicule du conducteur roule le long
-/// des pointillÃƒÂ©s ÃƒÂ  chaque ÃƒÂ©tape.
+/// Univers « COCKPIT » : asphalte noir, jaune safran (ou vert palme pour
+/// Kloboto), boutons biseautés comme un panneau routier, et une ROUTE qui
+/// sert de barre de progression : le véhicule du conducteur roule le long
+/// des pointillés à chaque étape.
 ///
-/// Volontairement ÃƒÂ  l'opposÃƒÂ© de l'inscription des dÃƒÂ©panneurs (en-tÃƒÂªte bleu
-/// dÃƒÂ©gradÃƒÂ© + carte blanche arrondie) : un conducteur ne doit jamais avoir
-/// l'impression de remplir le mÃƒÂªme formulaire qu'un garagiste.
+/// Volontairement à l'opposé de l'inscription des dépanneurs (en-tête bleu
+/// dégradé + carte blanche arrondie) : un conducteur ne doit jamais avoir
+/// l'impression de remplir le même formulaire qu'un garagiste.
 ///
-/// Ce que fait vraiment cet ÃƒÂ©cran (mÃƒÂªme chemin serveur que l'onboarding
+/// Ce que fait vraiment cet écran (même chemin serveur que l'onboarding
 /// existant, aucune modification SQL) :
-///   1. envoie la photo de profil et la piÃƒÂ¨ce d'identitÃƒÂ© ;
-///   2. appelle `register_profile` (rÃƒÂ´le prestataire, mÃƒÂ©tier Ã‚Â« ZÃƒÂ©midjan Ã‚Â»
-///      ou Ã‚Â« Tricycle Fret Ã‚Â») ;
-///   3. redirige vers la vÃƒÂ©rification d'identitÃƒÂ© `/provider/identity`.
+///   1. envoie la photo de profil et la pièce d'identité ;
+///   2. appelle `register_profile` (rôle prestataire, métier « Zémidjan »
+///      ou « Tricycle Fret ») ;
+///   3. redirige vers la vérification d'identité `/provider/identity`.
 ///
 /// Robustesse terrain :
-///   - le brouillon (type d'engin, nom, ÃƒÂ©tape) est gardÃƒÂ© sur le tÃƒÂ©lÃƒÂ©phone Ãƒ
-///     chaque frappe : batterie ÃƒÂ  plat ou rÃƒÂ©seau coupÃƒÂ© = rien n'est perdu ;
-///   - les photos dÃƒÂ©jÃƒÂ  envoyÃƒÂ©es ne sont jamais renvoyÃƒÂ©es lors d'un nouvel
-///     essai (ÃƒÂ©conomie de donnÃƒÂ©es) ;
-///   - aucune animation si le mode ÃƒÂ©co ou l'accessibilitÃƒÂ© les coupe.
+///   - le brouillon (type d'engin, nom, étape) est gardé sur le téléphone à
+///     chaque frappe : batterie à plat ou réseau coupé = rien n'est perdu ;
+///   - les photos déjà envoyées ne sont jamais renvoyées lors d'un nouvel
+///     essai (économie de données) ;
+///   - aucune animation si le mode éco ou l'accessibilité les coupe.
 class TransportRegisterScreen extends StatefulWidget {
   const TransportRegisterScreen({super.key});
 
@@ -50,24 +50,19 @@ class TransportRegisterScreen extends StatefulWidget {
 }
 
 enum _Engin {
-  zemidjan('ZÃƒÂ©midjan'),
+  zemidjan('Zémidjan'),
   kloboto('Tricycle Fret');
 
   const _Engin(this.metier);
 
-  /// Valeur attendue par le serveur (identique ÃƒÂ  l'onboarding existant).
+  /// Valeur attendue par le serveur (identique à l'onboarding existant).
   final String metier;
 }
 
 class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
   static const String _cleBrouillon = 'totem_brouillon_conducteur';
   static const int _nbEtapes = 4;
-  static const List<String> _titres = [
-    'Engin',
-    'IdentitÃƒÂ©',
-    'Papiers',
-    'Zone',
-  ];
+  static const List<String> _titres = ['Engin', 'Identité', 'Papiers', 'Zone'];
 
   final _auth = AuthService();
   final _quick = QuickAuthService();
@@ -121,7 +116,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
     super.dispose();
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Brouillon local (survit ÃƒÂ  une extinction du tÃƒÂ©lÃƒÂ©phone) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Brouillon local (survit à une extinction du téléphone) ──────────────
 
   Future<void> _chargerBrouillon() async {
     try {
@@ -139,14 +134,14 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
         _ifu.text = '${j['ifu'] ?? ''}';
         final e = (j['etape'] as num?)?.toInt() ?? 0;
         _etape = e.clamp(0, _nbEtapes - 1);
-        // Les photos ne sont pas gardÃƒÂ©es : on ne reste pas sur Ã‚Â« Zone Ã‚Â»
+        // Les photos ne sont pas gardées : on ne reste pas sur « Zone »
         // sans pouvoir les redonner.
         if (_etape > 2) _etape = 2;
         _lat = (j['lat'] as num?)?.toDouble();
         _lng = (j['lng'] as num?)?.toDouble();
       });
     } catch (_) {
-      // Brouillon illisible : on repart de zÃƒÂ©ro, sans bruit.
+      // Brouillon illisible : on repart de zéro, sans bruit.
     }
   }
 
@@ -177,7 +172,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
     } catch (_) {}
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Navigation entre ÃƒÂ©tapes Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Navigation entre étapes ─────────────────────────────────────────────
 
   void _msg(String m) => ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(content: Text(m), duration: const Duration(seconds: 6)),
@@ -190,7 +185,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
     switch (_etape) {
       case 0:
         if (!_enginChoisi) {
-          _msg('Touchez votre engin : ZÃƒÂ©midjan ou Kloboto.');
+          _msg('Touchez votre engin : Zémidjan ou Kloboto.');
           return false;
         }
         return true;
@@ -199,7 +194,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
       case 2:
         if (_photoProfil == null || _photoCni == null) {
           setState(() => _photosSignalees = true);
-          _msg('Photo de profil et piÃƒÂ¨ce d\'identitÃƒÂ© obligatoires.');
+          _msg('Photo de profil et pièce d\'identité obligatoires.');
           return false;
         }
         return true;
@@ -251,7 +246,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
     _sauverBrouillon();
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Envoi Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Envoi ───────────────────────────────────────────────────────────────
 
   Future<void> _soumettre() async {
     setState(() => _envoi = true);
@@ -301,18 +296,18 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
       ).horsLigne;
       _msg(
         horsLigne
-            ? 'Pas de rÃƒÂ©seau. Votre dossier est gardÃƒÂ© sur ce tÃƒÂ©lÃƒÂ©phone : '
-                  'rÃƒÂ©essayez dÃƒÂ¨s que le rÃƒÂ©seau revient.'
-            : 'Erreur rÃƒÂ©seau. RÃƒÂ©essayez dans un instant.',
+            ? 'Pas de réseau. Votre dossier est gardé sur ce téléphone : '
+                  'réessayez dès que le réseau revient.'
+            : 'Erreur réseau. Réessayez dans un instant.',
       );
     } finally {
       if (mounted) setState(() => _envoi = false);
     }
   }
 
-  /// Filet de sÃƒÂ©curitÃƒÂ© : les courses sont proposÃƒÂ©es d'aprÃƒÂ¨s
-  /// `providers.provider_kind`. Si le serveur ne l'a pas dÃƒÂ©duit du mÃƒÂ©tier,
-  /// on le renseigne (ÃƒÂ©chec silencieux : l'administrateur peut le corriger).
+  /// Filet de sécurité : les courses sont proposées d'après
+  /// `providers.provider_kind`. Si le serveur ne l'a pas déduit du métier,
+  /// on le renseigne (échec silencieux : l'administrateur peut le corriger).
   Future<void> _verifierTypeConducteur() async {
     try {
       final sb = Supabase.instance.client;
@@ -333,7 +328,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
     } catch (_) {}
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Interface Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Interface ───────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -352,7 +347,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
               if (!didPop && !_envoi) _retour();
             },
             child: Scaffold(
-              // Ã¢â€ Â corrigÃƒÂ© : skin.bg Ã¢â€ â€™ scaffoldBackgroundColor du thÃƒÂ¨me courant
+              // ← corrigé : skin.bg → scaffoldBackgroundColor du thème courant
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               body: SafeArea(
                 child: AbsorbPointer(
@@ -469,7 +464,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
     ),
   );
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Ãƒâ€°tape 1 : l'engin Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Étape 1 : l'engin ───────────────────────────────────────────────────
   Widget _etapeEngin(ColorScheme scheme) {
     Widget tuile({
       required _Engin e,
@@ -557,7 +552,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
       children: [
         _titreEtape(
           'Quel est votre engin ?',
-          'Touchez le vÃƒÂ´tre. Vous recevrez les courses qui lui correspondent.',
+          'Touchez le vôtre. Vous recevrez les courses qui lui correspondent.',
         ),
         IntrinsicHeight(
           child: Row(
@@ -566,7 +561,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
               tuile(
                 e: _Engin.zemidjan,
                 glyphe: TotemGlyph.zemidjan,
-                titre: 'ZÃƒÂ©midjan',
+                titre: 'Zémidjan',
                 sous: 'Moto-taxi\nPassagers',
                 couleur: AppColors.brandYellow,
               ),
@@ -585,15 +580,15 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
         _Astuce(
           icone: Icons.payments_rounded,
           texte:
-              'Course payÃƒÂ©e en Mobile Money : aucune commission. '
-              'Course payÃƒÂ©e en espÃƒÂ¨ces : une commission est prÃƒÂ©levÃƒÂ©e sur '
+              'Course payée en Mobile Money : aucune commission. '
+              'Course payée en espèces : une commission est prélevée sur '
               'votre portefeuille MonTotem.',
         ),
       ],
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Ãƒâ€°tape 2 : identitÃƒÂ© Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Étape 2 : identité ──────────────────────────────────────────────────
   Widget _etapeIdentite() {
     return Form(
       key: _formIdentite,
@@ -602,7 +597,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
         children: [
           _titreEtape(
             'Qui conduit ?',
-            'Comme sur votre piÃƒÂ¨ce d\'identitÃƒÂ©. Les clients verront votre prÃƒÂ©nom.',
+            'Comme sur votre pièce d\'identité. Les clients verront votre prénom.',
           ),
           TextFormField(
             controller: _prenom,
@@ -610,7 +605,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
             textCapitalization: TextCapitalization.words,
             autofillHints: const [AutofillHints.givenName],
             decoration: const InputDecoration(
-              labelText: 'PrÃƒÂ©nom',
+              labelText: 'Prénom',
               prefixIcon: Icon(Icons.person_outline_rounded),
             ),
             validator: _requis,
@@ -632,7 +627,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
             initialValue: _telephone,
             readOnly: true,
             decoration: const InputDecoration(
-              labelText: 'NumÃƒÂ©ro vÃƒÂ©rifiÃƒÂ© par SMS',
+              labelText: 'Numéro vérifié par SMS',
               prefixIcon: Icon(Icons.verified_rounded),
               suffixIcon: Icon(Icons.lock_outline, size: 18),
             ),
@@ -644,7 +639,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
             textCapitalization: TextCapitalization.words,
             maxLength: 40,
             decoration: const InputDecoration(
-              labelText: 'Surnom affichÃƒÂ© (facultatif)',
+              labelText: 'Surnom affiché (facultatif)',
               hintText: 'Ex. : Jean Express',
               prefixIcon: Icon(Icons.badge_outlined),
               counterText: '',
@@ -655,7 +650,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
             controller: _ifu,
             textInputAction: TextInputAction.done,
             decoration: const InputDecoration(
-              labelText: 'NumÃƒÂ©ro IFU (facultatif)',
+              labelText: 'Numéro IFU (facultatif)',
               prefixIcon: Icon(Icons.numbers_rounded),
             ),
           ),
@@ -664,7 +659,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Ãƒâ€°tape 3 : papiers Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Étape 3 : papiers ───────────────────────────────────────────────────
   Widget _cadrePhoto(Uint8List? bytes, Widget champ) {
     final erreur = _photosSignalees && bytes == null;
     return Container(
@@ -684,7 +679,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
       children: [
         _titreEtape(
           'Vos papiers',
-          'Une seule fois. Visage dÃƒÂ©couvert, piÃƒÂ¨ce lisible, bien ÃƒÂ©clairÃƒÂ©e.',
+          'Une seule fois. Visage découvert, pièce lisible, bien éclairée.',
         ),
         _cadrePhoto(
           _photoProfil,
@@ -702,7 +697,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
         _cadrePhoto(
           _photoCni,
           PhotoPickerField(
-            label: 'PiÃƒÂ¨ce d\'identitÃƒÂ©',
+            label: 'Pièce d\'identité',
             icon: Icons.badge_outlined,
             bytes: _photoCni,
             onChanged: (b) => setState(() {
@@ -715,23 +710,20 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
         const _Astuce(
           icone: Icons.save_rounded,
           texte:
-              'Vos rÃƒÂ©ponses sont gardÃƒÂ©es sur ce tÃƒÂ©lÃƒÂ©phone. Si la batterie '
-              'lÃƒÂ¢che, vous reprenez ici (seules les photos sont ÃƒÂ  refaire).',
+              'Vos réponses sont gardées sur ce téléphone. Si la batterie '
+              'lâche, vous reprenez ici (seules les photos sont à refaire).',
         ),
       ],
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Ãƒâ€°tape 4 : zone + rÃƒÂ©capitulatif Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Étape 4 : zone + récapitulatif ──────────────────────────────────────
   Widget _etapeZone(ColorScheme scheme) {
     final aPos = _lat != null && _lng != null;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _titreEtape(
-          'Votre zone',
-          'LÃƒÂ  oÃƒÂ¹ vous travaillez le plus souvent.',
-        ),
+        _titreEtape('Votre zone', 'Là où vous travaillez le plus souvent.'),
         Material(
           color: scheme.surface,
           shape: BeveledRectangleBorder(
@@ -761,7 +753,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
                   Expanded(
                     child: Text(
                       aPos
-                          ? 'Zone dÃƒÂ©finie\n'
+                          ? 'Zone définie\n'
                                 '${_lat!.toStringAsFixed(4)}, ${_lng!.toStringAsFixed(4)}'
                           : 'Placer ma zone sur la carte',
                       style: const TextStyle(
@@ -787,8 +779,8 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
         const _Astuce(
           icone: Icons.verified_user_rounded,
           texte:
-              'AprÃƒÂ¨s l\'envoi : vÃƒÂ©rification de votre identitÃƒÂ© (selfie), '
-              'puis validation par l\'ÃƒÂ©quipe MonTotem avant vos premiÃƒÂ¨res '
+              'Après l\'envoi : vérification de votre identité (selfie), '
+              'puis validation par l\'équipe MonTotem avant vos premières '
               'courses.',
         ),
       ],
@@ -796,7 +788,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
   }
 }
 
-// Ã¢â€â‚¬Ã¢â€â‚¬ Widgets du cockpit Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// ── Widgets du cockpit ──────────────────────────────────────────────────────
 
 class _EnTete extends StatelessWidget {
   const _EnTete({
@@ -853,7 +845,7 @@ class _EnTete extends StatelessWidget {
             ),
           ),
           Semantics(
-            label: 'Ãƒâ€°tape ${etape + 1} sur $nbEtapes',
+            label: 'Étape ${etape + 1} sur $nbEtapes',
             excludeSemantics: true,
             child: Text(
               '${etape + 1}/$nbEtapes',
@@ -870,7 +862,7 @@ class _EnTete extends StatelessWidget {
   }
 }
 
-/// La route : bitume, pointillÃƒÂ©s, et le vÃƒÂ©hicule du conducteur qui avance.
+/// La route : bitume, pointillés, et le véhicule du conducteur qui avance.
 class _RouteProgress extends StatelessWidget {
   const _RouteProgress({
     required this.progression,
@@ -1050,7 +1042,7 @@ class _Recap extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              v.isEmpty ? 'Ã¢â‚¬â€' : v,
+              v.isEmpty ? '—' : v,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
             ),
           ),
@@ -1065,7 +1057,7 @@ class _Recap extends StatelessWidget {
           children: [
             ligne('Engin', engin.metier),
             ligne('Conducteur', nom),
-            ligne('TÃƒÂ©lÃƒÂ©phone', telephone),
+            ligne('Téléphone', telephone),
           ],
         ),
       ),
