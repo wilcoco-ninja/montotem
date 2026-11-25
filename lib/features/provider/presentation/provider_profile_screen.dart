@@ -26,12 +26,12 @@ class ProviderProfileScreen extends StatefulWidget {
 }
 
 class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
-  /// Niveaux affichÃƒÂ©s (affichage uniquement : seuil en missions terminÃƒÂ©es).
+  /// Niveaux affichés (affichage uniquement : seuil en missions terminées).
   static const List<(String, int)> _niveaux = [
-    ('DÃƒÂ©butant', 0),
-    ('ConfirmÃƒÂ©', 10),
+    ('Débutant', 0),
+    ('Confirmé', 10),
     ('Expert', 50),
-    ('Ãƒâ€°lite', 150),
+    ('Élite', 150),
   ];
 
   final AuthService _authService = AuthService();
@@ -50,7 +50,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
     _charger();
   }
 
-  /// Une donnÃƒÂ©e secondaire indisponible ne doit pas bloquer le profil.
+  /// Une donnée secondaire indisponible ne doit pas bloquer le profil.
   Future<T?> _sure<T>(Future<T?> Function() f) async {
     try {
       return await f();
@@ -94,7 +94,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
     final confirme = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Se dÃƒÂ©connecter ?'),
+        title: const Text('Se déconnecter ?'),
         content: const Text(
           'Vous devrez vous reconnecter pour recevoir des demandes.',
           style: TextStyle(fontSize: 16),
@@ -107,7 +107,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: AppTheme.errorColor),
-            child: const Text('Se dÃƒÂ©connecter'),
+            child: const Text('Se déconnecter'),
           ),
         ],
       ),
@@ -118,7 +118,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
     context.go('/login');
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Calculs Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Calculs ──────────────────────────────────────────────────────────────
 
   int get _missions => (_stats?['missions_completees'] as num?)?.toInt() ?? 0;
   int get _satisfaits => (_stats?['clients_satisfaits'] as num?)?.toInt() ?? 0;
@@ -143,7 +143,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
   /// Fidelite : 50 missions terminees et une note d'au moins 4,5.
   bool get _fidele => _missions >= 50 && _note >= 4.5;
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ UI Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── UI ───────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +173,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
     final sousTitre = [
       if (user.metier != null && user.metier!.isNotEmpty) user.metier!,
       if (user.ville != null && user.ville!.isNotEmpty) user.ville!,
-    ].join(' Ã¢â‚¬Â¢ ');
+    ].join(' • ');
 
     final gutter = context.gutter;
 
@@ -192,27 +192,27 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
       const SizedBox(height: 10),
       _Rangee(
         icone: Icons.psychology_alt_outlined,
-        titre: 'Mes compÃƒÂ©tences',
-        sousTitre: 'Vos spÃƒÂ©cialitÃƒÂ©s visibles par les clients',
+        titre: 'Mes compétences',
+        sousTitre: 'Vos spécialités visibles par les clients',
         onTap: () => _aller('/provider/competences'),
       ),
-      const SectionTitle('RÃƒÂ©glages'),
+      const SectionTitle('Réglages'),
       _Rangee(
         icone: Icons.text_increase_rounded,
         titre: 'Taille du texte',
-        sousTitre: 'Agrandir les caractÃƒÂ¨res pour mieux lire',
+        sousTitre: 'Agrandir les caractères pour mieux lire',
         onTap: () => showAccessibilitySheet(context),
       ),
       const SizedBox(height: 10),
       _Rangee(
         icone: Icons.local_hospital_outlined,
-        titre: 'NumÃƒÂ©ros d\'urgence',
-        sousTitre: 'Pompiers, police, hÃƒÂ´pital',
+        titre: 'Numéros d\'urgence',
+        sousTitre: 'Pompiers, police, hôpital',
         onTap: () => context.push('/emergency'),
       ),
       const SizedBox(height: 28),
       AppButton(
-        label: 'Se dÃƒÂ©connecter',
+        label: 'Se déconnecter',
         icon: Icons.logout_rounded,
         variant: AppButtonVariant.secondary,
         onPressed: _deconnecter,
@@ -270,7 +270,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ En-tÃƒÂªte Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── En-tête ──────────────────────────────────────────────────────────────
 
   Widget _entete(AppUser user, String nom, {required String sousTinte}) {
     final aPhoto =
@@ -402,7 +402,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                                         ? Icons.verified_rounded
                                         : Icons.hourglass_top_rounded,
                                     texte: user.isApproved
-                                        ? 'Compte validÃƒÂ©'
+                                        ? 'Compte validé'
                                         : 'En attente de validation',
                                   ),
                                   _PastilleEntete(
@@ -427,7 +427,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Indicateurs, niveau, badges Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Indicateurs, niveau, badges ──────────────────────────────────────────
 
   Widget _carteIndicateurs() {
     final pct = _satisfactionPct;
@@ -457,7 +457,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
             child: _MiniStat(
               icone: Icons.thumb_up_alt_rounded,
               couleur: AppTheme.primaryColor,
-              valeur: pct == null ? 'Ã¢â‚¬â€' : '$pct %',
+              valeur: pct == null ? '—' : '$pct %',
               label: 'Satisfaits',
             ),
           ),
@@ -484,7 +484,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
           .toDouble();
       final reste = suivant.$2 - _missions;
       message =
-          '$reste mission${reste > 1 ? 's' : ''} terminÃƒÂ©e${reste > 1 ? 's' : ''} avant le niveau ${suivant.$1}.';
+          '$reste mission${reste > 1 ? 's' : ''} terminée${reste > 1 ? 's' : ''} avant le niveau ${suivant.$1}.';
     }
 
     return SoftCard(
@@ -519,7 +519,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                       ),
                     ),
                     Text(
-                      '$_missions mission${_missions > 1 ? 's' : ''} terminÃƒÂ©e${_missions > 1 ? 's' : ''}',
+                      '$_missions mission${_missions > 1 ? 's' : ''} terminée${_missions > 1 ? 's' : ''}',
                       style: TextStyle(
                         fontSize: 15,
                         color: context.textSecondary,
@@ -594,19 +594,19 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
       children: [
         _BadgeTile(
           icone: Icons.verified_rounded,
-          titre: 'Compte validÃƒÂ©',
+          titre: 'Compte validé',
           obtenu: user.isApproved,
           couleur: AppTheme.successColor,
         ),
         _BadgeTile(
           icone: Icons.badge_rounded,
-          titre: 'IdentitÃƒÂ© vÃƒÂ©rifiÃƒÂ©e',
+          titre: 'Identité vérifiée',
           obtenu: identiteOk,
           couleur: AppTheme.primaryColor,
         ),
         _BadgeTile(
           icone: Icons.favorite_rounded,
-          titre: 'Prestataire fidÃƒÂ¨le',
+          titre: 'Prestataire fidèle',
           obtenu: _fidele,
           couleur: AppColors.gold,
         ),
@@ -620,7 +620,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Dossier Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Dossier ──────────────────────────────────────────────────────────────
 
   Widget _ligneIdentite() {
     final id = _identite;
@@ -628,19 +628,19 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
     final statut = id?.statutValidation;
 
     final (couleur, libelle) = !soumis
-        ? (AppTheme.warningColor, 'Ãƒâ‚¬ envoyer (obligatoire)')
+        ? (AppTheme.warningColor, 'À envoyer (obligatoire)')
         : switch (statut) {
-            'approved' => (AppTheme.successColor, 'ValidÃƒÂ©'),
-            'rejected' => (AppTheme.errorColor, 'RefusÃƒÂ© : ÃƒÂ  corriger'),
-            _ => (AppTheme.primaryColor, 'En cours de vÃƒÂ©rification'),
+            'approved' => (AppTheme.successColor, 'Validé'),
+            'rejected' => (AppTheme.errorColor, 'Refusé : à corriger'),
+            _ => (AppTheme.primaryColor, 'En cours de vérification'),
           };
 
     return _Rangee(
       icone: Icons.verified_user_outlined,
-      titre: 'IdentitÃƒÂ© et garage',
+      titre: 'Identité et garage',
       sousTitre: (soumis && id?.documentType != null)
           ? libelleDocument(id!.documentType)
-          : 'PiÃƒÂ¨ce d\'identitÃƒÂ©, visage et photo du garage',
+          : 'Pièce d\'identité, visage et photo du garage',
       pastille: StatusPill(label: libelle, color: couleur),
       onTap: () => _aller('/provider/identity'),
     );
@@ -652,8 +652,8 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
       icone: Icons.account_balance_wallet_outlined,
       titre: 'Recevoir mes paiements',
       sousTitre: m == null
-          ? 'Non renseignÃƒÂ© : les clients ne peuvent payer qu\'en espÃƒÂ¨ces'
-          : '${m.methode.libelle} Ã‚Â· ${m.numero}',
+          ? 'Non renseigné : les clients ne peuvent payer qu\'en espèces'
+          : '${m.methode.libelle} · ${m.numero}',
       onTap: () async {
         await showProviderMomoSheet(context);
         if (mounted) _charger();
@@ -781,7 +781,7 @@ class _BadgeTile extends StatelessWidget {
         : scheme.onSurface.withValues(alpha: 0.55);
 
     return Semantics(
-      label: '$titre, ${obtenu ? 'obtenu' : 'ÃƒÂ  obtenir'}',
+      label: '$titre, ${obtenu ? 'obtenu' : 'à obtenir'}',
       excludeSemantics: true,
       child: SoftCard(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
@@ -812,7 +812,7 @@ class _BadgeTile extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              obtenu ? 'Obtenu' : 'Ãƒâ‚¬ obtenir',
+              obtenu ? 'Obtenu' : 'À obtenir',
               style: TextStyle(
                 fontSize: 13.5,
                 fontWeight: FontWeight.w700,
