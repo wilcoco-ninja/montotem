@@ -25,7 +25,7 @@ enum _Fenetre {
   final String libelle;
 }
 
-/// Onglet Gains : encaissÃƒÂ©, commission et net exacts (courses + dÃƒÂ©pannages),
+/// Onglet Gains : encaissé, commission et net exacts (courses + dépannages),
 /// interventions et mouvements du portefeuille.
 class ProviderEarningsScreen extends StatefulWidget {
   const ProviderEarningsScreen({super.key});
@@ -37,17 +37,17 @@ class ProviderEarningsScreen extends StatefulWidget {
 class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
   static const _moisCourts = [
     'janv.',
-    'fÃƒÂ©vr.',
+    'févr.',
     'mars',
     'avr.',
     'mai',
     'juin',
     'juil.',
-    'aoÃƒÂ»t',
+    'août',
     'sept.',
     'oct.',
     'nov.',
-    'dÃƒÂ©c.',
+    'déc.',
   ];
   static const _jours = [
     'lun.',
@@ -99,7 +99,7 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
     super.dispose();
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ DonnÃƒÂ©es Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Données ──────────────────────────────────────────────────────────────
 
   Future<void> _charger({bool silencieux = false}) async {
     if (!silencieux) {
@@ -125,7 +125,7 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
       final s = await _walletService.charger();
       if (mounted) setState(() => _wallet = s);
     } on WalletException {
-      // Wallet indisponible : les gains restent affichÃƒÂ©s.
+      // Wallet indisponible : les gains restent affichés.
     }
     if (mounted) setState(() => _loading = false);
   }
@@ -174,9 +174,9 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
     _chargerResume();
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Calculs Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Calculs ──────────────────────────────────────────────────────────────
 
-  /// Jours de la fenÃƒÂªtre affichÃƒÂ©e, du plus ancien au plus rÃƒÂ©cent.
+  /// Jours de la fenêtre affichée, du plus ancien au plus récent.
   List<EarningsDay> get _jours_ {
     final r = _resume;
     if (r == null) return const [];
@@ -207,13 +207,13 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
 
   String get _libelleFenetre {
     final j = _jours_;
-    if (j.isEmpty) return 'Ã¢â‚¬â€';
+    if (j.isEmpty) return '—';
     final a = j.first.date;
     final b = j.last.date;
     if (a.month == b.month) {
-      return '${a.day} Ã¢â‚¬â€œ ${b.day} ${_moisCourts[b.month - 1]}';
+      return '${a.day} – ${b.day} ${_moisCourts[b.month - 1]}';
     }
-    return '${a.day} ${_moisCourts[a.month - 1]} Ã¢â‚¬â€œ '
+    return '${a.day} ${_moisCourts[a.month - 1]} – '
         '${b.day} ${_moisCourts[b.month - 1]}';
   }
 
@@ -244,7 +244,7 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
     ];
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ UI Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── UI ───────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -308,7 +308,7 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
                             const SizedBox(width: 12),
                             Expanded(
                               child: Text(
-                                '$_erreurResume Touchez pour rÃƒÂ©essayer.',
+                                '$_erreurResume Touchez pour réessayer.',
                                 style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,
@@ -319,7 +319,7 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
                         ),
                       ),
                     ),
-                  const SectionTitle('EncaissÃƒÂ© par jour'),
+                  const SectionTitle('Encaissé par jour'),
                   SoftCard(
                     child: _chargementResume && r == null
                         ? const Padding(
@@ -328,13 +328,13 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
                           )
                         : _Graphique(barres: _barres()),
                   ),
-                  const SectionTitle('DÃƒÂ©tail'),
+                  const SectionTitle('Détail'),
                   SoftCard(
                     child: Column(
                       children: [
                         InfoRow(
                           icon: Icons.payments_rounded,
-                          label: 'EncaissÃƒÂ©',
+                          label: 'Encaissé',
                           value: TravelFee.fcfa(brut),
                         ),
                         InfoRow(
@@ -344,19 +344,18 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
                         ),
                         InfoRow(
                           icon: Icons.savings_rounded,
-                          label: 'Net estimÃƒÂ©',
+                          label: 'Net estimé',
                           value: formaterFcfaSigne(net),
                         ),
                         InfoRow(
                           icon: Icons.task_alt_rounded,
-                          label: 'DÃƒÂ©pannages terminÃƒÂ©s',
+                          label: 'Dépannages terminés',
                           value: '$terminees',
                         ),
                         if (_offset == 0 && r != null) ...[
                           InfoRow(
                             icon: Icons.two_wheeler_rounded,
-                            label:
-                                'Courses en espÃƒÂ¨ces (${r.ridesCashCount})',
+                            label: 'Courses en espèces (${r.ridesCashCount})',
                             value: TravelFee.fcfa(r.ridesCashFcfa),
                           ),
                           InfoRow(
@@ -366,12 +365,12 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
                           ),
                           InfoRow(
                             icon: Icons.route_rounded,
-                            label: 'Frais de dÃƒÂ©placement',
+                            label: 'Frais de déplacement',
                             value: TravelFee.fcfa(r.travelGrossFcfa),
                           ),
                           InfoRow(
                             icon: Icons.build_circle_outlined,
-                            label: 'RÃƒÂ©parations',
+                            label: 'Réparations',
                             value: TravelFee.fcfa(r.repairGrossFcfa),
                           ),
                         ],
@@ -383,9 +382,8 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
                       padding: EdgeInsets.only(top: 28),
                       child: EmptyState(
                         icon: Icons.payments_outlined,
-                        title: 'Aucun gain sur cette pÃƒÂ©riode',
-                        message:
-                            'Vos interventions payÃƒÂ©es apparaÃƒÂ®tront ici.',
+                        title: 'Aucun gain sur cette période',
+                        message: 'Vos interventions payées apparaîtront ici.',
                       ),
                     ),
                   if (ms.isNotEmpty) ...[
@@ -449,7 +447,7 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
                         iconSize: 30,
                         color: Colors.white,
                         disabledColor: Colors.white24,
-                        tooltip: 'PÃƒÂ©riode prÃƒÂ©cÃƒÂ©dente',
+                        tooltip: 'Période précédente',
                         icon: const Icon(Icons.chevron_left_rounded),
                         onPressed: _offset >= _maxOffset
                             ? null
@@ -471,7 +469,7 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
                         iconSize: 30,
                         color: Colors.white,
                         disabledColor: Colors.white24,
-                        tooltip: 'PÃƒÂ©riode suivante',
+                        tooltip: 'Période suivante',
                         icon: const Icon(Icons.chevron_right_rounded),
                         onPressed: _offset == 0 ? null : () => _decaler(-1),
                       ),
@@ -490,7 +488,7 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
                     ),
                   ),
                   Text(
-                    'Commission ${TravelFee.fcfa(commission)} Ã‚Â· '
+                    'Commission ${TravelFee.fcfa(commission)} · '
                     'Net ${formaterFcfaSigne(net)}',
                     style: const TextStyle(
                       color: AppColors.navyOnDark,
@@ -511,7 +509,7 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
     return Semantics(
       button: true,
       selected: choisi,
-      label: 'PÃƒÂ©riode : ${f.libelle}',
+      label: 'Période : ${f.libelle}',
       excludeSemantics: true,
       child: Material(
         color: choisi ? Colors.white : Colors.white.withValues(alpha: 0.14),
@@ -566,7 +564,7 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
                     ),
                   ),
                   Text(
-                    '${_jourCourt(m.createdAt)} Ã‚Â· ${_hm(m.createdAt)}',
+                    '${_jourCourt(m.createdAt)} · ${_hm(m.createdAt)}',
                     style: TextStyle(
                       fontSize: 14,
                       color: context.textSecondary,
@@ -629,7 +627,7 @@ class _ProviderEarningsScreenState extends State<ProviderEarningsScreen> {
                     ),
                   ),
                   Text(
-                    '${_jourCourt(t.createdAt)} Ã‚Â· ${_hm(t.createdAt)}',
+                    '${_jourCourt(t.createdAt)} · ${_hm(t.createdAt)}',
                     style: TextStyle(
                       fontSize: 13.5,
                       color: context.textSecondary,
@@ -677,7 +675,7 @@ class _Barre {
   final bool accent;
 }
 
-/// Histogramme : valeurs affichÃƒÂ©es seulement pour 7 barres ou moins.
+/// Histogramme : valeurs affichées seulement pour 7 barres ou moins.
 class _Graphique extends StatelessWidget {
   const _Graphique({required this.barres});
 
@@ -696,7 +694,7 @@ class _Graphique extends StatelessWidget {
     if (barres.isEmpty) {
       return const Padding(
         padding: EdgeInsets.all(12),
-        child: Text('Aucune donnÃƒÂ©e.', style: TextStyle(fontSize: 15)),
+        child: Text('Aucune donnée.', style: TextStyle(fontSize: 15)),
       );
     }
     final scheme = Theme.of(context).colorScheme;

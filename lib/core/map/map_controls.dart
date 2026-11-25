@@ -7,10 +7,10 @@ import 'package:montotem/core/theme/app_colors.dart';
 import 'package:montotem/core/map/heading_service.dart';
 import 'package:montotem/core/map/map_config.dart';
 
-/// Colonne de commandes : zoom +/Ã¢Ë†â€™, boussole rÃƒÂ©elle, Ã‚Â« ma position Ã‚Â».
+/// Colonne de commandes : zoom +/−, boussole réelle, « ma position ».
 ///
-/// Ãƒâ‚¬ placer DANS les `children` du FlutterMap (elle lit la camÃƒÂ©ra de la carte).
-/// Rotation : ÃƒÂ  deux doigts sur la carte, dans tous les sens.
+/// À placer DANS les `children` du FlutterMap (elle lit la caméra de la carte).
+/// Rotation : à deux doigts sur la carte, dans tous les sens.
 class MapControls extends StatefulWidget {
   const MapControls({
     super.key,
@@ -60,14 +60,14 @@ class _MapControlsState extends State<MapControls>
     if (!mounted) return;
     setState(() => _heading = h);
     if (!_follow) return;
-    // Mode Ã‚Â« suivre ma direction Ã‚Â» : l'avant du tÃƒÂ©lÃƒÂ©phone pointe vers le haut.
+    // Mode « suivre ma direction » : l'avant du téléphone pointe vers le haut.
     final now = DateTime.now();
     if (now.difference(_lastRotate).inMilliseconds < 80) return;
     _lastRotate = now;
     MapController.of(context).rotate(-h);
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Animations Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Animations ──────────────────────────────────────────────────────────
 
   void _animate(void Function(double t) step) {
     void listener() => step(Curves.easeOutCubic.transform(_anim.value));
@@ -141,14 +141,14 @@ class _MapControlsState extends State<MapControls>
             ),
             const SizedBox(height: 8),
             _RoundButton(
-              tooltip: 'Zoom arriÃƒÂ¨re',
+              tooltip: 'Zoom arrière',
               onTap: atMin ? null : () => _zoomBy(-1),
               child: const Icon(Icons.remove_rounded),
             ),
             const SizedBox(height: 8),
             _RoundButton(
               tooltip: _follow
-                  ? 'ArrÃƒÂªter de suivre ma direction'
+                  ? 'Arrêter de suivre ma direction'
                   : 'Boussole : touchez pour suivre votre direction '
                         '(ou remettre le nord en haut)',
               highlighted: _follow,
@@ -251,7 +251,7 @@ class _HeadingLabel extends StatelessWidget {
         ],
       ),
       child: Text(
-        '${HeadingService.cardinal(heading)} ${heading.round()}Ã‚Â°',
+        '${HeadingService.cardinal(heading)} ${heading.round()}°',
         style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800),
       ),
     );

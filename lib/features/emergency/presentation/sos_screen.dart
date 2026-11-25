@@ -18,8 +18,8 @@ import 'package:montotem/features/emergency/data/emergency_preparation.dart';
 import 'package:montotem/features/emergency/domain/emergency_models.dart';
 
 /// SOS : situation, questions, choix du service, confirmation, appel.
-/// Aucun appel n'est lancÃƒÂ© sans que l'utilisateur l'ait confirmÃƒÂ©.
-/// Aucun compte requis, aucune requÃƒÂªte rÃƒÂ©seau nÃƒÂ©cessaire.
+/// Aucun appel n'est lancé sans que l'utilisateur l'ait confirmé.
+/// Aucun compte requis, aucune requête réseau nécessaire.
 class SosScreen extends StatefulWidget {
   const SosScreen({super.key, this.initialType});
 
@@ -97,7 +97,7 @@ class _SosScreenState extends State<SosScreen> {
   void _msg(String m) =>
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(m)));
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ DÃƒÂ©roulement Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Déroulement ──────────────────────────────────────────────────────────
 
   void _choisir(EmergencyType t) {
     setState(() {
@@ -141,15 +141,15 @@ class _SosScreenState extends State<SosScreen> {
     }
   }
 
-  /// Demande toujours confirmation : le client dÃƒÂ©cide.
+  /// Demande toujours confirmation : le client décide.
   Future<void> _confirmerEtAppeler(String libelle, String numero) async {
     final res = _resolution;
     final pays = res.pays;
     final attention = <String>[
       if (res.ambigu && !res.choisi)
-        'Vous ÃƒÂªtes prÃƒÂ¨s d\'une frontiÃƒÂ¨re : vÃƒÂ©rifiez le pays (${pays.nom}).',
+        'Vous êtes près d\'une frontière : vérifiez le pays (${pays.nom}).',
       if (pays.confiance == Confiance.aConfirmer && pays.code != '--')
-        'NumÃƒÂ©ro ÃƒÂ  confirmer pour ${pays.nom}. Si l\'appel n\'aboutit pas, '
+        'Numéro à confirmer pour ${pays.nom}. Si l\'appel n\'aboutit pas, '
             'essayez le 112.',
     ];
 
@@ -201,29 +201,29 @@ class _SosScreenState extends State<SosScreen> {
     if (!mounted) return;
     setState(
       () => _appelLance = lance
-          ? 'Appel du $numero lancÃƒÂ©. Si la communication est coupÃƒÂ©e, rappelez.'
+          ? 'Appel du $numero lancé. Si la communication est coupée, rappelez.'
           : null,
     );
     if (!lance) {
-      _msg('Impossible de lancer l\'appel. Composez le $numero ÃƒÂ  la main.');
+      _msg('Impossible de lancer l\'appel. Composez le $numero à la main.');
     }
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Position, proche, pays Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Position, proche, pays ───────────────────────────────────────────────
 
   Future<bool> _definirContact() async {
     final c = TextEditingController(text: _contact ?? '');
     final res = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('PrÃƒÂ©venir un proche'),
+        title: const Text('Prévenir un proche'),
         content: TextField(
           controller: c,
           autofocus: true,
           keyboardType: TextInputType.phone,
           style: const TextStyle(fontSize: 20),
           decoration: const InputDecoration(
-            labelText: 'NumÃƒÂ©ro du proche',
+            labelText: 'Numéro du proche',
             hintText: '+229 01 97 00 00 00',
           ),
         ),
@@ -266,7 +266,7 @@ class _SosScreenState extends State<SosScreen> {
             '${p.latitude.toStringAsFixed(5)}, ${p.longitude.toStringAsFixed(5)}',
       ),
     );
-    if (mounted) _msg('CoordonnÃƒÂ©es copiÃƒÂ©es.');
+    if (mounted) _msg('Coordonnées copiées.');
   }
 
   Future<void> _confirmerPays(CountryNumbers c) async {
@@ -296,7 +296,7 @@ class _SosScreenState extends State<SosScreen> {
           _ligneChoixPays(
             ctx,
             null,
-            'DÃƒÂ©tection automatique',
+            'Détection automatique',
             'Selon votre position GPS',
           ),
           for (final p in _numeros.pays)
@@ -304,14 +304,14 @@ class _SosScreenState extends State<SosScreen> {
               ctx,
               p.code,
               p.nom,
-              'Police ${p.police} Ã‚Â· Pompiers ${p.fire} Ã‚Â· Urgences ${p.ambulance}'
-              '${p.confiance == Confiance.officiel ? '' : ' Ã‚Â· ÃƒÂ  confirmer'}',
+              'Police ${p.police} · Pompiers ${p.fire} · Urgences ${p.ambulance}'
+              '${p.confiance == Confiance.officiel ? '' : ' · à confirmer'}',
             ),
           _ligneChoixPays(
             ctx,
             '--',
-            'NumÃƒÂ©ro international',
-            'Appel du 112 (fonctionne sur de nombreux rÃƒÂ©seaux)',
+            'Numéro international',
+            'Appel du 112 (fonctionne sur de nombreux réseaux)',
           ),
         ],
       ),
@@ -371,7 +371,7 @@ class _SosScreenState extends State<SosScreen> {
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ UI Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── UI ───────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -447,8 +447,8 @@ class _SosScreenState extends State<SosScreen> {
           const SizedBox(width: 10),
           const Expanded(
             child: Text(
-              'Hors ligne : le SOS fonctionne quand mÃƒÂªme. Les appels passent '
-              'par le rÃƒÂ©seau tÃƒÂ©lÃƒÂ©phonique.',
+              'Hors ligne : le SOS fonctionne quand même. Les appels passent '
+              'par le réseau téléphonique.',
               style: TextStyle(
                 fontSize: 15.5,
                 fontWeight: FontWeight.w700,
@@ -506,7 +506,7 @@ class _SosScreenState extends State<SosScreen> {
           if (res.ambigu && !res.choisi) ...[
             const SizedBox(height: 8),
             Text(
-              'Vous ÃƒÂªtes prÃƒÂ¨s d\'une frontiÃƒÂ¨re : confirmez votre pays.',
+              'Vous êtes près d\'une frontière : confirmez votre pays.',
               style: TextStyle(
                 fontSize: 15.5,
                 fontWeight: FontWeight.w800,
@@ -539,8 +539,8 @@ class _SosScreenState extends State<SosScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 6),
               child: Text(
-                'NumÃƒÂ©ros recoupÃƒÂ©s entre plusieurs sources publiques, pas encore '
-                'confirmÃƒÂ©s par l\'autoritÃƒÂ© nationale.',
+                'Numéros recoupés entre plusieurs sources publiques, pas encore '
+                'confirmés par l\'autorité nationale.',
                 style: TextStyle(fontSize: 14, color: context.textSecondary),
               ),
             )
@@ -548,7 +548,7 @@ class _SosScreenState extends State<SosScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 6),
               child: Text(
-                'NumÃƒÂ©ros ÃƒÂ  confirmer pour ce pays : vÃƒÂ©rifiez avant d\'appeler.',
+                'Numéros à confirmer pour ce pays : vérifiez avant d\'appeler.',
                 style: TextStyle(fontSize: 14.5, color: avertissement),
               ),
             ),
@@ -569,8 +569,8 @@ class _SosScreenState extends State<SosScreen> {
       Padding(
         padding: const EdgeInsets.only(bottom: 14),
         child: Text(
-          'RÃƒÂ©pondez ÃƒÂ  quelques questions, puis vous choisirez qui appeler. '
-          'Rien n\'est appelÃƒÂ© sans votre confirmation.',
+          'Répondez à quelques questions, puis vous choisirez qui appeler. '
+          'Rien n\'est appelé sans votre confirmation.',
           style: TextStyle(
             fontSize: 16,
             height: 1.4,
@@ -587,7 +587,7 @@ class _SosScreenState extends State<SosScreen> {
             _TuileUrgence(type: t, onTap: () => _choisir(t)),
         ],
       ),
-      const SectionTitle('Vous connaissez dÃƒÂ©jÃƒÂ  le numÃƒÂ©ro ?'),
+      const SectionTitle('Vous connaissez déjà le numéro ?'),
       AdaptiveGrid(
         minItemWidth: 260,
         maxColumns: 3,
@@ -604,7 +604,7 @@ class _SosScreenState extends State<SosScreen> {
       ),
       const SizedBox(height: 8),
       Text(
-        'Ce bouton prÃƒÂ©pare l\'appel au service de secours officiel de votre '
+        'Ce bouton prépare l\'appel au service de secours officiel de votre '
         'pays. MONTOTEM n\'est pas un service de secours.',
         style: TextStyle(
           fontSize: 14.5,
@@ -692,14 +692,14 @@ class _SosScreenState extends State<SosScreen> {
   Widget? _avertissementNumeros(ResolutionPays res) {
     if (res.ambigu && !res.choisi) {
       return _carteConsigne(
-        'Vous ÃƒÂªtes prÃƒÂ¨s d\'une frontiÃƒÂ¨re : confirmez votre pays en haut de '
-        'l\'ÃƒÂ©cran avant d\'appeler.',
+        'Vous êtes près d\'une frontière : confirmez votre pays en haut de '
+        'l\'écran avant d\'appeler.',
       );
     }
     if (res.pays.confiance == Confiance.aConfirmer && res.pays.code != '--') {
       return _carteConsigne(
-        'NumÃƒÂ©ros ÃƒÂ  confirmer pour ${res.pays.nom}. VÃƒÂ©rifiez le numÃƒÂ©ro avant '
-        'd\'appeler. Si l\'appel n\'aboutit pas, essayez le numÃƒÂ©ro gÃƒÂ©nÃƒÂ©ral '
+        'Numéros à confirmer pour ${res.pays.nom}. Vérifiez le numéro avant '
+        'd\'appeler. Si l\'appel n\'aboutit pas, essayez le numéro général '
         'ou le 112.',
       );
     }
@@ -722,7 +722,7 @@ class _SosScreenState extends State<SosScreen> {
         ),
       ),
       Text(
-        'C\'est vous qui dÃƒÂ©cidez. Rien n\'est appelÃƒÂ© sans votre confirmation.',
+        'C\'est vous qui décidez. Rien n\'est appelé sans votre confirmation.',
         style: TextStyle(
           fontSize: 16.5,
           height: 1.4,
@@ -781,15 +781,14 @@ class _SosScreenState extends State<SosScreen> {
         Padding(
           padding: const EdgeInsets.only(bottom: 12),
           child: AppButton(
-            label: 'Essayer le numÃƒÂ©ro gÃƒÂ©nÃƒÂ©ral : $general',
+            label: 'Essayer le numéro général : $general',
             icon: Icons.call_rounded,
             variant: AppButtonVariant.secondary,
-            onPressed: () =>
-                _confirmerEtAppeler('NumÃƒÂ©ro gÃƒÂ©nÃƒÂ©ral', general),
+            onPressed: () => _confirmerEtAppeler('Numéro général', general),
           ),
         ),
       if (plan.consigne != null) ...[_carteConsigne(plan.consigne!)],
-      const SectionTitle('Ce que vous pouvez dire ÃƒÂ  l\'opÃƒÂ©rateur'),
+      const SectionTitle('Ce que vous pouvez dire à l\'opérateur'),
       SoftCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -890,7 +889,7 @@ class _SosScreenState extends State<SosScreen> {
                 SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'Recherche de votre position GPSÃ¢â‚¬Â¦',
+                    'Recherche de votre position GPS…',
                     style: TextStyle(fontSize: 16.5),
                   ),
                 ),
@@ -914,7 +913,7 @@ class _SosScreenState extends State<SosScreen> {
                   ),
                 ),
                 Text(
-                  'PrÃƒÂ©cision : environ ${p.accuracy.round()} m',
+                  'Précision : environ ${p.accuracy.round()} m',
                   style: TextStyle(fontSize: 15, color: context.textSecondary),
                 ),
                 const SizedBox(height: 12),
@@ -931,7 +930,7 @@ class _SosScreenState extends State<SosScreen> {
                     const SizedBox(width: 10),
                     Expanded(
                       child: AppButton(
-                        label: 'SMS ÃƒÂ  un proche',
+                        label: 'SMS à un proche',
                         icon: Icons.sms_outlined,
                         onPressed: _sms,
                       ),
@@ -941,7 +940,7 @@ class _SosScreenState extends State<SosScreen> {
                 if (_contact != null)
                   TextButton(
                     onPressed: _definirContact,
-                    child: Text('Proche enregistrÃƒÂ© : $_contact (changer)'),
+                    child: Text('Proche enregistré : $_contact (changer)'),
                   ),
               ],
             ),
@@ -958,7 +957,7 @@ class _SosScreenState extends State<SosScreen> {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                '${kind.libelleLieu} : disponible dÃƒÂ¨s que votre position est trouvÃƒÂ©e.',
+                '${kind.libelleLieu} : disponible dès que votre position est trouvée.',
                 style: const TextStyle(fontSize: 15.5),
               ),
             ),
@@ -980,8 +979,8 @@ class _SosScreenState extends State<SosScreen> {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                '${kind.libelleLieu} : aucun ÃƒÂ©tablissement enregistrÃƒÂ©. Ouvrez les '
-                'services d\'urgence avec internet pour prÃƒÂ©parer votre zone.',
+                '${kind.libelleLieu} : aucun établissement enregistré. Ouvrez les '
+                'services d\'urgence avec internet pour préparer votre zone.',
                 style: const TextStyle(fontSize: 15.5, height: 1.35),
               ),
             ),
@@ -1011,7 +1010,7 @@ class _SosScreenState extends State<SosScreen> {
                   ),
                 ),
                 Text(
-                  '${r.km.toStringAsFixed(1)} km ÃƒÂ  vol d\'oiseau Ã‚Â· ItinÃƒÂ©raire',
+                  '${r.km.toStringAsFixed(1)} km à vol d\'oiseau · Itinéraire',
                   style: TextStyle(fontSize: 15, color: context.textSecondary),
                 ),
               ],
@@ -1086,7 +1085,7 @@ class _TuileUrgence extends StatelessWidget {
   }
 }
 
-/// Un service de secours : numÃƒÂ©ro et bouton d'appel (avec confirmation).
+/// Un service de secours : numéro et bouton d'appel (avec confirmation).
 class _CarteService extends StatelessWidget {
   const _CarteService({
     required this.kind,
@@ -1130,7 +1129,7 @@ class _CarteService extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'NumÃƒÂ©ro : $numero',
+                      'Numéro : $numero',
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
@@ -1148,7 +1147,7 @@ class _CarteService extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: StatusPill(
-                  label: 'Utile d\'aprÃƒÂ¨s vos rÃƒÂ©ponses',
+                  label: 'Utile d\'après vos réponses',
                   color: kind.couleur,
                   icon: Icons.info_outline_rounded,
                 ),

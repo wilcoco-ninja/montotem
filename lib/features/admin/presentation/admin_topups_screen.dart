@@ -8,9 +8,9 @@ import 'package:montotem/core/utils/travel_fee.dart';
 import 'package:montotem/core/widgets/app_ui.dart';
 import 'package:montotem/features/admin/data/admin_topup_service.dart';
 
-/// Recharges de wallet dÃƒÂ©clarÃƒÂ©es par les prestataires (Mobile Money).
-/// L'admin vÃƒÂ©rifie dans son application MoMo que l'argent est reÃƒÂ§u, puis
-/// valide : le wallet est crÃƒÂ©ditÃƒÂ© immÃƒÂ©diatement (et dÃƒÂ©bloquÃƒÂ© si besoin).
+/// Recharges de wallet déclarées par les prestataires (Mobile Money).
+/// L'admin vérifie dans son application MoMo que l'argent est reçu, puis
+/// valide : le wallet est crédité immédiatement (et débloqué si besoin).
 class AdminTopupsScreen extends StatefulWidget {
   const AdminTopupsScreen({super.key});
 
@@ -20,9 +20,9 @@ class AdminTopupsScreen extends StatefulWidget {
 
 class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
   static const _filtres = <String, String>{
-    'awaiting_validation': 'Ãƒâ‚¬ vÃƒÂ©rifier',
-    'approved': 'ValidÃƒÂ©es',
-    'rejected': 'RefusÃƒÂ©es',
+    'awaiting_validation': 'À vérifier',
+    'approved': 'Validées',
+    'rejected': 'Refusées',
   };
 
   final AdminTopupService _service = AdminTopupService();
@@ -85,7 +85,7 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Actions Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Actions ──────────────────────────────────────────────────────────────
 
   Future<void> _valider(Map<String, dynamic> d) async {
     final id = '${d['id']}';
@@ -93,12 +93,12 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
     final confirme = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Argent bien reÃƒÂ§u ?'),
+        title: const Text('Argent bien reçu ?'),
         content: Text(
-          'Avant de valider, vÃƒÂ©rifiez dans votre application '
+          'Avant de valider, vérifiez dans votre application '
           '${_operateur(d['operateur'])} que la transaction ${d['transaction_ref']} '
-          'de $montant est bien arrivÃƒÂ©e.\n\n'
-          'Valider crÃƒÂ©ditera immÃƒÂ©diatement le wallet du prestataire.',
+          'de $montant est bien arrivée.\n\n'
+          'Valider créditera immédiatement le wallet du prestataire.',
           style: const TextStyle(fontSize: 16, height: 1.4),
         ),
         actions: [
@@ -109,7 +109,7 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
           FilledButton.icon(
             onPressed: () => Navigator.pop(ctx, true),
             icon: const Icon(Icons.check),
-            label: const Text('Oui, crÃƒÂ©diter'),
+            label: const Text('Oui, créditer'),
           ),
         ],
       ),
@@ -120,7 +120,7 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
     try {
       await _service.valider(id);
       if (!mounted) return;
-      _message('Wallet crÃƒÂ©ditÃƒÂ©, le prestataire est notifiÃƒÂ©.');
+      _message('Wallet crédité, le prestataire est notifié.');
       await _charger(silencieux: true);
     } catch (e) {
       if (!mounted) return;
@@ -144,8 +144,8 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
           textCapitalization: TextCapitalization.sentences,
           style: const TextStyle(fontSize: 16),
           decoration: const InputDecoration(
-            labelText: 'Motif (envoyÃƒÂ© au prestataire)',
-            hintText: 'Ex. : montant non reÃƒÂ§u, rÃƒÂ©fÃƒÂ©rence introuvable',
+            labelText: 'Motif (envoyé au prestataire)',
+            hintText: 'Ex. : montant non reçu, référence introuvable',
           ),
         ),
         actions: [
@@ -174,7 +174,7 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
     try {
       await _service.refuser(id, motif);
       if (!mounted) return;
-      _message('Recharge refusÃƒÂ©e, le prestataire est notifiÃƒÂ©.');
+      _message('Recharge refusée, le prestataire est notifié.');
       await _charger(silencieux: true);
     } catch (e) {
       if (!mounted) return;
@@ -196,11 +196,11 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
     await Clipboard.setData(ClipboardData(text: texte));
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('CopiÃƒÂ©'), duration: Duration(seconds: 1)),
+      const SnackBar(content: Text('Copié'), duration: Duration(seconds: 1)),
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Aides d'affichage Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Aides d'affichage ────────────────────────────────────────────────────
 
   String _nettoyer(Object e) => e.toString().replaceFirst('Exception: ', '');
 
@@ -223,7 +223,7 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
   Map<String, dynamic> _map(dynamic v) =>
       v is Map ? Map<String, dynamic>.from(v) : <String, dynamic>{};
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Interface Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Interface ────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -287,8 +287,8 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
             EmptyState(
               icon: Icons.account_balance_wallet_outlined,
               title: _filtre == 'awaiting_validation'
-                  ? 'Aucune recharge ÃƒÂ  vÃƒÂ©rifier'
-                  : 'Aucun ÃƒÂ©lÃƒÂ©ment',
+                  ? 'Aucune recharge à vérifier'
+                  : 'Aucun élément',
             ),
           ],
         ),
@@ -320,9 +320,9 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
     final enCours = _actionEnCoursId == id;
 
     final (couleur, libelle) = switch (statut) {
-      'approved' => (scheme.secondary, 'ValidÃƒÂ©e'),
-      'rejected' => (scheme.error, 'RefusÃƒÂ©e'),
-      _ => (scheme.tertiary, 'Ãƒâ‚¬ vÃƒÂ©rifier'),
+      'approved' => (scheme.secondary, 'Validée'),
+      'rejected' => (scheme.error, 'Refusée'),
+      _ => (scheme.tertiary, 'À vérifier'),
     };
 
     return SoftCard(
@@ -349,27 +349,27 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
           if (('${prov['metier'] ?? ''}').isNotEmpty)
             Text(
               '${prov['metier']}'
-              '${('${prov['ville'] ?? ''}').isNotEmpty ? ' Ã¢â‚¬Â¢ ${prov['ville']}' : ''}',
+              '${('${prov['ville'] ?? ''}').isNotEmpty ? ' • ${prov['ville']}' : ''}',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontSize: 14, color: context.textSecondary),
             ),
           const Divider(height: 20),
           _ligne('Montant', TravelFee.fcfa(_int(d['amount_fcfa'])), fort: true),
-          _ligne('OpÃƒÂ©rateur', _operateur(d['operateur'])),
+          _ligne('Opérateur', _operateur(d['operateur'])),
           _ligne(
-            'PayÃƒÂ© depuis',
+            'Payé depuis',
             '${d['payer_phone']}',
             copie: '${d['payer_phone']}',
           ),
           _ligne(
-            'RÃƒÂ©fÃƒÂ©rence',
+            'Référence',
             '${d['transaction_ref']}',
             copie: '${d['transaction_ref']}',
           ),
-          _ligne('DÃƒÂ©clarÃƒÂ©e le', _date(d['created_at'])),
+          _ligne('Déclarée le', _date(d['created_at'])),
           if (statut != 'awaiting_validation' && d['reviewed_at'] != null)
-            _ligne('TraitÃƒÂ©e le', _date(d['reviewed_at'])),
+            _ligne('Traitée le', _date(d['reviewed_at'])),
           if (statut == 'rejected' &&
               ('${d['rejection_reason'] ?? ''}').isNotEmpty)
             _ligne('Motif du refus', '${d['rejection_reason']}'),
@@ -412,7 +412,7 @@ class _AdminTopupsScreenState extends State<AdminTopupsScreen> {
                     child: FilledButton.icon(
                       onPressed: () => _valider(d),
                       icon: const Icon(Icons.check_rounded),
-                      label: const Text('CrÃƒÂ©diter'),
+                      label: const Text('Créditer'),
                       style: FilledButton.styleFrom(
                         backgroundColor: AppColors.successText,
                       ),

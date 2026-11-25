@@ -4,22 +4,22 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:montotem/core/theme/app_colors.dart';
 
-/// ThÃƒÂ¨me Material 3 de MONTOTEM (clair + sombre).
+/// Thème Material 3 de MONTOTEM (clair + sombre).
 ///
-/// Toutes les couleurs viennent de [AppColors] (source unique, AAA validÃƒÂ©).
-/// Les constantes `AppTheme.primaryColor`, `errorColor`, etc. sont conservÃƒÂ©es
-/// pour ne casser aucun ÃƒÂ©cran existant : elles pointent vers la nouvelle
+/// Toutes les couleurs viennent de [AppColors] (source unique, AAA validé).
+/// Les constantes `AppTheme.primaryColor`, `errorColor`, etc. sont conservées
+/// pour ne casser aucun écran existant : elles pointent vers la nouvelle
 /// palette.
 ///
-/// CompatibilitÃƒÂ© anciennes versions d'OS :
-///  - InkRipple (et non InkSparkle, qui dÃƒÂ©pend de shaders Android 12+) ;
-///  - transitions de page : celles par dÃƒÂ©faut de Flutter (ne pas les
-///    redÃƒÂ©finir ici) ;
-///  - style de barre d'ÃƒÂ©tat explicite pour rester lisible partout.
+/// Compatibilité anciennes versions d'OS :
+///  - InkRipple (et non InkSparkle, qui dépend de shaders Android 12+) ;
+///  - transitions de page : celles par défaut de Flutter (ne pas les
+///    redéfinir ici) ;
+///  - style de barre d'état explicite pour rester lisible partout.
 class AppTheme {
   AppTheme._();
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Palette (alias vers AppColors) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Palette (alias vers AppColors) ───────────────────────────────────────
   static const Color primaryColor = AppColors.navy;
   static const Color primaryDark = Color(0xFF071A33);
   static const Color primaryLight = AppColors.navyOnDark;
@@ -31,12 +31,12 @@ class AppTheme {
   static const Color successColor = AppColors.success;
   static const Color errorColor = AppColors.emergency;
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Rayons harmonisÃƒÂ©s (boutons 16, cartes 20) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Rayons harmonisés (boutons 16, cartes 20) ────────────────────────────
   static const double radiusSm = 12;
   static const double radiusMd = 16;
   static const double radiusLg = 20;
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Tailles tactiles (confort sur la route / en mouvement) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Tailles tactiles (confort sur la route / en mouvement) ───────────────
   /// Surface de frappe minimale absolue.
   static const double minTap = 52;
 
@@ -48,7 +48,7 @@ class AppTheme {
     final ink = brightness == Brightness.light
         ? AppColors.inkLight
         : AppColors.inkDark;
-    // La police est appliquÃƒÂ©e style par style (ÃƒÂ©vite le conflit de types
+    // La police est appliquée style par style (évite le conflit de types
     // TextTheme selon la version de google_fonts/Flutter).
     TextStyle? f(TextStyle? s) =>
         s == null ? null : GoogleFonts.plusJakartaSans(textStyle: s);
@@ -166,7 +166,7 @@ class AppTheme {
       visualDensity: VisualDensity.adaptivePlatformDensity,
       materialTapTargetSize: MaterialTapTargetSize.padded,
 
-      // Ã¢â€â‚¬Ã¢â€â‚¬ AppBar plate et ÃƒÂ©purÃƒÂ©e Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+      // ── AppBar plate et épurée ─────────────────────────────────────────
       appBarTheme: AppBarTheme(
         backgroundColor: bg,
         foregroundColor: ink,
@@ -189,7 +189,7 @@ class AppTheme {
         thumbColor: WidgetStatePropertyAll(ink.withValues(alpha: 0.35)),
       ),
 
-      // Ã¢â€â‚¬Ã¢â€â‚¬ Cartes (Ã‚Â« SoftCards Ã‚Â» : profondeur ÃƒÂ©lÃƒÂ©gante) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+      // ── Cartes (« SoftCards » : profondeur élégante) ───────────────────
       cardTheme: CardThemeData(
         color: surface,
         elevation: 0,
@@ -202,7 +202,7 @@ class AppTheme {
         ),
       ),
 
-      // Ã¢â€â‚¬Ã¢â€â‚¬ Boutons : Ã¢â€°Â¥ 56 dp, rayon 16, ombre discrÃƒÂ¨te Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+      // ── Boutons : ≥ 56 dp, rayon 16, ombre discrète ────────────────────
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           minimumSize: const WidgetStatePropertyAll(Size(64, buttonHeight)),
@@ -320,7 +320,7 @@ class AppTheme {
           ),
         ),
       ),
-      // Avant : fond turquoise + texte blanc (2,3:1). DÃƒÂ©sormais bleu nuit.
+      // Avant : fond turquoise + texte blanc (2,3:1). Désormais bleu nuit.
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: accent,
         foregroundColor: onAccent,
@@ -330,7 +330,7 @@ class AppTheme {
         ),
       ),
 
-      // Ã¢â€â‚¬Ã¢â€â‚¬ Champs de saisie Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+      // ── Champs de saisie ───────────────────────────────────────────────
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: surface,
@@ -376,7 +376,7 @@ class AppTheme {
         ),
       ),
 
-      // Ã¢â€â‚¬Ã¢â€â‚¬ Divers Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+      // ── Divers ─────────────────────────────────────────────────────────
       chipTheme: ChipThemeData(
         backgroundColor: accent.withValues(alpha: 0.08),
         selectedColor: accent.withValues(alpha: 0.22),
