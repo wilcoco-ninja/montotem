@@ -19,11 +19,11 @@ enum _Methode { telephone, email }
 enum _Canal { sms, whatsapp }
 
 /// Porte CLIENT. Le client choisit comment se connecter :
-///  - TÃƒÂ©lÃƒÂ©phone : numÃƒÂ©ro + code reÃƒÂ§u par SMS ou par WhatsApp (au choix) ;
+///  - Téléphone : numéro + code reçu par SMS ou par WhatsApp (au choix) ;
 ///  - E-mail : adresse + mot de passe.
-/// Le numÃƒÂ©ro sert aussi ÃƒÂ  s'inscrire (un numÃƒÂ©ro inconnu crÃƒÂ©e le compte).
-/// Google / Facebook en complÃƒÂ©ment. Un compte prestataire ou admin est refusÃƒÂ©
-/// ici et orientÃƒÂ© vers sa propre porte.
+/// Le numéro sert aussi à s'inscrire (un numéro inconnu crée le compte).
+/// Google / Facebook en complément. Un compte prestataire ou admin est refusé
+/// ici et orienté vers sa propre porte.
 ///
 /// Routes : /login et /register/quick
 class ClientAuthScreen extends StatefulWidget {
@@ -67,7 +67,7 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
   @override
   void initState() {
     super.initState();
-    // Retour d'un Google / Facebook : la session apparaÃƒÂ®t ici.
+    // Retour d'un Google / Facebook : la session apparaît ici.
     _sub = Supabase.instance.client.auth.onAuthStateChange.listen((s) {
       if (s.event == AuthChangeEvent.signedIn &&
           s.session != null &&
@@ -117,9 +117,9 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
   }
 
   String? _validerTelephone(String? v) {
-    if (v == null || v.trim().isEmpty) return 'Entrez votre numÃƒÂ©ro';
+    if (v == null || v.trim().isEmpty) return 'Entrez votre numéro';
     if (!AuthService.isValidPhone(AuthService.normalizePhone(v))) {
-      return 'NumÃƒÂ©ro invalide. Exemple : 01 97 00 00 00';
+      return 'Numéro invalide. Exemple : 01 97 00 00 00';
     }
     return null;
   }
@@ -142,7 +142,7 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
     });
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ TÃƒÂ©lÃƒÂ©phone Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Téléphone ─────────────────────────────────────────────────────────
 
   Future<void> _envoyerCode() async {
     FocusScope.of(context).unfocus();
@@ -177,7 +177,7 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
     if (_loading) return;
     final code = _code.text.trim();
     if (code.length < 6) {
-      setState(() => _error = 'Entrez les 6 chiffres reÃƒÂ§us par $_nomCanal.');
+      setState(() => _error = 'Entrez les 6 chiffres reçus par $_nomCanal.');
       return;
     }
     setState(() {
@@ -219,7 +219,7 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
       if (!mounted) return;
       _demarrerCooldown();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Nouveau code envoyÃƒÂ© par $_nomCanal.')),
+        SnackBar(content: Text('Nouveau code envoyé par $_nomCanal.')),
       );
     } on QuickAuthException catch (e) {
       if (mounted) setState(() => _error = e.message);
@@ -237,7 +237,7 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
     });
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ E-mail + mot de passe Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── E-mail + mot de passe ─────────────────────────────────────────────
 
   Future<void> _connecterEmail() async {
     FocusScope.of(context).unfocus();
@@ -292,7 +292,7 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
     }
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ UI Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── UI ────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -305,9 +305,9 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
           ? 'Entrez le code'
           : (parEmail
                 ? 'Content de\nvous revoir'
-                : 'Un dÃƒÂ©panneur\npas loin de vous'),
+                : 'Un dépanneur\npas loin de vous'),
       subtitle: saisieCode
-          ? 'Code ÃƒÂ  6 chiffres envoyÃƒÂ© par $_nomCanal au $_e164'
+          ? 'Code à 6 chiffres envoyé par $_nomCanal au $_e164'
           : (parEmail
                 ? 'Connectez-vous avec votre e-mail et votre mot de passe.'
                 : 'Choisissez comment recevoir votre code, ou connectez-vous '
@@ -340,10 +340,7 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Vous ÃƒÂªtes prestataire ?',
-                style: TextStyle(color: muted),
-              ),
+              Text('Vous êtes prestataire ?', style: TextStyle(color: muted)),
               TextButton(
                 onPressed: _loading ? null : () => context.go('/pro/login'),
                 child: const Text(
@@ -386,7 +383,7 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
             ButtonSegment(
               value: _Methode.telephone,
               icon: Icon(Icons.phone_iphone_rounded, size: 18),
-              label: Text('TÃƒÂ©lÃƒÂ©phone'),
+              label: Text('Téléphone'),
             ),
             ButtonSegment(
               value: _Methode.email,
@@ -476,9 +473,9 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
             validator: _validerTelephone,
             onFieldSubmitted: (_) => _loading ? null : _envoyerCode(),
             decoration: const InputDecoration(
-              labelText: 'NumÃƒÂ©ro de tÃƒÂ©lÃƒÂ©phone',
+              labelText: 'Numéro de téléphone',
               hintText: '01 97 00 00 00',
-              helperText: 'BÃƒÂ©nin Ã‚Â· +229',
+              helperText: 'Bénin · +229',
               prefixIcon: Icon(Icons.phone_outlined),
               prefixText: '+229  ',
             ),
@@ -528,7 +525,7 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
                 onPressed: _loading
                     ? null
                     : () => context.push('/forgot-password'),
-                child: const Text('Mot de passe oubliÃƒÂ© ?'),
+                child: const Text('Mot de passe oublié ?'),
               ),
             ),
           ],
@@ -572,14 +569,14 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
           onPressed: (_loading || _cooldown > 0) ? null : _renvoyer,
         ),
         AppButton(
-          label: 'Recevoir plutÃƒÂ´t par $nomAutre',
+          label: 'Recevoir plutôt par $nomAutre',
           variant: AppButtonVariant.text,
           onPressed: (_loading || _cooldown > 0)
               ? null
               : () => _renvoyer(autreCanal: autre),
         ),
         AppButton(
-          label: 'Changer de numÃƒÂ©ro',
+          label: 'Changer de numéro',
           variant: AppButtonVariant.text,
           onPressed: _loading ? null : _changerNumero,
         ),
@@ -588,8 +585,8 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
   }
 }
 
-/// Six cases pour le code (SMS ou WhatsApp). Un vrai champ invisible reÃƒÂ§oit la saisie
-/// (clavier numÃƒÂ©rique, collage, remplissage automatique du SMS).
+/// Six cases pour le code (SMS ou WhatsApp). Un vrai champ invisible reçoit la saisie
+/// (clavier numérique, collage, remplissage automatique du SMS).
 class _CodeBoxes extends StatelessWidget {
   const _CodeBoxes({
     required this.controller,

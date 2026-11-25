@@ -8,7 +8,7 @@ import '../../../core/widgets/app_ui.dart';
 import '../../../core/widgets/client_ui.dart';
 import '../../requests/data/client_profile_service.dart';
 
-/// Onglet Ã‚Â« Compte Ã‚Â» de l'espace client.
+/// Onglet « Compte » de l'espace client.
 class ClientProfileScreen extends StatefulWidget {
   const ClientProfileScreen({super.key});
 
@@ -41,8 +41,8 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Se dÃƒÂ©connecter ?'),
-        content: const Text('Vous pourrez vous reconnecter ÃƒÂ  tout moment.'),
+        title: const Text('Se déconnecter ?'),
+        content: const Text('Vous pourrez vous reconnecter à tout moment.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
@@ -53,7 +53,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(ctx).colorScheme.error,
             ),
-            child: const Text('Se dÃƒÂ©connecter'),
+            child: const Text('Se déconnecter'),
           ),
         ],
       ),
@@ -61,14 +61,14 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
 
     if (ok != true) return;
 
-    // 1. DÃƒÂ©connexion explicite du client Supabase
+    // 1. Déconnexion explicite du client Supabase
     await Supabase.instance.client.auth.signOut();
 
-    // 2. Nettoyage ÃƒÂ©ventuel du cache local du service
+    // 2. Nettoyage éventuel du cache local du service
     try {
       await _service.deconnecter();
     } catch (_) {
-      // Ignorer si le service ne fait rien de spÃƒÂ©cifique
+      // Ignorer si le service ne fait rien de spécifique
     }
 
     if (!mounted) return;
@@ -107,7 +107,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
     final contact = [
       if ((p.phone ?? '').isNotEmpty) p.phone!,
       if ((p.email ?? '').isNotEmpty) p.email!,
-    ].join(' Ã‚Â· ');
+    ].join(' · ');
 
     return RefreshIndicator(
       onRefresh: _charger,
@@ -125,7 +125,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                   const ClientPageTitle('Compte'),
                   const SizedBox(height: 12),
 
-                  // Ã¢â€â‚¬Ã¢â€â‚¬ IdentitÃƒÂ© Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  // ── Identité ───────────────────────────────────────────
                   Row(
                     children: [
                       ClientAvatar(
@@ -168,7 +168,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Ã¢â€â‚¬Ã¢â€â‚¬ Points d'ÃƒÂ©toiles Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  // ── Points d'étoiles ───────────────────────────────────
                   ClientCard(
                     padding: const EdgeInsets.all(16),
                     child: Column(
@@ -184,7 +184,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                             const SizedBox(width: 12),
                             Expanded(
                               child: Text(
-                                '${p.starPoints} points d\'ÃƒÂ©toiles',
+                                '${p.starPoints} points d\'étoiles',
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w800,
@@ -196,7 +196,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                         const SizedBox(height: 8),
                         Text(
                           '+10 points par avis, +5 si votre commentaire fait '
-                          'au moins 20 caractÃƒÂ¨res.',
+                          'au moins 20 caractères.',
                           style: TextStyle(
                             fontSize: 14,
                             height: 1.4,
@@ -252,7 +252,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                   ),
                   const SizedBox(height: 16),
 
-                  // Ã¢â€â‚¬Ã¢â€â‚¬ Raccourcis Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  // ── Raccourcis ─────────────────────────────────────────
                   ClientGroup(
                     children: [
                       ClientListRow(
@@ -262,8 +262,8 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                       ),
                       ClientListRow(
                         icon: Icons.local_hospital_outlined,
-                        title: 'NumÃƒÂ©ros d\'urgence',
-                        subtitle: 'Pompiers, police, hÃƒÂ´pital',
+                        title: 'Numéros d\'urgence',
+                        subtitle: 'Pompiers, police, hôpital',
                         onTap: () => context.push('/emergency'),
                       ),
                     ],
@@ -273,7 +273,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                     children: [
                       ClientListRow(
                         icon: Icons.logout_rounded,
-                        title: 'Se dÃƒÂ©connecter',
+                        title: 'Se déconnecter',
                         destructive: true,
                         trailing: const SizedBox.shrink(),
                         onTap: _deconnecter,

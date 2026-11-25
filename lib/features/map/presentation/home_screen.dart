@@ -14,10 +14,10 @@ import '../../requests/domain/mission_model.dart';
 import '../../requests/presentation/mes_demandes_screen.dart';
 import '../../home/presentation/client_profile_screen.dart';
 
-/// Espace client MONTOTEM : Accueil Ã‚Â· Carte Ã‚Â· ActivitÃƒÂ© Ã‚Â· Compte.
+/// Espace client MONTOTEM : Accueil · Carte · Activité · Compte.
 ///
-/// Accueil = une recherche (Ã‚Â« OÃƒÂ¹ allez-vous ? Ã‚Â»), quatre services, un rail
-/// de vÃƒÂ©hicules pour le dÃƒÂ©pannage. Rien d'autre.
+/// Accueil = une recherche (« Où allez-vous ? »), quatre services, un rail
+/// de véhicules pour le dépannage. Rien d'autre.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final user = await _auth.fetchCurrentUser();
       if (mounted) setState(() => _prenom = user?.firstName);
     } catch (_) {
-      // Le message d'accueil reste gÃƒÂ©nÃƒÂ©rique.
+      // Le message d'accueil reste générique.
     }
   }
 
@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() => _active = actives.isEmpty ? null : actives.first);
       }
     } on MissionException {
-      // Affichage prÃƒÂ©cÃƒÂ©dent conservÃƒÂ©.
+      // Affichage précédent conservé.
     }
   }
 
@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
             selectedIcon: Icons.map_rounded,
           ),
           ClientNavItem(
-            label: 'ActivitÃƒÂ©',
+            label: 'Activité',
             icon: Icons.receipt_long_outlined,
             selectedIcon: Icons.receipt_long_rounded,
             showBadge: _active != null,
@@ -212,7 +212,7 @@ class _HomeTab extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // Ã¢â€â‚¬Ã¢â€â‚¬ En-tÃƒÂªte : salutation + avatar Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                      // ── En-tête : salutation + avatar ────────────────────
                       Row(
                         children: [
                           Expanded(
@@ -232,7 +232,7 @@ class _HomeTab extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  'OÃƒÂ¹ allons-nous aujourd\'hui ?',
+                                  'Où allons-nous aujourd\'hui ?',
                                   style: TextStyle(
                                     fontSize: 15,
                                     color: context.textSecondary,
@@ -251,13 +251,13 @@ class _HomeTab extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
 
-                      // Ã¢â€â‚¬Ã¢â€â‚¬ Recherche Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                      // ── Recherche ────────────────────────────────────────
                       ClientSearchPill(
-                        label: 'OÃƒÂ¹ allez-vous ?',
+                        label: 'Où allez-vous ?',
                         onTap: () => context.push('/ride/new'),
                       ),
 
-                      // Ã¢â€â‚¬Ã¢â€â‚¬ Demande en cours Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                      // ── Demande en cours ─────────────────────────────────
                       if (mission != null) ...[
                         const SizedBox(height: 16),
                         _CarteEnCours(
@@ -267,7 +267,7 @@ class _HomeTab extends StatelessWidget {
                         ),
                       ],
 
-                      // Ã¢â€â‚¬Ã¢â€â‚¬ Services Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                      // ── Services ─────────────────────────────────────────
                       const ClientSectionTitle('Services'),
                       LayoutBuilder(
                         builder: (context, c) {
@@ -276,7 +276,7 @@ class _HomeTab extends StatelessWidget {
                           final tuiles = <Widget>[
                             ClientServiceTile(
                               icon: Icons.two_wheeler_rounded,
-                              label: 'ZÃƒÂ©midjan',
+                              label: 'Zémidjan',
                               subtitle: 'Moto-taxi, prix fixe',
                               color: scheme.primary,
                               onTap: () =>
@@ -292,15 +292,15 @@ class _HomeTab extends StatelessWidget {
                             ),
                             ClientServiceTile(
                               icon: Icons.build_circle_rounded,
-                              label: 'DÃƒÂ©pannage',
-                              subtitle: 'Un pro vient ÃƒÂ  vous',
+                              label: 'Dépannage',
+                              subtitle: 'Un pro vient à vous',
                               color: AppColors.gold,
                               onTap: () => onOpenMap(),
                             ),
                             ClientServiceTile(
                               icon: Icons.local_hospital_rounded,
                               label: 'Urgences',
-                              subtitle: 'NumÃƒÂ©ros et secours',
+                              subtitle: 'Numéros et secours',
                               color: AppColors.emergencyStrong,
                               onTap: () => context.push('/emergency'),
                             ),
@@ -316,10 +316,8 @@ class _HomeTab extends StatelessWidget {
                         },
                       ),
 
-                      // Ã¢â€â‚¬Ã¢â€â‚¬ DÃƒÂ©pannage : rail de vÃƒÂ©hicules Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
-                      const ClientSectionTitle(
-                        'Quel vÃƒÂ©hicule est en panne ?',
-                      ),
+                      // ── Dépannage : rail de véhicules ────────────────────
+                      const ClientSectionTitle('Quel véhicule est en panne ?'),
                       Row(
                         children: [
                           for (var i = 0; i < _vehicules.length; i++) ...[
@@ -394,7 +392,7 @@ class _CarteEnCours extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${mission.providerName} Ã‚Â· ${mission.problem}',
+                  '${mission.providerName} · ${mission.problem}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -428,7 +426,7 @@ class _VehiculeBouton extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     return Semantics(
       button: true,
-      label: 'VÃƒÂ©hicule : $label',
+      label: 'Véhicule : $label',
       excludeSemantics: true,
       child: ClientCard(
         onTap: onTap,

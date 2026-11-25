@@ -5,19 +5,19 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/totem_icons.dart';
 
-/// DEUX PORTES Ã¢â‚¬â€ premiÃƒÂ¨re question aprÃƒÂ¨s le code SMS d'un futur prestataire.
+/// DEUX PORTES — première question après le code SMS d'un futur prestataire.
 ///
-/// Un conducteur de moto et un garagiste n'ont ni le mÃƒÂªme mÃƒÂ©tier, ni les
-/// mÃƒÂªmes habitudes, ni le mÃƒÂªme formulaire : on les sÃƒÂ©pare dÃƒÂ¨s la premiÃƒÂ¨re
+/// Un conducteur de moto et un garagiste n'ont ni le même métier, ni les
+/// mêmes habitudes, ni le même formulaire : on les sépare dès la première
 /// seconde, avec deux univers visuels distincts.
 ///
-///   porte 1 Ã‚Â· CONDUCTEUR  Ã¢â€ â€™ /register/transport
-///        ZÃƒÂ©midjan ou Tricycle Kloboto. Univers Ã‚Â« Cockpit Ã‚Â» : asphalte noir,
-///        jaune safran, boutons biseautÃƒÂ©s, route de progression.
+///   porte 1 · CONDUCTEUR  → /register/transport
+///        Zémidjan ou Tricycle Kloboto. Univers « Cockpit » : asphalte noir,
+///        jaune safran, boutons biseautés, route de progression.
 ///
-///   porte 2 Ã‚Â· DÃƒâ€°PANNEUR   Ã¢â€ â€™ /register/provider/depannage
-///        MÃƒÂ©canicien, vulcanisateur, ÃƒÂ©lectricien, station, garage.
-///        Univers Ã‚Â« Atelier Ã‚Â» : l'inscription en ÃƒÂ©tapes dÃƒÂ©jÃƒÂ  existante.
+///   porte 2 · DÉPANNEUR   → /register/provider/depannage
+///        Mécanicien, vulcanisateur, électricien, station, garage.
+///        Univers « Atelier » : l'inscription en étapes déjà existante.
 class ProviderKindChoiceScreen extends StatelessWidget {
   const ProviderKindChoiceScreen({super.key});
 
@@ -51,7 +51,7 @@ class ProviderKindChoiceScreen extends StatelessWidget {
                     const TotemIcon(TotemGlyph.mark, size: 40),
                     const SizedBox(width: 12),
                     Text(
-                      'MONTOTEM Ã‚Â· PRO',
+                      'MONTOTEM · PRO',
                       style: TextStyle(
                         fontSize: 13.5,
                         letterSpacing: 2.4,
@@ -63,7 +63,7 @@ class ProviderKindChoiceScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Quel est\nvotre mÃƒÂ©tier ?',
+                  'Quel est\nvotre métier ?',
                   style: TextStyle(
                     fontSize: 36,
                     height: 1.05,
@@ -73,17 +73,17 @@ class ProviderKindChoiceScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Deux inscriptions diffÃƒÂ©rentes, pensÃƒÂ©es pour chaque mÃƒÂ©tier.',
+                  'Deux inscriptions différentes, pensées pour chaque métier.',
                   style: TextStyle(fontSize: 16, height: 1.4, color: soft),
                 ),
                 const SizedBox(height: 24),
 
-                // Ã¢â€â‚¬Ã¢â€â‚¬ Porte 1 : Conducteur Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                // ── Porte 1 : Conducteur ───────────────────────────────
                 _Porte(
                   fond: const Color(0xFF0D0F12),
                   bord: AppColors.brandYellow,
                   titre: 'JE CONDUIS',
-                  sous: 'ZÃƒÂ©midjan ou Tricycle Kloboto.\nRecevez des courses autour de vous.',
+                  sous: 'Zémidjan ou Tricycle Kloboto.\nRecevez des courses autour de vous.',
                   couleurTitre: AppColors.brandYellow,
                   couleurTexte: const Color(0xFFF5F7FA),
                   biseaute: true,
@@ -101,19 +101,19 @@ class ProviderKindChoiceScreen extends StatelessWidget {
                       accent: AppColors.success,
                     ),
                   ],
-                  etiquette: '4 ÃƒÂ©tapes Ã‚Â· 3 minutes',
+                  etiquette: '4 étapes · 3 minutes',
                   onTap: () => context.go('/register/transport'),
                 ),
                 const SizedBox(height: 16),
 
-                // Ã¢â€â‚¬Ã¢â€â‚¬ Porte 2 : DÃƒÂ©panneur Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                // ── Porte 2 : Dépanneur ────────────────────────────────
                 _Porte(
                   fond: _atelier,
                   bord: _atelier,
-                  titre: 'JE DÃƒâ€°PANNE',
+                  titre: 'JE DÉPANNE',
                   sous:
-                      'MÃƒÂ©canicien, vulcanisateur, ÃƒÂ©lectricien, station, garage.\n'
-                      'Recevez des demandes de dÃƒÂ©pannage.',
+                      'Mécanicien, vulcanisateur, électricien, station, garage.\n'
+                      'Recevez des demandes de dépannage.',
                   couleurTitre: _onAtelier,
                   couleurTexte: _onAtelier,
                   biseaute: false,
@@ -125,7 +125,7 @@ class ProviderKindChoiceScreen extends StatelessWidget {
                       accent: _onAtelier,
                     ),
                   ],
-                  etiquette: 'Atelier Ã‚Â· prestations Ã‚Â· dÃƒÂ©placement',
+                  etiquette: 'Atelier · prestations · déplacement',
                   onTap: () => context.go('/register/provider/depannage'),
                 ),
                 const SizedBox(height: 22),
@@ -135,8 +135,8 @@ class ProviderKindChoiceScreen extends StatelessWidget {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'Dans les deux cas, votre identitÃƒÂ© est vÃƒÂ©rifiÃƒÂ©e avant '
-                        'les premiÃƒÂ¨res missions.',
+                        'Dans les deux cas, votre identité est vérifiée avant '
+                        'les premières missions.',
                         style: TextStyle(
                           fontSize: 14,
                           height: 1.35,
