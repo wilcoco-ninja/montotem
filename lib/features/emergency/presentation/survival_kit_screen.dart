@@ -12,13 +12,13 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/theme/totem_icons.dart';
 
-/// KIT DE SURVIE EN PANNE Ã¢â‚¬â€ route `/survie` (publique, sans compte).
+/// KIT DE SURVIE EN PANNE — route `/survie` (publique, sans compte).
 ///
-/// Cet ÃƒÂ©cran est volontairement 100 % statique : aucun appel rÃƒÂ©seau, aucune
-/// image ÃƒÂ  charger, aucune police ÃƒÂ  tÃƒÂ©lÃƒÂ©charger. Il s'ouvre donc instantanÃƒÂ©ment
-/// mÃƒÂªme sans internet, sous l'orage, la nuit, avec 3 % de batterie.
-/// Il est toujours sombre (noir OLED = ÃƒÂ©conomie de batterie + pas
-/// d'ÃƒÂ©blouissement la nuit).
+/// Cet écran est volontairement 100 % statique : aucun appel réseau, aucune
+/// image à charger, aucune police à télécharger. Il s'ouvre donc instantanément
+/// même sans internet, sous l'orage, la nuit, avec 3 % de batterie.
+/// Il est toujours sombre (noir OLED = économie de batterie + pas
+/// d'éblouissement la nuit).
 class SurvivalKitScreen extends StatefulWidget {
   const SurvivalKitScreen({super.key});
 
@@ -57,8 +57,8 @@ class _SurvivalKitScreenState extends State<SurvivalKitScreen> {
       SnackBar(
         content: Text(
           _contactEnregistre
-              ? 'Contact de confiance enregistrÃƒÂ© sur ce tÃƒÂ©lÃƒÂ©phone.'
-              : 'Contact supprimÃƒÂ©.',
+              ? 'Contact de confiance enregistré sur ce téléphone.'
+              : 'Contact supprimé.',
         ),
       ),
     );
@@ -87,19 +87,19 @@ class _SurvivalKitScreenState extends State<SurvivalKitScreen> {
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
                 children: [
-                  // Ã¢â€â‚¬Ã¢â€â‚¬ Bandeau d'ÃƒÂ©tat Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  // ── Bandeau d'état ────────────────────────────────────────
                   _EtatTelephone(power: power),
                   const SizedBox(height: 16),
 
-                  // Ã¢â€â‚¬Ã¢â€â‚¬ Action nÃ‚Â°1 : la plus importante Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  // ── Action n°1 : la plus importante ───────────────────────
                   _GrosBoutonSos(
                     onTap: () =>
                         DistressService.envoyerDetresse(context, power),
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'Le SMS part par le rÃƒÂ©seau tÃƒÂ©lÃƒÂ©phonique : il marche mÃƒÂªme sans '
-                    'internet. Le GPS du tÃƒÂ©lÃƒÂ©phone marche aussi sans internet.',
+                    'Le SMS part par le réseau téléphonique : il marche même sans '
+                    'internet. Le GPS du téléphone marche aussi sans internet.',
                     style: TextStyle(
                       color: scheme.onSurfaceVariant,
                       fontSize: 14.5,
@@ -108,7 +108,7 @@ class _SurvivalKitScreenState extends State<SurvivalKitScreen> {
                   ),
                   const SizedBox(height: 16),
 
-                  // Ã¢â€â‚¬Ã¢â€â‚¬ Contact de confiance Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  // ── Contact de confiance ──────────────────────────────────
                   _Bloc(
                     titre: 'Contact de confiance',
                     icone: Icons.favorite_rounded,
@@ -116,8 +116,8 @@ class _SurvivalKitScreenState extends State<SurvivalKitScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          'Le SMS de dÃƒÂ©tresse s\'adressera directement ÃƒÂ  cette '
-                          'personne. EnregistrÃƒÂ© sur ce tÃƒÂ©lÃƒÂ©phone uniquement.',
+                          'Le SMS de détresse s\'adressera directement à cette '
+                          'personne. Enregistré sur ce téléphone uniquement.',
                           style: TextStyle(
                             color: scheme.onSurfaceVariant,
                             fontSize: 14,
@@ -135,7 +135,7 @@ class _SurvivalKitScreenState extends State<SurvivalKitScreen> {
                           ],
                           maxLength: 20,
                           decoration: InputDecoration(
-                            labelText: 'NumÃƒÂ©ro (ex. +229 01 97 00 00 00)',
+                            labelText: 'Numéro (ex. +229 01 97 00 00 00)',
                             counterText: '',
                             prefixIcon: const Icon(Icons.phone_outlined),
                             suffixIcon: _contactEnregistre
@@ -158,7 +158,7 @@ class _SurvivalKitScreenState extends State<SurvivalKitScreen> {
                   ),
                   const SizedBox(height: 12),
 
-                  // Ã¢â€â‚¬Ã¢â€â‚¬ Balise lumineuse (nuit) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  // ── Balise lumineuse (nuit) ───────────────────────────────
                   _Bloc(
                     titre: 'Balise lumineuse',
                     icone: Icons.flashlight_on_rounded,
@@ -166,9 +166,9 @@ class _SurvivalKitScreenState extends State<SurvivalKitScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          'L\'ÃƒÂ©cran clignote en plein ÃƒÂ©cran pour ÃƒÂªtre vu de loin '
-                          'la nuit. Consomme de la batterie : ÃƒÂ  utiliser '
-                          'seulement quand des vÃƒÂ©hicules approchent.',
+                          'L\'écran clignote en plein écran pour être vu de loin '
+                          'la nuit. Consomme de la batterie : à utiliser '
+                          'seulement quand des véhicules approchent.',
                           style: TextStyle(
                             color: scheme.onSurfaceVariant,
                             fontSize: 14,
@@ -191,20 +191,20 @@ class _SurvivalKitScreenState extends State<SurvivalKitScreen> {
                   ),
                   const SizedBox(height: 12),
 
-                  // Ã¢â€â‚¬Ã¢â€â‚¬ Ãƒâ€°conomie d'ÃƒÂ©nergie Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  // ── Économie d'énergie ────────────────────────────────────
                   _Bloc(
-                    titre: 'Ãƒâ€°conomie d\'ÃƒÂ©nergie',
+                    titre: 'Économie d\'énergie',
                     icone: Icons.battery_saver_rounded,
                     enfant: SwitchListTile(
                       contentPadding: EdgeInsets.zero,
                       value: power.ecoManuel,
                       onChanged: (v) => power.definirEcoManuel(v),
                       title: const Text(
-                        'Mode ÃƒÂ©co MonTotem',
+                        'Mode éco MonTotem',
                         style: TextStyle(fontWeight: FontWeight.w800),
                       ),
                       subtitle: Text(
-                        'Fond noir pur, animations coupÃƒÂ©es. S\'active seul ÃƒÂ  20 % '
+                        'Fond noir pur, animations coupées. S\'active seul à 20 % '
                         'de batterie.',
                         style: TextStyle(color: scheme.onSurfaceVariant),
                       ),
@@ -212,10 +212,8 @@ class _SurvivalKitScreenState extends State<SurvivalKitScreen> {
                   ),
                   const SizedBox(height: 24),
 
-                  // Ã¢â€â‚¬Ã¢â€â‚¬ TÃƒÂ©lÃƒÂ©phone qui va s'ÃƒÂ©teindre Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
-                  const _TitreSection(
-                    'Votre tÃƒÂ©lÃƒÂ©phone va s\'ÃƒÂ©teindre ?',
-                  ),
+                  // ── Téléphone qui va s'éteindre ───────────────────────────
+                  const _TitreSection('Votre téléphone va s\'éteindre ?'),
                   const _Fiche(
                     icone: Icons.battery_alert_rounded,
                     titre: 'Les 6 gestes qui sauvent la batterie',
@@ -223,51 +221,51 @@ class _SurvivalKitScreenState extends State<SurvivalKitScreen> {
                     etapes: [
                       'Envoyez votre position par SMS MAINTENANT (bouton jaune '
                           'en haut), pendant qu\'il reste de la batterie.',
-                      'Activez le mode ÃƒÂ©co MonTotem et l\'ÃƒÂ©conomiseur de batterie '
-                          'du tÃƒÂ©lÃƒÂ©phone.',
-                      'Baissez la luminositÃƒÂ© au minimum. Fermez les applications '
-                          'ouvertes. Ãƒâ€°vitez vidÃƒÂ©o et GPS en continu.',
-                      'Sans rÃƒÂ©seau, le tÃƒÂ©lÃƒÂ©phone s\'ÃƒÂ©puise ÃƒÂ  chercher du signal : '
+                      'Activez le mode éco MonTotem et l\'économiseur de batterie '
+                          'du téléphone.',
+                      'Baissez la luminosité au minimum. Fermez les applications '
+                          'ouvertes. Évitez vidéo et GPS en continu.',
+                      'Sans réseau, le téléphone s\'épuise à chercher du signal : '
                           'passez en mode avion et ne le quittez que pour envoyer '
                           'un message ou passer un appel.',
-                      'Notez sur papier (ou dites ÃƒÂ  quelqu\'un) le numÃƒÂ©ro de votre '
-                          'contact et celui du dÃƒÂ©panneur.',
-                      'Gardez le tÃƒÂ©lÃƒÂ©phone ÃƒÂ  l\'ombre, pas en plein soleil sur le '
+                      'Notez sur papier (ou dites à quelqu\'un) le numéro de votre '
+                          'contact et celui du dépanneur.',
+                      'Gardez le téléphone à l\'ombre, pas en plein soleil sur le '
                           'tableau de bord.',
                     ],
                   ),
                   const SizedBox(height: 24),
 
-                  // Ã¢â€â‚¬Ã¢â€â‚¬ Situations Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  // ── Situations ────────────────────────────────────────────
                   const _TitreSection('Selon votre situation'),
                   const _Fiche(
                     icone: Icons.nightlight_round,
                     titre: 'En panne la nuit',
                     etapes: [
-                      'Allumez les feux de dÃƒÂ©tresse et garez-vous le plus loin '
+                      'Allumez les feux de détresse et garez-vous le plus loin '
                           'possible de la circulation.',
-                      'Sortez du cÃƒÂ´tÃƒÂ© opposÃƒÂ© ÃƒÂ  la route et attendez derriÃƒÂ¨re le '
-                          'vÃƒÂ©hicule ou le talus, jamais devant les phares.',
-                      'Rendez-vous visible : vÃƒÂªtement clair ou rÃƒÂ©flÃƒÂ©chissant, '
-                          'lampe du tÃƒÂ©lÃƒÂ©phone par intermittence seulement.',
-                      'Ne montez pas dans un vÃƒÂ©hicule inconnu. Restez prÃƒÂ¨s d\'un '
-                          'endroit ÃƒÂ©clairÃƒÂ© ou habitÃƒÂ© si vous en voyez un.',
-                      'PrÃƒÂ©venez une personne de confiance avec votre position.',
+                      'Sortez du côté opposé à la route et attendez derrière le '
+                          'véhicule ou le talus, jamais devant les phares.',
+                      'Rendez-vous visible : vêtement clair ou réfléchissant, '
+                          'lampe du téléphone par intermittence seulement.',
+                      'Ne montez pas dans un véhicule inconnu. Restez près d\'un '
+                          'endroit éclairé ou habité si vous en voyez un.',
+                      'Prévenez une personne de confiance avec votre position.',
                     ],
                   ),
                   const _Fiche(
                     icone: Icons.thunderstorm_rounded,
                     titre: 'Pluie forte, orage, inondation',
                     etapes: [
-                      'Ne traversez jamais une route inondÃƒÂ©e, ÃƒÂ  pied ou en '
-                          'vÃƒÂ©hicule : environ 15 cm d\'eau qui court peuvent faire '
-                          'tomber un adulte, et 30 cm suffisent ÃƒÂ  emporter une '
+                      'Ne traversez jamais une route inondée, à pied ou en '
+                          'véhicule : environ 15 cm d\'eau qui court peuvent faire '
+                          'tomber un adulte, et 30 cm suffisent à emporter une '
                           'voiture.',
-                      'Pendant l\'orage, ÃƒÂ©loignez-vous des arbres isolÃƒÂ©s, des '
-                          'poteaux et des fils ÃƒÂ©lectriques tombÃƒÂ©s.',
-                      'En moto ou en zÃƒÂ©midjan : abritez-vous sous un auvent solide '
-                          '(station-service, bÃƒÂ¢timent), pas sous un arbre.',
-                      'ProtÃƒÂ©gez le tÃƒÂ©lÃƒÂ©phone de l\'eau (sac plastique) et coupez '
+                      'Pendant l\'orage, éloignez-vous des arbres isolés, des '
+                          'poteaux et des fils électriques tombés.',
+                      'En moto ou en zémidjan : abritez-vous sous un auvent solide '
+                          '(station-service, bâtiment), pas sous un arbre.',
+                      'Protégez le téléphone de l\'eau (sac plastique) et coupez '
                           'les applications inutiles.',
                     ],
                   ),
@@ -275,58 +273,58 @@ class _SurvivalKitScreenState extends State<SurvivalKitScreen> {
                     icone: Icons.add_road_rounded,
                     titre: 'Route rapide ou forte circulation',
                     etapes: [
-                      'Feux de dÃƒÂ©tresse, rangez-vous le plus ÃƒÂ  droite possible.',
-                      'Tous les passagers sortent cÃƒÂ´tÃƒÂ© opposÃƒÂ© ÃƒÂ  la circulation et '
-                          'attendent ÃƒÂ  l\'ÃƒÂ©cart de la chaussÃƒÂ©e.',
-                      'Si vous avez un triangle, placez-le bien en arriÃƒÂ¨re du '
-                          'vÃƒÂ©hicule (environ 30 m, davantage sur voie rapide).',
-                      'Ne rÃƒÂ©parez jamais sur la voie. Appelez un dÃƒÂ©panneur.',
+                      'Feux de détresse, rangez-vous le plus à droite possible.',
+                      'Tous les passagers sortent côté opposé à la circulation et '
+                          'attendent à l\'écart de la chaussée.',
+                      'Si vous avez un triangle, placez-le bien en arrière du '
+                          'véhicule (environ 30 m, davantage sur voie rapide).',
+                      'Ne réparez jamais sur la voie. Appelez un dépanneur.',
                     ],
                   ),
                   const _Fiche(
                     icone: Icons.tire_repair_rounded,
-                    titre: 'Pneu crevÃƒÂ©',
+                    titre: 'Pneu crevé',
                     etapes: [
                       'Roulez le moins possible sur la jante : cherchez un sol '
-                          'plat et dur, frein ÃƒÂ  main serrÃƒÂ©.',
-                      'Ne vous placez pas cÃƒÂ´tÃƒÂ© circulation pour changer la roue.',
+                          'plat et dur, frein à main serré.',
+                      'Ne vous placez pas côté circulation pour changer la roue.',
                       'Pas de roue de secours ? Appelez un vulcanisateur proche : '
-                          'bouton Ã‚Â« Trouver un dÃƒÂ©panneur Ã‚Â» ci-dessous.',
+                          'bouton « Trouver un dépanneur » ci-dessous.',
                     ],
                   ),
                   const _Fiche(
                     icone: Icons.car_repair_rounded,
-                    titre: 'Moteur qui ne dÃƒÂ©marre plus, batterie',
+                    titre: 'Moteur qui ne démarre plus, batterie',
                     etapes: [
-                      'N\'insistez pas sur le dÃƒÂ©marreur : de courts essais de '
+                      'N\'insistez pas sur le démarreur : de courts essais de '
                           'quelques secondes, avec des pauses.',
-                      'FumÃƒÂ©e, odeur de brÃƒÂ»lÃƒÂ© ou d\'essence : ÃƒÂ©loignez-vous du '
-                          'vÃƒÂ©hicule, n\'ouvrez pas le capot, pas de flamme ni de '
-                          'cigarette. Appelez les secours depuis l\'ÃƒÂ©cran SOS.',
+                      'Fumée, odeur de brûlé ou d\'essence : éloignez-vous du '
+                          'véhicule, n\'ouvrez pas le capot, pas de flamme ni de '
+                          'cigarette. Appelez les secours depuis l\'écran SOS.',
                       'Coupez radio, climatisation et feux inutiles pour garder '
-                          'la batterie du vÃƒÂ©hicule.',
+                          'la batterie du véhicule.',
                     ],
                   ),
                   const _Fiche(
                     icone: Icons.wb_sunny_rounded,
                     titre: 'Forte chaleur',
                     etapes: [
-                      'Cherchez l\'ombre, buvez rÃƒÂ©guliÃƒÂ¨rement de petites quantitÃƒÂ©s '
+                      'Cherchez l\'ombre, buvez régulièrement de petites quantités '
                           'd\'eau.',
-                      'Ne laissez jamais un enfant ou un animal dans un vÃƒÂ©hicule '
-                          'fermÃƒÂ©, mÃƒÂªme quelques minutes.',
+                      'Ne laissez jamais un enfant ou un animal dans un véhicule '
+                          'fermé, même quelques minutes.',
                       'Malaise, vertiges, confusion : appelez les secours tout de '
-                          'suite depuis l\'ÃƒÂ©cran SOS.',
+                          'suite depuis l\'écran SOS.',
                     ],
                   ),
                   const SizedBox(height: 24),
 
-                  // Ã¢â€â‚¬Ã¢â€â‚¬ Script pour le dÃƒÂ©panneur Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
-                  const _TitreSection('Quoi dire au dÃƒÂ©panneur'),
+                  // ── Script pour le dépanneur ──────────────────────────────
+                  const _TitreSection('Quoi dire au dépanneur'),
                   const _Script(),
                   const SizedBox(height: 24),
 
-                  // Ã¢â€â‚¬Ã¢â€â‚¬ Sorties Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                  // ── Sorties ───────────────────────────────────────────────
                   FilledButton.icon(
                     style: FilledButton.styleFrom(
                       backgroundColor: AppColors.emergencyStrong,
@@ -338,7 +336,7 @@ class _SurvivalKitScreenState extends State<SurvivalKitScreen> {
                       size: 30,
                       accent: AppColors.navyOnDark,
                     ),
-                    label: const Text('NUMÃƒâ€°ROS D\'URGENCE Ã‚Â· SOS'),
+                    label: const Text('NUMÉROS D\'URGENCE · SOS'),
                   ),
                   const SizedBox(height: 12),
                   OutlinedButton.icon(
@@ -348,7 +346,7 @@ class _SurvivalKitScreenState extends State<SurvivalKitScreen> {
                       size: 28,
                       color: AppColors.brandYellow,
                     ),
-                    label: const Text('TROUVER UN DÃƒâ€°PANNEUR'),
+                    label: const Text('TROUVER UN DÉPANNEUR'),
                   ),
                 ],
               ),
@@ -360,7 +358,7 @@ class _SurvivalKitScreenState extends State<SurvivalKitScreen> {
   }
 }
 
-// Ã¢â€â‚¬Ã¢â€â‚¬ Ãƒâ€°lÃƒÂ©ments d'interface Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// ── Éléments d'interface ────────────────────────────────────────────────────
 
 class _EtatTelephone extends StatelessWidget {
   const _EtatTelephone({required this.power});
@@ -428,7 +426,7 @@ class _EtatTelephone extends StatelessWidget {
             accent: scheme.primary,
             level: power.batterieConnue ? power.niveau / 100 : 1,
           ),
-          titre: power.enCharge ? 'Batterie Ã‚Â· en charge' : 'Batterie',
+          titre: power.enCharge ? 'Batterie · en charge' : 'Batterie',
           valeur: batterie,
           couleur: critique ? AppColors.emergencyTextDark : null,
         ),
@@ -500,7 +498,7 @@ class _GrosBoutonSos extends StatelessWidget {
                       ),
                       const SizedBox(height: 3),
                       Text(
-                        'SMS avec GPS + batterie Ã‚Â· sans internet',
+                        'SMS avec GPS + batterie · sans internet',
                         style: TextStyle(
                           color: AppColors.navy.withValues(alpha: 0.92),
                           fontSize: 15,
@@ -659,11 +657,11 @@ class _Script extends StatelessWidget {
 
   static const String _texte =
       'Bonjour, je suis en panne.\n'
-      'OÃƒÂ¹ : [route, quartier, repÃƒÂ¨re connu]. Ma position GPS arrive par SMS.\n'
-      'VÃƒÂ©hicule : [moto / voiture / tricycle].\n'
-      'ProblÃƒÂ¨me : [pneu / batterie / ne dÃƒÂ©marre plus / autre].\n'
-      'Mon tÃƒÂ©lÃƒÂ©phone va bientÃƒÂ´t s\'ÃƒÂ©teindre : si je ne rÃƒÂ©ponds pas, '
-      'venez ÃƒÂ  la position envoyÃƒÂ©e.';
+      'Où : [route, quartier, repère connu]. Ma position GPS arrive par SMS.\n'
+      'Véhicule : [moto / voiture / tricycle].\n'
+      'Problème : [pneu / batterie / ne démarre plus / autre].\n'
+      'Mon téléphone va bientôt s\'éteindre : si je ne réponds pas, '
+      'venez à la position envoyée.';
 
   @override
   Widget build(BuildContext context) {
@@ -680,9 +678,9 @@ class _Script extends StatelessWidget {
               onPressed: () async {
                 await Clipboard.setData(const ClipboardData(text: _texte));
                 if (!context.mounted) return;
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Texte copiÃƒÂ©.')),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('Texte copié.')));
               },
               icon: Icon(Icons.copy_rounded, color: scheme.primary),
               label: const Text('COPIER LE TEXTE'),
@@ -694,8 +692,8 @@ class _Script extends StatelessWidget {
   }
 }
 
-/// Balise lumineuse : l'ÃƒÂ©cran clignote safran / noir (1 Hz) pour signaler
-/// le vÃƒÂ©hicule en panne la nuit. Garde l'ÃƒÂ©cran allumÃƒÂ© tant qu'elle est
+/// Balise lumineuse : l'écran clignote safran / noir (1 Hz) pour signaler
+/// le véhicule en panne la nuit. Garde l'écran allumé tant qu'elle est
 /// ouverte ; un toucher la ferme.
 class _BaliseScreen extends StatefulWidget {
   const _BaliseScreen();
@@ -739,7 +737,7 @@ class _BaliseScreenState extends State<_BaliseScreen> {
         child: SafeArea(
           child: Center(
             child: Text(
-              'TOUCHEZ POUR Ãƒâ€°TEINDRE',
+              'TOUCHEZ POUR ÉTEINDRE',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w900,

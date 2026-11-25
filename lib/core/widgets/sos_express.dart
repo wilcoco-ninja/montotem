@@ -8,18 +8,18 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:montotem/core/theme/app_colors.dart';
 
 // =============================================================================
-// SOS Express : bandeau 1-clic + bouton Ã‚Â« JE SUIS EN PANNE Ã‚Â».
+// SOS Express : bandeau 1-clic + bouton « JE SUIS EN PANNE ».
 // Fichier : lib/core/widgets/sos_express.dart
 // =============================================================================
 
-/// Jaune zÃƒÂ©midjan (signature MONTOTEM). Toujours avec du texte NAVY dessus.
+/// Jaune zémidjan (signature MONTOTEM). Toujours avec du texte NAVY dessus.
 const Color kVolt = Color(0xFFFFC400);
 const Color _verre = Color(0xF21C1B3D);
 
-/// Donne la position du client (null si le GPS est coupÃƒÂ© ou refusÃƒÂ©).
+/// Donne la position du client (null si le GPS est coupé ou refusé).
 typedef PositionProvider = Future<LatLng?> Function();
 
-// Ã¢â€â‚¬Ã¢â€â‚¬ MÃƒÂ©tiers du bandeau Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// ── Métiers du bandeau ──────────────────────────────────────────────────────
 
 class SosMetier {
   const SosMetier(this.kind, this.label, this.icon);
@@ -31,9 +31,9 @@ class SosMetier {
 }
 
 const kSosMetiers = <SosMetier>[
-  SosMetier('mecanicien', 'MÃƒÂ©cano', Icons.build_rounded),
+  SosMetier('mecanicien', 'Mécano', Icons.build_rounded),
   SosMetier('vulcanisateur', 'Vulca', Icons.tire_repair_rounded),
-  SosMetier('electricien', 'Ãƒâ€°lectro', Icons.electrical_services_rounded),
+  SosMetier('electricien', 'Électro', Icons.electrical_services_rounded),
   SosMetier('station', 'Carburant', Icons.local_gas_station_rounded),
   SosMetier('zemidjan', 'Zem', Icons.two_wheeler_rounded),
 ];
@@ -43,7 +43,7 @@ SosMetier _metierDe(String kind) => kSosMetiers.firstWhere(
   orElse: () => kSosMetiers.first,
 );
 
-// Ã¢â€â‚¬Ã¢â€â‚¬ DonnÃƒÂ©es Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// ── Données ─────────────────────────────────────────────────────────────────
 
 class Proche {
   const Proche({
@@ -89,13 +89,13 @@ class Proche {
   final bool disponible;
   final String? telephone;
 
-  /// Ã‚Â« 450 m Ã‚Â» ou Ã‚Â« 1,2 km Ã‚Â».
+  /// « 450 m » ou « 1,2 km ».
   String get distanceTexte => distanceM < 1000
       ? '$distanceM m'
       : '${(distanceM / 1000).toStringAsFixed(1).replaceAll('.', ',')} km';
 
-  /// Ã‚Â« 450 m Ã‚Â· 5 min Ã‚Â»
-  String get resume => '$distanceTexte Ã‚Â· $etaMin min';
+  /// « 450 m · 5 min »
+  String get resume => '$distanceTexte · $etaMin min';
 }
 
 class SosService {
@@ -142,7 +142,7 @@ String _fcfa(int v) {
 }
 
 // =============================================================================
-// 1. Bandeau flottant : 5 icÃƒÂ´nes gÃƒÂ©antes, 1 tap = rÃƒÂ©sultat
+// 1. Bandeau flottant : 5 icônes géantes, 1 tap = résultat
 // =============================================================================
 
 class SosExpressBar extends StatelessWidget {
@@ -150,7 +150,7 @@ class SosExpressBar extends StatelessWidget {
 
   final ValueChanged<SosMetier> onSelect;
 
-  /// Hauteur fixe (icÃƒÂ´ne 20-28 px + libellÃƒÂ© sur une ligne).
+  /// Hauteur fixe (icône 20-28 px + libellé sur une ligne).
   static const double hauteur = 66;
 
   static const double _gouttiere = 12;
@@ -166,8 +166,8 @@ class SosExpressBar extends StatelessWidget {
           final n = kSosMetiers.length;
           final libre = c.maxWidth - 2 * _gouttiere - (n - 1) * _ecart;
           final largeur = libre / n;
-          // Ãƒâ€°cran assez large : les 5 cases se partagent la largeur.
-          // Ãƒâ€°cran trÃƒÂ¨s ÃƒÂ©troit : la rangÃƒÂ©e dÃƒÂ©file, rien n'est ÃƒÂ©crasÃƒÂ©.
+          // Écran assez large : les 5 cases se partagent la largeur.
+          // Écran très étroit : la rangée défile, rien n'est écrasé.
           final defile = largeur < _largeurMini;
           final w = defile ? _largeurMini : largeur;
           final icone = (w * 0.38).clamp(20.0, 28.0).toDouble();
@@ -237,8 +237,8 @@ class _CaseMetier extends StatelessWidget {
               children: [
                 Icon(metier.icon, size: icone, color: kVolt),
                 const SizedBox(height: 4),
-                // Le libellÃƒÂ© rÃƒÂ©trÃƒÂ©cit au lieu de dÃƒÂ©border (petits ÃƒÂ©crans,
-                // texte agrandi par le systÃƒÂ¨me).
+                // Le libellé rétrécit au lieu de déborder (petits écrans,
+                // texte agrandi par le système).
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
@@ -260,8 +260,8 @@ class _CaseMetier extends StatelessWidget {
   }
 }
 
-/// Clic sur une icÃƒÂ´ne : localise, trouve le plus proche, affiche distance,
-/// frais de dÃƒÂ©placement et le gros bouton d'appel.
+/// Clic sur une icône : localise, trouve le plus proche, affiche distance,
+/// frais de déplacement et le gros bouton d'appel.
 Future<void> montrerPlusProche(
   BuildContext context, {
   required SosMetier metier,
@@ -281,7 +281,7 @@ Future<void> montrerPlusProche(
 }
 
 // =============================================================================
-// 2. Bouton central Ã‚Â« JE SUIS EN PANNE Ã‚Â»
+// 2. Bouton central « JE SUIS EN PANNE »
 // =============================================================================
 
 class PanneButton extends StatefulWidget {
@@ -305,7 +305,7 @@ class _PanneButtonState extends State<PanneButton>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Respecte Ã‚Â« rÃƒÂ©duire les animations Ã‚Â» du tÃƒÂ©lÃƒÂ©phone.
+    // Respecte « réduire les animations » du téléphone.
     if (MediaQuery.disableAnimationsOf(context)) {
       _c.stop();
     } else if (!_c.isAnimating) {
@@ -338,7 +338,7 @@ class _PanneButtonState extends State<PanneButton>
       ),
       child: Semantics(
         button: true,
-        label: 'Je suis en panne. Trouver 3 dÃƒÂ©panneurs ÃƒÂ  moins de 3 kilomÃƒÂ¨tres',
+        label: 'Je suis en panne. Trouver 3 dépanneurs à moins de 3 kilomètres',
         excludeSemantics: true,
         child: FilledButton.icon(
           onPressed: widget.onPressed,
@@ -364,9 +364,9 @@ class _PanneButtonState extends State<PanneButton>
   }
 }
 
-/// Une pression : cherche ÃƒÂ  3 km les 3 mÃƒÂ©tiers adaptÃƒÂ©s au vÃƒÂ©hicule.
+/// Une pression : cherche à 3 km les 3 métiers adaptés au véhicule.
 /// [vehicule] (moto / voiture / camion) saute la question ; sinon elle est
-/// posÃƒÂ©e une seule fois puis mÃƒÂ©morisÃƒÂ©e.
+/// posée une seule fois puis mémorisée.
 Future<void> montrerPanne(
   BuildContext context, {
   required PositionProvider position,
@@ -398,7 +398,7 @@ Future<void> _ouvrirFeuille(BuildContext context, Widget child) {
   );
 }
 
-// Ã¢â€â‚¬Ã¢â€â‚¬ 1-clic : le plus proche d'un mÃƒÂ©tier Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// ── 1-clic : le plus proche d'un métier ─────────────────────────────────────
 
 class _NearestSheet extends StatefulWidget {
   const _NearestSheet({
@@ -448,19 +448,17 @@ class _NearestSheetState extends State<_NearestSheet> {
       future: _future,
       builder: (context, snap) {
         if (snap.connectionState != ConnectionState.done) {
-          return _Chargement(
-            texte: 'Je cherche le ${m.label} le plus procheÃ¢â‚¬Â¦',
-          );
+          return _Chargement(texte: 'Je cherche le ${m.label} le plus proche…');
         }
         if (snap.hasError) {
           final gps = snap.error is _SansPosition;
           return _Message(
             icon: gps ? Icons.location_off_rounded : Icons.wifi_off_rounded,
             texte: gps
-                ? 'Activez la localisation (GPS) de votre tÃƒÂ©lÃƒÂ©phone, '
-                      'puis rÃƒÂ©essayez.'
-                : 'Connexion impossible. VÃƒÂ©rifiez votre rÃƒÂ©seau et rÃƒÂ©essayez.',
-            action: 'RÃƒÂ©essayer',
+                ? 'Activez la localisation (GPS) de votre téléphone, '
+                      'puis réessayez.'
+                : 'Connexion impossible. Vérifiez votre réseau et réessayez.',
+            action: 'Réessayer',
             onAction: () => _relancer(),
           );
         }
@@ -469,8 +467,8 @@ class _NearestSheetState extends State<_NearestSheet> {
           final loin = _rayon < 15;
           return _Message(
             icon: Icons.search_off_rounded,
-            texte: 'Aucun ${m.label} disponible ÃƒÂ  ${_rayon.toInt()} km.',
-            action: loin ? 'Chercher ÃƒÂ  15 km' : null,
+            texte: 'Aucun ${m.label} disponible à ${_rayon.toInt()} km.',
+            action: loin ? 'Chercher à 15 km' : null,
             onAction: loin ? () => _relancer(rayon: 15) : null,
           );
         }
@@ -540,7 +538,7 @@ class _ResultatProche extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           Text(
-            '${p.resume}${p.note > 0 ? ' Ã‚Â· ${p.note.toStringAsFixed(1)} Ã¢Ëœâ€¦' : ''}',
+            '${p.resume}${p.note > 0 ? ' · ${p.note.toStringAsFixed(1)} ★' : ''}',
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 12),
@@ -556,7 +554,7 @@ class _ResultatProche extends StatelessWidget {
                 const SizedBox(width: 12),
                 const Expanded(
                   child: Text(
-                    'Frais de dÃƒÂ©placement',
+                    'Frais de déplacement',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                   ),
                 ),
@@ -571,7 +569,7 @@ class _ResultatProche extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          _BoutonAppel(p: p, label: 'Appeler le dÃƒÂ©panneur maintenant'),
+          _BoutonAppel(p: p, label: 'Appeler le dépanneur maintenant'),
           if (onVoirCarte != null)
             TextButton.icon(
               onPressed: onVoirCarte,
@@ -584,7 +582,7 @@ class _ResultatProche extends StatelessWidget {
   }
 }
 
-// Ã¢â€â‚¬Ã¢â€â‚¬ Ã‚Â« JE SUIS EN PANNE Ã‚Â» : 3 mÃƒÂ©tiers adaptÃƒÂ©s au vÃƒÂ©hicule Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// ── « JE SUIS EN PANNE » : 3 métiers adaptés au véhicule ────────────────────
 
 class _Choix {
   const _Choix(this.metier, this.proche);
@@ -647,7 +645,7 @@ class _PanneSheetState extends State<_PanneSheet> {
     });
   }
 
-  /// Moto : pneu d'abord. Auto / camion : mÃƒÂ©canique d'abord.
+  /// Moto : pneu d'abord. Auto / camion : mécanique d'abord.
   List<String> get _ordre => _vehicule == 'moto'
       ? const ['vulcanisateur', 'mecanicien', 'station']
       : const ['mecanicien', 'vulcanisateur', 'electricien'];
@@ -682,7 +680,7 @@ class _PanneSheetState extends State<_PanneSheet> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_pret) return const _Chargement(texte: 'Ã¢â‚¬Â¦');
+    if (!_pret) return const _Chargement(texte: '…');
     if (_vehicule == null || _future == null) {
       return _ChoixVehicule(onChoix: _choisir);
     }
@@ -692,7 +690,7 @@ class _PanneSheetState extends State<_PanneSheet> {
       builder: (context, snap) {
         if (snap.connectionState != ConnectionState.done) {
           return _Chargement(
-            texte: 'Je scanne ${_rayon.toInt()} km autour de vousÃ¢â‚¬Â¦',
+            texte: 'Je scanne ${_rayon.toInt()} km autour de vous…',
           );
         }
         if (snap.hasError) {
@@ -700,10 +698,10 @@ class _PanneSheetState extends State<_PanneSheet> {
           return _Message(
             icon: gps ? Icons.location_off_rounded : Icons.wifi_off_rounded,
             texte: gps
-                ? 'Activez la localisation (GPS) de votre tÃƒÂ©lÃƒÂ©phone, '
-                      'puis rÃƒÂ©essayez.'
-                : 'Connexion impossible. VÃƒÂ©rifiez votre rÃƒÂ©seau et rÃƒÂ©essayez.',
-            action: 'RÃƒÂ©essayer',
+                ? 'Activez la localisation (GPS) de votre téléphone, '
+                      'puis réessayez.'
+                : 'Connexion impossible. Vérifiez votre réseau et réessayez.',
+            action: 'Réessayer',
             onAction: () => setState(() => _future = _charger()),
           );
         }
@@ -720,8 +718,8 @@ class _PanneSheetState extends State<_PanneSheet> {
                   Expanded(
                     child: Text(
                       trouves == 0
-                          ? 'Personne ÃƒÂ  moins de ${_rayon.toInt()} km'
-                          : 'Du secours ÃƒÂ  moins de ${_rayon.toInt()} km',
+                          ? 'Personne à moins de ${_rayon.toInt()} km'
+                          : 'Du secours à moins de ${_rayon.toInt()} km',
                       style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w900,
@@ -733,9 +731,7 @@ class _PanneSheetState extends State<_PanneSheet> {
                       _vehicule = null;
                       _future = null;
                     }),
-                    child: Text(
-                      _vehicule == 'moto' ? 'Moto Ã¢Å“Å½' : 'Auto Ã¢Å“Å½',
-                    ),
+                    child: Text(_vehicule == 'moto' ? 'Moto ✎' : 'Auto ✎'),
                   ),
                 ],
               ),
@@ -759,7 +755,7 @@ class _PanneSheetState extends State<_PanneSheet> {
                   icon: const Icon(Icons.zoom_out_map_rounded),
                   label: Text(
                     trouves < choix.length
-                        ? 'Ãƒâ€°largir la recherche ÃƒÂ  10 km'
+                        ? 'Élargir la recherche à 10 km'
                         : 'Chercher plus loin (10 km)',
                   ),
                   style: OutlinedButton.styleFrom(
@@ -821,12 +817,12 @@ class _ChoixVehicule extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Text(
-            'Quel vÃƒÂ©hicule est en panne ?',
+            'Quel véhicule est en panne ?',
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
           ),
           const SizedBox(height: 4),
           Text(
-            'Une seule fois : nous le mÃƒÂ©morisons.',
+            'Une seule fois : nous le mémorisons.',
             style: TextStyle(fontSize: 15, color: context.textSecondary),
           ),
           const SizedBox(height: 16),
@@ -873,7 +869,7 @@ class _CarteChoix extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'Aucun ${m.label} ÃƒÂ  ${rayon.toInt()} km',
+                    'Aucun ${m.label} à ${rayon.toInt()} km',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
@@ -904,7 +900,7 @@ class _CarteChoix extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '${m.label} Ã‚Â· ${p.resume}',
+                            '${m.label} · ${p.resume}',
                             style: TextStyle(
                               fontSize: 15,
                               color: context.textSecondary,
@@ -935,7 +931,7 @@ class _CarteChoix extends StatelessWidget {
   }
 }
 
-// Ã¢â€â‚¬Ã¢â€â‚¬ PiÃƒÂ¨ces communes Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// ── Pièces communes ─────────────────────────────────────────────────────────
 
 class _IconeMetier extends StatelessWidget {
   const _IconeMetier({
@@ -985,7 +981,7 @@ class _BoutonAppel extends StatelessWidget {
     } catch (_) {}
     if (!ok) {
       messenger?.showSnackBar(
-        SnackBar(content: Text('Impossible d\'appeler. NumÃƒÂ©ro : $tel')),
+        SnackBar(content: Text('Impossible d\'appeler. Numéro : $tel')),
       );
     }
   }
@@ -1006,7 +1002,7 @@ class _BoutonAppel extends StatelessWidget {
     );
 
     if (tel == null || tel.isEmpty) {
-      // InvitÃƒÂ© : le numÃƒÂ©ro est rÃƒÂ©servÃƒÂ© aux comptes connectÃƒÂ©s.
+      // Invité : le numéro est réservé aux comptes connectés.
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -1024,7 +1020,7 @@ class _BoutonAppel extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: Text(
-                'Le numÃƒÂ©ro s\'affiche aprÃƒÂ¨s connexion avec votre tÃƒÂ©lÃƒÂ©phone.',
+                'Le numéro s\'affiche après connexion avec votre téléphone.',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14, color: context.textSecondary),
               ),

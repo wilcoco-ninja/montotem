@@ -22,7 +22,7 @@ import 'widgets/provider_gains_sheet.dart';
 import 'widgets/provider_wallet_card.dart';
 import 'widgets/provider_momo_sheet.dart';
 
-/// Accueil prestataire : carte plein ÃƒÂ©cran, pastille de gains, panneau
+/// Accueil prestataire : carte plein écran, pastille de gains, panneau
 /// coulissant (statut, indicateurs, raccourcis) et popup de demande entrante.
 class ProviderHomeScreen extends StatefulWidget {
   const ProviderHomeScreen({super.key, this.onOpenTab});
@@ -94,7 +94,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
   void _msg(String m) =>
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(m)));
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ DonnÃƒÂ©es Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Données ──────────────────────────────────────────────────────────────
 
   Future<void> _charger({bool silencieux = false}) async {
     if (!silencieux) {
@@ -229,7 +229,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
     if (_mapReady) _map.move(nouvelles[i].clientPoint, 15);
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Calculs de gains Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Calculs de gains ─────────────────────────────────────────────────────
 
   DateTime get _aujourdhui {
     final n = DateTime.now();
@@ -329,7 +329,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ UI Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── UI ───────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -374,7 +374,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Carte Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Carte ────────────────────────────────────────────────────────────────
 
   Widget _carte(List<Mission> nouvelles, List<Mission> enCours) {
     final centre =
@@ -479,7 +479,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
     return out;
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Barre du haut Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Barre du haut ────────────────────────────────────────────────────────
 
   Widget _barreHaut(int nbAlertes) {
     return SafeArea(
@@ -506,7 +506,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                   const Spacer(),
                   const SizedBox(
                     width: 54,
-                  ), // Espace ÃƒÂ©quilibrÃƒÂ© sans le bouton taille texte
+                  ), // Espace équilibré sans le bouton taille texte
                 ],
               ),
               const SizedBox(height: 6),
@@ -523,7 +523,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    'Ã‚Â© OpenStreetMap contributors',
+                    '© OpenStreetMap contributors',
                     style: TextStyle(
                       fontSize: 11,
                       color: context.textSecondary,
@@ -538,7 +538,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Panneau coulissant Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Panneau coulissant ───────────────────────────────────────────────────
 
   Widget _panneau(
     bool wide,
@@ -618,7 +618,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
             for (final m in enCours) _carteIntervention(m),
           ],
           if (alertes.isNotEmpty) ...[
-            const SectionTitle('Ãƒâ‚¬ faire'),
+            const SectionTitle('À faire'),
             for (final a in alertes) ...[a, const SizedBox(height: 10)],
           ],
           const SectionTitle('Mes indicateurs'),
@@ -637,7 +637,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                 child: _Kpi(
                   icon: Icons.task_alt_rounded,
                   valeur: '$_termineesMois',
-                  label: 'TerminÃƒÂ©es / mois',
+                  label: 'Terminées / mois',
                   color: AppTheme.successColor,
                 ),
               ),
@@ -645,7 +645,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
               Expanded(
                 child: _Kpi(
                   icon: Icons.thumb_up_alt_rounded,
-                  valeur: taux == null ? 'Ã¢â‚¬â€' : '$taux %',
+                  valeur: taux == null ? '—' : '$taux %',
                   label: 'Acceptation',
                   color: AppTheme.primaryColor,
                 ),
@@ -673,7 +673,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
               ),
               QuickTile(
                 icon: Icons.psychology_alt_outlined,
-                label: 'Mes compÃƒÂ©tences',
+                label: 'Mes compétences',
                 color: AppTheme.primaryColor,
                 onTap: () => _aller('/provider/competences'),
               ),
@@ -686,7 +686,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
             ],
           ),
           if (terminees.isNotEmpty) ...[
-            const SectionTitle('DerniÃƒÂ¨res interventions'),
+            const SectionTitle('Dernières interventions'),
             for (final m in terminees) _ligneHistorique(m),
           ],
         ],
@@ -786,7 +786,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    on ? 'Vous ÃƒÂªtes en ligne' : 'Vous ÃƒÂªtes hors ligne',
+                    on ? 'Vous êtes en ligne' : 'Vous êtes hors ligne',
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w900,
@@ -796,7 +796,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                     on
                         ? (aDemande
                               ? 'Une demande vous attend.'
-                              : 'Recherche de demandes autour de vousÃ¢â‚¬Â¦')
+                              : 'Recherche de demandes autour de vous…')
                         : 'Passez en ligne pour recevoir des demandes.',
                     style: TextStyle(
                       fontSize: 15,
@@ -913,7 +913,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Demande entrante Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Demande entrante ─────────────────────────────────────────────────────
 
   Widget _demandePopup(List<Mission> nouvelles, bool wide) {
     final total = nouvelles.length;
@@ -978,7 +978,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                           const Spacer(),
                           if (total > 1) ...[
                             IconButton(
-                              tooltip: 'Demande prÃƒÂ©cÃƒÂ©dente',
+                              tooltip: 'Demande précédente',
                               icon: const Icon(Icons.chevron_left_rounded),
                               onPressed: () => _changerDemande(-1, nouvelles),
                             ),
@@ -1010,7 +1010,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                         ),
                       ),
                       Text(
-                        'Frais de dÃƒÂ©placement',
+                        'Frais de déplacement',
                         style: TextStyle(
                           fontSize: 15,
                           color: context.textSecondary,
@@ -1069,7 +1069,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
                             icon: Icons.near_me_rounded,
                           ),
                           StatusPill(
-                            label: 'Ã¢â€°Ë† $eta min',
+                            label: '≈ $eta min',
                             color: AppTheme.secondaryDark,
                             icon: Icons.schedule_rounded,
                           ),
@@ -1121,7 +1121,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Alertes Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Alertes ──────────────────────────────────────────────────────────────
 
   List<Widget> _alertes() {
     final liste = <Widget>[];
@@ -1133,7 +1133,8 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
           icon: Icons.badge_outlined,
           color: AppTheme.warningColor,
           titre: 'Envoyez vos documents',
-          texte: 'Sans dossier d\'identitÃƒÂ©, votre compte ne peut pas ÃƒÂªtre validÃƒÂ©.',
+          texte:
+              'Sans dossier d\'identité, votre compte ne peut pas être validé.',
           onTap: () => _aller('/provider/identity'),
         ),
       );
@@ -1142,7 +1143,7 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
         _Alerte(
           icon: Icons.error_outline_rounded,
           color: AppTheme.errorColor,
-          titre: 'Dossier refusÃƒÂ©',
+          titre: 'Dossier refusé',
           texte: (id.motifRefus ?? '').isEmpty
               ? 'Corrigez votre dossier et renvoyez-le.'
               : 'Motif : ${id.motifRefus}',
@@ -1154,8 +1155,8 @@ class _ProviderHomeScreenState extends State<ProviderHomeScreen>
         const _Alerte(
           icon: Icons.hourglass_top_rounded,
           color: AppTheme.primaryColor,
-          titre: 'Dossier en cours de vÃƒÂ©rification',
-          texte: 'Vous recevrez des demandes dÃƒÂ¨s qu\'il sera validÃƒÂ©.',
+          titre: 'Dossier en cours de vérification',
+          texte: 'Vous recevrez des demandes dès qu\'il sera validé.',
         ),
       );
     }
@@ -1219,7 +1220,7 @@ class _PastilleGains extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       button: true,
-      label: 'Gains du jour : ${TravelFee.fcfa(montant)}. Ouvrir le dÃƒÂ©tail',
+      label: 'Gains du jour : ${TravelFee.fcfa(montant)}. Ouvrir le détail',
       child: Material(
         color: AppColors.navy,
         elevation: 5,

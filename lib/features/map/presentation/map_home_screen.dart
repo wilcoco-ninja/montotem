@@ -22,7 +22,7 @@ import 'widgets/provider_detail_sheet.dart';
 import 'widgets/route_overlay.dart';
 
 // ----------------------------------------------------------------------------
-// CatÃƒÂ©gories
+// Catégories
 // ----------------------------------------------------------------------------
 
 enum _Cat { tous, zemidjan, kloboto, depannage }
@@ -31,9 +31,9 @@ enum _Genre { zemidjan, kloboto, depanneur }
 
 extension on _Genre {
   String get label => switch (this) {
-    _Genre.zemidjan => 'ZÃƒÂ©midjan',
+    _Genre.zemidjan => 'Zémidjan',
     _Genre.kloboto => 'Kloboto',
-    _Genre.depanneur => 'DÃƒÂ©panneur',
+    _Genre.depanneur => 'Dépanneur',
   };
 
   IconData get icon => switch (this) {
@@ -48,7 +48,7 @@ extension on _Genre {
     _Genre.depanneur => const Color(0xFFDC2626),
   };
 
-  /// Code transmis ÃƒÂ  la route /ride/new (null = pas un conducteur).
+  /// Code transmis à la route /ride/new (null = pas un conducteur).
   String? get codeCourse => switch (this) {
     _Genre.zemidjan => 'zemidjan',
     _Genre.kloboto => 'tricycle_fret',
@@ -56,7 +56,7 @@ extension on _Genre {
   };
 }
 
-/// VÃƒÂ©hicule en panne : clÃƒÂ© = valeur stockÃƒÂ©e dans providers.vehicle_types.
+/// Véhicule en panne : clé = valeur stockée dans providers.vehicle_types.
 const _vehiculesPanne = <String, ({String label, IconData icon})>{
   'moto': (label: 'Moto', icon: Icons.two_wheeler_rounded),
   'voiture': (label: 'Voiture', icon: Icons.directions_car_rounded),
@@ -72,7 +72,7 @@ _Genre _genreDe(Prestataire p) {
     return _Genre.depanneur;
   }
   final m = p.metier.toLowerCase();
-  if (m.contains('zÃƒÂ©midjan') || m.contains('zemidjan')) {
+  if (m.contains('zémidjan') || m.contains('zemidjan')) {
     return _Genre.zemidjan;
   }
   if (m.contains('kloboto') || m.contains('klobot')) return _Genre.kloboto;
@@ -80,15 +80,15 @@ _Genre _genreDe(Prestataire p) {
 }
 
 // ----------------------------------------------------------------------------
-// Ãƒâ€°cran
+// Écran
 // ----------------------------------------------------------------------------
 
-/// Ãƒâ€°cran d'ouverture de MonTotem : la carte plein ÃƒÂ©cran, comme Google Maps.
+/// Écran d'ouverture de MonTotem : la carte plein écran, comme Google Maps.
 ///
-/// - Visiteur : voit la carte et les points (zÃƒÂ©midjan, kloboto, dÃƒÂ©panneurs),
+/// - Visiteur : voit la carte et les points (zémidjan, kloboto, dépanneurs),
 ///   circule librement, mais doit se connecter pour voir les infos d'un
 ///   prestataire ou commander une course.
-/// - ConnectÃƒÂ© : mÃƒÂªmes ÃƒÂ©crans, plus fiches complÃƒÂ¨tes, courses et demandes.
+/// - Connecté : mêmes écrans, plus fiches complètes, courses et demandes.
 class MapHomeScreen extends StatefulWidget {
   const MapHomeScreen({super.key});
 
@@ -127,7 +127,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
   List<Prestataire> _visibles = [];
   List<LatLng> _routeGeometry = const [];
 
-  /// id prestataire -> types de vÃƒÂ©hicules (RPC publique provider_vehicle_map).
+  /// id prestataire -> types de véhicules (RPC publique provider_vehicle_map).
   Map<String, List<String>> _vehicules = const {};
 
   bool get _connecte => Supabase.instance.client.auth.currentSession != null;
@@ -144,11 +144,11 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
   @override
   void initState() {
     super.initState();
-    // La carte s'affiche tout de suite ; position et donnÃƒÂ©es arrivent aprÃƒÂ¨s.
+    // La carte s'affiche tout de suite ; position et données arrivent après.
     unawaited(_localiser());
     unawaited(_chargerDonnees());
-    // Connexion / dÃƒÂ©connexion : on recharge (un visiteur ne reÃƒÂ§oit que des
-    // points anonymes, un connectÃƒÂ© reÃƒÂ§oit les fiches complÃƒÂ¨tes).
+    // Connexion / déconnexion : on recharge (un visiteur ne reçoit que des
+    // points anonymes, un connecté reçoit les fiches complètes).
     _authSub = Supabase.instance.client.auth.onAuthStateChange.listen((_) {
       if (!mounted) return;
       setState(() => _selectedId = null);
@@ -163,7 +163,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     super.dispose();
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ DonnÃƒÂ©es Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Données ──────────────────────────────────────────────────────────────
 
   Future<void> _chargerDonnees({bool silencieux = false}) async {
     if (!silencieux) {
@@ -188,14 +188,14 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
       if (!mounted) return;
       setState(() {
         _errorMessage =
-            'Impossible de charger la carte. VÃƒÂ©rifiez votre connexion.';
+            'Impossible de charger la carte. Vérifiez votre connexion.';
       });
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
   }
 
-  /// Ne lÃƒÂ¨ve jamais : sans cette RPC, les filtres montrent simplement tout.
+  /// Ne lève jamais : sans cette RPC, les filtres montrent simplement tout.
   Future<Map<String, List<String>>> _chargerVehicules() async {
     try {
       final data =
@@ -211,7 +211,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     }
   }
 
-  /// Ne lÃƒÂ¨ve jamais : sans GPS on garde la position de repli (Cotonou).
+  /// Ne lève jamais : sans GPS on garde la position de repli (Cotonou).
   Future<void> _localiser({bool message = false}) async {
     try {
       final pos = await _locationService.getCurrentLocation();
@@ -236,7 +236,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
   void _msg(String m) =>
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(m)));
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Filtres Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Filtres ──────────────────────────────────────────────────────────────
 
   bool _typeOk(Prestataire p, String type) {
     final types = _vehicules[p.id];
@@ -265,7 +265,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
 
   int _eta(double km) => math.max(1, (km * 1.25 / 25 * 60).ceil());
 
-  /// RÃƒÂ©sultats triÃƒÂ©s par distance croissante.
+  /// Résultats triés par distance croissante.
   void _recalculer() {
     _dansRayon = _tous.where((p) => _km(p) <= _rayonKm).toList();
     _visibles = _dansRayon.where(_passe).toList()
@@ -302,8 +302,8 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     });
   }
 
-  /// DÃƒÂ©pannage express : on ne garde que les dÃƒÂ©panneurs disponibles qui
-  /// prennent en charge ce vÃƒÂ©hicule, et on prÃƒÂ©sÃƒÂ©lectionne le plus proche.
+  /// Dépannage express : on ne garde que les dépanneurs disponibles qui
+  /// prennent en charge ce véhicule, et on présélectionne le plus proche.
   void _lancerDepannage(String vehicule) {
     setState(() {
       _cat = _Cat.depannage;
@@ -317,13 +317,13 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
       _selectionner(_visibles.first);
     } else {
       _msg(
-        'Aucun dÃƒÂ©panneur disponible ÃƒÂ  moins de ${_rayonKm.toInt()} km '
-        'pour ce vÃƒÂ©hicule.',
+        'Aucun dépanneur disponible à moins de ${_rayonKm.toInt()} km '
+        'pour ce véhicule.',
       );
     }
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Actions Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Actions ──────────────────────────────────────────────────────────────
 
   void _selectionner(Prestataire p) {
     setState(() => _selectedId = p.id);
@@ -335,7 +335,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     }
   }
 
-  /// Course ZÃƒÂ©midjan / Kloboto : compte obligatoire.
+  /// Course Zémidjan / Kloboto : compte obligatoire.
   void _commander(String codeCourse) {
     requireAuth(
       context,
@@ -344,7 +344,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     );
   }
 
-  /// Infos complÃƒÂ¨tes d'un prestataire : compte obligatoire.
+  /// Infos complètes d'un prestataire : compte obligatoire.
   void _voirInfos(Prestataire p) {
     requireAuth(
       context,
@@ -378,7 +378,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     if (_routeEnCours) return;
     setState(() => _routeEnCours = true);
     try {
-      // getRoutes ne lÃƒÂ¨ve pas : repli sur une ligne droite si OSRM ÃƒÂ©choue.
+      // getRoutes ne lève pas : repli sur une ligne droite si OSRM échoue.
       final routes = await _routingService.getRoutes(
         origin: _userPosition,
         destination: LatLng(p.latitude, p.longitude),
@@ -403,9 +403,9 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Se dÃƒÂ©connecter ?'),
+        title: const Text('Se déconnecter ?'),
         content: const Text(
-          'Vous pourrez vous reconnecter ÃƒÂ  tout moment.',
+          'Vous pourrez vous reconnecter à tout moment.',
           style: TextStyle(fontSize: 16),
         ),
         actions: [
@@ -416,7 +416,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: TextButton.styleFrom(foregroundColor: AppTheme.errorColor),
-            child: const Text('Se dÃƒÂ©connecter'),
+            child: const Text('Se déconnecter'),
           ),
         ],
       ),
@@ -424,9 +424,9 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     if (ok != true) return;
     try {
       await Supabase.instance.client.auth.signOut();
-      if (mounted) _msg('Vous ÃƒÂªtes dÃƒÂ©connectÃƒÂ©.');
+      if (mounted) _msg('Vous êtes déconnecté.');
     } catch (_) {
-      if (mounted) _msg('DÃƒÂ©connexion impossible. RÃƒÂ©essayez.');
+      if (mounted) _msg('Déconnexion impossible. Réessayez.');
     }
   }
 
@@ -438,7 +438,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     }
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Feuilles (recherche, panne, liste) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Feuilles (recherche, panne, liste) ──────────────────────────────────
 
   void _ouvrirRecherche() {
     showModalBottomSheet<void>(
@@ -461,9 +461,9 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
               _OptionTile(
                 icon: Icons.two_wheeler_rounded,
                 color: _Genre.zemidjan.color,
-                titre: 'ZÃƒÂ©midjan',
+                titre: 'Zémidjan',
                 sousTitre:
-                    '${_nbGenre(_Genre.zemidjan)} disponible(s) prÃƒÂ¨s '
+                    '${_nbGenre(_Genre.zemidjan)} disponible(s) près '
                     'de vous',
                 onTap: () {
                   Navigator.pop(ctx);
@@ -476,7 +476,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                 color: _Genre.kloboto.color,
                 titre: 'Kloboto (tricycle)',
                 sousTitre:
-                    '${_nbGenre(_Genre.kloboto)} disponible(s) prÃƒÂ¨s '
+                    '${_nbGenre(_Genre.kloboto)} disponible(s) près '
                     'de vous',
                 onTap: () {
                   Navigator.pop(ctx);
@@ -487,7 +487,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
               _OptionTile(
                 icon: Icons.car_crash_rounded,
                 color: _Genre.depanneur.color,
-                titre: 'DÃƒÂ©pannage express',
+                titre: 'Dépannage express',
                 sousTitre: 'Moto, voiture, camion ou kloboto en panne',
                 onTap: () {
                   Navigator.pop(ctx);
@@ -515,13 +515,13 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text(
-                'Quel vÃƒÂ©hicule est en panne ?',
+                'Quel véhicule est en panne ?',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
               ),
               const SizedBox(height: 6),
               Text(
-                'Nous affichons les dÃƒÂ©panneurs disponibles les plus proches '
-                'de vous, pour une rÃƒÂ©paration express.',
+                'Nous affichons les dépanneurs disponibles les plus proches '
+                'de vous, pour une réparation express.',
                 style: TextStyle(
                   fontSize: 15,
                   height: 1.4,
@@ -535,8 +535,8 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                   color: _Genre.depanneur.color,
                   titre: e.value.label,
                   sousTitre: _isLoading
-                      ? 'RechercheÃ¢â‚¬Â¦'
-                      : '${_nbPanne(e.key)} dÃƒÂ©panneur(s) disponible(s)',
+                      ? 'Recherche…'
+                      : '${_nbPanne(e.key)} dépanneur(s) disponible(s)',
                   onTap: () {
                     Navigator.pop(ctx);
                     _lancerDepannage(e.key);
@@ -569,7 +569,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
               child: Padding(
                 padding: EdgeInsets.all(24),
                 child: Text(
-                  'Aucun rÃƒÂ©sultat ÃƒÂ  proximitÃƒÂ©.',
+                  'Aucun résultat à proximité.',
                   style: TextStyle(fontSize: 16),
                 ),
               ),
@@ -596,8 +596,8 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                   style: const TextStyle(fontWeight: FontWeight.w800),
                 ),
                 subtitle: Text(
-                  '${km.toStringAsFixed(1)} km Ã‚Â· Ã¢â€°Ë† ${_eta(km)} min'
-                  ' Ã‚Â· ${p.disponible ? 'Disponible' : 'Indisponible'}',
+                  '${km.toStringAsFixed(1)} km · ≈ ${_eta(km)} min'
+                  ' · ${p.disponible ? 'Disponible' : 'Indisponible'}',
                 ),
                 onTap: () {
                   Navigator.pop(ctx);
@@ -613,9 +613,9 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
 
   /// Un visiteur ne voit jamais le nom : seulement le type de prestataire.
   String _titre(Prestataire p) =>
-      _connecte ? p.nomAffiche : '${_genreDe(p).label} prÃƒÂ¨s de vous';
+      _connecte ? p.nomAffiche : '${_genreDe(p).label} près de vous';
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ UI Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── UI ───────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -680,7 +680,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                                   Icons.close_rounded,
                                   size: 20,
                                 ),
-                                label: const Text('Effacer l\'itinÃƒÂ©raire'),
+                                label: const Text('Effacer l\'itinéraire'),
                                 backgroundColor: Theme.of(context)
                                     .colorScheme
                                     .surface,
@@ -700,7 +700,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                         _panneau(context),
                         const SizedBox(height: 4),
                         Text(
-                          'Ã‚Â© OpenStreetMap contributors',
+                          '© OpenStreetMap contributors',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 10.5,
@@ -778,7 +778,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     final scheme = Theme.of(context).colorScheme;
     return Semantics(
       button: true,
-      label: 'Rechercher un zÃƒÂ©midjan, un kloboto ou un dÃƒÂ©panneur',
+      label: 'Rechercher un zémidjan, un kloboto ou un dépanneur',
       child: Material(
         elevation: 6,
         shadowColor: Colors.black45,
@@ -797,7 +797,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'ZÃƒÂ©midjan, kloboto, dÃƒÂ©pannageÃ¢â‚¬Â¦',
+                      'Zémidjan, kloboto, dépannage…',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -849,7 +849,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                 child: ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: Icon(Icons.receipt_long_outlined),
-                  title: Text('Mes demandes de dÃƒÂ©pannage'),
+                  title: Text('Mes demandes de dépannage'),
                 ),
               ),
               const PopupMenuItem(
@@ -865,7 +865,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                 child: ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: Icon(Icons.local_hospital_outlined),
-                  title: Text('NumÃƒÂ©ros d\'urgence'),
+                  title: Text('Numéros d\'urgence'),
                 ),
               ),
               const PopupMenuDivider(),
@@ -878,7 +878,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                     color: AppTheme.errorColor,
                   ),
                   title: Text(
-                    'Se dÃƒÂ©connecter',
+                    'Se déconnecter',
                     style: TextStyle(color: AppTheme.errorColor),
                   ),
                 ),
@@ -914,7 +914,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                 child: ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: Icon(Icons.local_hospital_outlined),
-                  title: Text('NumÃƒÂ©ros d\'urgence'),
+                  title: Text('Numéros d\'urgence'),
                 ),
               ),
             ],
@@ -950,7 +950,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
           ),
           _chip(
             context,
-            'ZÃƒÂ©midjan',
+            'Zémidjan',
             Icons.two_wheeler_rounded,
             _cat == _Cat.zemidjan,
             () => _choisirCat(_Cat.zemidjan),
@@ -965,8 +965,8 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
           _chip(
             context,
             panne && vp != null
-                ? 'DÃƒÂ©pannage Ã‚Â· ${_vehiculesPanne[vp]!.label}'
-                : 'DÃƒÂ©pannage',
+                ? 'Dépannage · ${_vehiculesPanne[vp]!.label}'
+                : 'Dépannage',
             Icons.build_rounded,
             panne,
             _ouvrirPanne,
@@ -1036,7 +1036,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     );
   }
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Panneau du bas Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // ── Panneau du bas ───────────────────────────────────────────────────────
 
   Widget _panneau(BuildContext context) {
     final sel = _selection;
@@ -1061,10 +1061,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
             style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
           ),
         ),
-        TextButton(
-          onPressed: _chargerDonnees,
-          child: const Text('RÃƒÂ©essayer'),
-        ),
+        TextButton(onPressed: _chargerDonnees, child: const Text('Réessayer')),
       ],
     );
   }
@@ -1073,9 +1070,9 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     final n = _visibles.length;
     final filtresActifs = _cat != _Cat.tous || _seulementDispos;
     final titre = _isLoading
-        ? 'Recherche en coursÃ¢â‚¬Â¦'
+        ? 'Recherche en cours…'
         : n == 0
-        ? 'Aucun rÃƒÂ©sultat ÃƒÂ  moins de ${_rayonKm.toInt()} km'
+        ? 'Aucun résultat à moins de ${_rayonKm.toInt()} km'
         : '$n autour de vous';
 
     return Column(
@@ -1122,7 +1119,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
           children: [
             Expanded(
               child: AppButton(
-                label: 'ZÃƒÂ©midjan',
+                label: 'Zémidjan',
                 icon: Icons.two_wheeler_rounded,
                 onPressed: () => _commander('zemidjan'),
               ),
@@ -1139,7 +1136,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
         ),
         const SizedBox(height: 10),
         AppButton(
-          label: 'Panne ? DÃƒÂ©pannage express',
+          label: 'Panne ? Dépannage express',
           icon: Icons.car_crash_rounded,
           variant: AppButtonVariant.secondary,
           onPressed: _ouvrirPanne,
@@ -1204,7 +1201,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
           runSpacing: 6,
           children: [
             StatusPill(
-              label: '${km.toStringAsFixed(1)} km Ã‚Â· Ã¢â€°Ë† ${_eta(km)} min',
+              label: '${km.toStringAsFixed(1)} km · ≈ ${_eta(km)} min',
               color: AppTheme.primaryColor,
               icon: Icons.near_me_rounded,
             ),
@@ -1224,14 +1221,14 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
         if (conducteur)
           AppButton(
             label: g == _Genre.zemidjan
-                ? 'Commander un zÃƒÂ©midjan'
+                ? 'Commander un zémidjan'
                 : 'Commander un kloboto',
             icon: g.icon,
             onPressed: () => _commander(g.codeCourse!),
           )
         else
           AppButton(
-            label: 'Demander un dÃƒÂ©pannage',
+            label: 'Demander un dépannage',
             icon: Icons.build_rounded,
             onPressed: () => _demanderDepannage(p),
           ),
