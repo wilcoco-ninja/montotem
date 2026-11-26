@@ -45,10 +45,7 @@ class FunService {
   /// SQL côté serveur, puis renvoie le nouveau solde.
   Future<int> ouvrirCoffre({int cout = kCoutCoffre}) async {
     try {
-      final solde = await _sb.rpc(
-        'depenser_etoiles',
-        params: {'p_cout': cout},
-      );
+      final solde = await _sb.rpc('depenser_etoiles', params: {'p_cout': cout});
       return (solde as num?)?.toInt() ?? 0;
     } on PostgrestException catch (e) {
       // L'exception SQL remonte avec son code métier dans le message.

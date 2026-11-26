@@ -327,9 +327,9 @@ class _CoffresScreenState extends State<CoffresScreen> {
         Text(
           _serviceTermine
               ? 'La partie s\'arrête quand le travail est fini. Gain : des '
-                  'souvenirs, pas des points !'
+                    'souvenirs, pas des points !'
               : 'Vous gagnez des étoiles en laissant un avis (+10, +5 si le '
-                  'commentaire fait 20 caractères ou plus).',
+                    'commentaire fait 20 caractères ou plus).',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 13, color: context.textSecondary),
         ),
@@ -498,7 +498,10 @@ class _CarteItemState extends State<_CarteItem> {
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: OutlinedButton(onPressed: _passer, child: const Text('Passer')),
+            child: OutlinedButton(
+              onPressed: _passer,
+              child: const Text('Passer'),
+            ),
           ),
         ],
       ),
