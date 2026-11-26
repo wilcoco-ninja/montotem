@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:montotem/core/flavor/app_flavor.dart';
+
 // ── Admin ──────────────────────────────────────────────────────────────
 import 'package:montotem/features/admin/presentation/admin_control_tower_screen.dart';
 import 'package:montotem/features/admin/presentation/admin_finance_screen.dart';
@@ -184,7 +186,14 @@ class AppRouter {
           .maybeSingle();
 
       if (row == null || row['inscription_complete'] != true) {
-        return '/register/role';
+        // Aiguillage par application : le client complete son profil client,
+        // l'app Pro propose ses DEUX portes (service prestataire / conducteur),
+        // les autres (driver) gardent le selecteur de roles historique.
+        return switch (AppFlavor.current) {
+          AppFlavor.pro => '/register/provider',
+          AppFlavor.client => '/register/client',
+          _ => '/register/role',
+        };
       }
 
       final role = row['role']?.toString();

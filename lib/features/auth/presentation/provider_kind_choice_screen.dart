@@ -12,8 +12,9 @@ import '../../../core/theme/totem_icons.dart';
 /// seconde, avec deux univers visuels distincts.
 ///
 ///   porte 1 · CONDUCTEUR  → /register/transport
-///        Zémidjan ou Tricycle Kloboto. Univers « Cockpit » : asphalte noir,
-///        jaune safran, boutons biseautés, route de progression.
+///        Zémidjan (moto, 1 passager), Cloboto (tricycle, 2 à 3 passagers)
+///        ou Kloboto (colis, marchandises). Univers « Cockpit » : asphalte
+///        noir, jaune safran, boutons biseautés, route de progression.
 ///
 ///   porte 2 · DÉPANNEUR   → /register/provider/depannage
 ///        Mécanicien, vulcanisateur, électricien, station, garage.
@@ -83,7 +84,9 @@ class ProviderKindChoiceScreen extends StatelessWidget {
                   fond: const Color(0xFF0D0F12),
                   bord: AppColors.brandYellow,
                   titre: 'JE CONDUIS',
-                  sous: 'Zémidjan ou Tricycle Kloboto.\nRecevez des courses autour de vous.',
+                  sous:
+                      'Zémidjan (moto), Cloboto (passagers), '
+                      'Kloboto (colis).\nRecevez des courses autour de vous.',
                   couleurTitre: AppColors.brandYellow,
                   couleurTexte: const Color(0xFFF5F7FA),
                   biseaute: true,
@@ -112,8 +115,8 @@ class ProviderKindChoiceScreen extends StatelessWidget {
                   bord: _atelier,
                   titre: 'JE DÉPANNE',
                   sous:
-                      'Mécanicien, vulcanisateur, électricien, station, garage.\n'
-                      'Recevez des demandes de dépannage.',
+                      'Garage, station d\'essence, mécanicien, vulcanisateur, '
+                      'électricien.\nRecevez des demandes de dépannage.',
                   couleurTitre: _onAtelier,
                   couleurTexte: _onAtelier,
                   biseaute: false,

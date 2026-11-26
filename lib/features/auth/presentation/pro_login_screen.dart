@@ -117,7 +117,7 @@ class _ProLoginScreenState extends State<ProLoginScreen> {
               TextButton(
                 onPressed: _loading
                     ? null
-                    : () => context.push('/register/signup?role=provider'),
+                    : () => context.push('/register/provider'),
                 child: const Text(
                   'Déposer mon dossier',
                   style: TextStyle(fontWeight: FontWeight.w800),
