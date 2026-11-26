@@ -531,6 +531,29 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                 ),
               ),
               const SizedBox(height: 14),
+              // Diagnostic rapide SOS : véhicule → type de panne → devis
+              // garanti, en 4 étapes guidées.
+              _OptionTile(
+                icon: Icons.sos_rounded,
+                color: _Genre.depanneur.color,
+                titre: 'Diagnostic rapide SOS',
+                sousTitre:
+                    'Je signale mon véhicule et ma panne, avec devis garanti.',
+                onTap: () {
+                  Navigator.pop(ctx);
+                  context.push('/assistant/panne');
+                },
+              ),
+              const SizedBox(height: 14),
+              Text(
+                'Ou choisir directement un type de véhicule :',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: context.textSecondary,
+                ),
+              ),
+              const SizedBox(height: 10),
               for (final e in _vehiculesPanne.entries) ...[
                 _OptionTile(
                   icon: e.value.icon,

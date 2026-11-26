@@ -380,6 +380,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       onTap: () => context.push('/admin/users'),
                     ),
                     QuickTile(
+                      icon: Icons.sell_outlined,
+                      label: 'Tarifs & prix',
+                      color: Colors.green,
+                      onTap: () => context.push('/admin/tariffs'),
+                    ),
+                    QuickTile(
                       icon: Icons.settings_outlined,
                       label: 'Paramètres admin',
                       color: Colors.blueGrey,

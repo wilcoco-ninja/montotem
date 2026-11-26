@@ -16,6 +16,7 @@ import 'package:montotem/features/admin/presentation/admin_notifications_screen.
 import 'package:montotem/features/admin/presentation/admin_revenue_screen.dart';
 import 'package:montotem/features/admin/presentation/admin_providers_screen.dart';
 import 'package:montotem/features/admin/presentation/admin_settings_screen.dart';
+import 'package:montotem/features/admin/presentation/admin_tariffs_screen.dart';
 import 'package:montotem/features/admin/presentation/admin_tracking_screen.dart';
 import 'package:montotem/features/admin/presentation/admin_users_screen.dart';
 import 'package:montotem/features/admin/presentation/admin_reports_screen.dart';
@@ -68,6 +69,7 @@ import 'package:montotem/features/rides/presentation/ride_request_screen.dart';
 import 'package:montotem/features/rides/presentation/ride_tracking_screen.dart';
 import 'package:montotem/features/rides/presentation/rides_history_screen.dart';
 import 'package:montotem/features/rides/domain/ride_model.dart';
+import 'package:montotem/features/sos/presentation/assistant_panne_screen.dart';
 import 'package:montotem/features/wallet/presentation/provider_wallet_screen.dart';
 import 'package:montotem/features/tracking/domain/prestataire_model.dart';
 
@@ -97,6 +99,9 @@ class AppRouter {
     '/sos',
     '/emergency',
     '/survie',
+    // Diagnostic panne : visible même aux visiteurs (la commande exige un
+    // compte côté serveur).
+    '/assistant/panne',
   ];
 
   static bool _estPublic(String path) {
@@ -305,6 +310,15 @@ class AppRouter {
         builder: (_, _) => const ProviderRegistrationScreen(),
       ),
 
+      // Diagnostic de panne (SOS) — signaler son véhicule et son type de panne.
+      GoRoute(
+        path: '/assistant/panne',
+        builder: (_, _) => const AssistantPanneScreen(),
+      ),
+      GoRoute(
+        path: '/assistant/course',
+        builder: (_, _) => const RideRequestScreen(),
+      ),
       GoRoute(
         path: '/sos',
         builder: (_, s) {
@@ -444,6 +458,10 @@ class AppRouter {
       GoRoute(
         path: '/admin/settings',
         builder: (_, _) => const AdminSettingsScreen(),
+      ),
+      GoRoute(
+        path: '/admin/tariffs',
+        builder: (_, _) => const AdminTariffsScreen(),
       ),
       GoRoute(
         path: '/admin/reports',

@@ -1,11 +1,17 @@
-/// Modèle de tarification pour les courses (version sans chevrons pour éviter toute corruption de copie)
+/// Modèle de tarification des courses, piloté par `app_config`.
+///
+/// Les clés `ride_<service>_base_fcfa` et `ride_<service>_per_km_fcfa` sont
+/// la source officielle ; elles sont modifiables depuis l'écran admin
+/// « Tarifs & prix » (F-19). Le serveur recalcule de toute façon un prix
+/// minimum identique dans create_ride, donc estimation et facturation
+/// restent cohérentes.
 class RideTariff {
   const RideTariff({
     required this.baseFcfa,
     required this.kmFcfa,
-    required this.minuteFcfa,
-    required this.minFcfa,
-    required this.maxSurgePct,
+    this.minuteFcfa = 0,
+    this.minFcfa = 100,
+    this.maxSurgePct = 40,
   });
 
   final int baseFcfa;
@@ -35,8 +41,8 @@ class RideTariff {
     return RideTariff(
       baseFcfa: (json['base_fcfa'] as num?)?.toInt() ?? 300,
       kmFcfa: (json['km_fcfa'] as num?)?.toInt() ?? 150,
-      minuteFcfa: (json['minute_fcfa'] as num?)?.toInt() ?? 25,
-      minFcfa: (json['min_fcfa'] as num?)?.toInt() ?? 500,
+      minuteFcfa: (json['minute_fcfa'] as num?)?.toInt() ?? 0,
+      minFcfa: (json['min_fcfa'] as num?)?.toInt() ?? 100,
       maxSurgePct: (json['max_surge_pct'] as num?)?.toInt() ?? 40,
     );
   }
@@ -45,84 +51,94 @@ class RideTariff {
 class RideTariffs {
   const RideTariffs({
     this.zemidjan = const RideTariff(
-      baseFcfa: 250,
-      kmFcfa: 120,
-      minuteFcfa: 20,
-      minFcfa: 400,
-      maxSurgePct: 40,
+      baseFcfa: 300,
+      kmFcfa: 150,
     ),
-    this.tricycleFret = const RideTariff(
-      baseFcfa: 600,
-      kmFcfa: 250,
-      minuteFcfa: 40,
-      minFcfa: 1000,
-      maxSurgePct: 40,
+    this.cloboto = const RideTariff(
+      baseFcfa: 500,
+      kmFcfa: 200,
+    ),
+    this.kloboto = const RideTariff(
+      baseFcfa: 700,
+      kmFcfa: 300,
     ),
   });
 
   final RideTariff zemidjan;
-  final RideTariff tricycleFret;
+  final RideTariff cloboto;
+  final RideTariff kloboto;
 
+  /// Tarif applicable selon le type de course choisi.
   RideTariff pour(dynamic kind) {
     final code = kind.toString().toLowerCase();
-    if (code.contains('tricycle') || code.contains('fret')) {
-      return tricycleFret;
-    }
+    if (code.contains('fret') || code.contains('kloboto')) return kloboto;
+    if (code.contains('passenger') || code.contains('cloboto')) return cloboto;
     return zemidjan;
   }
 
-  static const cles = ['zemidjan_tariff', 'tricycle_tariff'];
+  /// Clés `app_config` (base + /km pour les 3 services de transport).
+  static const List<String> cles = [
+    'ride_zemidjan_base_fcfa',
+    'ride_zemidjan_per_km_fcfa',
+    'ride_cloboto_base_fcfa',
+    'ride_cloboto_per_km_fcfa',
+    'ride_kloboto_base_fcfa',
+    'ride_kloboto_per_km_fcfa',
+  ];
 
   factory RideTariffs.fromRows(List rows) {
-    var zem = const RideTariff(
-      baseFcfa: 250,
-      kmFcfa: 120,
-      minuteFcfa: 20,
-      minFcfa: 400,
-      maxSurgePct: 40,
-    );
-    var tri = const RideTariff(
-      baseFcfa: 600,
-      kmFcfa: 250,
-      minuteFcfa: 40,
-      minFcfa: 1000,
-      maxSurgePct: 40,
-    );
+    const def = RideTariffs();
+    var zem = def.zemidjan;
+    var clo = def.cloboto;
+    var klo = def.kloboto;
 
     for (final row in rows) {
-      if (row is Map) {
-        final key = '${row['key'] ?? ''}';
-        final val = row['value_json'] ?? row['value_int'];
-        if (key == 'zemidjan_tariff' && val is Map) {
-          zem = RideTariff.fromJson(val);
-        } else if (key == 'tricycle_tariff' && val is Map) {
-          tri = RideTariff.fromJson(val);
-        }
+      if (row is! Map) continue;
+      final key = '${row['key'] ?? ''}';
+      final val = (row['value_int'] as num?)?.toInt();
+      if (val == null) continue;
+      switch (key) {
+        case 'ride_zemidjan_base_fcfa':
+          zem = RideTariff(baseFcfa: val, kmFcfa: zem.kmFcfa);
+        case 'ride_zemidjan_per_km_fcfa':
+          zem = RideTariff(baseFcfa: zem.baseFcfa, kmFcfa: val);
+        case 'ride_cloboto_base_fcfa':
+          clo = RideTariff(baseFcfa: val, kmFcfa: clo.kmFcfa);
+        case 'ride_cloboto_per_km_fcfa':
+          clo = RideTariff(baseFcfa: clo.baseFcfa, kmFcfa: val);
+        case 'ride_kloboto_base_fcfa':
+          klo = RideTariff(baseFcfa: val, kmFcfa: klo.kmFcfa);
+        case 'ride_kloboto_per_km_fcfa':
+          klo = RideTariff(baseFcfa: klo.baseFcfa, kmFcfa: val);
       }
     }
-    return RideTariffs(zemidjan: zem, tricycleFret: tri);
+    return RideTariffs(zemidjan: zem, cloboto: clo, kloboto: klo);
   }
 
-  List toRows() => [
+  List<Map<String, Object?>> toRows() => [
     {
-      'key': 'zemidjan_tariff',
-      'value_json': {
-        'base_fcfa': zemidjan.baseFcfa,
-        'km_fcfa': zemidjan.kmFcfa,
-        'minute_fcfa': zemidjan.minuteFcfa,
-        'min_fcfa': zemidjan.minFcfa,
-        'max_surge_pct': zemidjan.maxSurgePct,
-      },
+      'key': 'ride_zemidjan_base_fcfa',
+      'value_int': zemidjan.baseFcfa,
     },
     {
-      'key': 'tricycle_tariff',
-      'value_json': {
-        'base_fcfa': tricycleFret.baseFcfa,
-        'km_fcfa': tricycleFret.kmFcfa,
-        'minute_fcfa': tricycleFret.minuteFcfa,
-        'min_fcfa': tricycleFret.minFcfa,
-        'max_surge_pct': tricycleFret.maxSurgePct,
-      },
+      'key': 'ride_zemidjan_per_km_fcfa',
+      'value_int': zemidjan.kmFcfa,
+    },
+    {
+      'key': 'ride_cloboto_base_fcfa',
+      'value_int': cloboto.baseFcfa,
+    },
+    {
+      'key': 'ride_cloboto_per_km_fcfa',
+      'value_int': cloboto.kmFcfa,
+    },
+    {
+      'key': 'ride_kloboto_base_fcfa',
+      'value_int': kloboto.baseFcfa,
+    },
+    {
+      'key': 'ride_kloboto_per_km_fcfa',
+      'value_int': kloboto.kmFcfa,
     },
   ];
 }

@@ -7,6 +7,9 @@ const List<String> kMetiersDepannage = [
   'Électricien auto & moto',
   'Station d\'essence',
   'Service garage',
+  'Dépanneuse / Remorquage',
+  'Vendeur de carburant',
+  'Lavage auto & moto',
 ];
 
 /// Métiers du transport (courses). Le libellé détermine provider_kind côté
@@ -28,6 +31,9 @@ const Map<String, IconData> kIconesMetier = {
   'Électricien auto & moto': Icons.electrical_services_outlined,
   'Station d\'essence': Icons.local_gas_station_outlined,
   'Service garage': Icons.garage_outlined,
+  'Dépanneuse / Remorquage': Icons.local_shipping_rounded,
+  'Vendeur de carburant': Icons.local_gas_station_rounded,
+  'Lavage auto & moto': Icons.local_car_wash_rounded,
   'Zémidjan': Icons.two_wheeler_rounded,
   'Tricycle Passagers': Icons.electric_rickshaw_rounded,
   'Tricycle Fret': Icons.local_shipping_rounded,
