@@ -456,7 +456,8 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
     final kind = p['provider_kind'] as String?;
     final controles = _analyserControles(p['id_checks']);
     final identiteComplete = p['identity_submitted_at'] != null;
-    final estConducteur = kind == 'zemidjan' ||
+    final estConducteur =
+        kind == 'zemidjan' ||
         kind == 'tricycle_passenger' ||
         kind == 'tricycle_fret';
     final libelleLieu = switch (kind) {

@@ -71,25 +71,25 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
           )
         : switch (statut) {
             'approved' => (
-                Icons.verified_rounded,
-                AppColors.success,
-                'Dossier validé',
-                'Votre identité est vérifiée. Vous êtes visible des clients.',
-              ),
+              Icons.verified_rounded,
+              AppColors.success,
+              'Dossier validé',
+              'Votre identité est vérifiée. Vous êtes visible des clients.',
+            ),
             'rejected' => (
-                Icons.error_outline_rounded,
-                scheme.error,
-                'Dossier refusé',
-                'Corrigez et renvoyez vos photos : '
-                    '${id?.motifRefus ?? 'motif communiqué par l\'administration'}.',
-              ),
+              Icons.error_outline_rounded,
+              scheme.error,
+              'Dossier refusé',
+              'Corrigez et renvoyez vos photos : '
+                  '${id?.motifRefus ?? 'motif communiqué par l\'administration'}.',
+            ),
             _ => (
-                Icons.hourglass_top_rounded,
-                AppColors.amber,
-                'En cours de vérification',
-                'L\'administration MonTotem examine vos photos. '
-                    'Vous serez notifié dès la décision.',
-              ),
+              Icons.hourglass_top_rounded,
+              AppColors.amber,
+              'En cours de vérification',
+              'L\'administration MonTotem examine vos photos. '
+                  'Vous serez notifié dès la décision.',
+            ),
           };
 
     final aAction = !soumis || statut == 'rejected';
