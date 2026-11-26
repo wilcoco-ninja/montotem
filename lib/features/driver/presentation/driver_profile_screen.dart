@@ -7,6 +7,7 @@ import 'package:montotem/core/utils/travel_fee.dart';
 import 'package:montotem/core/widgets/app_button.dart';
 import 'package:montotem/core/widgets/app_ui.dart';
 import 'package:montotem/features/driver/data/driver_service.dart';
+import 'package:montotem/features/provider/data/provider_identity_service.dart';
 import 'package:montotem/features/provider/presentation/widgets/provider_momo_sheet.dart';
 import 'package:montotem/features/requests/domain/mission_payment_model.dart';
 
@@ -20,8 +21,10 @@ class DriverProfileScreen extends StatefulWidget {
 
 class _DriverProfileScreenState extends State<DriverProfileScreen> {
   final DriverService _driver = DriverService();
+  final ProviderIdentityService _identiteService = ProviderIdentityService();
 
   DriverInfo? _info;
+  IdentityStatus? _identite;
   Map<String, dynamic>? _wallet;
   bool _loading = true;
 
@@ -34,10 +37,12 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
   Future<void> _charger() async {
     final info = await _driver.charger();
     final wallet = await _driver.wallet();
+    final identite = await _identiteService.statut();
     if (!mounted) return;
     setState(() {
       _info = info;
       _wallet = wallet;
+      _identite = identite;
       _loading = false;
     });
   }
@@ -47,6 +52,89 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
     await showProviderMomoSheet(context);
     if (!mounted) return;
     await _charger();
+  }
+
+  /// Dossier d'identité : photos prises à la caméra, vérifiées par l'admin.
+  Widget _carteDossierIdentite(ColorScheme scheme, DriverInfo info) {
+    final id = _identite;
+    final soumis = id?.soumis ?? false;
+    final statut = id?.statutValidation ?? info.statutValidation;
+
+    final (icone, couleur, titre, sousTitre) = !soumis
+        ? (
+            Icons.photo_camera_rounded,
+            scheme.error,
+            'Dossier obligatoire — à envoyer',
+            'Prenez en photo votre pièce d\'identité, votre visage et votre '
+                'véhicule. Sans ce dossier, votre compte ne peut pas être '
+                'validé.',
+          )
+        : switch (statut) {
+            'approved' => (
+                Icons.verified_rounded,
+                AppColors.success,
+                'Dossier validé',
+                'Votre identité est vérifiée. Vous êtes visible des clients.',
+              ),
+            'rejected' => (
+                Icons.error_outline_rounded,
+                scheme.error,
+                'Dossier refusé',
+                'Corrigez et renvoyez vos photos : '
+                    '${id?.motifRefus ?? 'motif communiqué par l\'administration'}.',
+              ),
+            _ => (
+                Icons.hourglass_top_rounded,
+                AppColors.amber,
+                'En cours de vérification',
+                'L\'administration MonTotem examine vos photos. '
+                    'Vous serez notifié dès la décision.',
+              ),
+          };
+
+    final aAction = !soumis || statut == 'rejected';
+    return SoftCard(
+      onTap: aAction
+          ? () async {
+              await context.push('/provider/identity');
+              if (mounted) _charger();
+            }
+          : null,
+      color: aAction ? couleur.withValues(alpha: 0.08) : null,
+      child: Row(
+        children: [
+          Icon(icone, size: 32, color: couleur),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  titre,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    color: couleur,
+                  ),
+                ),
+                Text(
+                  sousTitre,
+                  style: TextStyle(
+                    fontSize: 13.5,
+                    height: 1.35,
+                    color: context.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (aAction)
+            const Icon(Icons.chevron_right_rounded)
+          else
+            Icon(Icons.check_rounded, size: 22, color: couleur),
+        ],
+      ),
+    );
   }
 
   Future<void> _deconnecter() async {
@@ -136,6 +224,8 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
               ],
             ),
           ),
+          const SectionTitle('Mon dossier d\'identité'),
+          _carteDossierIdentite(scheme, info),
           if (!info.valide) ...[
             const SizedBox(height: 12),
             if (info.rejete)

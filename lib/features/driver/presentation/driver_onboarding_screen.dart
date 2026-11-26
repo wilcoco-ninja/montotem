@@ -176,7 +176,9 @@ class _DriverOnboardingScreenState extends State<DriverOnboardingScreen> {
       );
 
       if (!mounted) return;
-      context.go('/driver/home');
+      // Étape suivante obligatoire : le dossier d'identité (pièce, visage,
+      // véhicule). L'écran renvoie ensuite vers l'espace conducteur.
+      context.go('/provider/identity');
     } on PostgrestException catch (e) {
       final m = e.message;
       if (m.contains('ROLE_IMMUABLE')) {

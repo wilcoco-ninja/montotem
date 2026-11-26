@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:montotem/core/flavor/app_flavor.dart';
 import 'package:montotem/core/utils/responsive.dart';
 import 'package:montotem/core/theme/app_theme.dart';
 import 'package:montotem/core/widgets/app_button.dart';
@@ -97,7 +98,10 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
       );
       if (!mounted) return;
       _msg('Dossier envoyé. Vous serez prévenu dès sa validation.');
-      context.go('/provider/profile');
+      // L'app conducteur revient à son profil, l'app Pro au sien.
+      context.go(
+        AppFlavor.current.isDriver ? '/driver/profile' : '/provider/profile',
+      );
     } on IdentityException catch (e) {
       if (mounted) _msg(e.message);
     } on UploadException catch (e) {
@@ -292,7 +296,11 @@ class _ProviderIdentityScreenState extends State<ProviderIdentityScreen> {
                       AppButton(
                         label: 'Continuer plus tard',
                         variant: AppButtonVariant.text,
-                        onPressed: () => context.go('/provider/profile'),
+                        onPressed: () => context.go(
+                          AppFlavor.current.isDriver
+                              ? '/driver/profile'
+                              : '/provider/profile',
+                        ),
                       ),
                     ],
                   ),

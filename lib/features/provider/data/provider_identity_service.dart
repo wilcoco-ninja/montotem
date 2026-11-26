@@ -46,9 +46,11 @@ class IdentityStatus {
   /// zemidjan | tricycle_fret | mecanicien | ... (déduit du métier).
   final String? providerKind;
 
-  /// Zémidjan ou Tricycle Fret : la 4e photo est celle du véhicule.
+  /// Conducteurs : la 4e photo est celle du véhicule (moto ou tricycle).
   bool get estTransport =>
-      providerKind == 'zemidjan' || providerKind == 'tricycle_fret';
+      providerKind == 'zemidjan' ||
+      providerKind == 'tricycle_fret' ||
+      providerKind == 'tricycle_passenger';
 }
 
 class ProviderIdentityService {

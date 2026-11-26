@@ -450,10 +450,23 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
     final docType = p['id_document_type'] as String?;
     final docNumero = (p['id_document_number'] as String?) ?? '';
     final photoCniVerso = p['photo_cni_back_url'] as String?;
+    final photoSelfie = p['photo_selfie_url'] as String?;
     final photoGarage = p['photo_garage_url'] as String?;
     final descGarage = (p['garage_description'] as String?) ?? '';
+    final kind = p['provider_kind'] as String?;
     final controles = _analyserControles(p['id_checks']);
     final identiteComplete = p['identity_submitted_at'] != null;
+    final estConducteur = kind == 'zemidjan' ||
+        kind == 'tricycle_passenger' ||
+        kind == 'tricycle_fret';
+    final libelleLieu = switch (kind) {
+      'zemidjan' => 'Véhicule (moto)',
+      'tricycle_passenger' => 'Véhicule (cloboto)',
+      'tricycle_fret' => 'Véhicule (kloboto)',
+      'station' => 'Station-service',
+      'garage' => 'Garage',
+      _ => 'Atelier',
+    };
 
     final nomAffiche = businessName.isNotEmpty
         ? businessName
@@ -496,6 +509,10 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                 ),
                 const SectionTitle('Photo de profil'),
                 _blocImage(photoProfil, 180, 'Impossible de charger la photo'),
+                if (photoSelfie != null && photoSelfie.isNotEmpty) ...[
+                  const SectionTitle('Visage (selfie du dossier)'),
+                  _blocImage(photoSelfie, 200, 'Selfie introuvable'),
+                ],
                 const SectionTitle('Pièce d’identité officielle'),
                 if (!identiteComplete)
                   Padding(
@@ -525,8 +542,19 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                   const SizedBox(height: 10),
                   _blocImage(photoCniVerso, 200, 'Verso introuvable'),
                 ],
-                const SectionTitle('Garage / Atelier'),
-                _blocImage(photoGarage, 180, 'Photo du garage indisponible'),
+                SectionTitle(
+                  estConducteur ? 'Photo du véhicule' : 'Lieu de travail',
+                ),
+                _blocImage(
+                  photoGarage,
+                  180,
+                  'Photo du véhicule ou de l\'atelier indisponible',
+                ),
+                InfoRow(
+                  icon: Icons.travel_explore_outlined,
+                  label: 'Lieu photographié',
+                  value: libelleLieu,
+                ),
                 InfoRow(
                   icon: Icons.notes_outlined,
                   label: 'Description',
@@ -560,9 +588,25 @@ class _AdminProvidersScreenState extends State<AdminProvidersScreen> {
                   label: 'Métier',
                   value: metier,
                 ),
+                if (kind != null)
+                  InfoRow(
+                    icon: Icons.category_outlined,
+                    label: 'Type de profil',
+                    value: switch (kind) {
+                      'zemidjan' => 'Zémidjan (moto-taxi)',
+                      'tricycle_passenger' => 'Cloboto (tricycle passagers)',
+                      'tricycle_fret' => 'Kloboto (tricycle colis)',
+                      'mecanicien' => 'Mécanicien',
+                      'vulcanisateur' => 'Vulcanisateur',
+                      'electricien' => 'Électricien',
+                      'garage' => 'Garage',
+                      'station' => 'Station-service',
+                      _ => kind,
+                    },
+                  ),
                 InfoRow(
                   icon: Icons.store_outlined,
-                  label: 'Nom du Garage',
+                  label: 'Nom affiché',
                   value: businessName,
                 ),
                 InfoRow(
