@@ -74,7 +74,19 @@ class _MesDemandesScreenState extends State<MesDemandesScreen> {
     return Scaffold(
       appBar: widget.embedded
           ? null
-          : AppBar(title: const Text('Mes demandes')),
+          : AppBar(
+              title: const Text('Mes demandes'),
+              leading: BackButton(
+                onPressed: () {
+                  // La carte MonTotem est l'accueil : on y revient toujours.
+                  if (context.canPop()) {
+                    context.pop();
+                  } else {
+                    context.go('/');
+                  }
+                },
+              ),
+            ),
       body: widget.embedded ? SafeArea(bottom: false, child: _body()) : _body(),
     );
   }

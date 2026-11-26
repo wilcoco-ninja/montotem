@@ -71,7 +71,19 @@ class _RidesHistoryScreenState extends State<RidesHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Mes courses')),
+      appBar: AppBar(
+        title: const Text('Mes courses'),
+        leading: BackButton(
+          onPressed: () {
+            // La carte MonTotem est l'accueil : on y revient toujours.
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/');
+            }
+          },
+        ),
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push('/ride/new'),
         icon: const Icon(Icons.add_rounded),
@@ -95,7 +107,7 @@ class _RidesHistoryScreenState extends State<RidesHistoryScreen> {
         child: EmptyState(
           icon: Icons.two_wheeler_rounded,
           title: 'Aucune course pour le moment',
-          message: 'Vos courses Zémidjan et Tricycle Fret apparaîtront ici.',
+          message: 'Vos courses zémidjan, cloboto et kloboto apparaîtront ici.',
         ),
       );
     }

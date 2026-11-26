@@ -64,6 +64,8 @@ import 'package:montotem/features/provider/presentation/provider_shell.dart';
 import 'package:montotem/features/rides/presentation/provider_ride_screen.dart';
 import 'package:montotem/features/rides/presentation/provider_rides_screen.dart';
 import 'package:montotem/features/rides/presentation/ride_request_screen.dart';
+import 'package:montotem/features/rides/presentation/ride_tracking_screen.dart';
+import 'package:montotem/features/rides/presentation/rides_history_screen.dart';
 import 'package:montotem/features/rides/domain/ride_model.dart';
 import 'package:montotem/features/wallet/presentation/provider_wallet_screen.dart';
 import 'package:montotem/features/tracking/domain/prestataire_model.dart';
@@ -149,6 +151,7 @@ class AppRouter {
     '/mes-demandes',
     '/account',
     '/ride/new',
+    '/rides',
   ];
 
   static bool _estEcranClient(String path) =>
@@ -325,6 +328,12 @@ class AppRouter {
 
       // Après connexion, le client revient sur la carte.
       GoRoute(path: '/home', redirect: (_, _) => '/'),
+      GoRoute(path: '/rides', builder: (_, _) => const RidesHistoryScreen()),
+      GoRoute(
+        path: '/rides/:id',
+        builder: (_, s) =>
+            RideTrackingScreen(rideId: s.pathParameters['id']!),
+      ),
       GoRoute(path: '/account', builder: (_, _) => const ClientProfileScreen()),
       GoRoute(path: '/matching', builder: (_, _) => const MatchingScreen()),
       GoRoute(

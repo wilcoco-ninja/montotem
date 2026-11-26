@@ -102,6 +102,27 @@ class MapHomeScreen extends StatefulWidget {
   State<MapHomeScreen> createState() => _MapHomeScreenState();
 }
 
+/// Feuille de question (recherche, panne) : contenu scrollable et borné à
+/// 70 % de l'écran. Sans elle, la question « Quel véhicule est en panne ? »
+/// débordait de 206 px et ses tuiles de véhicules devenaient inaccessibles.
+class _FeuilleQuestion extends StatelessWidget {
+  const _FeuilleQuestion({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.sizeOf(context).height * 0.7,
+        ),
+        child: SingleChildScrollView(child: child),
+      ),
+    );
+  }
+}
+
 class _MapHomeScreenState extends State<MapHomeScreen> {
   static const double _rayonKm = 15;
   static const Distance _distance = Distance();
@@ -324,8 +345,8 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
       _selectionner(_visibles.first);
     } else {
       _msg(
-        'Aucun dépanneur disponible à moins de ${_rayonKm.toInt()} km '
-        'pour ce véhicule.',
+        'Aucun dépanneur disponible pour ce véhicule pour le moment. '
+        'Il y en aura bientôt davantage autour de vous.',
       );
     }
   }
@@ -453,7 +474,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
       showDragHandle: true,
       useSafeArea: true,
       constraints: const BoxConstraints(maxWidth: 640),
-      builder: (ctx) => SafeArea(
+      builder: (ctx) => _FeuilleQuestion(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
           child: Column(
@@ -527,7 +548,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
       showDragHandle: true,
       useSafeArea: true,
       constraints: const BoxConstraints(maxWidth: 640),
-      builder: (ctx) => SafeArea(
+      builder: (ctx) => _FeuilleQuestion(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
           child: Column(
@@ -589,7 +610,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
               child: Padding(
                 padding: EdgeInsets.all(24),
                 child: Text(
-                  'Aucun résultat à proximité.',
+                  'Rien à proximité pour le moment.',
                   style: TextStyle(fontSize: 16),
                 ),
               ),
@@ -1075,7 +1096,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     final titre = _isLoading
         ? 'Recherche en cours…'
         : n == 0
-        ? 'Aucun résultat à moins de ${_rayonKm.toInt()} km'
+        ? 'Le réseau grandit : bientôt des prestataires près de vous'
         : '$n autour de vous';
 
     return Column(
@@ -1118,34 +1139,6 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
               ),
             ),
           ),
-        Row(
-          children: [
-            Expanded(
-              child: AppButton(
-                label: 'Zémidjan',
-                icon: Icons.two_wheeler_rounded,
-                onPressed: () => _commander('zemidjan'),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: AppButton(
-                label: 'Cloboto',
-                icon: Icons.electric_rickshaw_rounded,
-                onPressed: () => _commander('tricycle_passenger'),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: AppButton(
-                label: 'Kloboto',
-                icon: Icons.inventory_2_rounded,
-                onPressed: () => _commander('tricycle_fret'),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
         AppButton(
           label: 'Panne ? Dépannage express',
           icon: Icons.car_crash_rounded,
