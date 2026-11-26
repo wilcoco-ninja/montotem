@@ -115,9 +115,7 @@ class _ProLoginScreenState extends State<ProLoginScreen> {
                 'et Kloboto autour de vous.'
           : 'Connectez-vous pour recevoir vos missions et gérer '
                 'vos prestations et vos prix.',
-      icon: conducteur
-          ? Icons.two_wheeler_rounded
-          : Icons.handyman_outlined,
+      icon: conducteur ? Icons.two_wheeler_rounded : Icons.handyman_outlined,
       onBack: _loading ? null : () => context.go('/explore'),
       footer: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

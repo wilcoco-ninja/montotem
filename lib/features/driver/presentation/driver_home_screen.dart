@@ -447,7 +447,11 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
       padding: const EdgeInsets.only(top: 12),
       child: Row(
         children: [
-          Icon(Icons.hourglass_top_rounded, size: 18, color: AppTheme.warningColor),
+          Icon(
+            Icons.hourglass_top_rounded,
+            size: 18,
+            color: AppTheme.warningColor,
+          ),
           const SizedBox(width: 8),
           Expanded(
             child: Text(

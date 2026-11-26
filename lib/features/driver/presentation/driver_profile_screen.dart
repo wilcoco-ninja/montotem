@@ -269,9 +269,9 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                       Text(
                         info.momoConfigure
                             ? '${PayMethod.fromCode(info.momoOperateur).libelle}'
-                                ' · ${info.momoNumero ?? ''}'
+                                  ' · ${info.momoNumero ?? ''}'
                             : 'Nécessaire pour recevoir les paiements '
-                                'Mobile Money des clients.',
+                                  'Mobile Money des clients.',
                         style: TextStyle(
                           fontSize: 14,
                           color: context.textSecondary,

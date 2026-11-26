@@ -252,15 +252,11 @@ class AppRouter {
       GoRoute(path: '/pro/login', builder: (_, _) => const ProLoginScreen()),
 
       // ── Espace conducteur (app MonTotem Driver) ───────────────────────────
-      GoRoute(
-        path: '/driver/login',
-        builder: (_, _) => const ProLoginScreen(),
-      ),
+      GoRoute(path: '/driver/login', builder: (_, _) => const ProLoginScreen()),
       GoRoute(
         path: '/register/driver',
-        builder: (_, s) => DriverOnboardingScreen(
-          kindInitial: s.uri.queryParameters['kind'],
-        ),
+        builder: (_, s) =>
+            DriverOnboardingScreen(kindInitial: s.uri.queryParameters['kind']),
       ),
       GoRoute(
         path: '/driver/home',
