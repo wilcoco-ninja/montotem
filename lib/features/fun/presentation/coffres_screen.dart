@@ -316,13 +316,13 @@ class _CoffresScreenState extends State<CoffresScreen> {
           actif: !bloque && !_ouvertureEnCours,
           enfant: ElevatedButton.icon(
             onPressed: bloque ? null : _ouvrir,
-          icon: _ouvertureEnCours
-              ? const SizedBox(
-                  width: 18,
-                  height: 18,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : const Icon(Icons.card_giftcard_rounded),
+            icon: _ouvertureEnCours
+                ? const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.card_giftcard_rounded),
             label: Text(titre),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),

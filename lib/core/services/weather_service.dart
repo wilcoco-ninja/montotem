@@ -330,8 +330,7 @@ class WeatherService {
 
   // ── Prévisions des prochaines heures : alertes pluie / orage / soleil ──
 
-  final Map<String, ({PrevisionMeteo data, DateTime at})> _cachePrevisions =
-      {};
+  final Map<String, ({PrevisionMeteo data, DateTime at})> _cachePrevisions = {};
   final Map<String, Future<PrevisionMeteo>> _inFlightPrevisions = {};
   static const _ttlPrevisions = Duration(minutes: 20);
 
@@ -406,10 +405,10 @@ class WeatherService {
         .map(DateTime.tryParse)
         .whereType<DateTime>()
         .toList(growable: false);
-    final probas = (hourly['precipitation_probability'] as List<dynamic>? ??
-            const [])
-        .map((v) => (v as num?)?.toInt())
-        .toList(growable: false);
+    final probas =
+        (hourly['precipitation_probability'] as List<dynamic>? ?? const [])
+            .map((v) => (v as num?)?.toInt())
+            .toList(growable: false);
     final codes = (hourly['weather_code'] as List<dynamic>? ?? const [])
         .map((v) => (v as num?)?.toInt())
         .toList(growable: false);
