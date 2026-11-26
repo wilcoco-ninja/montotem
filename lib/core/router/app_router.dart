@@ -154,9 +154,7 @@ class AppRouter {
     if (loc.startsWith('/admin') && !await _estAdmin()) {
       // Dans la console admin, un non-admin est renvoyé à la porte admin ;
       // dans les autres apps, à l'accueil.
-      return AppFlavor.current == AppFlavor.admin
-          ? '/admin/login'
-          : '/home';
+      return AppFlavor.current == AppFlavor.admin ? '/admin/login' : '/home';
     }
 
     if (loc.startsWith('/provider') || loc.startsWith('/driver')) {
