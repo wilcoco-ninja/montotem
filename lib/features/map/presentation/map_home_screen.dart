@@ -10,9 +10,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/constants/app_constants.dart';
 import '../../../core/services/routing_service.dart';
-import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_ui.dart';
 import '../../auth/data/location_service.dart';
 import '../../auth/data/matching_service.dart';
@@ -49,14 +47,6 @@ extension on _Genre {
     _Genre.cloboto => const Color(0xFF0369A1),
     _Genre.kloboto => const Color(0xFF16A34A),
     _Genre.depanneur => const Color(0xFFDC2626),
-  };
-
-  /// Code transmis à la route /ride/new (null = pas un conducteur).
-  String? get codeCourse => switch (this) {
-    _Genre.zemidjan => 'zemidjan',
-    _Genre.cloboto => 'tricycle_passenger',
-    _Genre.kloboto => 'tricycle_fret',
-    _Genre.depanneur => null,
   };
 }
 
@@ -142,7 +132,6 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
   bool _isMapReady = false;
   bool _isLoading = true;
   bool _routeEnCours = false;
-  String? _errorMessage;
 
   _Cat _cat = _Cat.tous;
   String? _vehiculePanne; // seulement si _cat == depannage
@@ -158,15 +147,6 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
   Map<String, List<String>> _vehicules = const {};
 
   bool get _connecte => Supabase.instance.client.auth.currentSession != null;
-
-  Prestataire? get _selection {
-    final id = _selectedId;
-    if (id == null) return null;
-    for (final p in _visibles) {
-      if (p.id == id) return p;
-    }
-    return null;
-  }
 
   @override
   void initState() {
@@ -194,10 +174,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
 
   Future<void> _chargerDonnees({bool silencieux = false}) async {
     if (!silencieux) {
-      setState(() {
-        _isLoading = true;
-        _errorMessage = null;
-      });
+      setState(() => _isLoading = true);
     }
     try {
       final resultats = await Future.wait([
@@ -208,15 +185,12 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
       setState(() {
         _tous = resultats[0] as List<Prestataire>;
         _vehicules = resultats[1] as Map<String, List<String>>;
-        _errorMessage = null;
         _recalculer();
       });
     } catch (_) {
-      if (!mounted) return;
-      setState(() {
-        _errorMessage =
-            'Impossible de charger la carte. Vérifiez votre connexion.';
-      });
+      if (mounted) {
+        _msg('Impossible de charger la carte. Vérifiez votre connexion.');
+      }
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -314,18 +288,9 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     setState(() {
       _cat = c;
       _vehiculePanne = null;
-      _selectedId = null;
-      _routeGeometry = const [];
-      _recalculer();
-    });
-  }
-
-  void _reinitialiser() {
-    setState(() {
-      _cat = _Cat.tous;
-      _vehiculePanne = null;
       _seulementDispos = false;
       _selectedId = null;
+      _routeGeometry = const [];
       _recalculer();
     });
   }
@@ -343,6 +308,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     });
     if (_visibles.isNotEmpty) {
       _selectionner(_visibles.first);
+      _voirInfos(_visibles.first);
     } else {
       _msg(
         'Aucun dépanneur disponible pour ce véhicule pour le moment. '
@@ -361,15 +327,6 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
         math.max(_mapController.camera.zoom, 15),
       );
     }
-  }
-
-  /// Course Zémidjan / Kloboto : compte obligatoire.
-  void _commander(String codeCourse) {
-    requireAuth(
-      context,
-      action: GatedAction.course,
-      onAllowed: () => context.push('/ride/new?kind=$codeCourse'),
-    );
   }
 
   /// Infos complètes d'un prestataire : compte obligatoire.
@@ -391,14 +348,6 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
           ),
         );
       },
-    );
-  }
-
-  void _demanderDepannage(Prestataire p) {
-    requireAuth(
-      context,
-      action: GatedAction.depannage,
-      onAllowed: () => context.push('/nouvelle-demande', extra: p),
     );
   }
 
@@ -535,6 +484,17 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                   _ouvrirPanne();
                 },
               ),
+              const SizedBox(height: 10),
+              _OptionTile(
+                icon: Icons.apps_rounded,
+                color: Theme.of(ctx).colorScheme.primary,
+                titre: 'Voir tout le monde autour de moi',
+                sousTitre: '${_visibles.length} prestataire(s) au total',
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _ouvrirListe();
+                },
+              ),
             ],
           ),
         ),
@@ -642,7 +602,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                 ),
                 onTap: () {
                   Navigator.pop(ctx);
-                  _selectionner(p);
+                  _voirInfos(p);
                 },
               );
             },
@@ -686,11 +646,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        _barreRecherche(context),
-                        const SizedBox(height: 8),
-                        _chips(context),
-                      ],
+                      children: [_barreRecherche(context)],
                     ),
                   ),
                 ),
@@ -737,8 +693,6 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
-                        _panneau(context),
                         const SizedBox(height: 4),
                         Text(
                           '© OpenStreetMap contributors',
@@ -803,7 +757,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
           width: taille,
           height: taille,
           child: GestureDetector(
-            onTap: () => _selectionner(p),
+            onTap: () => _voirInfos(p),
             child: _ProviderMarker(
               genre: _genreDe(p),
               disponible: p.disponible,
@@ -950,306 +904,6 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     );
   }
 
-  Widget _chips(BuildContext context) {
-    final panne = _cat == _Cat.depannage;
-    final vp = _vehiculePanne;
-    return SizedBox(
-      height: 42,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          _chip(
-            context,
-            'Tous',
-            Icons.apps_rounded,
-            _cat == _Cat.tous,
-            _reinitialiser,
-          ),
-          _chip(
-            context,
-            'Zémidjan',
-            Icons.two_wheeler_rounded,
-            _cat == _Cat.zemidjan,
-            () => _choisirCat(_Cat.zemidjan),
-          ),
-          _chip(
-            context,
-            'Cloboto',
-            Icons.electric_rickshaw_rounded,
-            _cat == _Cat.cloboto,
-            () => _choisirCat(_Cat.cloboto),
-          ),
-          _chip(
-            context,
-            'Kloboto',
-            Icons.inventory_2_rounded,
-            _cat == _Cat.kloboto,
-            () => _choisirCat(_Cat.kloboto),
-          ),
-          _chip(
-            context,
-            panne && vp != null
-                ? 'Dépannage · ${_vehiculesPanne[vp]!.label}'
-                : 'Dépannage',
-            Icons.build_rounded,
-            panne,
-            _ouvrirPanne,
-          ),
-          _chip(
-            context,
-            'Disponibles',
-            Icons.bolt_rounded,
-            _seulementDispos,
-            () {
-              setState(() {
-                _seulementDispos = !_seulementDispos;
-                _selectedId = null;
-                _recalculer();
-              });
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _chip(
-    BuildContext context,
-    String label,
-    IconData icon,
-    bool selected,
-    VoidCallback onTap,
-  ) {
-    final scheme = Theme.of(context).colorScheme;
-    final fg = selected ? scheme.onPrimary : scheme.onSurface;
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: Semantics(
-        button: true,
-        selected: selected,
-        label: label,
-        child: Material(
-          elevation: 3,
-          shadowColor: Colors.black38,
-          color: selected ? scheme.primary : scheme.surface,
-          shape: const StadiumBorder(),
-          child: InkWell(
-            customBorder: const StadiumBorder(),
-            onTap: onTap,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(icon, size: 19, color: fg),
-                  const SizedBox(width: 6),
-                  Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: 14.5,
-                      fontWeight: FontWeight.w800,
-                      color: fg,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  // ── Panneau du bas ───────────────────────────────────────────────────────
-
-  Widget _panneau(BuildContext context) {
-    final sel = _selection;
-    return SoftCard(
-      padding: const EdgeInsets.all(14),
-      child: _errorMessage != null
-          ? _erreur()
-          : sel != null
-          ? _carteSelection(context, sel)
-          : _actions(context),
-    );
-  }
-
-  Widget _erreur() {
-    return Row(
-      children: [
-        const Icon(Icons.cloud_off_rounded, color: AppTheme.errorColor),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            _errorMessage!,
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
-          ),
-        ),
-        TextButton(onPressed: _chargerDonnees, child: const Text('Réessayer')),
-      ],
-    );
-  }
-
-  Widget _actions(BuildContext context) {
-    final n = _visibles.length;
-    final filtresActifs = _cat != _Cat.tous || _seulementDispos;
-    final titre = _isLoading
-        ? 'Recherche en cours…'
-        : n == 0
-        ? 'Le réseau grandit : bientôt des prestataires près de vous'
-        : '$n autour de vous';
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                titre,
-                style: const TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ),
-            if (n > 0)
-              TextButton(
-                onPressed: _ouvrirListe,
-                child: const Text('Voir la liste'),
-              ),
-            if (n == 0 && filtresActifs && !_isLoading)
-              TextButton(
-                onPressed: _reinitialiser,
-                child: const Text('Voir tout'),
-              ),
-          ],
-        ),
-        if (!_connecte)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Text(
-              'Explorez librement. Connectez-vous pour commander une course '
-              'ou voir les infos d\'un prestataire.',
-              style: TextStyle(
-                fontSize: 14,
-                height: 1.35,
-                color: context.textSecondary,
-              ),
-            ),
-          ),
-        AppButton(
-          label: 'Panne ? Dépannage express',
-          icon: Icons.car_crash_rounded,
-          variant: AppButtonVariant.secondary,
-          onPressed: _ouvrirPanne,
-        ),
-      ],
-    );
-  }
-
-  Widget _carteSelection(BuildContext context, Prestataire p) {
-    final g = _genreDe(p);
-    final km = _km(p);
-    final connecte = _connecte;
-    final conducteur = g.codeCourse != null;
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(
-          children: [
-            CircleAvatar(
-              radius: 24,
-              backgroundColor: g.color.withValues(alpha: 0.15),
-              child: Icon(g.icon, color: g.color, size: 26),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _titre(p),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 17.5,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  Text(
-                    connecte ? p.metier : 'Connectez-vous pour voir son profil',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 14.5,
-                      color: context.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              tooltip: 'Fermer',
-              icon: const Icon(Icons.close_rounded),
-              onPressed: () => setState(() => _selectedId = null),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 6,
-          children: [
-            StatusPill(
-              label: '${km.toStringAsFixed(1)} km · ≈ ${_eta(km)} min',
-              color: AppTheme.primaryColor,
-              icon: Icons.near_me_rounded,
-            ),
-            StatusPill(
-              label: p.disponible ? 'Disponible' : 'Indisponible',
-              color: p.disponible ? AppTheme.successColor : Colors.grey,
-            ),
-            if (connecte)
-              StatusPill(
-                label: p.noteMoyenne.toStringAsFixed(1),
-                color: AppColors.gold,
-                icon: Icons.star_rounded,
-              ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        if (conducteur)
-          AppButton(
-            label: g == _Genre.zemidjan
-                ? 'Commander un zémidjan'
-                : 'Commander un kloboto',
-            icon: g.icon,
-            onPressed: () => _commander(g.codeCourse!),
-          )
-        else
-          AppButton(
-            label: 'Demander un dépannage',
-            icon: Icons.build_rounded,
-            onPressed: () => _demanderDepannage(p),
-          ),
-        const SizedBox(height: 8),
-        AppButton(
-          label: connecte
-              ? 'Voir les infos'
-              : 'Se connecter pour voir les infos',
-          icon: connecte
-              ? Icons.info_outline_rounded
-              : Icons.lock_outline_rounded,
-          variant: AppButtonVariant.secondary,
-          onPressed: () => _voirInfos(p),
-        ),
-      ],
-    );
-  }
 }
 
 // ----------------------------------------------------------------------------

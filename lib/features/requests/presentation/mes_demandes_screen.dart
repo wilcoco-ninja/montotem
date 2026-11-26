@@ -117,13 +117,27 @@ class _MesDemandesScreenState extends State<MesDemandesScreen> {
                 children: [
                   if (widget.embedded) const ClientPageTitle('Activité'),
                   if (widget.embedded) const SizedBox(height: 8),
+                  const ClientSectionTitle('Raccourcis'),
+                  const SizedBox(height: 8),
                   ClientGroup(
                     children: [
                       ClientListRow(
                         icon: Icons.two_wheeler_rounded,
                         title: 'Mes courses',
-                        subtitle: 'Zémidjan et Tricycle Fret',
+                        subtitle: 'Zémidjan, cloboto et kloboto',
                         onTap: () => context.push('/rides'),
+                      ),
+                      ClientListRow(
+                        icon: Icons.add_circle_outline_rounded,
+                        title: 'Nouvelle course',
+                        subtitle: 'Commander un conducteur maintenant',
+                        onTap: () => context.push('/ride/new'),
+                      ),
+                      ClientListRow(
+                        icon: Icons.build_circle_outlined,
+                        title: 'Trouver un dépanneur',
+                        subtitle: 'Mécaniciens, vulcanisateurs, essence…',
+                        onTap: () => context.push('/matching'),
                       ),
                     ],
                   ),
