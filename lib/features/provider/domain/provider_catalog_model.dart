@@ -110,6 +110,7 @@ class ProviderPublicCatalog {
     required this.skills,
     required this.tarifKmFcfa,
     required this.fraisMinFcfa,
+    this.tarifKmAdminFcfa = 0,
     required this.rayonMaxKm,
     required this.services,
     this.accepteMobileMoney = false,
@@ -121,6 +122,14 @@ class ProviderPublicCatalog {
   final List<String> vehicleTypes;
   final List<String> skills;
   final int tarifKmFcfa;
+
+  /// Tarif / km officiel fixé par l'admin selon le type d'atelier
+  /// (app_config : deplacement_*_fcfa_km). 0 si absent → repli tarif propre.
+  final int tarifKmAdminFcfa;
+
+  /// Tarif / km effectif : celui de l'admin s'il est défini.
+  int get tarifKmEffectif => tarifKmAdminFcfa > 0 ? tarifKmAdminFcfa : tarifKmFcfa;
+
   final int fraisMinFcfa;
   final int rayonMaxKm;
   final List<ServiceTarif> services;
@@ -139,6 +148,7 @@ class ProviderPublicCatalog {
             const [],
         skills: (j['skills'] as List?)?.map((e) => '$e').toList() ?? const [],
         tarifKmFcfa: (j['tarif_km_fcfa'] as num?)?.toInt() ?? 0,
+        tarifKmAdminFcfa: (j['tarif_km_admin'] as num?)?.toInt() ?? 0,
         fraisMinFcfa: (j['frais_deplacement_min_fcfa'] as num?)?.toInt() ?? 0,
         rayonMaxKm: (j['rayon_max_km'] as num?)?.toInt() ?? 15,
         accepteMobileMoney: j['accepte_mobile_money'] == true,

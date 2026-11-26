@@ -100,7 +100,7 @@ class _NouvelleDemandeScreenState extends State<NouvelleDemandeScreen> {
     if (f == null || km == null) return null;
     return TravelFee.estimate(
       km: km * _facteurRoute,
-      tarifKmFcfa: f.tarifKmFcfa,
+      tarifKmFcfa: f.tarifKmEffectif,
       minimumFcfa: f.fraisMinFcfa,
     );
   }
@@ -462,7 +462,7 @@ class _NouvelleDemandeScreenState extends State<NouvelleDemandeScreen> {
             frais == null ? 'calculé à l\'envoi' : TravelFee.fcfa(frais),
           ),
           Text(
-            '${TravelFee.fcfa(f.tarifKmFcfa)}/km · minimum '
+            '${TravelFee.fcfa(f.tarifKmEffectif)}/km · minimum '
             '${TravelFee.fcfa(f.fraisMinFcfa)}',
             style: TextStyle(
               fontSize: 12.5,

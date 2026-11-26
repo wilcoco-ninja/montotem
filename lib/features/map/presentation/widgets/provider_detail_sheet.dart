@@ -228,11 +228,11 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
   Widget _contenuFiche(ProviderPublicCatalog f) {
     final scheme = Theme.of(context).colorScheme;
     final onSurface = scheme.onSurface;
-    final aFrais = f.tarifKmFcfa > 0 || f.fraisMinFcfa > 0;
+    final aFrais = f.tarifKmEffectif > 0 || f.fraisMinFcfa > 0;
     final kmRoute = widget.distanceKm * _facteurRoute;
     final frais = TravelFee.estimate(
       km: kmRoute,
-      tarifKmFcfa: f.tarifKmFcfa,
+      tarifKmFcfa: f.tarifKmEffectif,
       minimumFcfa: f.fraisMinFcfa,
     );
     final horsRayon = f.rayonMaxKm > 0 && kmRoute > f.rayonMaxKm;
@@ -275,7 +275,7 @@ class _ProviderDetailSheetState extends State<ProviderDetailSheet> {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        '${TravelFee.fcfa(f.tarifKmFcfa)}/km · minimum '
+                        '${TravelFee.fcfa(f.tarifKmEffectif)}/km · minimum '
                         '${TravelFee.fcfa(f.fraisMinFcfa)} · estimation pour '
                         '${kmRoute.toStringAsFixed(1)} km',
                         style: TextStyle(

@@ -73,12 +73,32 @@ class _AdminTariffsScreenState extends State<AdminTariffsScreen> {
       'Officiel : 300 FCFA/km',
       Icons.speed_rounded,
     ),
-    // Dépannage.
+    // Déplacement des prestataires (selon le type d'atelier).
+    _TarifField(
+      'deplacement_atelier_fcfa_km',
+      'Atelier / technicien ambulant — par km (FCFA/km)',
+      'Mécanicien, vulcanisateur, électricien avec véhicule de travail : '
+          '100 FCFA/km',
+      Icons.build_circle_rounded,
+    ),
+    _TarifField(
+      'deplacement_garage_fcfa_km',
+      'Service garage — par km (FCFA/km)',
+      'Déplacement du service garage : 150 FCFA/km',
+      Icons.garage_outlined,
+    ),
+    _TarifField(
+      'deplacement_station_fcfa_km',
+      'Station essence / carburant — par km (FCFA/km)',
+      'Livraison de carburant : 100 FCFA/km',
+      Icons.local_gas_station_outlined,
+    ),
+    // SOS express & remorquage.
     _TarifField(
       'sos_deplacement_express_fcfa_km',
-      'Déplacement express — par km (FCFA/km)',
-      'Prestataire avec véhicule de travail : 100 FCFA/km',
-      Icons.build_circle_rounded,
+      'Déplacement express SOS — par km (FCFA/km)',
+      'Prestataire express SOS : 100 FCFA/km',
+      Icons.sos_rounded,
     ),
     _TarifField(
       'sos_remorquage_fcfa_km',
@@ -226,8 +246,35 @@ class _AdminTariffsScreenState extends State<AdminTariffsScreen> {
                         ),
                       ),
                     const SizedBox(height: 8),
-                    const SectionTitle('Dépannage & remorquage'),
-                    for (final c in _champs.sublist(6))
+                    const SectionTitle('Déplacement des prestataires'),
+                    Text(
+                      'Le client paie toujours le déplacement du '
+                      'prestataire. Le tarif au kilomètre dépend du type '
+                      'd\'atelier.',
+                      style: TextStyle(
+                        fontSize: 13,
+                        height: 1.4,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    for (final c in _champs.sublist(6, 9))
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: AppTextField(
+                          label: c.label,
+                          helper: c.helper,
+                          icon: c.icon,
+                          controller: c.controller,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                        ),
+                      ),
+                    const SizedBox(height: 8),
+                    const SectionTitle('SOS express & remorquage'),
+                    for (final c in _champs.sublist(9))
                       Padding(
                         padding: const EdgeInsets.only(bottom: 12),
                         child: AppTextField(

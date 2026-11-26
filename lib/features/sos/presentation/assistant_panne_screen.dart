@@ -730,6 +730,7 @@ class _CarteResume extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final diagnostic = diagnosticPourPanne(panne?.code);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -779,6 +780,49 @@ class _CarteResume extends StatelessWidget {
                 Expanded(child: Text(niveau.libelle)),
               ],
             ),
+            if (diagnostic case final d?) ...[
+              const Divider(height: 24),
+              Text(
+                'Diagnostic pro',
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+              const SizedBox(height: 8),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.engineering_rounded, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text('Métier requis : ${d.metier}'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.miscellaneous_services_rounded, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(child: Text('Service : ${d.service}')),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.tips_and_updates_rounded, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      d.conseil,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ],
         ),
       ),
