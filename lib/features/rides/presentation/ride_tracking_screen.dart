@@ -14,6 +14,7 @@ import 'package:montotem/core/theme/app_colors.dart';
 import 'package:montotem/core/theme/app_theme.dart';
 import 'package:montotem/core/widgets/app_button.dart';
 import 'package:montotem/core/widgets/app_ui.dart';
+import 'package:montotem/features/fun/presentation/widgets/fun_waiting_banner.dart';
 import 'package:montotem/features/rides/data/ride_service.dart';
 import 'package:montotem/features/rides/domain/ride_model.dart';
 import 'package:montotem/features/wallet/domain/montant_local.dart';
@@ -356,6 +357,13 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
               ],
               const SizedBox(height: 12),
               ..._etat(r),
+              // Pendant l'attente (recherche, en route, arrivé, en course),
+              // on propose les coffres d'étoiles pour faire passer le temps.
+              if (r.status == RideStatus.requested || r.status.actif) ...[
+                const SizedBox(height: 12),
+                const FunWaitingBanner(),
+              ],
+              const SizedBox(height: 12),
               const SectionTitle('Détails'),
               SoftCard(
                 child: Column(

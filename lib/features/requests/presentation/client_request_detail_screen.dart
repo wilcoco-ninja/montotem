@@ -11,6 +11,7 @@ import 'package:montotem/core/utils/travel_fee.dart';
 import 'package:montotem/core/widgets/app_button.dart';
 import 'package:montotem/core/widgets/app_text_field.dart';
 import 'package:montotem/core/widgets/app_ui.dart';
+import 'package:montotem/features/fun/presentation/widgets/fun_waiting_banner.dart';
 import 'package:montotem/features/requests/data/mission_service.dart';
 import 'package:montotem/features/requests/domain/mission_model.dart';
 import 'package:montotem/features/requests/presentation/mission_chat_sheet.dart';
@@ -311,6 +312,12 @@ class _ClientRequestDetailScreenState extends State<ClientRequestDetailScreen> {
             ),
           ),
         ),
+      ],
+      // Attente d'un réparateur express / service de prestation : on
+      // propose les coffres d'étoiles pour faire passer le temps.
+      if (m.status.actif || m.status == MissionStatus.pending) ...[
+        const SizedBox(height: 12),
+        const FunWaitingBanner(),
       ],
       const SectionTitle('Déroulement'),
       _Etapes(status: m.status),

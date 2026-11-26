@@ -327,4 +327,188 @@ class WeatherService {
             math.pow(math.sin(dLon / 2), 2);
     return 2 * r * math.asin(math.sqrt(a.toDouble()));
   }
+
+  // ── Prévisions des prochaines heures : alertes pluie / orage / soleil ──
+
+  final Map<String, ({PrevisionMeteo data, DateTime at})> _cachePrevisions =
+      {};
+  final Map<String, Future<PrevisionMeteo>> _inFlightPrevisions = {};
+  static const _ttlPrevisions = Duration(minutes: 20);
+
+  /// Prévisions réelles des prochaines heures (Open-Meteo, sans clé).
+  /// Lève [WeatherUnavailable] si rien n'est disponible : utiliser
+  /// [tryGetPrevisions] pour un accès qui ne lève jamais.
+  Future<PrevisionMeteo> getPrevisions({
+    required double latitude,
+    required double longitude,
+  }) {
+    final key = _key(latitude, longitude);
+    final hit = _cachePrevisions[key];
+    if (hit != null && DateTime.now().difference(hit.at) < _ttlPrevisions) {
+      return Future.value(hit.data);
+    }
+    return _inFlightPrevisions[key] ??= _fetchPrevisions(
+      latitude,
+      longitude,
+      key,
+    ).whenComplete(() => _inFlightPrevisions.remove(key));
+  }
+
+  /// Variante qui ne lève jamais : renvoie null si rien n'est disponible.
+  Future<PrevisionMeteo?> tryGetPrevisions({
+    required double latitude,
+    required double longitude,
+  }) async {
+    try {
+      return await getPrevisions(latitude: latitude, longitude: longitude);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<PrevisionMeteo> _fetchPrevisions(
+    double lat,
+    double lon,
+    String key,
+  ) async {
+    final uri = Uri.https(_host, '/v1/forecast', {
+      'latitude': lat.toStringAsFixed(4),
+      'longitude': lon.toStringAsFixed(4),
+      'hourly': 'precipitation_probability,weather_code',
+      'daily': 'temperature_2m_max',
+      'forecast_days': '1',
+      'timezone': 'auto',
+    });
+    try {
+      final response = await http.get(uri).timeout(const Duration(seconds: 8));
+      if (response.statusCode != 200) {
+        throw WeatherUnavailable('Prévisions météo (${response.statusCode})');
+      }
+      final json = jsonDecode(response.body) as Map<String, dynamic>;
+      final data = _parsePrevisions(json);
+      _cachePrevisions[key] = (data: data, at: DateTime.now());
+      return data;
+    } catch (_) {
+      // Réseau coupé : une prévision un peu ancienne vaut mieux que rien.
+      final old = _cachePrevisions[key];
+      if (old != null) return old.data;
+      throw const WeatherUnavailable('Prévisions indisponibles');
+    }
+  }
+
+  PrevisionMeteo _parsePrevisions(Map<String, dynamic> json) {
+    final hourly = json['hourly'] as Map<String, dynamic>?;
+    final daily = json['daily'] as Map<String, dynamic>?;
+    if (hourly == null) throw const WeatherUnavailable('Prévisions vides');
+
+    final times = (hourly['time'] as List<dynamic>? ?? const [])
+        .cast<String>()
+        .map(DateTime.tryParse)
+        .whereType<DateTime>()
+        .toList(growable: false);
+    final probas = (hourly['precipitation_probability'] as List<dynamic>? ??
+            const [])
+        .map((v) => (v as num?)?.toInt())
+        .toList(growable: false);
+    final codes = (hourly['weather_code'] as List<dynamic>? ?? const [])
+        .map((v) => (v as num?)?.toInt())
+        .toList(growable: false);
+    if (times.isEmpty) throw const WeatherUnavailable('Prévisions vides');
+
+    final maintenant = DateTime.now();
+    var depart = times.indexWhere((t) => t.isAfter(maintenant));
+    if (depart < 0) depart = times.length;
+
+    DateTime? prochainePluie;
+    var probaPluie = 0;
+    var orage = false;
+    var soleilJour = true;
+    final limite = math.min(depart + 8, times.length);
+    for (var i = depart; i < limite; i++) {
+      final code = i < codes.length ? (codes[i] ?? -1) : -1;
+      final proba = i < probas.length ? (probas[i] ?? 0) : 0;
+      if (code >= 95) {
+        orage = true;
+        soleilJour = false;
+        prochainePluie ??= times[i];
+        probaPluie = math.max(probaPluie, proba);
+      } else if ((code >= 51 && code <= 86) || proba >= 60) {
+        prochainePluie ??= times[i];
+        probaPluie = math.max(probaPluie, proba);
+        soleilJour = false;
+      } else if (proba >= 40) {
+        soleilJour = false;
+      }
+    }
+
+    final maxes = daily == null
+        ? const <double>[]
+        : (daily['temperature_2m_max'] as List<dynamic>? ?? const [])
+              .map((v) => (v as num?)?.toDouble())
+              .whereType<double>()
+              .toList(growable: false);
+
+    return PrevisionMeteo(
+      orageProche: orage,
+      prochainePluie: prochainePluie,
+      probaPluie: probaPluie,
+      jourEnsoleille: soleilJour && !orage,
+      temperatureMax: maxes.isEmpty ? null : maxes.reduce(math.max),
+    );
+  }
+}
+
+/// Résumé des prévisions des prochaines heures, prêt à afficher au client.
+class PrevisionMeteo {
+  final bool orageProche;
+
+  /// Première heure de pluie probable dans les prochaines heures.
+  final DateTime? prochainePluie;
+
+  /// Probabilité de précipitations maximale (%) sur la fenêtre observée.
+  final int probaPluie;
+  final bool jourEnsoleille;
+  final double? temperatureMax;
+
+  const PrevisionMeteo({
+    required this.orageProche,
+    required this.prochainePluie,
+    required this.probaPluie,
+    required this.jourEnsoleille,
+    required this.temperatureMax,
+  });
+
+  bool get pluieProche => orageProche || prochainePluie != null;
+
+  /// Message d'alerte à montrer, ou null quand rien d'important à dire.
+  String? get alerte {
+    if (orageProche) {
+      return 'Orage attendu dans les prochaines heures : roulez prudents.';
+    }
+    final t = prochainePluie;
+    if (t != null) {
+      final dans = t.difference(DateTime.now()).inHours;
+      final quand = dans < 1
+          ? "d'ici une heure"
+          : 'vers ${t.hour.toStringAsFixed(0)} h';
+      final p = probaPluie > 0 ? ' ($probaPluie %)' : '';
+      return 'Pluie probable $quand$p.';
+    }
+    final max = temperatureMax;
+    if (max != null && max >= 35) {
+      return "Journée très chaude (${max.round()} °C) : pensez à boire.";
+    }
+    if (jourEnsoleille) {
+      return 'Soleil toute la journée : parfait pour rouler !';
+    }
+    return null;
+  }
+
+  String get emoji {
+    if (orageProche) return '⛈️';
+    if (prochainePluie != null) return '🌧️';
+    final max = temperatureMax;
+    if (max != null && max >= 35) return '🥵';
+    return '☀️';
+  }
 }

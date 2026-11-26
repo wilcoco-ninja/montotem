@@ -219,7 +219,10 @@ class _CoffresScreenState extends State<CoffresScreen> {
                     for (var i = 0; i < _cartes.length; i++)
                       Padding(
                         padding: const EdgeInsets.only(top: 16),
-                        child: _CarteItem(item: _cartes[i], numero: i + 1),
+                        child: _Apparition(
+                          delai: Duration(milliseconds: 140 * i),
+                          enfant: _CarteItem(item: _cartes[i], numero: i + 1),
+                        ),
                       ),
                   ],
                 ),
@@ -309,8 +312,10 @@ class _CoffresScreenState extends State<CoffresScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        ElevatedButton.icon(
-          onPressed: bloque ? null : _ouvrir,
+        _CoffrePulse(
+          actif: !bloque && !_ouvertureEnCours,
+          enfant: ElevatedButton.icon(
+            onPressed: bloque ? null : _ouvrir,
           icon: _ouvertureEnCours
               ? const SizedBox(
                   width: 18,
@@ -318,9 +323,10 @@ class _CoffresScreenState extends State<CoffresScreen> {
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
               : const Icon(Icons.card_giftcard_rounded),
-          label: Text(titre),
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            label: Text(titre),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+            ),
           ),
         ),
         const SizedBox(height: 8),
@@ -442,30 +448,57 @@ class _CarteItemState extends State<_CarteItem> {
                 child: const Text('Voir la chute'),
               ),
             if (_revelee) ...[
-              if (estDevinette) _verdict(scheme),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppColors.gold.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      estDevinette ? 'La réponse :' : 'La chute :',
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 400),
+                switchInCurve: Curves.easeOutCubic,
+                child: !estDevinette
+                    ? const SizedBox.shrink(key: ValueKey<String>('blague'))
+                    : _juste == true
+                    ? _EtoilesBravo(
+                        key: const ValueKey<String>('bravo'),
+                        texte: 'Bravo ! Bonne réponse :',
+                      )
+                    : Padding(
+                        key: const ValueKey<String>('verdict'),
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: _verdictTexte(scheme),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      item.reponse,
-                      style: const TextStyle(fontSize: 15, height: 1.35),
-                    ),
-                  ],
+              ),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 480),
+                switchInCurve: Curves.easeOutCubic,
+                transitionBuilder: (child, anim) => SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(0, 0.14),
+                    end: Offset.zero,
+                  ).animate(anim),
+                  child: FadeTransition(opacity: anim, child: child),
+                ),
+                child: Container(
+                  key: const ValueKey<String>('reponse'),
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.gold.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        estDevinette ? 'La réponse :' : 'La chute :',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        item.reponse,
+                        style: const TextStyle(fontSize: 15, height: 1.35),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -508,7 +541,7 @@ class _CarteItemState extends State<_CarteItem> {
     ];
   }
 
-  Widget _verdict(ColorScheme scheme) {
+  Widget _verdictTexte(ColorScheme scheme) {
     final juste = _juste == true;
     final passe = _juste == null;
     final texte = passe
@@ -523,6 +556,186 @@ class _CarteItemState extends State<_CarteItem> {
         texte,
         style: TextStyle(color: couleur, fontWeight: FontWeight.w800),
       ),
+    );
+  }
+}
+
+/// Fait \u00ab respirer \u00bb le bouton du coffre pour donner envie de l'ouvrir.
+/// Repos absolu quand le coffre est indisponible.
+class _CoffrePulse extends StatefulWidget {
+  const _CoffrePulse({required this.actif, required this.enfant});
+
+  final bool actif;
+  final Widget enfant;
+
+  @override
+  State<_CoffrePulse> createState() => _CoffrePulseState();
+}
+
+class _CoffrePulseState extends State<_CoffrePulse>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1100),
+    lowerBound: 0.985,
+    upperBound: 1.02,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.actif) _ctrl.repeat(reverse: true);
+  }
+
+  @override
+  void didUpdateWidget(covariant _CoffrePulse oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.actif && !_ctrl.isAnimating) {
+      _ctrl.repeat(reverse: true);
+    } else if (!widget.actif && _ctrl.isAnimating) {
+      _ctrl.stop();
+      _ctrl.value = _ctrl.upperBound;
+    }
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      ScaleTransition(scale: _ctrl, child: widget.enfant);
+}
+
+/// Entree animee d'une carte tiree du coffre : glisse vers le haut + fondu,
+/// avec un leger decalage entre les cartes (effet de distribution).
+class _Apparition extends StatefulWidget {
+  const _Apparition({required this.delai, required this.enfant});
+
+  final Duration delai;
+  final Widget enfant;
+
+  @override
+  State<_Apparition> createState() => _ApparitionState();
+}
+
+class _ApparitionState extends State<_Apparition>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 480),
+  );
+  late final Animation<double> _courbe = CurvedAnimation(
+    parent: _ctrl,
+    curve: Curves.easeOutCubic,
+  );
+  Timer? _retard;
+
+  @override
+  void initState() {
+    super.initState();
+    _retard = Timer(widget.delai, () {
+      if (mounted) _ctrl.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _retard?.cancel();
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SlideTransition(
+      position: Tween<Offset>(
+        begin: const Offset(0, 0.14),
+        end: Offset.zero,
+      ).animate(_courbe),
+      child: FadeTransition(opacity: _courbe, child: widget.enfant),
+    );
+  }
+}
+
+/// Celebration d'une bonne reponse : une rafale d'etoiles qui jaillissent
+/// une a une (courbe elastique) devant un petit feux d'artifice.
+class _EtoilesBravo extends StatefulWidget {
+  const _EtoilesBravo({super.key, required this.texte});
+
+  final String texte;
+
+  @override
+  State<_EtoilesBravo> createState() => _EtoilesBravoState();
+}
+
+class _EtoilesBravoState extends State<_EtoilesBravo>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1200),
+  )..forward();
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            for (var i = 0; i < 5; i++)
+              Padding(
+                padding: const EdgeInsets.only(right: 2),
+                child: _EtoileAnimee(ctrl: _ctrl, debut: i * 0.1),
+              ),
+            const SizedBox(width: 6),
+            const Text('\u{1F389}', style: TextStyle(fontSize: 22)),
+          ],
+        ),
+        const SizedBox(height: 6),
+        Text(
+          widget.texte,
+          style: const TextStyle(
+            fontWeight: FontWeight.w800,
+            color: AppColors.successText,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Une etoile qui jaillit avec un rebond elastique, cadencee par [debut].
+class _EtoileAnimee extends StatelessWidget {
+  const _EtoileAnimee({required this.ctrl, required this.debut});
+
+  final Animation<double> ctrl;
+  final double debut;
+
+  @override
+  Widget build(BuildContext context) {
+    final anim = CurvedAnimation(
+      parent: ctrl,
+      curve: Interval(debut, min(1.0, debut + 0.55), curve: Curves.elasticOut),
+    );
+    return AnimatedBuilder(
+      animation: anim,
+      builder: (context, child) => Transform.scale(
+        scale: 0.2 + 0.8 * anim.value,
+        child: Opacity(
+          opacity: anim.value.clamp(0.0, 1.0).toDouble(),
+          child: child,
+        ),
+      ),
+      child: const Icon(Icons.star_rounded, color: AppColors.gold, size: 30),
     );
   }
 }

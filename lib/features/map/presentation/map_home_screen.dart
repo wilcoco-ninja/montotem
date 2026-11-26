@@ -9,6 +9,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/constants/app_constants.dart';
+import '../../../core/map/weather_alert_banner.dart';
 import '../../../core/services/routing_service.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
@@ -670,7 +671,19 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [_barreRecherche(context)],
+                      children: [
+                        _barreRecherche(context),
+                        // Alerte météo réelle (pluie, orage, canicule,
+                        // soleil) tirée des prévisions Open-Meteo.
+                        const SizedBox(height: 8),
+                        WeatherAlertBanner(
+                          key: ValueKey<String>(
+                            'meteo-${_userPosition.latitude.toStringAsFixed(2)}'
+                            '-${_userPosition.longitude.toStringAsFixed(2)}',
+                          ),
+                          position: _userPosition,
+                        ),
+                      ],
                     ),
                   ),
                 ),
