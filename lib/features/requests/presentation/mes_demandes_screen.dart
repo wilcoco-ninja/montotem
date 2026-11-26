@@ -27,6 +27,7 @@ class _MesDemandesScreenState extends State<MesDemandesScreen> {
   RealtimeChannel? _canal;
   List<Mission> _missions = [];
   bool _isLoading = true;
+  bool _nonConnecte = false;
   String? _errorMessage;
 
   @override
@@ -50,7 +51,17 @@ class _MesDemandesScreenState extends State<MesDemandesScreen> {
       setState(() {
         _isLoading = true;
         _errorMessage = null;
+        _nonConnecte = false;
       });
+    }
+    if (_service.currentUserId == null) {
+      if (!mounted) return;
+      setState(() {
+        _missions = [];
+        _nonConnecte = true;
+        _isLoading = false;
+      });
+      return;
     }
     try {
       final uid = _service.currentUserId;
@@ -61,8 +72,13 @@ class _MesDemandesScreenState extends State<MesDemandesScreen> {
         _errorMessage = null;
       });
     } on MissionException catch (e) {
-      if (mounted && _missions.isEmpty) {
-        setState(() => _errorMessage = e.message);
+      if (mounted) setState(() => _errorMessage = e.message);
+    } catch (_) {
+      if (mounted) {
+        setState(
+          () => _errorMessage =
+              'Connexion impossible. Vérifiez votre réseau et réessayez.',
+        );
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -93,14 +109,10 @@ class _MesDemandesScreenState extends State<MesDemandesScreen> {
 
   Widget _body() {
     if (_isLoading) return const Center(child: CircularProgressIndicator());
-    if (_errorMessage != null) {
-      return Center(
-        child: SingleChildScrollView(
-          child: ErrorState(message: _errorMessage!, onRetry: _charger),
-        ),
-      );
-    }
 
+    // La page reste TOUJOURS complète : raccourcis visibles, et l'erreur
+    // éventuelle s'affiche en encart interne (jamais un écran vide). Si le
+    // chargement échoue, les demandes précédentes restent affichées.
     final gutter = context.gutter;
     return RefreshIndicator(
       onRefresh: _charger,
@@ -142,7 +154,22 @@ class _MesDemandesScreenState extends State<MesDemandesScreen> {
                     ],
                   ),
                   const ClientSectionTitle('Dépannages'),
-                  if (_missions.isEmpty)
+                  if (_nonConnecte) ...[
+                    const EmptyState(
+                      icon: Icons.person_off_outlined,
+                      title: 'Connectez-vous',
+                      message:
+                          'Connectez-vous pour retrouver vos demandes de '
+                          'dépannage et leur suivi en direct.',
+                    ),
+                    FilledButton.icon(
+                      onPressed: () => context.push('/login'),
+                      icon: const Icon(Icons.login_rounded),
+                      label: const Text('Se connecter'),
+                    ),
+                  ] else if (_errorMessage != null)
+                    _carteErreur()
+                  else if (_missions.isEmpty)
                     const EmptyState(
                       icon: Icons.receipt_long_outlined,
                       title: 'Aucune demande pour le moment',
@@ -158,6 +185,37 @@ class _MesDemandesScreenState extends State<MesDemandesScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  /// Encart d'erreur interne avec bouton Réessayer : la page reste
+  /// complète (raccourcis visibles), on ne remplace jamais tout l'écran.
+  Widget _carteErreur() {
+    final scheme = Theme.of(context).colorScheme;
+    return Card(
+      elevation: 0,
+      color: scheme.error.withValues(alpha: 0.08),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Icon(Icons.wifi_off_rounded, color: scheme.error),
+            const SizedBox(height: 8),
+            Text(
+              _errorMessage!,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 15, height: 1.35),
+            ),
+            const SizedBox(height: 10),
+            FilledButton.tonalIcon(
+              onPressed: () => _charger(),
+              icon: const Icon(Icons.refresh_rounded),
+              label: const Text('Réessayer'),
+            ),
+          ],
+        ),
       ),
     );
   }

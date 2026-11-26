@@ -248,6 +248,12 @@ IconData iconePourPanne(String code) => switch (code) {
   'SURCHAUFFE_CALAGE' => Icons.thermostat_rounded,
   'COURROIE_CASSEE' => Icons.settings_rounded,
   'CHAINE_CASSEE' => Icons.link_off_rounded,
+  'CARBURANT_EPUISE' => Icons.local_gas_station_rounded,
+  'FREIN_MOTO' => Icons.stop_circle_rounded,
+  'ECLAIRAGE_CLAXON' => Icons.highlight_rounded,
+  'FUITE_HUILE' => Icons.opacity_rounded,
+  'ROUE_DEJANTEE' => Icons.album_rounded,
+  'SUSPENSION_AMORTISSEUR' => Icons.compress_rounded,
   'BATTERIE_VIDE' => Icons.battery_alert_rounded,
   'BMS_CONTROLEUR' => Icons.developer_board_rounded,
   'CREVAISON_ROUE_BLOQUEE' => Icons.tire_repair_rounded,
@@ -274,6 +280,12 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'CHAINE_CASSEE',
     'TRANSMISSION_CABLE',
     'SURCHAUFFE_CALAGE',
+    'CARBURANT_EPUISE',
+    'FREIN_MOTO',
+    'ECLAIRAGE_CLAXON',
+    'FUITE_HUILE',
+    'ROUE_DEJANTEE',
+    'SUSPENSION_AMORTISSEUR',
   ],
   'SCOOTER_THERM': [
     'CREVAISON_PNEU',
@@ -281,6 +293,12 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'COURROIE_CASSEE',
     'TRANSMISSION_CABLE',
     'SURCHAUFFE_CALAGE',
+    'CARBURANT_EPUISE',
+    'FREIN_MOTO',
+    'ECLAIRAGE_CLAXON',
+    'FUITE_HUILE',
+    'ROUE_DEJANTEE',
+    'SUSPENSION_AMORTISSEUR',
   ],
   'CLOBOTO_PAX': [
     'CREVAISON_PNEU',
@@ -288,6 +306,12 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'CHAINE_CASSEE',
     'TRANSMISSION_CABLE',
     'SURCHAUFFE_CALAGE',
+    'CARBURANT_EPUISE',
+    'FREIN_MOTO',
+    'ECLAIRAGE_CLAXON',
+    'FUITE_HUILE',
+    'ROUE_DEJANTEE',
+    'SUSPENSION_AMORTISSEUR',
   ],
   'KLOBOTO_FRET': [
     'CREVAISON_PNEU',
@@ -295,6 +319,12 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'CHAINE_CASSEE',
     'TRANSMISSION_CABLE',
     'SURCHAUFFE_CALAGE',
+    'CARBURANT_EPUISE',
+    'FREIN_MOTO',
+    'ECLAIRAGE_CLAXON',
+    'FUITE_HUILE',
+    'ROUE_DEJANTEE',
+    'SUSPENSION_AMORTISSEUR',
   ],
   // Moto / Scooter / Voiture Électrique
   'E_MOTO': [
@@ -302,12 +332,16 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'BMS_CONTROLEUR',
     'CREVAISON_ROUE_BLOQUEE',
     'REMORQUAGE_PLATEAU',
+    'FREIN_MOTO',
+    'ECLAIRAGE_CLAXON',
   ],
   'E_SCOOTER': [
     'BATTERIE_VIDE',
     'BMS_CONTROLEUR',
     'CREVAISON_ROUE_BLOQUEE',
     'REMORQUAGE_PLATEAU',
+    'FREIN_MOTO',
+    'ECLAIRAGE_CLAXON',
   ],
   'E_CAR': [
     'BATTERIE_VIDE',
@@ -322,6 +356,10 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'SURCHAUFFE_FUITE',
     'FREIN_EMBRAYAGE_COURROIE',
     'REMORQUAGE_VL',
+    'CARBURANT_EPUISE',
+    'ECLAIRAGE_CLAXON',
+    'FUITE_HUILE',
+    'SUSPENSION_AMORTISSEUR',
   ],
   'UTILITAIRE_VAN': [
     'BATTERIE_ALTERNATEUR',
@@ -329,6 +367,10 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'SURCHAUFFE_FUITE',
     'FREIN_EMBRAYAGE_COURROIE',
     'REMORQUAGE_VL',
+    'CARBURANT_EPUISE',
+    'ECLAIRAGE_CLAXON',
+    'FUITE_HUILE',
+    'SUSPENSION_AMORTISSEUR',
   ],
   'MINIBUS': [
     'BATTERIE_ALTERNATEUR',
@@ -336,6 +378,10 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'SURCHAUFFE_FUITE',
     'FREIN_EMBRAYAGE_COURROIE',
     'REMORQUAGE_VL',
+    'CARBURANT_EPUISE',
+    'ECLAIRAGE_CLAXON',
+    'FUITE_HUILE',
+    'SUSPENSION_AMORTISSEUR',
   ],
   'BUS_TRANSPORT': [
     'BATTERIE_ALTERNATEUR',
@@ -343,6 +389,10 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'SURCHAUFFE_FUITE',
     'FREIN_EMBRAYAGE_COURROIE',
     'REMORQUAGE_VL',
+    'CARBURANT_EPUISE',
+    'ECLAIRAGE_CLAXON',
+    'FUITE_HUILE',
+    'SUSPENSION_AMORTISSEUR',
   ],
   // Poids Lourds & Camions
   'CAMION_6_ROUES': [
@@ -351,6 +401,7 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'ENERGIE_24V',
     'MECA_LOURDE_PL',
     'REMORQUAGE_PL',
+    'CARBURANT_EPUISE',
   ],
   'CAMION_10_ROUES': [
     'PNEU_PL',
@@ -358,6 +409,7 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'ENERGIE_24V',
     'MECA_LOURDE_PL',
     'REMORQUAGE_PL',
+    'CARBURANT_EPUISE',
   ],
   'SEMI_REMORQUE': [
     'PNEU_PL',
@@ -365,6 +417,7 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'ENERGIE_24V',
     'MECA_LOURDE_PL',
     'REMORQUAGE_PL',
+    'CARBURANT_EPUISE',
   ],
 };
 
@@ -413,6 +466,48 @@ kDiagnosticParPanne = {
     conseil:
         'Moto à vitesses, chaîne cassée : poussez le véhicule hors '
         'de la chaussée ; kit chaîne remplacé sur place.',
+  ),
+  'CARBURANT_EPUISE': (
+    metier: 'Vendeur de carburant / dépanneur',
+    service: 'Atelier mobile léger',
+    conseil:
+        "Panne sèche : n'insistez pas sur le démarreur ; le dépanneur "
+        "arrive avec un bidon d'essence homologué.",
+  ),
+  'FREIN_MOTO': (
+    metier: 'Mécanicien moto',
+    service: 'Atelier mobile léger',
+    conseil:
+        'Freins douteux : ne roulez plus ; garnitures et câbles '
+        'remplacés sur place.',
+  ),
+  'ECLAIRAGE_CLAXON': (
+    metier: 'Électricien auto & moto',
+    service: 'Atelier mobile léger',
+    conseil:
+        'La nuit, gilet + triangle ; ampoules, fusibles et klaxon '
+        'remis en service sur place.',
+  ),
+  'FUITE_HUILE': (
+    metier: 'Mécanicien moto & véhicule léger',
+    service: 'Atelier mobile léger',
+    conseil:
+        "Moteur coupé, ne roulez pas : recherche de fuite et joints "
+        'sur place.',
+  ),
+  'ROUE_DEJANTEE': (
+    metier: 'Vulcanisateur pneu',
+    service: 'Vulcanisateur express mobile',
+    conseil:
+        'Roue déjantée : déjantage et redressage sur place par le '
+        'vulcanisateur.',
+  ),
+  'SUSPENSION_AMORTISSEUR': (
+    metier: 'Mécanicien moto & véhicule léger',
+    service: 'Atelier mobile léger',
+    conseil:
+        'Amortisseur cassé : roulez très lentement jusqu\'au bord ; '
+        'remplacement sur place ou remorquage.',
   ),
   'SURCHAUFFE_CALAGE': (
     metier: 'Mécanicien moto',
@@ -544,6 +639,7 @@ const Map<String, String> kSosCompetences = {
   'REMORQUAGE_VL': 'Remorquage / dépanneuse VL',
   'REMORQUAGE_PL': 'Remorquage Poids Lourd (dépanneuse lourd tonnage)',
   'SWAP_BATTERIE': 'Échange / swap de batterie électrique',
+  'LIVRAISON_CARBURANT': 'Livraison de carburant express (panne sèche)',
 };
 
 /// Services de prestation express et habilitations requises par code.
