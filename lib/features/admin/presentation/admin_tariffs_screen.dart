@@ -37,29 +37,55 @@ class _AdminTariffsScreenState extends State<AdminTariffsScreen> {
 
   static const List<_TarifField> _champs = [
     // Courses — transport.
-    _TarifField('ride_zemidjan_base_fcfa', 'Zémidjan — départ (FCFA)',
-        'Prix de départ de la course', Icons.two_wheeler_rounded),
-    _TarifField('ride_zemidjan_per_km_fcfa', 'Zémidjan — par km (FCFA/km)',
-        'Officiel : 150 FCFA/km', Icons.speed_rounded),
-    _TarifField('ride_cloboto_base_fcfa', 'Cloboto — départ (FCFA)',
-        'Prix de départ de la course', Icons.electric_rickshaw_rounded),
-    _TarifField('ride_cloboto_per_km_fcfa', 'Cloboto — par km (FCFA/km)',
-        'Officiel : 200 FCFA/km', Icons.speed_rounded),
-    _TarifField('ride_kloboto_base_fcfa', 'Kloboto — départ (FCFA)',
-        'Prix de départ de la course', Icons.local_shipping_rounded),
-    _TarifField('ride_kloboto_per_km_fcfa', 'Kloboto — par km (FCFA/km)',
-        'Officiel : 300 FCFA/km', Icons.speed_rounded),
+    _TarifField(
+      'ride_zemidjan_base_fcfa',
+      'Zémidjan — départ (FCFA)',
+      'Prix de départ de la course',
+      Icons.two_wheeler_rounded,
+    ),
+    _TarifField(
+      'ride_zemidjan_per_km_fcfa',
+      'Zémidjan — par km (FCFA/km)',
+      'Officiel : 150 FCFA/km',
+      Icons.speed_rounded,
+    ),
+    _TarifField(
+      'ride_cloboto_base_fcfa',
+      'Cloboto — départ (FCFA)',
+      'Prix de départ de la course',
+      Icons.electric_rickshaw_rounded,
+    ),
+    _TarifField(
+      'ride_cloboto_per_km_fcfa',
+      'Cloboto — par km (FCFA/km)',
+      'Officiel : 200 FCFA/km',
+      Icons.speed_rounded,
+    ),
+    _TarifField(
+      'ride_kloboto_base_fcfa',
+      'Kloboto — départ (FCFA)',
+      'Prix de départ de la course',
+      Icons.local_shipping_rounded,
+    ),
+    _TarifField(
+      'ride_kloboto_per_km_fcfa',
+      'Kloboto — par km (FCFA/km)',
+      'Officiel : 300 FCFA/km',
+      Icons.speed_rounded,
+    ),
     // Dépannage.
     _TarifField(
-        'sos_deplacement_express_fcfa_km',
-        'Déplacement express — par km (FCFA/km)',
-        'Prestataire avec véhicule de travail : 100 FCFA/km',
-        Icons.build_circle_rounded),
+      'sos_deplacement_express_fcfa_km',
+      'Déplacement express — par km (FCFA/km)',
+      'Prestataire avec véhicule de travail : 100 FCFA/km',
+      Icons.build_circle_rounded,
+    ),
     _TarifField(
-        'sos_remorquage_fcfa_km',
-        'Remorquage — par km (FCFA/km)',
-        'Dépanneuse pour voitures et véhicules bloqués : 400 FCFA/km',
-        Icons.local_shipping_rounded),
+      'sos_remorquage_fcfa_km',
+      'Remorquage — par km (FCFA/km)',
+      'Dépanneuse pour voitures et véhicules bloqués : 400 FCFA/km',
+      Icons.local_shipping_rounded,
+    ),
   ];
 
   bool _chargement = true;
@@ -148,7 +174,7 @@ class _AdminTariffsScreenState extends State<AdminTariffsScreen> {
             e.message.contains('row-level security') ||
                     e.message.contains('permission')
                 ? "Enregistrement refusé : seul le super_admin peut modifier "
-                    "les tarifs."
+                      "les tarifs."
                 : 'Erreur : ${e.message}',
           ),
         ),
@@ -156,9 +182,8 @@ class _AdminTariffsScreenState extends State<AdminTariffsScreen> {
     } catch (e) {
       if (!mounted) return;
       setState(() => _enregistrement = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erreur : $e')),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Erreur : $e')));
     }
   }
 
@@ -180,7 +205,8 @@ class _AdminTariffsScreenState extends State<AdminTariffsScreen> {
                       Text(
                         _erreur!,
                         style: TextStyle(
-                            color: Theme.of(context).colorScheme.error),
+                          color: Theme.of(context).colorScheme.error,
+                        ),
                       ),
                       const SizedBox(height: 12),
                     ],

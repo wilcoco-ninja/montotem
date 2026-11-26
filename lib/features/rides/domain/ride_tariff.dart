@@ -50,18 +50,9 @@ class RideTariff {
 
 class RideTariffs {
   const RideTariffs({
-    this.zemidjan = const RideTariff(
-      baseFcfa: 300,
-      kmFcfa: 150,
-    ),
-    this.cloboto = const RideTariff(
-      baseFcfa: 500,
-      kmFcfa: 200,
-    ),
-    this.kloboto = const RideTariff(
-      baseFcfa: 700,
-      kmFcfa: 300,
-    ),
+    this.zemidjan = const RideTariff(baseFcfa: 300, kmFcfa: 150),
+    this.cloboto = const RideTariff(baseFcfa: 500, kmFcfa: 200),
+    this.kloboto = const RideTariff(baseFcfa: 700, kmFcfa: 300),
   });
 
   final RideTariff zemidjan;
@@ -116,29 +107,11 @@ class RideTariffs {
   }
 
   List<Map<String, Object?>> toRows() => [
-    {
-      'key': 'ride_zemidjan_base_fcfa',
-      'value_int': zemidjan.baseFcfa,
-    },
-    {
-      'key': 'ride_zemidjan_per_km_fcfa',
-      'value_int': zemidjan.kmFcfa,
-    },
-    {
-      'key': 'ride_cloboto_base_fcfa',
-      'value_int': cloboto.baseFcfa,
-    },
-    {
-      'key': 'ride_cloboto_per_km_fcfa',
-      'value_int': cloboto.kmFcfa,
-    },
-    {
-      'key': 'ride_kloboto_base_fcfa',
-      'value_int': kloboto.baseFcfa,
-    },
-    {
-      'key': 'ride_kloboto_per_km_fcfa',
-      'value_int': kloboto.kmFcfa,
-    },
+    {'key': 'ride_zemidjan_base_fcfa', 'value_int': zemidjan.baseFcfa},
+    {'key': 'ride_zemidjan_per_km_fcfa', 'value_int': zemidjan.kmFcfa},
+    {'key': 'ride_cloboto_base_fcfa', 'value_int': cloboto.baseFcfa},
+    {'key': 'ride_cloboto_per_km_fcfa', 'value_int': cloboto.kmFcfa},
+    {'key': 'ride_kloboto_base_fcfa', 'value_int': kloboto.baseFcfa},
+    {'key': 'ride_kloboto_per_km_fcfa', 'value_int': kloboto.kmFcfa},
   ];
 }
