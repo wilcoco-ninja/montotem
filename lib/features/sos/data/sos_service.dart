@@ -537,7 +537,8 @@ class ParCode {
     SosPanne(
       code: 'EMBRAYAGE_PATINE',
       libelle: 'Embrayage qui patine (tricycle surchargé)',
-      description: 'Le moteur monte dans les tours mais le tricycle n\'avance plus.',
+      description:
+          'Le moteur monte dans les tours mais le tricycle n\'avance plus.',
       mainOeuvreFcfa: 4000,
       pieceObligatoire: false,
       pieceCode: 'DISQUE_EMBRAYAGE',
@@ -577,7 +578,8 @@ class ParCode {
     SosPanne(
       code: 'SERRAGE_MOTEUR',
       libelle: 'Serrage moteur / fumée bleue ou blanche (haut moteur)',
-      description: 'Manque d\'huile ou surchauffe : segments usés, perte de puissance.',
+      description:
+          'Manque d\'huile ou surchauffe : segments usés, perte de puissance.',
       mainOeuvreFcfa: 10000,
       pieceObligatoire: false,
       pieceCode: 'REVISION_HAUT_MOTEUR',
@@ -586,8 +588,10 @@ class ParCode {
     ),
     SosPanne(
       code: 'VOYANT_MOTEUR_CAPTEUR',
-      libelle: 'Voyant moteur allumé / capteur défaillant (diagnostic électronique)',
-      description: 'Diagnostic valise OBD2 : capteurs PMH, débitmètre, sonde lambda.',
+      libelle:
+          'Voyant moteur allumé / capteur défaillant (diagnostic électronique)',
+      description:
+          'Diagnostic valise OBD2 : capteurs PMH, débitmètre, sonde lambda.',
       mainOeuvreFcfa: 3500,
       pieceObligatoire: false,
       icone: Icons.memory_rounded,
@@ -595,7 +599,8 @@ class ParCode {
     SosPanne(
       code: 'INJECTION_DIESEL',
       libelle: 'Pompe ou injecteurs diesel grippés (Common Rail)',
-      description: 'Pertes de puissance, fumée noire, démarrage diesel difficile.',
+      description:
+          'Pertes de puissance, fumée noire, démarrage diesel difficile.',
       mainOeuvreFcfa: 7000,
       pieceObligatoire: false,
       pieceCode: 'FILTRE_GASOIL',
@@ -615,7 +620,8 @@ class ParCode {
     SosPanne(
       code: 'SUSPENSION_PL',
       libelle: 'Lames de ressort, coussins d\'air, balanciers (Poids Lourd)',
-      description: 'Caisse qui penche, lames cassées par surcharge, chocs répétés.',
+      description:
+          'Caisse qui penche, lames cassées par surcharge, chocs répétés.',
       mainOeuvreFcfa: 8000,
       pieceObligatoire: false,
       pieceCode: 'LAME_RESSORT',
