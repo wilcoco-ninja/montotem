@@ -19,6 +19,7 @@ import 'core/storage/local_cache.dart';
 import 'core/storage/session_securisee.dart';
 import 'core/theme/app_theme.dart';
 import 'core/widgets/sos_button.dart';
+import 'core/widgets/space_scope.dart';
 import 'core/widgets/survival_shell.dart';
 import 'features/emergency/data/emergency_numbers_repository.dart';
 import 'features/emergency/data/emergency_places_repository.dart';
@@ -223,28 +224,55 @@ class MonTotemApp extends StatelessWidget {
         final power = context.watch<PowerModeController>();
         final router = AppRouter.router;
 
-        final Widget routed = child ?? const SizedBox.shrink();
+        // Le thème suit l'espace de la route affichée : client (lagune),
+        // driver (cockpit jaune), pro (atelier orange), admin (console).
+        final Widget routed = SpaceThemed(
+          router: router,
+          child: child ?? const SizedBox.shrink(),
+        );
+
+        // Le bouton SOS flottant concerne ceux qui circulent : client et
+        // conducteur. Les univers atelier (pro) et console (admin) en sont
+        // dépourvus, comme un back-office professionnel.
+        final sosVisible =
+            AppFlavor.current == AppFlavor.client ||
+            AppFlavor.current == AppFlavor.driver;
 
         return MediaQuery(
           data: media.copyWith(
             disableAnimations: media.disableAnimations || power.ecoActive,
           ),
-          child: SosOverlay(
-            routerListenable: router.routerDelegate,
-            currentPath: () =>
-                router.routerDelegate.currentConfiguration.uri.path,
-            onSos: () => router.push('/sos'),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: _maxContentWidth),
-                child: SurvivalShell(
-                  onOpenKit: () => router.push('/survie'),
-                  child: routed,
+          child: sosVisible
+              ? SosOverlay(
+                  routerListenable: router.routerDelegate,
+                  currentPath: () =>
+                      router.routerDelegate.currentConfiguration.uri.path,
+                  onSos: () => router.push('/sos'),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxWidth: _maxContentWidth,
+                      ),
+                      child: SurvivalShell(
+                        onOpenKit: () => router.push('/survie'),
+                        child: routed,
+                      ),
+                    ),
+                  ),
+                )
+              : Align(
+                  alignment: Alignment.topCenter,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxWidth: _maxContentWidth,
+                    ),
+                    child: SurvivalShell(
+                      onOpenKit: () => router.push('/survie'),
+                      child: routed,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
         );
       },
     );

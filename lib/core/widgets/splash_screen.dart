@@ -34,6 +34,13 @@ class SplashScreen extends StatelessWidget {
         'MonTotem Pro',
         'Votre atelier, vos clients',
       ),
+      AppFlavor.admin => (
+        SpaceColors.adminBg,
+        SpaceColors.adminPrimary,
+        TotemGlyph.mark,
+        'MonTotem Admin',
+        'Console de supervision',
+      ),
     };
 
     return Scaffold(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:montotem/core/flavor/app_flavor.dart';
 import 'package:montotem/core/theme/app_colors.dart';
 import 'package:montotem/core/theme/app_space.dart';
 import 'package:montotem/core/theme/app_theme.dart';
@@ -38,27 +39,15 @@ class AuthShell extends StatelessWidget {
 
   static const double _wideBreakpoint = 900;
 
-  // Helper to detect space from current route
+  // Détection de l'espace visuel depuis la route (règles centralisées).
   static AppSpace _detectSpace(BuildContext context) {
     try {
       final router = GoRouter.of(context);
       final uri = router.routerDelegate.currentConfiguration.uri;
-      // Simple heuristic based on path - same logic as AppSpaces.fromUri
-      final p = uri.path;
-      if (p == '/admin' || p.startsWith('/admin/')) return AppSpace.admin;
-      if (p == '/provider' || p.startsWith('/provider/')) {
-        return AppSpace.provider;
-      }
-      if (p == '/pro' || p.startsWith('/pro/')) return AppSpace.provider;
-      if (p.startsWith('/register/provider')) return AppSpace.provider;
-      if (p.startsWith('/register/transport')) return AppSpace.provider;
-      if (p.startsWith('/register') &&
-          uri.queryParameters['role'] == 'provider') {
-        return AppSpace.provider;
-      }
-      return AppSpace.client;
+      return AppSpaces.fromUri(uri);
     } catch (_) {
-      return AppSpace.client;
+      // Sans routeur (ex. écran d'amorçage), l'app en cours tranche.
+      return AppFlavor.current.space;
     }
   }
 

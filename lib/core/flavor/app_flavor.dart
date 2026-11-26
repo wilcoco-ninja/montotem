@@ -1,6 +1,6 @@
 import 'package:montotem/core/theme/app_space.dart';
 
-/// Les 3 applications MonTotem — comme Uber / Uber Eats / Gozem.
+/// Les 4 applications MonTotem — comme Uber / Uber Eats / Gozem / Back-office.
 ///
 /// Chacune a sa propre icône sur le téléphone, son propre design,
 /// sa propre porte d'entrée et son propre formulaire d'inscription.
@@ -8,6 +8,7 @@ import 'package:montotem/core/theme/app_space.dart';
 ///  - CLIENT     → MonTotem           · /login          · /register/quick
 ///  - DRIVER     → MonTotem Driver    · /driver/login   · /register/driver
 ///  - PRO        → MonTotem Pro       · /pro/login      · /register/provider
+///  - ADMIN      → console web        · /admin/login    · (réservée admin)
 ///
 /// Le rôle est fixé AVANT tout accès à `AppRouter.router` (voir main_*.dart).
 enum AppFlavor {
@@ -18,7 +19,8 @@ enum AppFlavor {
     '/driver/login',
     '/register/driver',
   ),
-  pro('MonTotem Pro', AppSpace.provider, '/pro/login', '/register/provider');
+  pro('MonTotem Pro', AppSpace.provider, '/pro/login', '/register/provider'),
+  admin('MonTotem Admin', AppSpace.admin, '/admin/login', '/admin/login');
 
   const AppFlavor(this.appName, this.space, this.doorRoute, this.registerRoute);
 
@@ -37,12 +39,14 @@ enum AppFlavor {
   bool get isClient => this == AppFlavor.client;
   bool get isDriver => this == AppFlavor.driver;
   bool get isPro => this == AppFlavor.pro;
+  bool get isAdmin => this == AppFlavor.admin;
 
   /// Racine d'accueil selon le rôle (après connexion).
   String get homeRoute => switch (this) {
     AppFlavor.client => '/home',
     AppFlavor.driver => '/driver/home',
     AppFlavor.pro => '/provider/home',
+    AppFlavor.admin => '/admin/dashboard',
   };
 
   /// À définir UNE fois au démarrage, avant tout accès à `AppRouter.router`.

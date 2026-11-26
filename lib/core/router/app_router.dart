@@ -127,9 +127,19 @@ class AppRouter {
     //    Seuls les prestataires / admins web sont aiguillés vers leur espace.
     if (loc == '/explore') return '/';
     if (loc == '/') {
+      // Les apps pro / driver / admin n'ont pas de carte publique :
+      // tout visiteur de '/' est renvoyé chez lui.
+      if (AppFlavor.current != AppFlavor.client) {
+        final dest = await _aiguillerApresConnexion();
+        return dest == '/home' ? AppFlavor.current.doorRoute : dest;
+      }
       if (session == null) return null;
       final dest = await _aiguillerApresConnexion();
-      return dest == '/home' ? null : dest;
+      if (dest == '/home') return null; // client → la carte
+      // L'app client reste 100% client : un prestataire est renvoyé à sa
+      // porte, pas téléporté dans l'espace Pro.
+      if (dest == '/provider/home') return '/pro/login';
+      return dest; // admin sur le web → console
     }
 
     if (_estPublic(loc)) return null;
@@ -142,7 +152,11 @@ class AppRouter {
     }
 
     if (loc.startsWith('/admin') && !await _estAdmin()) {
-      return '/home';
+      // Dans la console admin, un non-admin est renvoyé à la porte admin ;
+      // dans les autres apps, à l'accueil.
+      return AppFlavor.current == AppFlavor.admin
+          ? '/admin/login'
+          : '/home';
     }
 
     if (loc.startsWith('/provider') || loc.startsWith('/driver')) {
@@ -150,7 +164,7 @@ class AppRouter {
       if (role != null && role != 'provider') return '/home';
     } else if (_estEcranClient(loc)) {
       final role = await _role();
-      if (role == 'provider') return '/provider/home';
+      if (role == 'provider') return '/pro/login';
     }
 
     return null;
@@ -209,6 +223,7 @@ class AppRouter {
           AppFlavor.pro => '/register/provider',
           AppFlavor.client => '/register/client',
           AppFlavor.driver => '/register/driver',
+          AppFlavor.admin => '/admin/login',
         };
       }
 
@@ -237,7 +252,11 @@ class AppRouter {
   }
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/',
+    // Chaque application s'ouvre sur SA porte : le client sur la carte,
+    // le driver et le pro sur leur porte, l'admin sur la console.
+    initialLocation: AppFlavor.current == AppFlavor.client
+        ? '/'
+        : AppFlavor.current.doorRoute,
     refreshListenable: _refresh,
     redirect: _redirectGuard,
     errorBuilder: (context, state) =>
