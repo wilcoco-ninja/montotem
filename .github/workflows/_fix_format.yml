@@ -1,0 +1,26 @@
+name: _fix_format (jetable)
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - name: dart format
+        run: dart format lib
+      - name: Commit si besoin
+        run: |
+          if [ -n "$(git status --porcelain lib)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "style: dart format (rattrapage automatique)"
+            git push
+          fi
