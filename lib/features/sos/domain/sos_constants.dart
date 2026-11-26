@@ -246,6 +246,8 @@ IconData iconePourPanne(String code) => switch (code) {
   'DEMARRAGE_BATTERIE' => Icons.battery_alert_rounded,
   'TRANSMISSION_CABLE' => Icons.link_off_rounded,
   'SURCHAUFFE_CALAGE' => Icons.thermostat_rounded,
+  'COURROIE_CASSEE' => Icons.settings_rounded,
+  'CHAINE_CASSEE' => Icons.link_off_rounded,
   'BATTERIE_VIDE' => Icons.battery_alert_rounded,
   'BMS_CONTROLEUR' => Icons.developer_board_rounded,
   'CREVAISON_ROUE_BLOQUEE' => Icons.tire_repair_rounded,
@@ -269,24 +271,28 @@ const Map<String, List<String>> kSosPannesParVehicule = {
   'ZEM_MOTO': [
     'CREVAISON_PNEU',
     'DEMARRAGE_BATTERIE',
+    'CHAINE_CASSEE',
     'TRANSMISSION_CABLE',
     'SURCHAUFFE_CALAGE',
   ],
   'SCOOTER_THERM': [
     'CREVAISON_PNEU',
     'DEMARRAGE_BATTERIE',
+    'COURROIE_CASSEE',
     'TRANSMISSION_CABLE',
     'SURCHAUFFE_CALAGE',
   ],
   'CLOBOTO_PAX': [
     'CREVAISON_PNEU',
     'DEMARRAGE_BATTERIE',
+    'CHAINE_CASSEE',
     'TRANSMISSION_CABLE',
     'SURCHAUFFE_CALAGE',
   ],
   'KLOBOTO_FRET': [
     'CREVAISON_PNEU',
     'DEMARRAGE_BATTERIE',
+    'CHAINE_CASSEE',
     'TRANSMISSION_CABLE',
     'SURCHAUFFE_CALAGE',
   ],
@@ -393,6 +399,20 @@ kDiagnosticParPanne = {
     conseil:
         'Ne forcez pas la transmission ; un câble ou une chaîne '
         'cassée se remplace sur place.',
+  ),
+  'COURROIE_CASSEE': (
+    metier: 'Mécanicien moto',
+    service: 'Atelier mobile léger',
+    conseil:
+        'Scooter à courroie : ne forcez plus les accélérations ; '
+        'le mécanicien arrive avec la courroie de rechange.',
+  ),
+  'CHAINE_CASSEE': (
+    metier: 'Mécanicien moto',
+    service: 'Atelier mobile léger',
+    conseil:
+        'Moto à vitesses, chaîne cassée : poussez le véhicule hors '
+        'de la chaussée ; kit chaîne remplacé sur place.',
   ),
   'SURCHAUFFE_CALAGE': (
     metier: 'Mécanicien moto',

@@ -10,11 +10,15 @@ import 'package:montotem/features/sos/data/providers_nearest_service.dart';
 import 'package:montotem/features/sos/data/sos_service.dart';
 import 'package:montotem/features/sos/domain/sos_constants.dart';
 
-/// Écran « SOS Je Suis En Panne » — parcours strict en 4 étapes :
+/// Écran « SOS Je Suis En Panne » — parcours strict en 5 étapes :
 ///   1. Position exacte sur la route + niveau de sécurité de la chaussée ;
 ///   2. Véhicule au moment de la panne (14 codes officiels) ;
-///   3. Type de panne — filtrage dynamique strict selon le véhicule ;
-///   4. Prestataires compatibles + devis transparent + commande garantie.
+///   3. Précisions : thermique ou électrique, scooter (courroie) ou moto
+///      à vitesses (chaîne) — toujours demandées à l'utilisateur ;
+///   4. Type de panne — filtrage dynamique strict + description libre ;
+///   5. Prestataires compatibles + devis transparent + commande garantie.
+/// Chaque panne décrite est enregistrée en base (journal) pour affiner
+/// le diagnostic rapide et savoir quelles pièces acheter avant de venir.
 class AssistantPanneScreen extends StatefulWidget {
   const AssistantPanneScreen({super.key});
 
@@ -22,7 +26,7 @@ class AssistantPanneScreen extends StatefulWidget {
   State<AssistantPanneScreen> createState() => _AssistantPanneScreenState();
 }
 
-enum _Etape { position, vehicule, panne, resultat }
+enum _Etape { position, vehicule, details, panne, resultat }
 
 class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
   final LocationService _location = LocationService();
@@ -39,8 +43,36 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
   SosNiveauSecurite _niveau = SosNiveauSecurite.attention;
   bool _localisationEnCours = true;
 
-  // Étape 2 — véhicule.
+  // Étape 2 — véhicule + précisions (motorisation, transmission).
   SosVehicule? _vehicule;
+
+  /// Réponses aux questions obligatoires de l'étape Détails.
+  bool? _electrique;
+
+  /// null = non répondu ; true = scooter (courroie) ; false = moto à
+  /// vitesses (chaîne). Ne concerne que les deux-roues thermiques.
+  bool? _transmissionCourroie;
+
+  /// Description libre de la panne, transmise au dépanneur et journalisée.
+  final TextEditingController _description = TextEditingController();
+
+  /// Familles qui existent en version thermique ET électrique.
+  static const Map<String, String> _varianteElec = {
+    'ZEM_MOTO': 'E_MOTO',
+    'SCOOTER_THERM': 'E_SCOOTER',
+    'CAR_THERM': 'E_CAR',
+  };
+  static const Map<String, String> _varianteTherm = {
+    'E_MOTO': 'ZEM_MOTO',
+    'E_SCOOTER': 'SCOOTER_THERM',
+    'E_CAR': 'CAR_THERM',
+  };
+
+  bool get _besoinDetails {
+    final c = _vehicule?.code;
+    if (c == null) return false;
+    return _varianteElec.containsKey(c) || _varianteTherm.containsKey(c);
+  }
 
   // Étape 3 — panne.
   List<SosPanne> _pannes = const [];
@@ -59,6 +91,12 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
   void initState() {
     super.initState();
     _capturerPosition();
+  }
+
+  @override
+  void dispose() {
+    _description.dispose();
+    super.dispose();
   }
 
   // ---------------------------------------------------------------------------
@@ -230,6 +268,7 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
         prestataireId: pr.id,
         niveau: _niveau,
         repereLocal: _repere,
+        description: _description.text,
       );
       if (!mounted) return;
       setState(() => _commandeEnCours = null);
@@ -292,10 +331,14 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
     setState(() {
       if (_etape == _Etape.vehicule) {
         _etape = _Etape.position;
-      } else if (_etape == _Etape.panne) {
+      } else if (_etape == _Etape.details) {
         _etape = _Etape.vehicule;
+      } else if (_etape == _Etape.panne) {
         _panne = null;
         _pannes = const [];
+        // Retour intelligent : sans question de précisions, on revient
+        // directement au choix du véhicule.
+        _etape = _besoinDetails ? _Etape.details : _Etape.vehicule;
       } else if (_etape == _Etape.resultat) {
         _etape = _Etape.panne;
         _resultats = const [];
@@ -303,6 +346,52 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
         _resultatsErreur = null;
       }
     });
+  }
+
+  /// Après le choix du véhicule : étape Détails si des questions sont
+  /// nécessaires (thermique/électrique, courroie/chaîne), sinon la panne.
+  void _allerApresVehicule() {
+    final v = _vehicule;
+    if (v == null) return;
+    setState(() {
+      _electrique = !v.thermique;
+      _transmissionCourroie = v.code == 'SCOOTER_THERM'
+          ? true
+          : null;
+      _etape = _besoinDetails ? _Etape.details : _Etape.panne;
+    });
+    if (_etape == _Etape.panne) _chargerPannes();
+  }
+
+  /// Code final du véhicule après réponses aux questions de précision.
+  String _codeFinal() {
+    final v = _vehicule;
+    if (v == null) return '';
+    final elec = _electrique ?? !v.thermique;
+    var code = v.code;
+    if (elec && _varianteElec.containsKey(code)) {
+      code = _varianteElec[code]!;
+    }
+    if (!elec && _varianteTherm.containsKey(code)) {
+      code = _varianteTherm[code]!;
+    }
+    if (!elec &&
+        _transmissionCourroie != null &&
+        (code == 'ZEM_MOTO' || code == 'SCOOTER_THERM')) {
+      code = _transmissionCourroie! ? 'SCOOTER_THERM' : 'ZEM_MOTO';
+    }
+    return code;
+  }
+
+  /// Applique les précisions puis passe à l'étape panne.
+  void _appliquerDetails() {
+    final code = _codeFinal();
+    final res = sosVehiculeParCode(code);
+    setState(() {
+      if (res != null) _vehicule = res;
+      _etape = _Etape.panne;
+    });
+    _chargerPannes();
   }
 
   // ---------------------------------------------------------------------------
@@ -329,6 +418,7 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
             child: switch (_etape) {
               _Etape.position => _etapePosition(),
               _Etape.vehicule => _etapeVehicule(),
+              _Etape.details => _etapeDetails(),
               _Etape.panne => _etapePanne(),
               _Etape.resultat => _etapeResultat(),
             },
@@ -400,6 +490,101 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
     );
   }
 
+  /// Étape 3 — précisions obligatoires sur le véhicule : thermique ou
+  /// électrique, et pour les deux-roues thermiques : scooter à courroie
+  /// (juste accélérer) ou moto à vitesses (chaîne). Toutes les variantes
+  /// de véhicule sont proposées pour un diagnostic au plus juste.
+  Widget _etapeDetails() {
+    final theme = Theme.of(context);
+    final v = _vehicule;
+    if (v == null) return const SizedBox.shrink();
+    final elec = _electrique ?? !v.thermique;
+    var code = v.code;
+    if (elec && _varianteElec.containsKey(code)) {
+      code = _varianteElec[code]!;
+    }
+    if (!elec && _varianteTherm.containsKey(code)) {
+      code = _varianteTherm[code]!;
+    }
+    final deuxRouesTherm =
+        !elec && (code == 'ZEM_MOTO' || code == 'SCOOTER_THERM');
+    final peutContinuer =
+        _electrique != null && (!deuxRouesTherm || _transmissionCourroie != null);
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        Text('Précisions sur votre véhicule', style: theme.textTheme.titleMedium),
+        const SizedBox(height: 12),
+        Text(
+          'Votre ${_libelleFamille(code)} est-elle thermique ou électrique ?',
+          style: theme.textTheme.bodyMedium,
+        ),
+        const SizedBox(height: 8),
+        _CarteChoix(
+          selected: elec == false,
+          icon: Icons.local_gas_station_rounded,
+          titre: 'Thermique',
+          sousTitre: "Fonctionne à l'essence (ou diesel)",
+          onTap: () => setState(() => _electrique = false),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 8, bottom: 8),
+          child: _CarteChoix(
+            selected: elec,
+            icon: Icons.electric_bolt_rounded,
+            titre: 'Électrique',
+            sousTitre: 'Fonctionne sur batterie (recharge / swap)',
+            onTap: () => setState(() => _electrique = true),
+          ),
+        ),
+        if (deuxRouesTherm) ...[
+          const SizedBox(height: 8),
+          Text(
+            'Comment avance votre deux-roues ?',
+            style: theme.textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 8),
+          _CarteChoix(
+            selected: _transmissionCourroie == true,
+            icon: Icons.speed_rounded,
+            titre: 'Scooter : je fais juste accélérer',
+            sousTitre:
+                'Transmission par courroie et variateur — pas de vitesses',
+            onTap: () => setState(() => _transmissionCourroie = true),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            child: _CarteChoix(
+              selected: _transmissionCourroie == false,
+              icon: Icons.settings_rounded,
+              titre: 'Moto : je passe les vitesses',
+              sousTitre:
+                  'Transmission par chaîne avec changement de vitesses',
+              onTap: () => setState(() => _transmissionCourroie = false),
+            ),
+          ),
+        ],
+        const SizedBox(height: 16),
+        AppButton(
+          label: 'Continuer : ma panne',
+          icon: Icons.arrow_forward_rounded,
+          onPressed: peutContinuer
+              ? () {
+                  _appliquerDetails();
+                }
+              : null,
+        ),
+      ],
+    );
+  }
+
+  String _libelleFamille(String code) => switch (code) {
+    'E_MOTO' || 'ZEM_MOTO' => 'moto',
+    'E_SCOOTER' || 'SCOOTER_THERM' => 'scooter',
+    'E_CAR' || 'CAR_THERM' => 'voiture',
+    _ => 'véhicule',
+  };
+
   Widget _etapeVehicule() {
     return ListView(
       padding: const EdgeInsets.all(16),
@@ -432,13 +617,12 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
         ],
         const SizedBox(height: 16),
         AppButton(
-          label: 'Continuer : ma panne',
+          label: 'Continuer',
           icon: Icons.arrow_forward_rounded,
           onPressed: _vehicule == null
               ? null
               : () {
-                  setState(() => _etape = _Etape.panne);
-                  _chargerPannes();
+                  _allerApresVehicule();
                 },
         ),
       ],
@@ -481,6 +665,20 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
                 onTap: () => setState(() => _panne = p),
               ),
             ),
+        const SizedBox(height: 8),
+        TextField(
+          controller: _description,
+          maxLines: 2,
+          maxLength: 300,
+          textInputAction: TextInputAction.done,
+          decoration: const InputDecoration(
+            labelText: 'Décrivez votre panne (facultatif)',
+            hintText:
+                'Exemple : la courroie a cassé en plein trajet, le scooter '
+                'ne répond plus…',
+            border: OutlineInputBorder(),
+          ),
+        ),
         const SizedBox(height: 16),
         AppButton(
           label: 'Trouver un dépanneur',
@@ -488,12 +686,30 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
           onPressed: _panne == null
               ? null
               : () {
-                  setState(() => _etape = _Etape.resultat);
-                  _chargerResultats();
+                  _passerAuxResultats();
                 },
         ),
       ],
     );
+  }
+
+  /// Passe à l'étape résultats ET enregistre la panne décrite par
+  /// l'usager (journal des pannes pour le diagnostic rapide et les
+  /// pièces à acheter). Jamais bloquant : la recherche continue même
+  /// si la journalisation échoue.
+  void _passerAuxResultats() {
+    final v = _vehicule;
+    final p = _panne;
+    if (v == null || p == null) return;
+    _sos.journaliserPanne(
+      vehicule: v,
+      panne: p,
+      description: _description.text,
+      latitude: _lat,
+      longitude: _lng,
+    );
+    setState(() => _etape = _Etape.resultat);
+    _chargerResultats();
   }
 
   Widget _etapeResultat() {
@@ -511,6 +727,7 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
               panne: _panne,
               repere: _repere,
               niveau: _niveau,
+              description: _description.text,
             ),
           const SizedBox(height: 16),
           if (_resultats.isEmpty) ...[
@@ -599,7 +816,7 @@ class _EnteteEtapes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const titres = ['Position', 'Véhicule', 'Panne', 'Dépanneur'];
+    const titres = ['Position', 'Véhicule', 'Détails', 'Panne', 'Dépanneur'];
     final scheme = Theme.of(context).colorScheme;
     return SafeArea(
       top: false,
@@ -721,12 +938,14 @@ class _CarteResume extends StatelessWidget {
     required this.panne,
     required this.repere,
     required this.niveau,
+    this.description,
   });
 
   final SosVehicule? vehicule;
   final SosPanne? panne;
   final String repere;
   final SosNiveauSecurite niveau;
+  final String? description;
 
   @override
   Widget build(BuildContext context) {
@@ -758,6 +977,22 @@ class _CarteResume extends StatelessWidget {
                 Expanded(child: Text(panne?.libelle ?? '—')),
               ],
             ),
+            if ((description ?? '').trim().isNotEmpty) ...[
+              const SizedBox(height: 4),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.notes_rounded, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      description!.trim(),
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ],
+              ),
+            ],
             const SizedBox(height: 4),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,

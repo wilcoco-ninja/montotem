@@ -229,6 +229,7 @@ class SosService {
     required String prestataireId,
     SosNiveauSecurite? niveau,
     String? repereLocal,
+    String? description,
   }) async {
     try {
       final id = await _sb.rpc(
@@ -241,6 +242,9 @@ class SosService {
           'p_prestataire': prestataireId,
           'p_niveau_securite': niveau?.code,
           'p_repere_local': repereLocal,
+          'p_description': (description ?? '').trim().isEmpty
+              ? null
+              : (description ?? '').trim(),
         },
       );
       return '$id';
@@ -249,6 +253,35 @@ class SosService {
         throw _exception(e);
       }
       rethrow;
+    }
+  }
+
+  /// Journalise chaque panne décrite par un usager (toutes les pannes
+  /// rencontrées sur les routes sont enregistrées pour affiner le
+  /// diagnostic rapide et les pièces à emporter). Ne lève jamais : la
+  /// journalisation ne doit jamais bloquer le dépannage.
+  Future<void> journaliserPanne({
+    required SosVehicule vehicule,
+    required SosPanne panne,
+    String? description,
+    double? latitude,
+    double? longitude,
+  }) async {
+    try {
+      await _sb.rpc(
+        'sos_journaliser_panne',
+        params: {
+          'p_vehicule': vehicule.code,
+          'p_panne': panne.code,
+          'p_description': (description ?? '').trim().isEmpty
+              ? null
+              : (description ?? '').trim(),
+          'p_lat': latitude,
+          'p_lng': longitude,
+        },
+      );
+    } catch (_) {
+      // Silencieux : la statistique est utile, pas bloquante.
     }
   }
 }
@@ -296,6 +329,26 @@ class ParCode {
       mainOeuvreFcfa: 3000,
       pieceObligatoire: false,
       icone: Icons.thermostat_rounded,
+    ),
+    SosPanne(
+      code: 'COURROIE_CASSEE',
+      libelle: "Courroie de scooter cassée (scooter : juste accélérer)",
+      description: "Transmission variateur-courroie : remplacement sur place.",
+      mainOeuvreFcfa: 3500,
+      pieceObligatoire: true,
+      pieceCode: 'COURROIE_SCOOTER',
+      pieceLibelle: 'Courroie de transmission scooter',
+      icone: Icons.settings_rounded,
+    ),
+    SosPanne(
+      code: 'CHAINE_CASSEE',
+      libelle: "Chaîne cassée (moto à vitesses)",
+      description: 'Kit chaîne : dérivation ou remplacement sur place.',
+      mainOeuvreFcfa: 4000,
+      pieceObligatoire: true,
+      pieceCode: 'KIT_CHAINE_MOTO',
+      pieceLibelle: 'Kit chaîne moto (chaîne + pignons)',
+      icone: Icons.link_off_rounded,
     ),
     SosPanne(
       code: 'BATTERIE_VIDE',
