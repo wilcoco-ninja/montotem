@@ -903,7 +903,6 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
       ),
     );
   }
-
 }
 
 // ----------------------------------------------------------------------------

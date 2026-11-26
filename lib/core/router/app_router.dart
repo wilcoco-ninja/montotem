@@ -331,8 +331,7 @@ class AppRouter {
       GoRoute(path: '/rides', builder: (_, _) => const RidesHistoryScreen()),
       GoRoute(
         path: '/rides/:id',
-        builder: (_, s) =>
-            RideTrackingScreen(rideId: s.pathParameters['id']!),
+        builder: (_, s) => RideTrackingScreen(rideId: s.pathParameters['id']!),
       ),
       GoRoute(path: '/account', builder: (_, _) => const ClientProfileScreen()),
       GoRoute(path: '/matching', builder: (_, _) => const MatchingScreen()),
