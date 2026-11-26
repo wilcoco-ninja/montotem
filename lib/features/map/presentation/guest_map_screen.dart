@@ -436,11 +436,11 @@ class _GuestMapScreenState extends State<GuestMapScreen> {
             ),
           ),
           PopupMenuItem(
-            value: '/pro/register',
+            value: '/register/client/email',
             child: ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: Icon(Icons.build_circle_outlined),
-              title: Text('Devenir prestataire'),
+              leading: Icon(Icons.how_to_reg_outlined),
+              title: Text('Créer un compte'),
             ),
           ),
         ],
