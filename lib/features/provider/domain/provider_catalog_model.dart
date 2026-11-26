@@ -128,7 +128,8 @@ class ProviderPublicCatalog {
   final int tarifKmAdminFcfa;
 
   /// Tarif / km effectif : celui de l'admin s'il est défini.
-  int get tarifKmEffectif => tarifKmAdminFcfa > 0 ? tarifKmAdminFcfa : tarifKmFcfa;
+  int get tarifKmEffectif =>
+      tarifKmAdminFcfa > 0 ? tarifKmAdminFcfa : tarifKmFcfa;
 
   final int fraisMinFcfa;
   final int rayonMaxKm;

@@ -792,9 +792,7 @@ class _CarteResume extends StatelessWidget {
                 children: [
                   const Icon(Icons.engineering_rounded, size: 20),
                   const SizedBox(width: 8),
-                  Expanded(
-                    child: Text('Métier requis : ${d.metier}'),
-                  ),
+                  Expanded(child: Text('Métier requis : ${d.metier}')),
                 ],
               ),
               const SizedBox(height: 4),

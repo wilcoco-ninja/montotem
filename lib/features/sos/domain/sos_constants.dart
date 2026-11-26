@@ -376,109 +376,127 @@ kDiagnosticParPanne = {
   'CREVAISON_PNEU': (
     metier: 'Vulcanisateur pneu',
     service: 'Vulcanisateur express mobile',
-    conseil: 'Roulez doux jusqu\'au bord de la route ; le vulcanisateur '
+    conseil:
+        'Roulez doux jusqu\'au bord de la route ; le vulcanisateur '
         'vient avec rustines et compresseur.',
   ),
   'DEMARRAGE_BATTERIE': (
     metier: 'Électricien auto & moto',
     service: 'Atelier mobile léger',
-    conseil: 'Ne relancez pas le démarreur en continu ; l\'électricien '
+    conseil:
+        'Ne relancez pas le démarreur en continu ; l\'électricien '
         'arrive avec batterie de démarrage.',
   ),
   'TRANSMISSION_CABLE': (
     metier: 'Mécanicien moto',
     service: 'Atelier mobile léger',
-    conseil: 'Ne forcez pas la transmission ; un câble ou une chaîne '
+    conseil:
+        'Ne forcez pas la transmission ; un câble ou une chaîne '
         'cassée se remplace sur place.',
   ),
   'SURCHAUFFE_CALAGE': (
     metier: 'Mécanicien moto',
     service: 'Atelier mobile léger',
-    conseil: 'Moteur coupé, laissez refroidir ; contrôle du carburant '
+    conseil:
+        'Moteur coupé, laissez refroidir ; contrôle du carburant '
         'et du refroidissement sur place.',
   ),
   'BATTERIE_VIDE': (
     metier: 'Technicien véhicule électrique',
     service: 'Prestataire certifié électrique / swap',
-    conseil: 'Batterie à plat : échange (swap) ou recharge '
+    conseil:
+        'Batterie à plat : échange (swap) ou recharge '
         'd\'urgence sur place.',
   ),
   'BMS_CONTROLEUR': (
     metier: 'Technicien véhicule électrique',
     service: 'Prestataire certifié électrique / swap',
-    conseil: 'Panne électronique : diagnostic BMS/contrôleur, '
+    conseil:
+        'Panne électronique : diagnostic BMS/contrôleur, '
         'immobilisez le véhicule.',
   ),
   'CREVAISON_ROUE_BLOQUEE': (
     metier: 'Technicien véhicule électrique',
     service: 'Prestataire certifié électrique / swap',
-    conseil: 'Roue bloquée : n\'insistez pas, intervention spéciale '
+    conseil:
+        'Roue bloquée : n\'insistez pas, intervention spéciale '
         'moteur électrique.',
   ),
   'REMORQUAGE_PLATEAU': (
     metier: 'Dépanneuse / Remorquage',
     service: 'Dépanneuse plateau',
-    conseil: 'Véhicule immobilisé : remorquage jusqu\'au garage ou '
+    conseil:
+        'Véhicule immobilisé : remorquage jusqu\'au garage ou '
         'au domicile (400 FCFA/km).',
   ),
   'BATTERIE_ALTERNATEUR': (
     metier: 'Électricien auto & moto',
     service: 'Atelier mobile léger',
-    conseil: 'Test batterie + alternateur sur place, démarrage '
+    conseil:
+        'Test batterie + alternateur sur place, démarrage '
         'assuré si la batterie est simplement déchargée.',
   ),
   'CREVAISON_VL': (
     metier: 'Vulcanisateur pneu',
     service: 'Vulcanisateur express mobile',
-    conseil: 'Cric et roue de secours : le vulcanisateur VL répare '
+    conseil:
+        'Cric et roue de secours : le vulcanisateur VL répare '
         'ou remplace sur place.',
   ),
   'SURCHAUFFE_FUITE': (
     metier: 'Mécanicien véhicule léger',
     service: 'Garage / mécanique générale',
-    conseil: 'Moteur coupé immédiatement ; recherche de fuite et '
+    conseil:
+        'Moteur coupé immédiatement ; recherche de fuite et '
         'liquide de refroidissement sur place.',
   ),
   'FREIN_EMBRAYAGE_COURROIE': (
     metier: 'Mécanicien véhicule léger',
     service: 'Garage / mécanique générale',
-    conseil: 'Frein ou embrayage douteux : ne roulez plus, '
+    conseil:
+        'Frein ou embrayage douteux : ne roulez plus, '
         'réparation sur place ou remorquage.',
   ),
   'REMORQUAGE_VL': (
     metier: 'Dépanneuse / Remorquage',
     service: 'Dépanneuse Véhicule Léger',
-    conseil: 'Remorquage voiture/utilitaire jusqu\'au garage '
+    conseil:
+        'Remorquage voiture/utilitaire jusqu\'au garage '
         '(400 FCFA/km).',
   ),
   'PNEU_PL': (
     metier: 'Vulcanisateur Poids Lourd',
     service: 'Vulcanisateur mobile Poids Lourd',
-    conseil: 'Pneu PL : équipement lourd requis, tenez-vous '
+    conseil:
+        'Pneu PL : équipement lourd requis, tenez-vous '
         'à distance de la roue.',
   ),
   'FREIN_AIR_PL': (
     metier: 'Spécialiste freinage pneumatique PL',
     service: 'Mécanicien PL / camion-atelier',
-    conseil: 'Circuit d\'air : gardez le véhicule immobilisé, '
+    conseil:
+        'Circuit d\'air : gardez le véhicule immobilisé, '
         'cales posées.',
   ),
   'ENERGIE_24V': (
     metier: 'Électricien Poids Lourd',
     service: 'Mécanicien PL / camion-atelier',
-    conseil: 'Démarrage 24V : batteries en parallèle, '
+    conseil:
+        'Démarrage 24V : batteries en parallèle, '
         'ne court-circuitez rien.',
   ),
   'MECA_LOURDE_PL': (
     metier: 'Mécanicien Poids Lourd',
     service: 'Mécanicien PL / camion-atelier',
-    conseil: 'Panne mécanique lourde : camion-atelier sur site, '
+    conseil:
+        'Panne mécanique lourde : camion-atelier sur site, '
         'pièces lourdes à commander si besoin.',
   ),
   'REMORQUAGE_PL': (
     metier: 'Dépanneuse / Remorquage',
     service: 'Dépanneuse Poids Lourd',
-    conseil: 'Remorquage lourd tonnage : balisage renforcé, '
+    conseil:
+        'Remorquage lourd tonnage : balisage renforcé, '
         'éloignez-vous de la voie.',
   ),
 };
