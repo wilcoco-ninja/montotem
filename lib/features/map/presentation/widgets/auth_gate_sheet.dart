@@ -126,7 +126,7 @@ class AuthGateSheet extends StatelessWidget {
             AppButton(
               label: 'Continuer avec mon numéro',
               icon: Icons.phone_iphone_rounded,
-              onPressed: () => _aller(context, '/register/quick?role=client'),
+              onPressed: () => _aller(context, '/register/client/email'),
             ),
             const SizedBox(height: 4),
             AppButton(

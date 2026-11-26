@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:montotem/core/models/app_user.dart';
-import 'package:montotem/core/theme/app_theme.dart';
 import 'package:montotem/core/widgets/app_button.dart';
 import 'package:montotem/core/widgets/app_text_field.dart';
 import 'package:montotem/core/widgets/auth_layout.dart';
@@ -31,7 +30,6 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
 
   Uint8List? _selfie;
   bool _isLoading = false;
-  bool _photoManquanteSignalee = false;
 
   @override
   void initState() {
@@ -53,12 +51,8 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
     if (email.isNotEmpty) _emailController.text = email;
     _phoneController = TextEditingController(text: phone);
 
-    // Le téléphone doit être vérifié avant de créer le profil.
-    if (phone.isEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) context.go('/register/phone?role=client');
-      });
-    }
+    // Telephone facultatif : le service SMS est differe, un compte cree par
+    // e-mail peut completer son profil sans numero.
   }
 
   @override
@@ -79,34 +73,29 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
   Future<void> _valider() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
-    if (_selfie == null) {
-      setState(() => _photoManquanteSignalee = true);
-      _afficherMessage(
-        'Une photo est nécessaire pour finaliser l\'inscription',
-      );
-      return;
-    }
-
     setState(() => _isLoading = true);
 
-    String photoUrl;
-    try {
-      photoUrl = await _authService.uploaderDocument(
-        _selfie!,
-        'selfie.jpg',
-        kind: UploadKind.identity,
-        folder: 'clients',
-      );
-    } on UploadException catch (e) {
-      if (!mounted) return;
-      setState(() => _isLoading = false);
-      _afficherMessage(e.message);
-      return;
-    } catch (e) {
-      if (!mounted) return;
-      setState(() => _isLoading = false);
-      _afficherMessage('Erreur lors du transfert de la photo : $e');
-      return;
+    // Photo facultative : seuls les clients qui le veulent en ajoutent une.
+    String? photoUrl;
+    if (_selfie != null) {
+      try {
+        photoUrl = await _authService.uploaderDocument(
+          _selfie!,
+          'selfie.jpg',
+          kind: UploadKind.identity,
+          folder: 'clients',
+        );
+      } on UploadException catch (e) {
+        if (!mounted) return;
+        setState(() => _isLoading = false);
+        _afficherMessage(e.message);
+        return;
+      } catch (e) {
+        if (!mounted) return;
+        setState(() => _isLoading = false);
+        _afficherMessage('Erreur lors du transfert de la photo : $e');
+        return;
+      }
     }
 
     AppUser? user;
@@ -145,7 +134,6 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
   Widget build(BuildContext context) {
     final muted = Theme.of(context).colorScheme.onSurface
         .withValues(alpha: 0.7);
-    final erreurPhoto = _photoManquanteSignalee && _selfie == null;
 
     return AuthShell(
       title: 'Votre profil client',
@@ -174,7 +162,7 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
             children: [
               const AuthInfoBanner(
                 title: 'Compte sécurisé',
-                message: 'Mot de passe et téléphone déjà configurés. Complétez votre profil.',
+                message: 'Mot de passe déjà configuré. Complétez votre profil.',
               ),
               const SizedBox(height: 22),
               const AuthSectionHeader(
@@ -217,8 +205,13 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
               ),
               const SizedBox(height: 14),
               AppTextField(
-                label: 'Téléphone vérifié',
-                helper: 'Numéro validé par SMS',
+                label: _phoneController.text.isEmpty
+                    ? 'Téléphone (activer plus tard)'
+                    : 'Téléphone vérifié',
+                helper: _phoneController.text.isEmpty
+                    ? 'Le service SMS sera activé prochainement : vous pouvez '
+                          'terminer sans numéro'
+                    : 'Numéro validé par SMS',
                 icon: Icons.phone_outlined,
                 controller: _phoneController,
                 readOnly: true,
@@ -227,7 +220,7 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
               const AuthSectionHeader(
                 icon: Icons.camera_alt_outlined,
                 title: 'Votre photo',
-                subtitle: 'Obligatoire pour la sécurité de tous',
+                subtitle: 'Facultative : à vous de décider',
               ),
               const SizedBox(height: 14),
               Center(
@@ -236,34 +229,15 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
                   height: 150,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    border: erreurPhoto
-                        ? Border.all(color: AppTheme.errorColor, width: 1.6)
-                        : null,
                   ),
                   child: PhotoPickerField(
                     label: 'Votre photo',
                     icon: Icons.camera_alt_outlined,
                     bytes: _selfie,
-                    onChanged: (bytes) => setState(() {
-                      _selfie = bytes;
-                      if (bytes != null) _photoManquanteSignalee = false;
-                    }),
+                    onChanged: (bytes) => setState(() => _selfie = bytes),
                   ),
                 ),
               ),
-              if (erreurPhoto) ...[
-                const SizedBox(height: 8),
-                const Center(
-                  child: Text(
-                    'Photo obligatoire',
-                    style: TextStyle(
-                      color: AppTheme.errorColor,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
               const SizedBox(height: 26),
               AppButton(
                 label: 'Terminer mon inscription',

@@ -329,7 +329,9 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
               children: [
                 Text('Pas encore de compte ?', style: TextStyle(color: muted)),
                 TextButton(
-                  onPressed: _loading ? null : () => context.go('/join'),
+                  onPressed: _loading
+                      ? null
+                      : () => context.go('/register/client/email'),
                   child: const Text(
                     'S\'inscrire',
                     style: TextStyle(fontWeight: FontWeight.w800),

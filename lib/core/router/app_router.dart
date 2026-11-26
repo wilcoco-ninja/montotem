@@ -24,6 +24,7 @@ import 'package:montotem/features/admin/presentation/admin_topups_screen.dart';
 // ── Auth & Onboarding ──────────────────────────────────────────────────
 import 'package:montotem/features/auth/presentation/admin_login_screen.dart';
 import 'package:montotem/features/auth/presentation/client_auth_screen.dart';
+import 'package:montotem/features/auth/presentation/client_email_signup_screen.dart';
 import 'package:montotem/features/auth/presentation/client_registration_screen.dart';
 import 'package:montotem/features/auth/presentation/debug_login_screen.dart';
 import 'package:montotem/features/auth/presentation/otp_verify_screen.dart';
@@ -272,6 +273,10 @@ class AppRouter {
       GoRoute(
         path: '/register/password',
         builder: (_, _) => const PasswordSetupScreen(),
+      ),
+      GoRoute(
+        path: '/register/client/email',
+        builder: (_, _) => const ClientEmailSignupScreen(),
       ),
       GoRoute(
         path: '/register/client',

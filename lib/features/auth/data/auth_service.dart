@@ -14,6 +14,10 @@ enum UploadKind { avatar, identity }
 /// Résultat de la première étape d'inscription.
 enum SignUpOutcome { phoneOtpSent, emailConfirmationRequired }
 
+/// Resultat de l'inscription email + mot de passe sans telephone (SMS
+/// differe, decision produit : le compte se cree par e-mail seul).
+enum SignUpSansTelephone { connecte, emailAConfirmer }
+
 class ApiException implements Exception {
   final String message;
   const ApiException(this.message);
@@ -137,6 +141,93 @@ class AuthService {
       );
       throw const ApiException(
         'Erreur lors de la finalisation du compte. Veuillez réessayer.',
+      );
+    }
+  }
+
+  /// Inscription email + mot de passe SANS telephone (SMS differe).
+  /// - [SignUpSansTelephone.connecte] : session ouverte, profil a completer ;
+  /// - [SignUpSansTelephone.emailAConfirmer] : « Confirm email » actif cote
+  ///   Supabase ; appeler ensuite [connecterApresConfirmationEmail].
+  Future<SignUpSansTelephone> inscrireSansTelephone({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final res = await _sb.auth.signUp(
+        email: email.trim().toLowerCase(),
+        password: password,
+      );
+
+      // E-mail deja pris : anti-enumeration, la liste d'identites est vide.
+      final identities = res.user?.identities;
+      if (identities != null && identities.isEmpty) {
+        throw const ApiException(
+          'Ce compte existe déjà. Veuillez vous connecter.',
+        );
+      }
+
+      return res.session == null
+          ? SignUpSansTelephone.emailAConfirmer
+          : SignUpSansTelephone.connecte;
+    } on AuthException catch (e) {
+      throw _mapAuthError(e);
+    } on ApiException {
+      rethrow;
+    } catch (e) {
+      developer.log(
+        'Erreur inscrireSansTelephone',
+        error: e,
+        name: 'AuthService',
+      );
+      throw const ApiException(
+        'Erreur lors de la création du compte. Veuillez réessayer.',
+      );
+    }
+  }
+
+  /// Ouvre la session une fois l'e-mail confirme (aucun telephone requis :
+  /// le profil se complete ensuite via /register/client).
+  Future<void> connecterApresConfirmationEmail({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final res = await _sb.auth.signInWithPassword(
+        email: email.trim().toLowerCase(),
+        password: password,
+      );
+      if (res.session == null) {
+        throw const ApiException(
+          'Votre e-mail n\'est pas encore confirmé. Ouvrez le lien reçu par '
+          'e-mail, puis réessayez.',
+        );
+      }
+    } on AuthException catch (e) {
+      final raw = e.message.toLowerCase();
+      if (raw.contains('not confirmed') || e.code == 'email_not_confirmed') {
+        throw const ApiException(
+          'Votre e-mail n\'est pas encore confirmé. Ouvrez le lien reçu par '
+          'e-mail, puis réessayez.',
+        );
+      }
+      if (raw.contains('invalid login')) {
+        throw const ApiException(
+          'Impossible de vous connecter. Vérifiez votre e-mail et votre '
+          'mot de passe.',
+        );
+      }
+      throw _mapAuthError(e);
+    } on ApiException {
+      rethrow;
+    } catch (e) {
+      developer.log(
+        'Erreur connecterApresConfirmationEmail',
+        error: e,
+        name: 'AuthService',
+      );
+      throw const ApiException(
+        'Erreur lors de la connexion. Veuillez réessayer.',
       );
     }
   }

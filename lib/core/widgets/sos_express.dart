@@ -1010,7 +1010,7 @@ class _BoutonAppel extends StatelessWidget {
             onPressed: () {
               final router = GoRouter.of(context);
               Navigator.of(context).pop();
-              router.go('/register/quick?role=client');
+              router.go('/register/client/email');
             },
             icon: const Icon(Icons.person_rounded),
             label: const Text('Se connecter pour appeler'),

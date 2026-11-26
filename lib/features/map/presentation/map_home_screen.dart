@@ -880,14 +880,6 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                   title: Text('Mon compte'),
                 ),
               ),
-              const PopupMenuItem(
-                value: '/emergency',
-                child: ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: Icon(Icons.local_hospital_outlined),
-                  title: Text('Numéros d\'urgence'),
-                ),
-              ),
               const PopupMenuDivider(),
               const PopupMenuItem(
                 value: 'logout',
@@ -906,7 +898,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
             ]
           : const [
               PopupMenuItem(
-                value: '/register/quick?role=client',
+                value: '/register/client/email',
                 child: ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: Icon(Icons.phone_iphone_rounded),
@@ -919,22 +911,6 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
                   contentPadding: EdgeInsets.zero,
                   leading: Icon(Icons.password_rounded),
                   title: Text('Connexion avec mot de passe'),
-                ),
-              ),
-              PopupMenuItem(
-                value: '/register/quick?role=provider',
-                child: ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: Icon(Icons.build_circle_outlined),
-                  title: Text('Devenir prestataire'),
-                ),
-              ),
-              PopupMenuItem(
-                value: '/emergency',
-                child: ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: Icon(Icons.local_hospital_outlined),
-                  title: Text('Numéros d\'urgence'),
                 ),
               ),
             ],
