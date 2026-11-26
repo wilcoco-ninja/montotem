@@ -355,9 +355,7 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
     if (v == null) return;
     setState(() {
       _electrique = !v.thermique;
-      _transmissionCourroie = v.code == 'SCOOTER_THERM'
-          ? true
-          : null;
+      _transmissionCourroie = v.code == 'SCOOTER_THERM' ? true : null;
       _etape = _besoinDetails ? _Etape.details : _Etape.panne;
     });
     if (_etape == _Etape.panne) _chargerPannes();
@@ -509,11 +507,15 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
     final deuxRouesTherm =
         !elec && (code == 'ZEM_MOTO' || code == 'SCOOTER_THERM');
     final peutContinuer =
-        _electrique != null && (!deuxRouesTherm || _transmissionCourroie != null);
+        _electrique != null &&
+        (!deuxRouesTherm || _transmissionCourroie != null);
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        Text('Précisions sur votre véhicule', style: theme.textTheme.titleMedium),
+        Text(
+          'Précisions sur votre véhicule',
+          style: theme.textTheme.titleMedium,
+        ),
         const SizedBox(height: 12),
         Text(
           'Votre ${_libelleFamille(code)} est-elle thermique ou électrique ?',
@@ -558,8 +560,7 @@ class _AssistantPanneScreenState extends State<AssistantPanneScreen> {
               selected: _transmissionCourroie == false,
               icon: Icons.settings_rounded,
               titre: 'Moto : je passe les vitesses',
-              sousTitre:
-                  'Transmission par chaîne avec changement de vitesses',
+              sousTitre: 'Transmission par chaîne avec changement de vitesses',
               onTap: () => setState(() => _transmissionCourroie = false),
             ),
           ),
