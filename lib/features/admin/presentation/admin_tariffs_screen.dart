@@ -35,7 +35,7 @@ class _TarifField {
 class _AdminTariffsScreenState extends State<AdminTariffsScreen> {
   SupabaseClient get _sb => Supabase.instance.client;
 
-  static const List<_TarifField> _champs = [
+  late final List<_TarifField> _champs = [
     // Courses — transport.
     _TarifField(
       'ride_zemidjan_base_fcfa',
