@@ -39,6 +39,9 @@ dependencies:
   phone_numbers_parser: ^9.0.3
   url_launcher: ^6.3.1
 
+  # Avatars de secours : empreinte md5 de l'email pour Gravatar
+  crypto: ^3.0.8
+
   # Stockage local et mode hors ligne
   hive_flutter: ^1.1.0
   shared_preferences: ^2.3.5

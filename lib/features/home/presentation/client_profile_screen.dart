@@ -83,6 +83,19 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Mon compte'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/');
+            }
+          },
+        ),
+      ),
       body: SafeArea(
         bottom: false,
         child: _loading
@@ -122,7 +135,6 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const ClientPageTitle('Compte'),
                   const SizedBox(height: 12),
 
                   // ── Identité ───────────────────────────────────────────
@@ -261,10 +273,10 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                         onTap: () => context.push('/rides'),
                       ),
                       ClientListRow(
-                        icon: Icons.local_hospital_outlined,
-                        title: 'Numéros d\'urgence',
-                        subtitle: 'Pompiers, police, hôpital',
-                        onTap: () => context.push('/emergency'),
+                        icon: Icons.card_giftcard_rounded,
+                        title: "Coffres d'étoiles",
+                        subtitle: 'Blagues et devinettes pendant l\'attente',
+                        onTap: () => context.push('/coffres'),
                       ),
                     ],
                   ),

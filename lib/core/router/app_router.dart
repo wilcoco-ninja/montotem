@@ -47,6 +47,7 @@ import 'package:montotem/features/emergency/presentation/sos_screen.dart';
 // ── Client & Carte ─────────────────────────────────────────────────────
 import 'package:montotem/features/map/presentation/matching_screen.dart';
 import 'package:montotem/features/map/presentation/map_home_screen.dart';
+import 'package:montotem/features/fun/presentation/coffres_screen.dart';
 import 'package:montotem/features/home/presentation/client_profile_screen.dart';
 
 import 'package:montotem/features/payment/presentation/payment_screen.dart';
@@ -151,6 +152,7 @@ class AppRouter {
     '/mes-demandes',
     '/account',
     '/ride/new',
+    '/coffres',
     '/rides',
   ];
 
@@ -334,6 +336,7 @@ class AppRouter {
         builder: (_, s) => RideTrackingScreen(rideId: s.pathParameters['id']!),
       ),
       GoRoute(path: '/account', builder: (_, _) => const ClientProfileScreen()),
+      GoRoute(path: '/coffres', builder: (_, _) => const CoffresScreen()),
       GoRoute(path: '/matching', builder: (_, _) => const MatchingScreen()),
       GoRoute(
         path: '/ride/new',

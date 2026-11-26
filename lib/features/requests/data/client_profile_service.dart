@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:developer' as developer;
 
+import 'package:crypto/crypto.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:montotem/features/auth/data/auth_service.dart' show AuthService;
@@ -68,11 +70,13 @@ class ClientProfileService {
         '${row['last_name'] ?? ''}'.trim(),
       ].where((e) => e.isNotEmpty).join(' ');
 
+      final email = row['email'] as String?;
+
       return ClientProfile(
         nomAffiche: nom.isEmpty ? 'Mon compte' : nom,
         phone: row['phone'] as String?,
-        email: row['email'] as String?,
-        photoUrl: row['photo_profil_url'] as String?,
+        email: email,
+        photoUrl: _photoUrl(row, email),
         starPoints: (row['star_points'] as num?)?.toInt() ?? 0,
         historique: hist
             .map<StarEntry>(
@@ -93,4 +97,22 @@ class ClientProfileService {
   }
 
   Future<void> deconnecter() => AuthService().signOut();
+
+  /// Photo de profil : photo du compte email en priorite.
+  /// 1. photo_profil_url (choix de l'utilisateur),
+  /// 2. avatar du compte Google (user_metadata.avatar_url),
+  /// 3. avatar Gravatar construit depuis l'adresse email (md5).
+  String? _photoUrl(Map<String, dynamic> row, String? email) {
+    final personnelle = (row['photo_profil_url'] as String?)?.trim();
+    if (personnelle != null && personnelle.isNotEmpty) return personnelle;
+
+    final google = _sb.auth.currentUser?.userMetadata?['avatar_url'] as String?;
+    final avatarGoogle = google?.trim();
+    if (avatarGoogle != null && avatarGoogle.isNotEmpty) return avatarGoogle;
+
+    final mail = email?.trim() ?? '';
+    if (mail.isEmpty) return null;
+    final empreinte = md5.convert(utf8.encode(mail.toLowerCase())).toString();
+    return 'https://www.gravatar.com/avatar/$empreinte?s=200&d=mp';
+  }
 }
