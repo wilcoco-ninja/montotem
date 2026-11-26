@@ -25,25 +25,28 @@ import 'widgets/route_overlay.dart';
 // Catégories
 // ----------------------------------------------------------------------------
 
-enum _Cat { tous, zemidjan, kloboto, depannage }
+enum _Cat { tous, zemidjan, cloboto, kloboto, depannage }
 
-enum _Genre { zemidjan, kloboto, depanneur }
+enum _Genre { zemidjan, cloboto, kloboto, depanneur }
 
 extension on _Genre {
   String get label => switch (this) {
     _Genre.zemidjan => 'Zémidjan',
+    _Genre.cloboto => 'Cloboto',
     _Genre.kloboto => 'Kloboto',
     _Genre.depanneur => 'Dépanneur',
   };
 
   IconData get icon => switch (this) {
     _Genre.zemidjan => Icons.two_wheeler_rounded,
-    _Genre.kloboto => Icons.electric_rickshaw_rounded,
+    _Genre.cloboto => Icons.electric_rickshaw_rounded,
+    _Genre.kloboto => Icons.inventory_2_rounded,
     _Genre.depanneur => Icons.build_circle_rounded,
   };
 
   Color get color => switch (this) {
     _Genre.zemidjan => const Color(0xFFF59E0B),
+    _Genre.cloboto => const Color(0xFF0369A1),
     _Genre.kloboto => const Color(0xFF16A34A),
     _Genre.depanneur => const Color(0xFFDC2626),
   };
@@ -51,6 +54,7 @@ extension on _Genre {
   /// Code transmis à la route /ride/new (null = pas un conducteur).
   String? get codeCourse => switch (this) {
     _Genre.zemidjan => 'zemidjan',
+    _Genre.cloboto => 'tricycle_passenger',
     _Genre.kloboto => 'tricycle_fret',
     _Genre.depanneur => null,
   };
@@ -69,6 +73,7 @@ _Genre _genreDe(Prestataire p) {
   if (k.isNotEmpty) {
     if (k == 'zemidjan') return _Genre.zemidjan;
     if (k == 'tricycle_fret') return _Genre.kloboto;
+    if (k == 'tricycle_passenger') return _Genre.cloboto;
     return _Genre.depanneur;
   }
   final m = p.metier.toLowerCase();
@@ -76,6 +81,7 @@ _Genre _genreDe(Prestataire p) {
     return _Genre.zemidjan;
   }
   if (m.contains('kloboto') || m.contains('klobot')) return _Genre.kloboto;
+  if (m.contains('cloboto') || m.contains('clobot')) return _Genre.cloboto;
   return _Genre.depanneur;
 }
 
@@ -247,6 +253,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
   bool _passe(Prestataire p) {
     final g = _genreDe(p);
     if (_cat == _Cat.zemidjan && g != _Genre.zemidjan) return false;
+    if (_cat == _Cat.cloboto && g != _Genre.cloboto) return false;
     if (_cat == _Cat.kloboto && g != _Genre.kloboto) return false;
     if (_cat == _Cat.depannage) {
       if (g != _Genre.depanneur) return false;
@@ -473,8 +480,21 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
               const SizedBox(height: 10),
               _OptionTile(
                 icon: Icons.electric_rickshaw_rounded,
+                color: _Genre.cloboto.color,
+                titre: 'Cloboto (passagers)',
+                sousTitre:
+                    '${_nbGenre(_Genre.cloboto)} disponible(s) près '
+                    'de vous',
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _choisirCat(_Cat.cloboto);
+                },
+              ),
+              const SizedBox(height: 10),
+              _OptionTile(
+                icon: Icons.inventory_2_rounded,
                 color: _Genre.kloboto.color,
-                titre: 'Kloboto (tricycle)',
+                titre: 'Kloboto (colis, marchandises)',
                 sousTitre:
                     '${_nbGenre(_Genre.kloboto)} disponible(s) près '
                     'de vous',
@@ -957,8 +977,15 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
           ),
           _chip(
             context,
-            'Kloboto',
+            'Cloboto',
             Icons.electric_rickshaw_rounded,
+            _cat == _Cat.cloboto,
+            () => _choisirCat(_Cat.cloboto),
+          ),
+          _chip(
+            context,
+            'Kloboto',
+            Icons.inventory_2_rounded,
             _cat == _Cat.kloboto,
             () => _choisirCat(_Cat.kloboto),
           ),
@@ -1127,8 +1154,16 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
             const SizedBox(width: 10),
             Expanded(
               child: AppButton(
-                label: 'Kloboto',
+                label: 'Cloboto',
                 icon: Icons.electric_rickshaw_rounded,
+                onPressed: () => _commander('tricycle_passenger'),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: AppButton(
+                label: 'Kloboto',
+                icon: Icons.inventory_2_rounded,
                 onPressed: () => _commander('tricycle_fret'),
               ),
             ),

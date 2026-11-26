@@ -337,19 +337,6 @@ class _ClientAuthScreenState extends State<ClientAuthScreen> {
                 ),
               ],
             ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Vous êtes prestataire ?', style: TextStyle(color: muted)),
-              TextButton(
-                onPressed: _loading ? null : () => context.go('/pro/login'),
-                child: const Text(
-                  'Espace Pro',
-                  style: TextStyle(fontWeight: FontWeight.w800),
-                ),
-              ),
-            ],
-          ),
           if (!saisieCode)
             TextButton(
               onPressed: _loading ? null : () => context.go('/explore'),

@@ -24,6 +24,7 @@ class DriverInfo {
 
   RideKind? get rideKind => switch (kind) {
     'zemidjan' => RideKind.zemidjan,
+    'tricycle_passenger' => RideKind.tricyclePassagers,
     'tricycle_fret' => RideKind.tricycleFret,
     _ => null,
   };

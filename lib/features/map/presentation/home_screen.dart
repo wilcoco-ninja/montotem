@@ -283,8 +283,17 @@ class _HomeTab extends StatelessWidget {
                                   context.push('/ride/new?kind=zemidjan'),
                             ),
                             ClientServiceTile(
-                              icon: Icons.local_shipping_rounded,
-                              label: 'Tricycle Fret',
+                              icon: Icons.electric_rickshaw_rounded,
+                              label: 'Cloboto',
+                              subtitle: 'Tricycle, 2 à 3 passagers',
+                              color: const Color(0xFF0369A1),
+                              onTap: () => context.push(
+                                '/ride/new?kind=tricycle_passenger',
+                              ),
+                            ),
+                            ClientServiceTile(
+                              icon: Icons.inventory_2_rounded,
+                              label: 'Kloboto',
                               subtitle: 'Colis et marchandises',
                               color: const Color(0xFF00796B),
                               onTap: () =>
@@ -296,13 +305,6 @@ class _HomeTab extends StatelessWidget {
                               subtitle: 'Un pro vient à vous',
                               color: AppColors.gold,
                               onTap: () => onOpenMap(),
-                            ),
-                            ClientServiceTile(
-                              icon: Icons.local_hospital_rounded,
-                              label: 'Urgences',
-                              subtitle: 'Numéros et secours',
-                              color: AppColors.emergencyStrong,
-                              onTap: () => context.push('/emergency'),
                             ),
                           ];
                           return Wrap(

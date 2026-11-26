@@ -22,9 +22,15 @@ enum RideKind {
   ),
   tricycleFret(
     'tricycle_fret',
-    'Tricycle Fret',
+    'Kloboto',
     'Transport de marchandises',
     Icons.local_shipping_rounded,
+  ),
+  tricyclePassagers(
+    'tricycle_passenger',
+    'Cloboto',
+    'Tricycle, 2 à 3 passagers',
+    Icons.electric_rickshaw_rounded,
   );
 
   const RideKind(this.code, this.libelle, this.description, this.icone);

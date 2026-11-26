@@ -316,9 +316,11 @@ class AppRouter {
       GoRoute(
         path: '/ride/new',
         builder: (_, s) => RideRequestScreen(
-          kind: s.uri.queryParameters['kind'] == 'tricycle_fret'
-              ? RideKind.tricycleFret
-              : RideKind.zemidjan,
+          kind: switch (s.uri.queryParameters['kind']) {
+            'tricycle_fret' => RideKind.tricycleFret,
+            'tricycle_passenger' => RideKind.tricyclePassagers,
+            _ => RideKind.zemidjan,
+          },
         ),
       ),
       GoRoute(

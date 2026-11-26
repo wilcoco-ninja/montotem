@@ -632,6 +632,11 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
           Icons.two_wheeler_rounded,
         ),
         carteMetier(
+          'Tricycle Passagers',
+          'Tricycle de 2 à 3 passagers',
+          Icons.electric_rickshaw_rounded,
+        ),
+        carteMetier(
           'Tricycle Fret',
           'Transport de marchandises et bagages',
           Icons.local_shipping_rounded,
@@ -780,9 +785,11 @@ class _ProviderOnboardingScreenState extends State<ProviderOnboardingScreen> {
               'Vous recevez les courses autour de vous en temps réel. '
               'Les paiements en espèces impliquent une commission sur votre wallet, '
               'tandis que les paiements Mobile Money sont sans commission.',
-          icon: _metier == 'Tricycle Fret'
-              ? Icons.local_shipping_rounded
-              : Icons.two_wheeler_rounded,
+          icon: switch (_metier) {
+            'Tricycle Fret' => Icons.local_shipping_rounded,
+            'Tricycle Passagers' => Icons.electric_rickshaw_rounded,
+            _ => Icons.two_wheeler_rounded,
+          },
           color: scheme.primary,
         ),
         const SizedBox(height: 18),

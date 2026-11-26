@@ -51,6 +51,7 @@ class TransportRegisterScreen extends StatefulWidget {
 
 enum _Engin {
   zemidjan('Zémidjan'),
+  cloboto('Tricycle Passagers'),
   kloboto('Tricycle Fret');
 
   const _Engin(this.metier);
@@ -127,7 +128,11 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
       if (!mounted) return;
       setState(() {
         _enginChoisi = j['engin_choisi'] == true;
-        _engin = j['engin'] == 'kloboto' ? _Engin.kloboto : _Engin.zemidjan;
+        _engin = switch (j['engin']) {
+          'kloboto' => _Engin.kloboto,
+          'cloboto' => _Engin.cloboto,
+          _ => _Engin.zemidjan,
+        };
         _prenom.text = '${j['prenom'] ?? ''}';
         _nom.text = '${j['nom'] ?? ''}';
         _nomAffiche.text = '${j['nom_affiche'] ?? ''}';
@@ -151,7 +156,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
       await prefs.setString(
         _cleBrouillon,
         jsonEncode({
-          'engin': _engin == _Engin.kloboto ? 'kloboto' : 'zemidjan',
+          'engin': _engin.name,
           'engin_choisi': _enginChoisi,
           'prenom': _prenom.text,
           'nom': _nom.text,
@@ -185,7 +190,7 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
     switch (_etape) {
       case 0:
         if (!_enginChoisi) {
-          _msg('Touchez votre engin : Zémidjan ou Kloboto.');
+          _msg('Touchez votre engin : Zémidjan, Cloboto ou Kloboto.');
           return false;
         }
         return true;
@@ -313,7 +318,11 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
       final sb = Supabase.instance.client;
       final uid = sb.auth.currentUser?.id;
       if (uid == null) return;
-      final code = _engin == _Engin.kloboto ? 'tricycle_fret' : 'zemidjan';
+      final code = switch (_engin) {
+        _Engin.kloboto => 'tricycle_fret',
+        _Engin.cloboto => 'tricycle_passenger',
+        _ => 'zemidjan',
+      };
       final row = await sb
           .from('providers')
           .select('provider_kind')
@@ -563,6 +572,14 @@ class _TransportRegisterScreenState extends State<TransportRegisterScreen> {
                 glyphe: TotemGlyph.zemidjan,
                 titre: 'Zémidjan',
                 sous: 'Moto-taxi\nPassagers',
+                couleur: AppColors.brandYellow,
+              ),
+              const SizedBox(width: 12),
+              tuile(
+                e: _Engin.cloboto,
+                glyphe: TotemGlyph.kloboto,
+                titre: 'Cloboto',
+                sous: 'Tricycle\n2 à 3 passagers',
                 couleur: AppColors.brandYellow,
               ),
               const SizedBox(width: 12),
@@ -911,9 +928,9 @@ class _RouteProgress extends StatelessWidget {
                   width: vehicule,
                   height: vehicule,
                   child: TotemIcon(
-                    engin == _Engin.kloboto
-                        ? TotemGlyph.kloboto
-                        : TotemGlyph.zemidjan,
+                    engin == _Engin.zemidjan
+                        ? TotemGlyph.zemidjan
+                        : TotemGlyph.kloboto,
                     size: vehicule,
                     color: scheme.onSurface,
                     accent: couleur,
