@@ -3,6 +3,8 @@ import 'dart:developer' as developer;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:montotem/core/flavor/app_flavor.dart';
+
 /// Erreur lisible par l'utilisateur (message déjà en français).
 class QuickAuthException implements Exception {
   QuickAuthException(this.message);
@@ -198,14 +200,17 @@ class QuickAuthService {
     final p = await profileState();
     if (p.complete) {
       return switch (p.role) {
-        'provider' => '/provider/home',
+        // L'app conducteur renvoie à son espace, l'app Pro au sien.
+        'provider' => AppFlavor.current.homeRoute,
         // L'espace admin n'existe que sur le web (cf. app_router.dart).
         'admin' => kIsWeb ? '/admin/dashboard' : '/home',
         _ => '/home',
       };
     }
     return requestedRole == 'provider'
-        ? '/register/provider'
+        ? (AppFlavor.current.isDriver
+              ? '/register/driver'
+              : '/register/provider')
         : '/register/quick/name';
   }
 

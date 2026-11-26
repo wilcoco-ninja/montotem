@@ -33,6 +33,10 @@ import 'package:montotem/features/auth/presentation/debug_login_screen.dart';
 import 'package:montotem/features/auth/presentation/otp_verify_screen.dart';
 import 'package:montotem/features/auth/presentation/password_setup_screen.dart';
 import 'package:montotem/features/auth/presentation/phone_entry_screen.dart';
+import 'package:montotem/features/driver/presentation/driver_home_screen.dart';
+import 'package:montotem/features/driver/presentation/driver_profile_screen.dart';
+import 'package:montotem/features/driver/presentation/driver_rides_screen.dart';
+import 'package:montotem/features/driver/presentation/driver_onboarding_screen.dart';
 import 'package:montotem/features/auth/presentation/pro_login_screen.dart';
 import 'package:montotem/features/auth/presentation/quick_name_screen.dart';
 import 'package:montotem/features/auth/presentation/quick_signup_screen.dart';
@@ -92,6 +96,7 @@ class AppRouter {
     '/pro',
     '/pro/login',
     '/pro/register',
+    '/driver/login',
     '/forgot-password',
     // Route debug reservee au build development (jamais en release).
     if (!kReleaseMode) '/debug',
@@ -131,6 +136,7 @@ class AppRouter {
 
     if (session == null) {
       if (loc.startsWith('/admin')) return '/admin/login';
+      if (loc.startsWith('/driver')) return '/driver/login';
       if (loc.startsWith('/provider')) return '/pro/login';
       return '/login';
     }
@@ -139,7 +145,7 @@ class AppRouter {
       return '/home';
     }
 
-    if (loc.startsWith('/provider')) {
+    if (loc.startsWith('/provider') || loc.startsWith('/driver')) {
       final role = await _role();
       if (role != null && role != 'provider') return '/home';
     } else if (_estEcranClient(loc)) {
@@ -202,13 +208,15 @@ class AppRouter {
         return switch (AppFlavor.current) {
           AppFlavor.pro => '/register/provider',
           AppFlavor.client => '/register/client',
-          _ => '/register/role',
+          AppFlavor.driver => '/register/driver',
         };
       }
 
       final role = row['role']?.toString();
       return switch (role) {
-        'provider' => '/provider/home',
+        // Chaque application renvoie chez elle : Driver -> /driver/home,
+        // Pro -> /provider/home (voir AppFlavor.homeRoute).
+        'provider' => AppFlavor.current.homeRoute,
         'admin' => kIsWeb ? '/admin/dashboard' : '/home',
         _ => '/home',
       };
@@ -242,6 +250,34 @@ class AppRouter {
 
       GoRoute(path: '/pro', redirect: (_, _) => '/pro/login'),
       GoRoute(path: '/pro/login', builder: (_, _) => const ProLoginScreen()),
+
+      // ── Espace conducteur (app MonTotem Driver) ───────────────────────────
+      GoRoute(
+        path: '/driver/login',
+        builder: (_, _) => const ProLoginScreen(),
+      ),
+      GoRoute(
+        path: '/register/driver',
+        builder: (_, s) => DriverOnboardingScreen(
+          kindInitial: s.uri.queryParameters['kind'],
+        ),
+      ),
+      GoRoute(
+        path: '/driver/home',
+        builder: (_, _) => const DriverHomeScreen(),
+      ),
+      GoRoute(
+        path: '/driver/profile',
+        builder: (_, _) => const DriverProfileScreen(),
+      ),
+      GoRoute(
+        path: '/driver/rides',
+        builder: (_, _) => const DriverRidesScreen(),
+      ),
+      GoRoute(
+        path: '/driver/rides/:id',
+        builder: (_, s) => ProviderRideScreen(rideId: s.pathParameters['id']!),
+      ),
       GoRoute(
         path: '/pro/register',
         redirect: (_, _) => '/register/signup?role=provider',

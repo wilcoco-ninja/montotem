@@ -2,6 +2,7 @@ import 'dart:developer' as developer;
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:montotem/core/flavor/app_flavor.dart';
 import 'package:montotem/features/auth/data/auth_service.dart' show AuthService;
 import 'package:montotem/features/auth/data/quick_auth_service.dart';
 
@@ -148,7 +149,12 @@ class DoorService {
 
     switch (p.role) {
       case 'provider':
-        return p.complete ? '/provider/home' : '/register/provider';
+        // L'app conducteur renvoie a son espace, l'app Pro au sien.
+        return p.complete
+            ? AppFlavor.current.homeRoute
+            : (AppFlavor.current.isDriver
+                  ? '/register/driver'
+                  : '/register/provider');
       case 'admin':
         await AuthService().signOut();
         throw const DoorMismatch(
@@ -161,7 +167,11 @@ class DoorService {
       default:
         // Compte créé par le formulaire prestataire mais dossier pas encore
         // envoyé : on reprend l'inscription au lieu de refuser.
-        if (!p.complete) return '/register/provider';
+        if (!p.complete) {
+          return AppFlavor.current.isDriver
+              ? '/register/driver'
+              : '/register/provider';
+        }
         await AuthService().signOut();
         throw const DoorMismatch(
           message:

@@ -7,6 +7,8 @@ import 'package:montotem/core/utils/travel_fee.dart';
 import 'package:montotem/core/widgets/app_button.dart';
 import 'package:montotem/core/widgets/app_ui.dart';
 import 'package:montotem/features/driver/data/driver_service.dart';
+import 'package:montotem/features/provider/presentation/widgets/provider_momo_sheet.dart';
+import 'package:montotem/features/requests/domain/mission_payment_model.dart';
 
 /// Profil conducteur : infos, indicateurs, wallet, déconnexion.
 class DriverProfileScreen extends StatefulWidget {
@@ -38,6 +40,13 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
       _wallet = wallet;
       _loading = false;
     });
+  }
+
+  /// Ouvre la feuille de configuration Mobile Money puis recharge le profil.
+  Future<void> _configurerMomo() async {
+    await showProviderMomoSheet(context);
+    if (!mounted) return;
+    await _charger();
   }
 
   Future<void> _deconnecter() async {
@@ -104,14 +113,18 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        info.rideKind?.libelle ?? 'Conducteur',
+                        info.nomAffiche?.isNotEmpty == true
+                            ? info.nomAffiche!
+                            : (info.rideKind?.libelle ?? 'Conducteur'),
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
                       Text(
-                        info.rideKind?.description ?? '',
+                        info.ville?.isNotEmpty == true
+                            ? '${info.rideKind?.libelle ?? 'Conducteur'} · ${info.ville}'
+                            : (info.rideKind?.description ?? 'Conducteur'),
                         style: TextStyle(
                           fontSize: 14,
                           color: context.textSecondary,
@@ -120,6 +133,86 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                     ],
                   ),
                 ),
+              ],
+            ),
+          ),
+          if (!info.valide) ...[
+            const SizedBox(height: 12),
+            if (info.rejete)
+              SoftCard(
+                color: scheme.error.withValues(alpha: 0.08),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.error_outline_rounded,
+                      color: scheme.error,
+                      size: 30,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'Dossier refusé${info.rejectionReason == null ? '' : ' : ${info.rejectionReason}'}\n'
+                        'Reprenez votre inscription pour corriger votre dossier.',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: scheme.error,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            else
+              SoftCard(
+                color: AppColors.amber.withValues(alpha: 0.10),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.hourglass_top_rounded,
+                      color: AppColors.amber,
+                      size: 30,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'Votre dossier est en attente de validation par '
+                        'l\'administration MonTotem. Vous recevrez une '
+                        'notification dès validation.',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: context.textSecondary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+          const SectionTitle('Mes courses'),
+          SoftCard(
+            onTap: () => context.push('/driver/rides'),
+            child: const Row(
+              children: [
+                Icon(Icons.history_rounded, size: 30, color: AppColors.navy),
+                SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Historique de mes courses',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      Text('Courses terminées, en cours et annulées'),
+                    ],
+                  ),
+                ),
+                Icon(Icons.chevron_right_rounded),
               ],
             ),
           ),
@@ -140,8 +233,54 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                 InfoRow(
                   icon: Icons.verified_rounded,
                   label: 'Statut',
-                  value: info.valide ? 'Validé' : info.statutValidation,
+                  value: info.libelleValidation,
                 ),
+              ],
+            ),
+          ),
+          const SectionTitle('Mobile Money'),
+          SoftCard(
+            onTap: _configurerMomo,
+            child: Row(
+              children: [
+                Icon(
+                  info.momoConfigure
+                      ? Icons.check_circle_rounded
+                      : Icons.add_circle_outline_rounded,
+                  color: info.momoConfigure
+                      ? AppColors.success
+                      : scheme.primary,
+                  size: 30,
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        info.momoConfigure
+                            ? 'Compte configuré'
+                            : 'Configurer mon compte',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      Text(
+                        info.momoConfigure
+                            ? '${PayMethod.fromCode(info.momoOperateur).libelle}'
+                                ' · ${info.momoNumero ?? ''}'
+                            : 'Nécessaire pour recevoir les paiements '
+                                'Mobile Money des clients.',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: context.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Icon(Icons.chevron_right_rounded),
               ],
             ),
           ),

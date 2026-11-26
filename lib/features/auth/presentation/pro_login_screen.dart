@@ -2,17 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:montotem/core/flavor/app_flavor.dart';
 import 'package:montotem/core/widgets/app_button.dart';
 import 'package:montotem/core/widgets/app_text_field.dart';
 import 'package:montotem/core/widgets/auth_layout.dart';
 import 'package:montotem/features/auth/data/auth_service.dart' show AuthService;
 import 'package:montotem/features/auth/data/door_service.dart';
 
-/// Porte PRESTATAIRE : e-mail ou téléphone + mot de passe.
+/// Porte PRO / CONDUCTEUR : e-mail ou téléphone + mot de passe.
 ///
 /// Différente de la porte client (SMS) : le prestataire a un dossier vérifié,
 /// un compte professionnel, et se reconnecte avec des identifiants. Un compte
 /// client ou admin est refusé ici et orienté vers sa propre porte.
+///
+/// Dans l'app MonTotem Driver (AppFlavor.driver), le même écran devient la
+/// porte conducteur : titres et liens s'adaptent automatiquement.
 ///
 /// Route : /pro/login
 class ProLoginScreen extends StatefulWidget {
@@ -99,13 +103,21 @@ class _ProLoginScreenState extends State<ProLoginScreen> {
   @override
   Widget build(BuildContext context) {
     final muted = Theme.of(context).colorScheme.onSurfaceVariant;
+    final bool conducteur = AppFlavor.current.isDriver;
+    final String inscription = conducteur
+        ? '/register/driver'
+        : '/register/provider';
 
     return AuthShell(
-      title: 'Espace prestataire',
-      subtitle:
-          'Connectez-vous pour recevoir vos missions et gérer '
-          'vos prestations et vos prix.',
-      icon: Icons.handyman_outlined,
+      title: conducteur ? 'Espace conducteur' : 'Espace prestataire',
+      subtitle: conducteur
+          ? 'Connectez-vous pour recevoir les courses Zémidjan, Cloboto '
+                'et Kloboto autour de vous.'
+          : 'Connectez-vous pour recevoir vos missions et gérer '
+                'vos prestations et vos prix.',
+      icon: conducteur
+          ? Icons.two_wheeler_rounded
+          : Icons.handyman_outlined,
       onBack: _loading ? null : () => context.go('/explore'),
       footer: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -113,11 +125,14 @@ class _ProLoginScreenState extends State<ProLoginScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Pas encore prestataire ?', style: TextStyle(color: muted)),
+              Text(
+                conducteur
+                    ? 'Pas encore conducteur ?'
+                    : 'Pas encore prestataire ?',
+                style: TextStyle(color: muted),
+              ),
               TextButton(
-                onPressed: _loading
-                    ? null
-                    : () => context.push('/register/provider'),
+                onPressed: _loading ? null : () => context.push(inscription),
                 child: const Text(
                   'Déposer mon dossier',
                   style: TextStyle(fontWeight: FontWeight.w800),

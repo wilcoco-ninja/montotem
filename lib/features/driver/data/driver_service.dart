@@ -11,7 +11,7 @@ class DriverException implements Exception {
   String toString() => message;
 }
 
-/// État du conducteur connecté (Zémidjan / Tricycle Fret).
+/// État du conducteur connecté (Zémidjan / Cloboto / Kloboto).
 class DriverInfo {
   const DriverInfo({
     required this.kind,
@@ -21,6 +21,10 @@ class DriverInfo {
     required this.momoNumero,
     required this.noteMoyenne,
     required this.missionsCompletees,
+    this.nomAffiche,
+    this.ville,
+    this.momoTitulaire,
+    this.rejectionReason,
   });
 
   final String? kind;
@@ -30,6 +34,18 @@ class DriverInfo {
   final String? momoNumero;
   final double noteMoyenne;
   final int missionsCompletees;
+
+  /// Nom d'affichage du conducteur (providers.business_name).
+  final String? nomAffiche;
+
+  /// Ville de travail déclarée à l'inscription.
+  final String? ville;
+
+  /// Nom sur le compte Mobile Money.
+  final String? momoTitulaire;
+
+  /// Motif de rejet du dossier (si statut_validation = 'rejected').
+  final String? rejectionReason;
 
   /// Le `RideKind` correspondant, ou null si ce n'est pas un conducteur.
   RideKind? get rideKind => switch (kind) {
@@ -41,7 +57,15 @@ class DriverInfo {
 
   bool get conducteur => rideKind != null;
   bool get valide => statutValidation == 'approved';
+  bool get rejete => statutValidation == 'rejected';
   bool get momoConfigure => (momoNumero ?? '').isNotEmpty;
+
+  /// Libellé lisible du statut de validation.
+  String get libelleValidation => switch (statutValidation) {
+    'approved' => 'Validé',
+    'rejected' => 'Dossier refusé',
+    _ => 'En attente de validation',
+  };
 
   bool peutRecevoir(RidePaymentMethod m) =>
       !m.mobileMoney || (momoConfigure && momoOperateur == m.code);
@@ -61,7 +85,9 @@ class DriverService {
           .from('providers')
           .select(
             'provider_kind, disponible, statut_validation, '
-            'momo_operateur, momo_numero, note_moyenne, missions_completees',
+            'momo_operateur, momo_numero, momo_titulaire, '
+            'business_name, ville, rejection_reason, '
+            'note_moyenne, missions_completees',
           )
           .eq('id', uid)
           .maybeSingle();
@@ -73,6 +99,10 @@ class DriverService {
         statutValidation: (row['statut_validation'] as String?) ?? 'pending',
         momoOperateur: row['momo_operateur'] as String?,
         momoNumero: row['momo_numero'] as String?,
+        momoTitulaire: row['momo_titulaire'] as String?,
+        nomAffiche: row['business_name'] as String?,
+        ville: row['ville'] as String?,
+        rejectionReason: row['rejection_reason'] as String?,
         noteMoyenne: (row['note_moyenne'] as num?)?.toDouble() ?? 0,
         missionsCompletees: (row['missions_completees'] as num?)?.toInt() ?? 0,
       );

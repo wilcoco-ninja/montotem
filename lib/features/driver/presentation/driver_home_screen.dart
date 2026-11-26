@@ -320,15 +320,27 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                     ),
                   ],
                 ),
+                _bandeauValidation(Theme.of(context)),
                 const SizedBox(height: 12),
                 if (enLigne) ...[
-                  Text(
-                    '${_proches.length} course${_proches.length > 1 ? 's' : ''} '
-                    'à proximité',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: context.textSecondary,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          '${_proches.length} '
+                          'course${_proches.length > 1 ? 's' : ''} à proximité',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: context.textSecondary,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        tooltip: 'Actualiser les courses',
+                        onPressed: _chargerProches,
+                        icon: const Icon(Icons.refresh_rounded, size: 22),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 8),
                   if (_proches.isEmpty)
@@ -344,12 +356,14 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                     )
                   else
                     Flexible(
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: _proches.length,
-                        separatorBuilder: (_, _) => const SizedBox(height: 8),
-                        itemBuilder: (_, i) => _carteProche(_proches[i]),
+                      child: RefreshIndicator(
+                        onRefresh: _chargerProches,
+                        child: ListView.separated(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemCount: _proches.length,
+                          separatorBuilder: (_, _) => const SizedBox(height: 8),
+                          itemBuilder: (_, i) => _carteProche(_proches[i]),
+                        ),
                       ),
                     ),
                 ] else
@@ -360,6 +374,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                       color: context.textSecondary,
                     ),
                   ),
+                const SizedBox(height: 12),
+                _bandeIndicateurs(scheme),
                 const SizedBox(height: 12),
                 FilledButton.icon(
                   onPressed: _toggling ? null : _basculer,
@@ -388,6 +404,93 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  /// Bandeau d'alerte quand le dossier n'est pas encore validé.
+  Widget _bandeauValidation(ThemeData theme) {
+    final info = _info!;
+    if (info.valide) return const SizedBox.shrink();
+    if (info.rejete) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: Material(
+          color: theme.colorScheme.error.withValues(alpha: 0.10),
+          borderRadius: BorderRadius.circular(14),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.error_outline_rounded,
+                  color: theme.colorScheme.error,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    'Dossier refusé${info.rejectionReason == null ? '' : ' : ${info.rejectionReason}'}',
+                    style: TextStyle(
+                      fontSize: 13.5,
+                      color: theme.colorScheme.error,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Row(
+        children: [
+          Icon(Icons.hourglass_top_rounded, size: 18, color: AppTheme.warningColor),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              'Dossier en attente de validation par MonTotem.',
+              style: TextStyle(fontSize: 13.5, color: context.textSecondary),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Note, courses terminées et raccourci vers l'historique complet.
+  Widget _bandeIndicateurs(ColorScheme scheme) {
+    final info = _info!;
+    return SoftCard(
+      onTap: () => context.push('/driver/rides'),
+      child: Row(
+        children: [
+          Icon(Icons.star_rounded, size: 20, color: AppTheme.warningColor),
+          const SizedBox(width: 4),
+          Text(
+            info.noteMoyenne.toStringAsFixed(1),
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+          ),
+          const SizedBox(width: 16),
+          Icon(Icons.task_alt_rounded, size: 20, color: scheme.primary),
+          const SizedBox(width: 4),
+          Text(
+            '${info.missionsCompletees} courses',
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+          ),
+          const Spacer(),
+          Text(
+            'Mes courses',
+            style: TextStyle(
+              fontSize: 14.5,
+              fontWeight: FontWeight.w800,
+              color: scheme.primary,
+            ),
+          ),
+          const Icon(Icons.chevron_right_rounded, size: 20),
+        ],
       ),
     );
   }
