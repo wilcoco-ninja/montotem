@@ -10,6 +10,11 @@ const List<String> kMetiersDepannage = [
   'Dépanneuse / Remorquage',
   'Vendeur de carburant',
   'Lavage auto & moto',
+  'Soudeur / Châssis',
+  'Mécatronicien (diagnostic auto)',
+  'Diéséliste (injection)',
+  'Tôlier-Peintre',
+  'Hydraulicien PL',
 ];
 
 /// Métiers du transport (courses). Le libellé détermine provider_kind côté
@@ -34,6 +39,11 @@ const Map<String, IconData> kIconesMetier = {
   'Dépanneuse / Remorquage': Icons.local_shipping_rounded,
   'Vendeur de carburant': Icons.local_gas_station_rounded,
   'Lavage auto & moto': Icons.local_car_wash_rounded,
+  'Soudeur / Châssis': Icons.construction_rounded,
+  'Mécatronicien (diagnostic auto)': Icons.memory_rounded,
+  'Diéséliste (injection)': Icons.oil_barrel_outlined,
+  'Tôlier-Peintre': Icons.format_paint_rounded,
+  'Hydraulicien PL': Icons.plumbing_rounded,
   'Zémidjan': Icons.two_wheeler_rounded,
   'Tricycle Passagers': Icons.electric_rickshaw_rounded,
   'Tricycle Fret': Icons.local_shipping_rounded,

@@ -268,6 +268,16 @@ IconData iconePourPanne(String code) => switch (code) {
   'ENERGIE_24V' => Icons.battery_charging_full_rounded,
   'MECA_LOURDE_PL' => Icons.precision_manufacturing_rounded,
   'REMORQUAGE_PL' => Icons.local_shipping_rounded,
+  'EMBRAYAGE_PATINE' => Icons.sync_problem_rounded,
+  'PONT_DIFFERENTIEL' => Icons.settings_suggest_rounded,
+  'CARBURATEUR_BOUGIE' => Icons.blur_circular_rounded,
+  'REGULATEUR_CHARGE' => Icons.bolt_rounded,
+  'SERRAGE_MOTEUR' => Icons.report_rounded,
+  'VOYANT_MOTEUR_CAPTEUR' => Icons.memory_rounded,
+  'INJECTION_DIESEL' => Icons.oil_barrel_outlined,
+  'TRAIN_ROULANT_VL' => Icons.shuffle_rounded,
+  'SUSPENSION_PL' => Icons.airline_seat_recline_extra_rounded,
+  'HYDRAULIQUE_PL' => Icons.plumbing_rounded,
   _ => Icons.build_circle_rounded,
 };
 
@@ -286,6 +296,10 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'FUITE_HUILE',
     'ROUE_DEJANTEE',
     'SUSPENSION_AMORTISSEUR',
+    'EMBRAYAGE_PATINE',
+    'CARBURATEUR_BOUGIE',
+    'REGULATEUR_CHARGE',
+    'SERRAGE_MOTEUR',
   ],
   'SCOOTER_THERM': [
     'CREVAISON_PNEU',
@@ -299,6 +313,10 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'FUITE_HUILE',
     'ROUE_DEJANTEE',
     'SUSPENSION_AMORTISSEUR',
+    'EMBRAYAGE_PATINE',
+    'CARBURATEUR_BOUGIE',
+    'REGULATEUR_CHARGE',
+    'SERRAGE_MOTEUR',
   ],
   'CLOBOTO_PAX': [
     'CREVAISON_PNEU',
@@ -312,6 +330,11 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'FUITE_HUILE',
     'ROUE_DEJANTEE',
     'SUSPENSION_AMORTISSEUR',
+    'EMBRAYAGE_PATINE',
+    'PONT_DIFFERENTIEL',
+    'CARBURATEUR_BOUGIE',
+    'REGULATEUR_CHARGE',
+    'SERRAGE_MOTEUR',
   ],
   'KLOBOTO_FRET': [
     'CREVAISON_PNEU',
@@ -325,6 +348,11 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'FUITE_HUILE',
     'ROUE_DEJANTEE',
     'SUSPENSION_AMORTISSEUR',
+    'EMBRAYAGE_PATINE',
+    'PONT_DIFFERENTIEL',
+    'CARBURATEUR_BOUGIE',
+    'REGULATEUR_CHARGE',
+    'SERRAGE_MOTEUR',
   ],
   // Moto / Scooter / Voiture Électrique
   'E_MOTO': [
@@ -360,6 +388,9 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'ECLAIRAGE_CLAXON',
     'FUITE_HUILE',
     'SUSPENSION_AMORTISSEUR',
+    'VOYANT_MOTEUR_CAPTEUR',
+    'INJECTION_DIESEL',
+    'TRAIN_ROULANT_VL',
   ],
   'UTILITAIRE_VAN': [
     'BATTERIE_ALTERNATEUR',
@@ -371,6 +402,9 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'ECLAIRAGE_CLAXON',
     'FUITE_HUILE',
     'SUSPENSION_AMORTISSEUR',
+    'VOYANT_MOTEUR_CAPTEUR',
+    'INJECTION_DIESEL',
+    'TRAIN_ROULANT_VL',
   ],
   'MINIBUS': [
     'BATTERIE_ALTERNATEUR',
@@ -382,6 +416,9 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'ECLAIRAGE_CLAXON',
     'FUITE_HUILE',
     'SUSPENSION_AMORTISSEUR',
+    'VOYANT_MOTEUR_CAPTEUR',
+    'INJECTION_DIESEL',
+    'TRAIN_ROULANT_VL',
   ],
   'BUS_TRANSPORT': [
     'BATTERIE_ALTERNATEUR',
@@ -393,6 +430,9 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'ECLAIRAGE_CLAXON',
     'FUITE_HUILE',
     'SUSPENSION_AMORTISSEUR',
+    'VOYANT_MOTEUR_CAPTEUR',
+    'INJECTION_DIESEL',
+    'TRAIN_ROULANT_VL',
   ],
   // Poids Lourds & Camions
   'CAMION_6_ROUES': [
@@ -402,6 +442,8 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'MECA_LOURDE_PL',
     'REMORQUAGE_PL',
     'CARBURANT_EPUISE',
+    'INJECTION_DIESEL',
+    'SUSPENSION_PL',
   ],
   'CAMION_10_ROUES': [
     'PNEU_PL',
@@ -410,6 +452,9 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'MECA_LOURDE_PL',
     'REMORQUAGE_PL',
     'CARBURANT_EPUISE',
+    'INJECTION_DIESEL',
+    'SUSPENSION_PL',
+    'HYDRAULIQUE_PL',
   ],
   'SEMI_REMORQUE': [
     'PNEU_PL',
@@ -418,6 +463,9 @@ const Map<String, List<String>> kSosPannesParVehicule = {
     'MECA_LOURDE_PL',
     'REMORQUAGE_PL',
     'CARBURANT_EPUISE',
+    'INJECTION_DIESEL',
+    'SUSPENSION_PL',
+    'HYDRAULIQUE_PL',
   ],
 };
 
@@ -614,6 +662,76 @@ kDiagnosticParPanne = {
         'Remorquage lourd tonnage : balisage renforcé, '
         'éloignez-vous de la voie.',
   ),
+  'EMBRAYAGE_PATINE': (
+    metier: 'Mécanicien moto',
+    service: 'Atelier mobile léger',
+    conseil:
+        'Tricycle surchargé : déchargez la benne ; le disque '
+        'd\'embrayage se remplace sur place.',
+  ),
+  'PONT_DIFFERENTIEL': (
+    metier: 'Mécanicien moto',
+    service: 'Atelier mobile léger',
+    conseil:
+        'N\'insistez pas sur l\'accélérateur : niveau d\'huile de pont '
+        'et joints vérifiés sur place, remorquage si blocage.',
+  ),
+  'CARBURATEUR_BOUGIE': (
+    metier: 'Mécanicien moto',
+    service: 'Atelier mobile léger',
+    conseil:
+        'Carburateur encrassé ou bougie noyée : nettoyage et kit '
+        'carburation remplacés sur place.',
+  ),
+  'REGULATEUR_CHARGE': (
+    metier: 'Électricien auto & moto',
+    service: 'Atelier mobile léger',
+    conseil:
+        'Batterie neuve qui se vide : le régulateur de tension est '
+        'testé et remplacé sur place.',
+  ),
+  'SERRAGE_MOTEUR': (
+    metier: 'Mécanicien moto',
+    service: 'Atelier mobile léger',
+    conseil:
+        'Fumée bleue ou blanche, perte de puissance : haut moteur à '
+        'réviser, arrêtez le véhicule immédiatement.',
+  ),
+  'VOYANT_MOTEUR_CAPTEUR': (
+    metier: 'Mécatronicien (diagnostic auto)',
+    service: 'Atelier mobile léger',
+    conseil:
+        'Voyant moteur : diagnostic valise OBD2 sur place ; la panne '
+        'électronique est identifiée avant tout achat de pièce.',
+  ),
+  'INJECTION_DIESEL': (
+    metier: 'Diéséliste (injection)',
+    service: 'Garage / mécanique générale',
+    conseil:
+        'Diesel : filtre à gasoil et injecteurs contrôlés sur place ; '
+        'pompes haute pression en atelier.',
+  ),
+  'TRAIN_ROULANT_VL': (
+    metier: 'Mécanicien véhicules légers',
+    service: 'Atelier mobile léger',
+    conseil:
+        'Claquements sur routes dégradées : rotules, silentblocs et '
+        'roulements vérifiés, géométrie à refaire après.',
+  ),
+  'SUSPENSION_PL': (
+    metier: 'Mécanicien Poids Lourd',
+    service: 'Camion-atelier sur site',
+    conseil:
+        'Lames de ressort ou coussins d\'air : camion-atelier sur site, '
+        'roulez à vide jusqu\'à l\'intervention.',
+  ),
+  'HYDRAULIQUE_PL': (
+    metier: 'Hydraulicien PL',
+    service: 'Camion-atelier sur site',
+    conseil:
+        'Benne ou hayon bloqué : flexibles et vérins réparés sur site, '
+        'sécurisez la zone de manœuvre.',
+  ),
 };
 
 /// Diagnostic pro pour un code de panne (null si code inconnu).
@@ -640,6 +758,11 @@ const Map<String, String> kSosCompetences = {
   'REMORQUAGE_PL': 'Remorquage Poids Lourd (dépanneuse lourd tonnage)',
   'SWAP_BATTERIE': 'Échange / swap de batterie électrique',
   'LIVRAISON_CARBURANT': 'Livraison de carburant express (panne sèche)',
+  'SOUDURE_CHASSIS': 'Soudeur / réparation châssis & benne (tricycles)',
+  'DIAG_ELECTRONIQUE': 'Mécatronicien : diagnostic électronique OBD2 / ECU',
+  'INJECTION_DIESEL': 'Diéséliste : pompes & injecteurs haute pression',
+  'HYDRAULIQUE_PL': 'Hydraulicien PL : vérins, flexibles, bennes, hayons',
+  'CARROSSERIE_TOLE': 'Tôlier-peintre : carrosserie & peinture',
 };
 
 /// Services de prestation express et habilitations requises par code.
