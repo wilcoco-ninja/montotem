@@ -44,8 +44,8 @@ on conflict (code) do update set libelle = excluded.libelle;
 insert into sos_pannes (code, libelle, description, main_oeuvre_fcfa,
                         piece_obligatoire, piece_code, piece_libelle, position)
 values
-  ('CARBURANT_EPUISE', "Panne sèche : plus d'essence / carburant épuisé",
-   "Le dépanneur arrive avec un bidon d'essence homologué.", 2000, false,
+  ('CARBURANT_EPUISE', 'Panne sèche : plus d''essence / carburant épuisé',
+   'Le dépanneur arrive avec un bidon d''essence homologué.', 2000, false,
    null, null, 47),
   ('FREIN_MOTO', 'Freins défaillants (moto, scooter, tricycle)',
    'Garnitures, câble ou circuit de frein.', 3500, false,
@@ -53,7 +53,7 @@ values
   ('ECLAIRAGE_CLAXON', 'Éclairage, klaxon ou clignotants en panne',
    'Ampoules, fusibles, faisceau, klaxon.', 2500, false,
    'AMPOULE_FUSIBLE', 'Ampoule / fusible / faisceau', 49),
-  ('FUITE_HUILE', "Fuite d'huile ou de carburant",
+  ('FUITE_HUILE', 'Fuite d''huile ou de carburant',
    'Recherche de fuite, joints et resserrage.', 4000, false,
    'JOINT_MOTO', 'Joints / visserie moteur', 50),
   ('ROUE_DEJANTEE', 'Roue déjantée / jante voilée',

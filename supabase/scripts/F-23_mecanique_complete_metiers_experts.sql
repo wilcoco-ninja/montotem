@@ -94,7 +94,7 @@ on conflict (code) do nothing;
 -- 3. Matrice panne ↔ véhicule
 -- ---------------------------------------------------------------------------
 insert into sos_panne_vehicules (panne_code, vehicule_code)
-select pn.panne_code, g.vehicule_code
+select g.panne_code, vt.vehicule_code
 from (values
   ('EMBRAYAGE_PATINE',     array['ZEM_MOTO','SCOOTER_THERM','CLOBOTO_PAX','KLOBOTO_FRET']),
   ('PONT_DIFFERENTIEL',    array['CLOBOTO_PAX','KLOBOTO_FRET']),
