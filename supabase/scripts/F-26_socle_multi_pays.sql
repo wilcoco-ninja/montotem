@@ -22,11 +22,31 @@
 -- (imageQuality 80-90 / maxWidth 1600-2000), cache local des tarifs
 -- (LocalCache), file d'attente hors ligne (OutboxService).
 --
--- Prérequis : finance/11 (devises, zones), 010 (profiles), 015/017 (wallets,
+-- Prérequis : finance/11 (devises ; zones BJ/NG/KE), 010 (profiles), 015/017 (wallets,
 -- rides). Idempotent.
 -- ============================================================================
 
 begin;
+
+-- ---------------------------------------------------------------------------
+-- 0. Zones des futurs pays (prérequis des clés étrangères de pays_config).
+--    BJ, NG et KE existent déjà (migration finance/11). actif = false :
+--    chaque pays sera activé le jour de son lancement (zones + pays_config).
+-- ---------------------------------------------------------------------------
+insert into public.zones (code, pays, devise_code, villes, actif) values
+  ('TG', 'Togo',         'XOF',
+   array['Lomé','Kara','Sokodé','Atakpamé','Aného'], false),
+  ('BF', 'Burkina Faso', 'XOF',
+   array['Ouagadougou','Bobo-Dioulasso','Koudougou'], false),
+  ('CI', 'Côte d''Ivoire', 'XOF',
+   array['Abidjan','Bouaké','Yamoussoukro','San-Pédro'], false),
+  ('SN', 'Sénégal',      'XOF',
+   array['Dakar','Thiès','Saint-Louis','Ziguinchor'], false),
+  ('CM', 'Cameroun',     'XAF',
+   array['Douala','Yaoundé','Bafoussam','Garoua'], false),
+  ('GH', 'Ghana',        'GHS',
+   array['Accra','Kumasi','Takoradi','Tamale'], false)
+on conflict (code) do nothing;
 
 -- ---------------------------------------------------------------------------
 -- 1. Configuration par pays (règles locales externalisées)
