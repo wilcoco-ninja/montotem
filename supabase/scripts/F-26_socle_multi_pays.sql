@@ -124,26 +124,30 @@ create index if not exists idx_rides_zone     on public.rides (zone_code, create
 -- Rattrapage : les entités existantes sont rattachées à la zone du profil.
 update public.providers p
    set zone_code     = c.country_code,
-       currency_code = coalesce(c.devise_code, 'XOF')
+       currency_code = coalesce(pc.devise_code, 'XOF')
   from public.profiles c
+  left join public.pays_config pc on pc.country_code = c.country_code
  where c.id = p.id and p.zone_code is null;
 
 update public.missions m
    set zone_code     = c.country_code,
-       currency_code = coalesce(c.devise_code, 'XOF')
+       currency_code = coalesce(pc.devise_code, 'XOF')
   from public.profiles c
+  left join public.pays_config pc on pc.country_code = c.country_code
  where c.id = m.client_id and m.zone_code is null;
 
 update public.rides r
    set zone_code     = c.country_code,
-       currency_code = coalesce(c.devise_code, 'XOF')
+       currency_code = coalesce(pc.devise_code, 'XOF')
   from public.profiles c
+  left join public.pays_config pc on pc.country_code = c.country_code
  where c.id = r.client_id and r.zone_code is null;
 
 update public.wallets w
    set zone_code     = c.country_code,
-       currency_code = coalesce(c.devise_code, 'XOF')
+       currency_code = coalesce(pc.devise_code, 'XOF')
   from public.profiles c
+  left join public.pays_config pc on pc.country_code = c.country_code
  where c.id = w.provider_id and w.zone_code is null;
 
 -- ---------------------------------------------------------------------------
