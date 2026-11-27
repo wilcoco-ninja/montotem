@@ -228,11 +228,17 @@ begin
   return jsonb_build_object(
     'base_octets', pg_database_size(current_database()),
     'tables', (
-      select coalesce(jsonb_agg(jsonb_build_object(
-               'table',   t.relname,
-               'lignes',  t.n_live_tup,
-               'octets',  pg_total_relation_size(t.relid)
-             )) order by pg_total_relation_size(t.relid) desc), '[]'::jsonb)
+      select coalesce(
+        jsonb_agg(
+          jsonb_build_object(
+            'table',   t.relname,
+            'lignes',  t.n_live_tup,
+            'octets',  pg_total_relation_size(t.relid)
+          )
+          order by pg_total_relation_size(t.relid) desc
+        ),
+        '[]'::jsonb
+      )
       from pg_stat_user_tables t
     ),
     'connexions', (select count(*) from pg_stat_activity where datname = current_database()),
