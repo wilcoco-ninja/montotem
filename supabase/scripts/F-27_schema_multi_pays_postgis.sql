@@ -237,11 +237,14 @@ revoke insert, update, delete on public.villes from authenticated, anon;
 
 -- 4a. Ville la plus proche d'une position GPS (KNN PostGIS, index GIST).
 --     Ligne fantôme : renvoie TOUJOURS exactement 1 résultat (repli Cotonou).
+-- (drop : le type de retour passe de record à table, create or replace ne
+--  peut pas changer un type de retour)
+drop function if exists public.ville_la_plus_proche(double precision, double precision);
 create or replace function public.ville_la_plus_proche(
   p_lat double precision,
   p_lng double precision
 )
-returns record
+returns table (nom text, pays text)
 language sql
 stable
 set search_path = public, extensions
@@ -294,8 +297,9 @@ grant execute on function public.villes_proches(double precision, double precisi
 
 -- 4c. Zone + devise d'une ville (remplace la recherche par tableau zones.villes).
 --     Ligne fantôme : repli Bénin/XOF si la ville est inconnue.
+drop function if exists public.zone_de_ville(text);
 create or replace function public.zone_de_ville(p_ville text)
-returns record
+returns table (zone text, devise text)
 language sql
 stable
 as $func$
