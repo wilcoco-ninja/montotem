@@ -129,18 +129,17 @@ returns text[]
 language sql
 immutable
 as $func$
-  select coalesce(array_agg(distinct c), '{}'::text[])
-  from unnest(coalesce(p_types, '{}'::text[])) t(t)
+  select coalesce(array_agg(distinct u.cat), '{}'::text[])
+  from unnest(coalesce(p_types, '{}'::text[])) as t(ty)
   cross join lateral (values
     ('moto',     array['ZEM_MOTO','SCOOTER_THERM','E_MOTO','E_SCOOTER']),
     ('tricycle', array['CLOBOTO_PAX','KLOBOTO_FRET']),
     ('voiture',  array['CAR_THERM','E_CAR','UTILITAIRE_VAN']),
     ('bus',      array['MINIBUS','BUS_TRANSPORT']),
     ('camion',   array['CAMION_6_ROUES','CAMION_10_ROUES','SEMI_REMORQUE'])
-  ) m(ty, cats)
-  where t.ty = m.ty
-    and cardinality(cats) > 0
-    and exists (select 1 from unnest(cats) c);
+  ) as m(ty, cats)
+  cross join lateral unnest(m.cats) as u(cat)
+  where t.ty = m.ty;
 $func$;
 
 -- ---------------------------------------------------------------------------
