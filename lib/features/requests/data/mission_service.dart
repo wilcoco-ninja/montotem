@@ -460,6 +460,18 @@ class MissionService {
     }
     if (m.contains('MOTIF_OBLIGATOIRE')) return 'Indiquez un motif.';
     if (m.contains('INTROUVABLE')) return 'Demande introuvable.';
-    return 'Opération impossible. Réessayez.';
+    // Erreurs d'infrastructure : service absent ou accès refusé. Le code
+    // Postgrest est affiché pour permettre un diagnostic précis.
+    if (m.contains('Could not find the function') || e.code == 'PGRST202') {
+      return 'Service des demandes indisponible : fonction SQL manquante '
+          '(exécutez F-25 dans Supabase SQL Editor).';
+    }
+    if (m.contains('permission denied') || e.code == '42501') {
+      return "Accès refusé pour cette opération.";
+    }
+    if (e.code == '42703') {
+      return 'Structure de données à mettre à jour (colonne SQL manquante).';
+    }
+    return 'Opération impossible. Réessayez. (code ${e.code})';
   }
 }
