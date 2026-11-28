@@ -2,6 +2,8 @@ name: _fix_format
 on:
   push:
     branches: [main]
+permissions:
+  contents: write
 jobs:
   format:
     runs-on: ubuntu-latest
