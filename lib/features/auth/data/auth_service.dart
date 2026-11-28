@@ -613,8 +613,12 @@ class AuthService {
   // ===========================================================================
   // UPLOAD Supabase Storage
   //   avatars   : bucket public (photo de profil, visage, garage)
-  //   documents : bucket privé (pièces d'identité, URL signée)
+  //   documents : bucket privé (pièces d'identité)
   // Le chemin commence toujours par [folder/]<uid>/ : exigé par la RLS.
+  // Sécurité (audit) : pour les documents, on renvoie le CHEMIN Storage et
+  // jamais une URL signée longue durée — l'URL signée (15 minutes maximum)
+  // est générée à la demande, à l'affichage, par un appelant autorisé par
+  // la RLS (propriétaire ou admin).
   // ===========================================================================
   Future<String> uploaderDocument(
     Uint8List bytes,
@@ -648,6 +652,10 @@ class AuthService {
 
       final bucket = kind == UploadKind.identity ? 'documents' : 'avatars';
       final cleanName = nomFichier.replaceAll(RegExp(r'[^\w\.\-]'), '_');
+      // Anti-traversal : aucun composant du chemin ne doit contenir ..
+      if (cleanName.contains('..')) {
+        throw const UploadException('Nom de fichier invalide.');
+      }
       final timestamp = DateTime.now().millisecondsSinceEpoch;
       final prefix = (folder != null && folder.trim().isNotEmpty)
           ? '${folder.trim()}/'
@@ -666,16 +674,13 @@ class AuthService {
             ),
           );
 
-      final String url;
+      // Documents privés : chemin seul (URL signée courte générée à la
+      // demande). Avatars : URL publique.
       if (bucket == 'documents') {
-        url = await _sb.storage
-            .from(bucket)
-            .createSignedUrl(path, 60 * 60 * 24 * 365); // Valable 1 an
-      } else {
-        url = _sb.storage.from(bucket).getPublicUrl(path);
+        return path;
       }
 
-      return url;
+      return _sb.storage.from(bucket).getPublicUrl(path);
     } on UploadException {
       rethrow;
     } on StorageException catch (e) {

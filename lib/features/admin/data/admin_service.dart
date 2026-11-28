@@ -71,16 +71,42 @@ class AdminService {
       }
       final rows = await query.order('created_at', ascending: false);
 
-      return rows.map<Map<String, dynamic>>((row) {
+      // Sécurité (audit) : les documents privés sont stockés en base sous
+      // forme de CHEMIN Storage (jamais d'URL longue durée). Un chemin est
+      // résolu ici en URL signée de 15 MINUTES maximum, à chaque chargement,
+      // par un appelant autorisé par la RLS (admin ou propriétaire). Une
+      // ancienne URL http (dossiers d'avant la correction) passe telle quelle.
+      Future<String?> resoudreDocument(String? valeur) async {
+        if (valeur == null || valeur.isEmpty || valeur.startsWith('http')) {
+          return valeur;
+        }
+        try {
+          return await _sb.storage.from('documents').createSignedUrl(
+                valeur,
+                900, // 15 minutes maximum
+              );
+        } catch (e) {
+          developer.log(
+            'URL signée document impossible',
+            error: e,
+            name: 'AdminService',
+          );
+          return null;
+        }
+      }
+
+      final resultats = <Map<String, dynamic>>[];
+      for (final row in rows) {
         final profil = _un(row['profiles']) ?? <String, dynamic>{};
-        return {
+        resultats.add({
           'id': row['id'],
           'business_name': row['business_name'],
           'metier': row['metier'],
           'provider_kind': row['provider_kind'],
           'ville': row['ville'],
           'ifu': row['ifu'],
-          'photo_cni_url': row['photo_cni_url'],
+          'photo_cni_url':
+              await resoudreDocument(row['photo_cni_url'] as String?),
           'latitude': row['latitude'],
           'longitude': row['longitude'],
           'disponible': row['disponible'],
@@ -93,9 +119,12 @@ class AdminService {
           'statut_mission': row['statut_mission'],
           'id_document_type': row['id_document_type'],
           'id_document_number': row['id_document_number'],
-          'photo_cni_back_url': row['photo_cni_back_url'],
-          'photo_selfie_url': row['photo_selfie_url'],
-          'photo_garage_url': row['photo_garage_url'],
+          'photo_cni_back_url':
+              await resoudreDocument(row['photo_cni_back_url'] as String?),
+          'photo_selfie_url':
+              await resoudreDocument(row['photo_selfie_url'] as String?),
+          'photo_garage_url':
+              await resoudreDocument(row['photo_garage_url'] as String?),
           'garage_description': row['garage_description'],
           'id_checks': row['id_checks'],
           'identity_submitted_at': row['identity_submitted_at'],
@@ -103,8 +132,9 @@ class AdminService {
             ...profil,
             'is_approved': row['statut_validation'] == 'approved',
           },
-        };
-      }).toList();
+        });
+      }
+      return resultats;
     } on PostgrestException catch (e) {
       developer.log('Prestataires admin', error: e, name: 'AdminService');
       throw Exception('Erreur prestataires : ${_msg(e)}');
