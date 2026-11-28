@@ -81,7 +81,9 @@ class AdminService {
           return valeur;
         }
         try {
-          return await _sb.storage.from('documents').createSignedUrl(
+          return await _sb.storage
+              .from('documents')
+              .createSignedUrl(
                 valeur,
                 900, // 15 minutes maximum
               );
@@ -105,8 +107,9 @@ class AdminService {
           'provider_kind': row['provider_kind'],
           'ville': row['ville'],
           'ifu': row['ifu'],
-          'photo_cni_url':
-              await resoudreDocument(row['photo_cni_url'] as String?),
+          'photo_cni_url': await resoudreDocument(
+            row['photo_cni_url'] as String?,
+          ),
           'latitude': row['latitude'],
           'longitude': row['longitude'],
           'disponible': row['disponible'],
@@ -119,12 +122,15 @@ class AdminService {
           'statut_mission': row['statut_mission'],
           'id_document_type': row['id_document_type'],
           'id_document_number': row['id_document_number'],
-          'photo_cni_back_url':
-              await resoudreDocument(row['photo_cni_back_url'] as String?),
-          'photo_selfie_url':
-              await resoudreDocument(row['photo_selfie_url'] as String?),
-          'photo_garage_url':
-              await resoudreDocument(row['photo_garage_url'] as String?),
+          'photo_cni_back_url': await resoudreDocument(
+            row['photo_cni_back_url'] as String?,
+          ),
+          'photo_selfie_url': await resoudreDocument(
+            row['photo_selfie_url'] as String?,
+          ),
+          'photo_garage_url': await resoudreDocument(
+            row['photo_garage_url'] as String?,
+          ),
           'garage_description': row['garage_description'],
           'id_checks': row['id_checks'],
           'identity_submitted_at': row['identity_submitted_at'],
